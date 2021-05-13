@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Getting started with Sonar to manage your technical debt | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Christian Hilmersson" src="../../../../../../assets/medarbetare/christianhilmersson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Getting started with Sonar to manage your technical debt</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2010-12-08T00:00:00+00:00">
+            08 December 2010
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Christian Hilmersson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In fast evolving projects you are most certain to find some kind of technical debt. As architects and developers we are always looking for the best mix of flexibiltiy, clarity and maintainability in our code base. To maintain the quality of the code most project have a set of coding standards and architectural guidelines which the team should be aware of and follow. Nevertheless I’ve noticed that, and I’m sure most of you have seen or experienced this, when projects are working under hard time pressure these things tend to be put aside in favor of making the delivery on time.</p>
+
+<p>In the best case this leads to post delivery activities in terms of cleaning up and documenting the code but my observations tell me that most often the code is left as it is, making it harder to maintain. In my opinion it is desirable to be able to coop with such problems at a much earlier stage.</p>
+
+<p>Wouldn’t it be great to have a tool for helping you find and pinpoint potential problems early on, even integrated as a part of your continuous builds and also directly from inside your IDE?</p>
+
+<h2 id="sonar">Sonar</h2>
+<p>Sonar is a software that analyzes your code base and displays parameters related to technical debt. Primarily it is built for Java projects but through the use of plugins it is also possible to analyze other languages as well. The software is very well suited for projects built with Maven but there are also ways of analyzing other types of projects.</p>
+
+<p>If you are familiar with tools like Checkstyle you should rather quickly grasp the value of the tools that Sonar brings in terms of managing your code base and keeping it neat and clean.</p>
+
+<h3 id="the-fundamentals">The fundamentals</h3>
+<p>The concept is that Sonar runs as a server application that collects data from your code through a Maven plugin. The analyzed data can then easily be viewed in the web GUI included with the server application or through other tools such as the Eclipse plugin. The Eclipse plugin integrates great with the IDE and lets the developer jump between the analysis and the code instantly which eases the work of correcting problems pointed out in the analysis.</p>
+
+<p>The default setup covers the most common metrics of technical debt, such as coding standard alignment, code coverage of tests and a lot more. It is also  possible to add plugins that measures additional parameters of the code. The Sonar site reports that there currently are more than 30 plugins available in addition to the default behavior.</p>
+
+<h3 id="continuous-code-analysis">Continuous code analysis</h3>
+<p>Sonar currently integrates with the following continuous integration engines, which makes it easy to keep your analysis up to date down to each code change:</p>
+
+<ul>
+  <li>Bamboo</li>
+  <li>Hudson</li>
+  <li>Continuum 1.2</li>
+  <li>Cruise Control</li>
+  <li>TeamCity</li>
+</ul>
+
+<p>For more information on setting up Sonar with your continuous integration engine read here: <a href="http://docs.codehaus.org/display/SONAR/Collect+data#Collectdata-Continuousintegrationengines">http://docs.codehaus.org/display/SONAR/Collect+data#Collectdata-Continuousintegrationengines</a></p>
+
+<h3 id="the-eclipse-plugin">The Eclipse plugin</h3>
+<p>The Eclipse plugin is available at the following update site: http://dist.sonar-ide.codehaus.org/eclipse/</p>
+
+<p>In Eclipse:</p>
+
+<ul>
+  <li>Open the <strong>Help</strong> Menu and click on <strong>Install New Software…</strong></li>
+  <li>In the field <strong>Work with</strong>, enter: <code class="language-plaintext highlighter-rouge">http://dist.sonar-ide.codehaus.org/eclipse/</code></li>
+  <li>Check the <strong>Sonar integration for Eclipse</strong> and follow the installation wizard.</li>
+</ul>
+
+<p>After the installation, Eclipse is restarted and a new Sonar perspective is added to the Eclipse and you can associate projects with Sonar.</p>
+
+<p>More information about the Eclipse plugin is available here: <a href="http://docs.codehaus.org/display/SONAR/Sonar+Eclipse">http://docs.codehaus.org/display/SONAR/Sonar+Eclipse</a></p>
+
+<h2 id="getting-started">Getting started</h2>
+<p>In this section I will explain a really quick way to get going with the Maven project of your own choice.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Download the latest version from <a href="http://www.sonarsource.org/downloads/">http://www.sonarsource.org/downloads/</a></p>
+
+<p>For this tutorial I use Sonar version 2.4.1</p>
+
+<p>Make sure you are using the following:</p>
+
+<ul>
+  <li>JDK version 1.5 or higher (check by running <code class="language-plaintext highlighter-rouge">javac –version</code>in a console)</li>
+  <li>Maven of version 2.0.9 or higher (check by running <code class="language-plaintext highlighter-rouge">mvn –version</code> in a console)</li>
+</ul>
+
+<p>Sonar persists the collected analysis data to a database and there are built in support for most of the major db vendors. Fortunately we don’t have to bother about that choice for now since Sonar ships with a default configuration which uses an embedded Derby server which will work just perfect for the needs in this article.</p>
+
+<h3 id="start-the-server">Start the server</h3>
+
+<ol>
+  <li>Unpack the sonar zip to a folder of your choice (make sure the user that run Sonar has write permissions to the unpacked folder)</li>
+  <li>Enter the newly unpacked folder and run:</li>
+</ol>
+
+<p>On windows</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd bin\windows-x86-32
+$ StartSonar.bat`
+</code></pre></div></div>
+
+<p>On other systems</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd bin/[OS]
+$ ./sonar.sh console
+</code></pre></div></div>
+
+<h3 id="analyze-your-project">Analyze your project</h3>
+<p>Sonar requires the project to be built at least once before it can do the analysis with the plugin. So before starting the plugin that is performing the actual analysis we do a clean build. Since the plugin (sonar:sonar) runs all tests during the analysis we first run the clean build with tests disabled and then the tests will run when the plugin is activated.</p>
+
+<p>Enter the folder of the Maven project you want to analyze and run the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn clean install –Dmaven.test.skip=true
+</code></pre></div></div>
+
+<p>Followed by the actual analysis, which also will run the tests:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn sonar:sonar
+</code></pre></div></div>
+
+<h3 id="watch-the-result">Watch the result</h3>
+<p>Open a web browser and enter <a href="http://localhost:9000/">http://localhost:9000</a> in the URL field, click on your project and enjoy your metrics.</p>
+
+<h2 id="references">References</h2>
+<p>Information in this article were found on <a href="http://www.sonarsource.org/">http://www.sonarsource.org/</a> where you also can find more information about Sonar.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Getting Started With Sonar To Manage Your Technical Debt&url=https://callistaenterprise.se/blogg/teknik/2010/12/08/getting-started-with-sonar-to-manage-your-technical-debt/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Getting Started With Sonar To Manage Your Technical Debt&u=https://callistaenterprise.se/blogg/teknik/2010/12/08/getting-started-with-sonar-to-manage-your-technical-debt/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Getting Started With Sonar To Manage Your Technical Debt&url=https://callistaenterprise.se/blogg/teknik/2010/12/08/getting-started-with-sonar-to-manage-your-technical-debt/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

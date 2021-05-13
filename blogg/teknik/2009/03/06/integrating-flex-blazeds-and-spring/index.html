@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Integrating Flex, BlazeDS and Spring | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Jan Västernäs" src="../../../../../../assets/medarbetare/janvasternas_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Integrating Flex, BlazeDS and Spring</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2009-03-06T00:00:00+00:00">
+            06 March 2009
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/janvasternas/index.html">Jan Västernäs</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Suppose you have an web application with a service layer implemented by spring beans and want to get a richer user interface ? One way to do it to use Flex.</p>
+
+<p>Parts of the Flex development platform has become Open Source. What you absolutely need is addition to that is the Flex Builder. It enables debugging of the Flex application and without that you are completely lost. The license is 150 Euro so it is no big deal.</p>
+
+<p>So the User Interface is produced using Flex and to take care of the remoting we can use BlazeDS which is Open Source from Adobe. BlazeDS is deployed as an web appication.</p>
+
+<p>My Helloworld sample version 1 uses a simple java class on the server side. Version 2 will use spring.</p>
+
+<p>The class has a method</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Topic</span><span class="o">&gt;</span> <span class="nf">getAllTopics</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>Topic contains two attributes speaker and name.</p>
+
+<p>In Flex I define a RemoteObject to describe the communication with the server</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;mx:RemoteObject id="server" destination="cadec-service"&gt;
+  &lt;mx:method name="getAllTopics" result="getAllTopicsResult(event)" /&gt;
+&lt;/mx:RemoteObject&gt;
+</code></pre>
+
+<p>The method tag tells Flex that whenever the <code class="language-plaintext highlighter-rouge">getAllTopics</code> Method is called the return value will be handled by the <code class="language-plaintext highlighter-rouge">getAllTopicsResult</code> method which is defined like this</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="n">function</span> <span class="nf">getAllTopicsResult</span><span class="o">(</span><span class="nl">event:</span><span class="nc">ResultEvent</span><span class="o">):</span><span class="kt">void</span>	<span class="o">{</span>
+    <span class="n">topics</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">result</span> <span class="n">as</span> <span class="nc">ArrayCollection</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It simply saves the result to a variable topics. Finally a DataGrid is defined to display the result</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;mx:DataGrid dataProvider="(topics)"&gt;
+  &lt;mx:columns&gt;
+    &lt;mx:DataGridColumn dataField="speaker" width="150"/&gt;
+    &lt;mx:DataGridColumn dataField="name" width="350"/&gt;
+  &lt;/mx:columns&gt;
+&lt;/mx:DataGrid&gt;
+</code></pre>
+
+<p>When the page is loaded a call to <code class="language-plaintext highlighter-rouge">getAllTopics</code> is made</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;mx:Application . . . creationComplete="server.getAllTopics()"&gt;
+</code></pre>
+
+<p>and when the reply arrives the grid is populated and looks like this</p>
+
+<p><em>Bild saknas</em></p>
+
+<p>BlazeDS need to know what the destination=”cadec-server” means. The information is supplied in file named <code class="language-plaintext highlighter-rouge">remoting-config.xml</code></p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;destination id="cadec-service"&gt;
+  &lt;properties&gt;
+    &lt;source&gt;se.callista.CadecService&lt;/source&gt;
+  &lt;/properties&gt;
+&lt;/destination&gt;
+</code></pre>
+
+<p>This will create an instance of the CadecService (each time). The classes are put in WEB-INF classes.</p>
+
+<p>HelloWorld sample version 2 uses spring on the server side.</p>
+
+<p>To enable that I followed the instructions outlined by <a href="http://coenraets.org/flex-spring/">http://coenraets.org/flex-spring/</a></p>
+
+<p>2 classes <code class="language-plaintext highlighter-rouge">SpringFactory.class</code> and <code class="language-plaintext highlighter-rouge">SpringFactory$SpringFactoryInstance.class</code> needs to be present att <code class="language-plaintext highlighter-rouge">WEB-INF/classes</code>.</p>
+
+<p>To enable the spring integration these classes needs to be configured in the services-config file</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;factories&gt;
+  &lt;factory id="spring" class="flex.samples.factories.SpringFactory"/&gt;
+&lt;/factories&gt;
+</code></pre>
+
+<p>Now the <code class="language-plaintext highlighter-rouge">remoting-config.xml</code> destination can be changed to use the SpringFactory to get the bean from spring instead of initializing it. Obviously this means that the <code class="language-plaintext highlighter-rouge">CadedService</code> class will only be instatiated once.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;destination id="cadec-service"&gt;
+  &lt;properties&gt;
+    &lt;factory&gt;spring&lt;/factory&gt;
+    &lt;source&gt;cadecService&lt;/source&gt;
+  &lt;/properties&gt;
+&lt;/destination&gt;
+</code></pre>
+
+<p>Now everything works again.</p>
+
+<p>If this wasn’t simple enough we just have to wait for the new spring/flex integration project to deliver</p>
+
+<p><a href="http://www.infoq.com/news/2009/01/spring-adobe-blazeds;jsessionid=8F49E7F3F0F00D6880768A222111D793">http://www.infoq.com/news/2009/01/spring-adobe-blazeds;jsessionid=8F49E7F3F0F00D6880768A222111D793</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Integrating Flex Blazeds And Spring&url=https://callistaenterprise.se/blogg/teknik/2009/03/06/integrating-flex-blazeds-and-spring/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Integrating Flex Blazeds And Spring&u=https://callistaenterprise.se/blogg/teknik/2009/03/06/integrating-flex-blazeds-and-spring/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Integrating Flex Blazeds And Spring&url=https://callistaenterprise.se/blogg/teknik/2009/03/06/integrating-flex-blazeds-and-spring/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Using Categories to keep Java domain models uncluttered | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Using Categories to keep Java domain models uncluttered</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2009-07-28T00:00:00+00:00">
+            28 July 2009
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Going back to the roots of OOD has been commonly advocated since Eric Evans  presented his book <a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1238687848&amp;sr=8-1">Domain-Driven Design: Tackling Complexity in the Heart of Software</a> back in 2003. There are several other sources of the movement, such as the <a href="http://en.wikipedia.org/wiki/Naked_objects">Naked Objects Framework</a> which we presented at <a href="http://www.callistaenterprise.se/download/18.5a1758e1117d436eebd80001364">Cadec 2007</a>.</p>
+
+<p>In database systems, DDD often takes its representation in a class model of the persistent information to be managed by a service or a system. If Java is used to implement the entity classes describing persistent objects, JPA may be the persistence technology (presented at several Cadecs: <a href="http://www.callistaenterprise.se/download/18.5a1758e1117d436eebd80001363/JPA1.0.pdf">JPA 1.0</a>, <a href="http://www.callistaenterprise.se/download/18.6521041711855b35da480001036/JPA.pdf">2 years with JPA</a>) used to add data base persistence behavior to the Entity POJOs.</p>
+
+<p>Within DDD, the idea is to allocate all logic (as much as feasible) to the entity POJOs. This often includes logic of the following categories: accessing state (setters, getters, navigation and change of object graph), validating the state, calculation of derived attributes (calculating order sum of an order) and event processing (action-logic triggered by changes to the state of an entity, such as producing a shipment note when the order state is changed to “ready-for-shipment”).</p>
+
+<h2 id="problem-with-cluttered-pojos">Problem with cluttered POJOs</h2>
+
+<p>A challenge with DDD is to know what should go into the object model and what shouldn’t. There are many types of behavior that are specific to process or external context that - when pushed into the entity classes - makes them cluttered and potentially fragile. They become fragile, when the the forces that generate change are related to external parties rather than the core business for which the model was initially creates. Change management and dependency management becomes complex.</p>
+
+<h2 id="groovy-categories-to-the-rescue">Groovy categories to the rescue</h2>
+
+<p>The Java language provides little support for dealing with this problem. <a href="http://www.qi4j.org/">qi4j</a> is an interesting approach to deal with many aspects of POJO cluttering, but not the dependency problem. With qi4j, model objects can only be extended by making changes to the definition of Java interface of a model class. This creates dependencies between change management processes and clutters the dependencies of the entities. I think qi4j carries a lot of promise, but its evolution is bound to the limitations of the Java language, which is sometimes a problem.</p>
+
+<p>In Mid 90’s, I worked with Objective-C on the <a href="http://en.wikipedia.org/wiki/Nextstep">NextSTEP platform</a>. It has a construct called Category that allows a “package of behavior” (methods) to be added to an existing class in runtime. It was often used to add methods to the foundation classes (like NSString).</p>
+
+<p>I’ve missed this ability in Java since I first learned it. It is how ever available in <a href="http://groovy.codehaus.org/">Groovy</a> - the dynamic language built on the JDK (<a href="http://www.callistaenterprise.se/download/18.5a1758e1117d436eebd80001355/Groovy.pdf">a Cadec presentation is available</a>). The remaining part of this blog entry illustrates how Groovy categories can be used to extend the use of DDD without cluttering your domain model.</p>
+
+<h2 id="our-example-adding-behavior-to-jaxb-generated-pojos">Our example: adding behavior to JAXB-generated POJO:s</h2>
+
+<p>I see Groovy typically being used in the following contexts:</p>
+
+<ul>
+  <li>As the core development language of web application development based on the <a href="http://www.grails.org/">Grails framework</a> (Callista-presentation <a href="http://www.callistaenterprise.se/download/18.4e1bc06811fea7fe4fb80006778/EnterpriseGrails.pdf">here</a>)</li>
+  <li>As integration language complementing Java projects due to it’s phenomenal XML processing capabilities (dynamic DSLs through Groovy MarkupBuilder)</li>
+  <li>As scripting language</li>
+</ul>
+
+<p>My example for this blog is of the second category. This is the problem:</p>
+
+<p>Create an RSS feed on top of the AccuWeather RESTFul web service (WeatherData).</p>
+
+<p>Prerequisites:</p>
+
+<ul>
+  <li>Use JAXB-generated POJOs available in an existing jar file to parse weather data from the AccuWeather service.</li>
+</ul>
+
+<p>The task:</p>
+
+<ul>
+  <li>Use Groovy to create a web app that transforms the response from the AccuWeather service to an RSS 2.0 feed.</li>
+  <li>The result should look like this (in Safari RSS reader)</li>
+</ul>
+
+<p><em>Bild saknas</em></p>
+
+<p>Design constraints:</p>
+
+<ul>
+  <li>DDD should be applied such that entity logic related to producing RSS output should be added to the domain objects (JAXB-generated model classes)</li>
+  <li>All RSS-related logic should be in the same project as the logic that uses/depends on that logic. The logic should be added to the JAXB POJO:s in runtime, when needed by the Groovy RSS servlet.</li>
+</ul>
+
+<h2 id="the-solution">The solution</h2>
+
+<p>We need to create a Groovy servlet that requests XML weather data from the AccuWeather weather service, parses the response into JAXB-objects produced from the XML Schema of the service and finally writes RSS XML to the servlet response by accessing the JAXB POJOs. Here’s the Servlet:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">se.callistaenterprise.labs.groovydslblog.accuatomfeed</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServlet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.ServletException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.xml.bind.Unmarshaller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.xml.bind.JAXBContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.accuweather.weatherdata.AdcDatabaseType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.accuweather.weatherdata.DayType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.text.SimpleDateFormat</span>
+
+<span class="cm">/**
+ * Servlet that queries the AccuWeather wetherdata service and re-publishes it as a RSS feed.
+ * The query string is passed on to the accuweather service as is, i.e. it is expected to be
+ * a wetherdata query string.
+ * A typical query string looks like this: ?location=EUR|SE|SW005|KUNGSBACKA&amp;metric=1
+ * So that the request to this servlet (as by mapping in web.xml) becomes:
+ *
+ *  http://localhost:8080/accuatomfeed/AccuFeed.xml?location=EUR|SE|SW005|KUNGSBACKA&amp;metric=1
+ *
+ * @author Johan Eltes
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AccuAtomServlet</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="o">)</span>
+    <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span> <span class="o">{</span>
+
+    <span class="kt">def</span> <span class="n">queryString</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="na">queryString</span> <span class="c1">// We pass this on to the Accu RESTFul service</span>
+
+    <span class="c1">// Get Weather Data from Accu Weather Data Service into JAXB pojos.</span>
+    <span class="n">Unmarshaller</span> <span class="n">um</span> <span class="o">=</span> <span class="n">JAXBContext</span><span class="o">.</span>
+      <span class="n">newInstance</span><span class="o">(</span><span class="s2">"com.accuweather.weatherdata"</span><span class="o">).</span><span class="na">createUnmarshaller</span><span class="o">()</span>
+    <span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s2">"http://rdona.accu-weather.com/widget/rdona/weather-data.asp?${queryString}"</span><span class="o">)</span>
+      <span class="n">AdcDatabaseType</span> <span class="n">accuResponse</span> <span class="o">=</span> <span class="n">um</span><span class="o">.</span><span class="na">unmarshal</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">value</span>
+
+    <span class="c1">// Produce RSS feed</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">contentType</span> <span class="o">=</span> <span class="s2">"application/rss+xml"</span>
+    <span class="n">resp</span><span class="o">.</span><span class="na">writer</span> <span class="o">&lt;&lt;</span> <span class="s1">'&lt;?xml version="1.0" encoding="UTF-8" ?&gt;'</span>
+    <span class="kt">def</span> <span class="n">rssBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">groovy</span><span class="o">.</span><span class="na">xml</span><span class="o">.</span><span class="na">MarkupBuilder</span><span class="o">(</span><span class="n">resp</span><span class="o">.</span><span class="na">writer</span><span class="o">)</span>
+    <span class="n">use</span> <span class="o">(</span><span class="n">DayTypeRssSupportCategory</span><span class="o">,</span> <span class="n">HttpServletRequestRssSupportCategory</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">rssBuilder</span><span class="o">.</span><span class="na">rss</span> <span class="o">(</span><span class="nl">version:</span> <span class="s1">'2.0'</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">channel</span> <span class="o">{</span>
+          <span class="n">title</span> <span class="o">(</span><span class="s2">"Weather stream for ${queryString?.replace('%7C','|')}"</span><span class="o">)</span>
+          <span class="n">description</span><span class="o">(</span><span class="s2">"An RSS feed built with Groovy to transform the accu-wether RESTFul service into an RSS feed."</span><span class="o">)</span>
+          <span class="n">language</span> <span class="o">(</span><span class="s1">'en-us'</span><span class="o">)</span>
+          <span class="n">link</span> <span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="na">rssChannelLink</span><span class="o">)</span> <span class="c1">// property rssChannelLink is added to HttpServletRequest by HttpServletRequestRssSupportCategory</span>
+          <span class="n">ttl</span><span class="o">(</span><span class="mi">60</span><span class="o">)</span>
+          <span class="n">pubDate</span><span class="o">(</span><span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s2">"EEE, d MMM yyyy HH:mm:ss Z"</span><span class="o">,</span> <span class="n">Locale</span><span class="o">.</span><span class="na">US</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">()))</span>
+          <span class="n">accuResponse</span><span class="o">.</span><span class="na">forecast</span><span class="o">.</span><span class="na">day</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span><span class="n">DayType</span> <span class="n">day</span> <span class="o">-&gt;</span>
+            <span class="n">item</span> <span class="o">()</span> <span class="o">{</span>
+              <span class="n">title</span> <span class="o">(</span><span class="n">day</span><span class="o">.</span><span class="na">daycode</span><span class="o">)</span>
+              <span class="n">link</span> <span class="o">(</span><span class="n">day</span><span class="o">.</span><span class="na">url</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s1">'|'</span><span class="o">,</span><span class="s1">'%7C'</span><span class="o">))</span>
+              <span class="n">description</span> <span class="o">(</span><span class="n">day</span><span class="o">.</span><span class="na">itemDescription</span><span class="o">)</span> <span class="c1">// Method itemDescription is added to class DayType by DayTypeRssSupportCategory</span>
+              <span class="n">pubDate</span> <span class="o">(</span><span class="n">day</span><span class="o">.</span><span class="na">pubDate</span><span class="o">)</span> <span class="c1">// Method itemDescription is added to class DayType by DayTypeRssSupportCategory</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The interesting part is the <code class="language-plaintext highlighter-rouge">use</code>-keyword that in runtime applies a category that adds the method <code class="language-plaintext highlighter-rouge">getItemDescription</code> that is later invoked as if it was part of the domain class DayType (Groovy allows for property-based access to Java-beans properties as a convenience to calling <code class="language-plaintext highlighter-rouge">get...())</code>.</p>
+
+<p>What is then exactly a Groovy Category? It is actually just a plan Groovy class that follows a set of conventions, that allows it to be applied as a Category using the use-keyword. Here’s the category class that defines the <code class="language-plaintext highlighter-rouge">getItemDescription()</code> method for the <code class="language-plaintext highlighter-rouge">DatType</code> class:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">se.callistaenterprise.labs.groovydslblog.accuatomfeed</span>
+
+<span class="kn">import</span> <span class="nn">com.accuweather.weatherdata.DayType</span>
+<span class="kn">import</span> <span class="nn">groovy.xml.MarkupBuilder</span>
+
+<span class="cm">/**
+ * Adds RSS behavior to DateType
+ * @author Johan Eltes
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DayTypeRssSupportCategory</span> <span class="o">{</span>
+
+  <span class="cm">/**
+   * Derives a RSS item description from the content of a DayType
+   * This is the old-school categories. The AST-transfomration for @Category
+   * gives much neater grammar (like Objective-C categories), but it is abit
+   * too buggy at the moment.
+   *
+   * The description is produced as html, so we need to create a local
+   * MarkupBuilder rather than passing in the parent MarkupBuilder. Otherwise
+   * the html for the description field would not be escaped.
+   */</span>
+  <span class="kd">static</span> <span class="n">String</span> <span class="nf">getItemDescription</span><span class="o">(</span><span class="n">DayType</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">StringWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringWriter</span><span class="o">()</span>
+    <span class="n">MarkupBuilder</span> <span class="n">htmlBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MarkupBuilder</span><span class="o">(</span><span class="n">writer</span><span class="o">)</span>
+    <span class="n">writer</span> <span class="o">&lt;&lt;</span> <span class="n">that</span><span class="o">.</span><span class="na">daytime</span><span class="o">.</span><span class="na">txtlong</span>
+    <span class="n">htmlBuilder</span><span class="o">.</span><span class="na">table</span> <span class="o">{</span>
+      <span class="n">tr</span> <span class="o">{</span>
+        <span class="n">td</span> <span class="o">{</span>
+          <span class="n">img</span> <span class="o">(</span><span class="nl">src:</span> <span class="s2">"http://vortex.accuweather.com/adc2004/common/images/icons/standard/wx/45x45/${that.daytime.weathericon.padLeft(2, '0')}.gif"</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">td</span> <span class="o">{</span>
+          <span class="n">ul</span> <span class="o">{</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Realfeel High: ${that.daytime.realfeelhigh}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Realfeel Low: ${that.daytime.realfeellow}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Wind direction: ${that.daytime.winddirection}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Wind speed: ${that.windspeed} m/s"</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">writer</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
+  <span class="o">}</span>
+
+  <span class="kd">static</span> <span class="kt">int</span> <span class="nf">getWindspeed</span><span class="o">(</span><span class="n">DayType</span> <span class="n">that</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">that</span><span class="o">.</span><span class="na">daytime</span><span class="o">.</span><span class="na">windspeed</span> <span class="o">/</span> <span class="mf">3.6</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>I do think the type of construct represented by the Groovy Categories is a great way to make DDD scale for real-world-scenarios. In real-world scenarios for DDD require some way of separating concerns so that a core domain object can add value (as a first class object in the spirit of DDD).</p>
+
+<p>Traditionally the solutions would involve various types of advanced patterns or frameworks. The sample used in this blog, would require the Visitor Pattern in order to keep the same level of separation of concerns and dependencies. Using qi4j is a Java-only framework solution that would solve the cluttering-problem, but still make the POJO library depend on the fact that it needs to support the needs of an RSS feed. In this specific case, when we are not in control (or pretend not to be) of the domain classes, qi4j would - to my understanding - not be useful.</p>
+
+<p>With category support in the language (as in Groovy), DDD becomes much more intuitive to implement.</p>
+
+<h2 id="try-it-out">Try it out</h2>
+
+<p>I’ve attached a <a href="https://callistaenterprise.se/wp-content/upload/GroovyDslBlog.zip">zip</a> with the a maven multi project for running the sample. The zip contains one project for the feed web-app and one project that builds the jaxb model classes from the xml schema of the accu weather data response payload.</p>
+
+<p>If you want to use eclipse, then issue…</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn -Dwtpversion=1.5 eclipse:eclipse
+</code></pre></div></div>
+
+<p>…which generates an eclipse project for each of the maven projects. Make sure you are located in the <code class="language-plaintext highlighter-rouge">GroovyDslBlog</code> folder when running the command. To run/debug in Eclipse with WTP you will also need the Groovy plug-in, available here: <a href="http://dist.codehaus.org/groovy/distributions/update/">http://dist.codehaus.org/groovy/distributions/update/</a> Have fun!</p>
+
+<p><strong>Improved syntax with AST transformations</strong></p>
+
+<p>With Groovy 1.6, something called <a href="http://groovy.codehaus.org/Compile-time+Metaprogramming+-+AST+Transformations">AST Transformations</a> has been added. This allows the programming model to be extended in a modular way without changing the syntax of the language. It has some similarities with what you can achieve with aspectj. Using ast transformations, Groovy 1.6 adds a more object-oriented way of defining categories (yes, exactly the same model as in Objective-C <img src="https://callistaenterprise.se/images/icons/emoticons/smile.gif" alt="" />. Unfortunately, as of Groovy 1.6.3, the ast transformer for “OO” categories is <a href="http://jira.codehaus.org/browse/GROOVY-3543">a bit shaky (fixed for upcoming 1.6.4)</a>. Using this way of defining the category, it would look like:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">se.callistaenterprise.labs.groovydslblog.accuatomfeed</span>
+
+<span class="kn">import</span> <span class="nn">com.accuweather.weatherdata.DayType</span>
+<span class="kn">import</span> <span class="nn">groovy.xml.MarkupBuilder</span>
+<span class="kn">import</span> <span class="nn">java.io.StringWriter</span>
+
+<span class="nd">@Category</span><span class="o">(</span><span class="n">DayType</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">AstDayTypeRssSupportCategory</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getItemDescription</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">StringWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringWriter</span><span class="o">()</span>
+    <span class="n">MarkupBuilder</span> <span class="n">htmlBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MarkupBuilder</span><span class="o">(</span><span class="n">writer</span><span class="o">)</span>
+    <span class="n">writer</span> <span class="o">&lt;&lt;</span> <span class="k">this</span><span class="o">.</span><span class="na">daytime</span><span class="o">.</span><span class="na">txtlong</span>
+    <span class="n">htmlBuilder</span><span class="o">.</span><span class="na">table</span> <span class="o">{</span>
+      <span class="n">tr</span> <span class="o">{</span>
+        <span class="n">td</span> <span class="o">{</span>
+          <span class="n">img</span> <span class="o">(</span><span class="nl">src:</span> <span class="s2">"http://vortex.accuweather.com/adc2004/common/images/icons/standard/wx/45x45/${that.daytime.weathericon.padLeft(2, '0')}.gif"</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">td</span> <span class="o">{</span>
+          <span class="n">ul</span> <span class="o">{</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Realfeel High: ${this.daytime.realfeelhigh}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Realfeel Low: ${this.daytime.realfeellow}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Wind direction: ${this.daytime.winddirection}"</span><span class="o">)</span>
+            <span class="n">li</span> <span class="o">(</span><span class="s2">"Wind speed: ${this.daytime.windspeed} m/s"</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">writer</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Using Categories To Keep Java Domain Models Uncluttered&url=https://callistaenterprise.se/blogg/teknik/2009/07/28/using-categories-to-keep-java-domain-models-uncluttered/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Using Categories To Keep Java Domain Models Uncluttered&u=https://callistaenterprise.se/blogg/teknik/2009/07/28/using-categories-to-keep-java-domain-models-uncluttered/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Using Categories To Keep Java Domain Models Uncluttered&url=https://callistaenterprise.se/blogg/teknik/2009/07/28/using-categories-to-keep-java-domain-models-uncluttered/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

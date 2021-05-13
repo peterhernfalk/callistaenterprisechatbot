@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Spring becomes an ESB? | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Spring becomes an ESB?</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2008-02-25T00:00:00+00:00">
+            25 February 2008
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Spring Source recently announced a new member of the Spring family: <a href="http://www.springframework.org/spring-integration/">Spring integration </a>. It is an attempt to provide an abstraction for messaging, in the domain of business integration (i.e. it is not Telecom Messaging). Due to the lack of frameworks in this area, we have designed messaging abstractions for several large Java EE projects. One such effort was presented in a speech I held at <a href="http://www.callistaenterprise.se/downloads/presentations/ExpertZoneDeveloperSummit2006_SCA.pdf">Expertzone Developer Summit (slide 42 and onwards) </a>  and also at <a href="http://www.callistaenterprise.se/downloads/presentations/Cadec2006/sca.pdf">Cadec 2006 (page 28 - 37) </a>. It is indeed a very welcome addition to the Spring family!</p>
+
+<h2 id="what-is-spring-integration">What is Spring Integration?</h2>
+
+<p>“Integration” without a namespace, overlaps with the core of Spring itself. Spring is a framework for none-intrusive integration of platform mechanisms into application logic - sometimes by defining a unifying abstraction (api) for each class of mechanisms (Transaction Management, Batch Processing, Servlet Requests etc), and always (even when the Java platform has a sufficient abstraction - like JDBC) by providing a configuration mechanism to integrate various implementations in a loosely coupled fashion (dependency injection). So - when Spring itself is about integration - what is then Spring Integration? Meta integration? No, the name Integration stems from the ambition to provide a framework that helps developers apply the <a href="http://www.eaipatterns.com/">Enterprise Integration Patterns (EIP) </a>.  When an application architect approaches integration, her concern is to abstract messaging. There are several reasons for doing so:</p>
+
+<ul>
+  <li>Messaging API:s and communication mechanisms has a much shorter life expectancy than a typical enterprise application. Three years back, it was JMS, three years a head it may be JAX WS and so on.</li>
+  <li>Although JMS as well as JAX WS provides abstraction for message based middleware, a layer of message handling on top of these API:s will have to be repeated for every message consumer or producer, unless abstracted for re-use (exception handling strategies, Java bean marshaling, delegating processing of an inbound message to the appropriate business bean…)</li>
+  <li>A higher-level API than JMS with support for dependency injection is more or less required for unit testing of business logic that depends on message exchange.</li>
+</ul>
+
+<p>Spring Integration defines such an abstraction.</p>
+
+<h2 id="is-eip-a-valid-scope-for-a-spring-framework">Is EIP a valid scope for a Spring framework?</h2>
+
+<p>I’m not quite sure it is.</p>
+
+<p>EIP includes Web Service integration. Web Services have not yet been incorporated, but communicated as a target. Although Web Services are often used for integration (integration of services) and are also by definition an abstraction for message based communication, there will be a substantial loss of semantics, when hiding it as a <a href="http://static.springframework.org/spring-integration/reference/htmlsingle/spring-integration-reference.html#overview-component-channeladapter">Channel Adapter type </a>.  I’ve had a common messaging abstraction across asynchronous messaging technologies and web services in mind when designing similar abstractions (also Spring-based) for customers. According to my experience to much of service semantics are lost when pushing Web Services (WSDL-defined services) down under the cover of a messaging abstraction. Today, I would say that the opposite is a better approach. The Spring-based service integration framework <a href="http://incubator.apache.org/cxf/">Apache CXF </a> is a good example.  I think Spring Integration should have been named Spring Messaging and solely be focused on the application developers perspective of message-based communication.</p>
+
+<p>Spring is a framework for application architects. When an integration architect approaches integration, applications are considered “frozen commodity”. A substantial part of EIP is targeting the needs of an Integration Architect. Aspects like routing, scatter/gather, pub/sub and other types of advanced mediation is better externalized to ESB-type of subsystems than integrated into the application build/release cycle. Mediation sub systems may of cause be based on Spring (maybe Spring Enterprise Integration <img src="https://callistaenterprise.se/images/icons/emoticons/smile.gif" alt="" /> to support realization of such subsystems).</p>
+
+<h2 id="the-core---what-is-missing-in-the-current-feature-set">The core - what is missing in the current feature set?</h2>
+
+<ul>
+  <li>Inbound JMS processing has no means to configure the type of sophisticated retry / error queue policies often required in real life. On the other hand - as all DI-based frameworks, the user could override any default ChannelAdapter implementation that is not fit for purpose.</li>
+  <li>Java EE Message Driven Beans are not supported. Inbound JMS processing must be implemented via Spring MessageListener container. This is not an option for enterprise integration at most customers I’ve been working for. Java EE message driven beans are typically the only remaining EJB-type in use today, due to the value they contribute in terms of monitoring, threading, advanced built-in retry/backout policies, failover awareness etc.</li>
+  <li>File-based messaging is supported, but with limited functionality. Several critical areas are missing, most of which could be contributed by integration (yes, again!) of Spring Batch (message splitting, re-start etc). Spring Batch is not tied to a particular data source, the features it provides are typically needed when the source of the “message” is a legacy system that is not event based. Or better - let an ESB subsystem do the splitting / aggregation…</li>
+</ul>
+
+<h2 id="we-need-spring-integration-but">We need Spring integration, but…</h2>
+
+<p>As the framework is scoped, it may inspire to bad habits rather than common integration best-practice . Even if a application framework supports multi-channel access to other systems (like files, sockets, and of-cause - JMS), it is typically not the path an application architect should take. Chose a single, robust endpoint technology, like JMS and then delegate semantic and technical adaption to an ESB subsystem that connects to the JMS source.</p>
+
+<p>If you chose a message-based approach, like JMS, Spring Integration is an excellent abstraction that should be used (please provide support for Java EE Message Driven Beans!). If you chose a service-oriented approach, chose a service-oriented abstraction like JAX WS with Apache CXF (if you need Spring), rather than Spring integration. Don’t use Spring Integration (or Apache CXF) for point-to-point / multi-channel integration - delegate to your enterprise ESB or to an application-bound light-weight ESB like <a href="http://mule.mulesource.org/">Mule </a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Spring Becomes An Esb&url=https://callistaenterprise.se/blogg/teknik/2008/02/25/spring-becomes-an-esb/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Spring Becomes An Esb&u=https://callistaenterprise.se/blogg/teknik/2008/02/25/spring-becomes-an-esb/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Spring Becomes An Esb&url=https://callistaenterprise.se/blogg/teknik/2008/02/25/spring-becomes-an-esb/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

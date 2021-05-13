@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>One-liners in Java – maybe better support in Java 7 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Ekstrand" src="../../../../../../assets/medarbetare/magnusekstrand_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">One-liners in Java – maybe better support in Java 7</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2010-11-28T00:00:00+00:00">
+            28 November 2010
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnusekstrand/index.html">Magnus Ekstrand</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>For sure, Java is a great language. I wrote my first Java app 1996 and have had lots of fun with it ever since. But for the past 4-5 years my interest in dynamic programming languages as Python, Groovy and Clojure has increased more and more. When working with other languages you discover a bunch of nice programming features you don’t want to be without.</p>
+
+<p>Already said, Java is a great language, but it is verbose. For example, when creating maps and lists with values/objects in Java, you need to write horribly many lines of code to achieve a very simple task. In Groovy for example, you can do it with a clear and simple syntax.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">def</span> <span class="n">emptyList</span> <span class="o">=</span> <span class="o">[];</span>
+<span class="kt">def</span> <span class="n">numbers</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">];</span>
+<span class="kt">def</span> <span class="n">numbers</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">100</span><span class="o">];</span>
+</code></pre></div></div>
+
+<p>In Java, there is no good way doing this. The standard procedure is:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
+<span class="n">numbers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="n">numbers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+<span class="n">numbers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>There are alternatives, such as making an anonymous inner class with an instance initializer (a.k.a “double brace initialization”):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">{</span> <span class="o">{</span> <span class="n">add</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> <span class="n">add</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span> <span class="n">add</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span> <span class="o">}</span> <span class="o">};</span>
+</code></pre></div></div>
+
+<p>Which probably should be written like this if you follow the Java stylish way (in other words, not really a one-liner):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">{</span> <span class="o">{</span>
+  <span class="n">add</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+  <span class="n">add</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+  <span class="n">add</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+<span class="o">}</span> <span class="o">};</span>
+</code></pre></div></div>
+
+<p>However, I’m not too fond of the previous approach because what you end up with is a subclass of ArrayList which has an instance initializer, and that class is created just to create one object. And further on, the instance of the anonymous class that you have created contain a synthetic reference to the enclosing object. If you serialize the collection you will also serialize everything in the outer class. The approach is also incompatible with one popular way to implement the <code class="language-plaintext highlighter-rouge">equals(Object o)</code> method. Assume the class Example having this method:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(!</span><span class="n">getClass</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">getClass</span><span class="o">()))</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="nc">Example</span> <span class="n">other</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Example</span><span class="o">)</span> <span class="n">o</span><span class="o">;</span> <span class="c1">// Compare this to other.</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then, objects created by “double brace initialization” will never be equal to objects created without it. So this approach should never be uses for any class that needs a non trivial <code class="language-plaintext highlighter-rouge">equals(Object)</code> method. Collection classes should be fine though.</p>
+
+<p>To achieve a one-liner initialization of a list there is an idiomatic alternative that doesn’t require such heavy handed use of anonymous inner classes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>This approach is especially useful when setting up mocks and stubs in your unit tests. It ‘s fairly clean and understandable, and it helps you keeping down the number of lines of code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MutableRepositoryItem</span> <span class="n">prod1</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">MutableRepositoryItem</span> <span class="n">prod2</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">MutableRepositoryItem</span> <span class="n">prod3</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">RepositoryItem</span><span class="o">&gt;</span> <span class="n">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">RepositoryItem</span><span class="o">&gt;();</span>
+<span class="n">children</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">prod1</span><span class="o">);</span>
+<span class="n">children</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">prod2</span><span class="o">);</span>
+<span class="n">children</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">prod3</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Can be written like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MutableRepositoryItem</span> <span class="n">prod1</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">MutableRepositoryItem</span> <span class="n">prod2</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">MutableRepositoryItem</span> <span class="n">prod3</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="nc">MutableRepositoryItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">RepositoryItem</span><span class="o">&gt;</span> <span class="n">children</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">RepositoryItem</span><span class="o">&gt;(</span>
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">prod1</span><span class="o">,</span> <span class="n">prod2</span><span class="o">,</span> <span class="n">prod3</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>Which is three lines of code less</p>
+
+<p>What would be nice is if the Collection Literals proposal for <a href="http://wikis.sun.com/display/ProjectCoin/Home">Project Coin</a> is accepted, so we can have list literals in Java 7. Imagine writing lists and maps in this way:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">emptyList</span> <span class="o">=</span> <span class="o">[];</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">];</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">100</span><span class="o">];</span>
+
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">emptyMap</span> <span class="o">=</span> <span class="o">{:};</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">mycars</span> <span class="o">=</span>
+    <span class="o">{</span><span class="s">"Saab"</span> <span class="o">:</span> <span class="mi">1994</span><span class="o">,</span> <span class="s">"Volvo"</span> <span class="o">:</span> <span class="mi">1998</span><span class="o">,</span> <span class="s">"Hyundai"</span> <span class="o">:</span> <span class="mi">2003</span><span class="o">};</span>
+</code></pre></div></div>
+
+<p>Alternatively a slightly more verbose syntax:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">];</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">100</span><span class="o">];</span>
+
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">mycars</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;()</span>
+        <span class="o">{</span><span class="s">"Saab"</span> <span class="o">:</span> <span class="mi">1994</span><span class="o">,</span> <span class="s">"Volvo"</span> <span class="o">:</span> <span class="mi">1998</span><span class="o">,</span> <span class="s">"Hyundai"</span> <span class="o">:</span> <span class="mi">2003</span><span class="o">};</span>
+</code></pre></div></div>
+
+<p>Both these syntaxes is far better than what you can do today. If I’m going to vote for an alternative I would pick the shorter syntax. Why? It’s cleaner, simpler and shorter.</p>
+
+<p>But there are certainly some difficulties to solve such as:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">].</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span> <span class="c1">// compile error?</span>
+<span class="o">[].</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span> <span class="c1">// compile error?</span>
+</code></pre></div></div>
+
+<p>It should be a really simple thing adding list and map literals to Java. But the devil is in the details. When looking into these details you will discover that Java’s static types and generics combine will cause some difficulty. It will be interesting to see how it will be resolved in the future. If it will not be solved, there is a risk that Java will lose some of its attractiveness as a first choice language for many developers. Young developers are considering Java the new Cobol - a dying old-fashioned language that is no fun to work in.</p>
+
+<p>Finally, wouldn’t be nice to have a simpler syntax for generics where you don’t have to write the generics type twice in a generics declaration. Today you need to write this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">map</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;();</span>
+</code></pre></div></div>
+
+<p>When Java 7 is out you can, hopefully, write something like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">();</span>
+</code></pre></div></div>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=One Liners In Java Maybe Better Support In Java 7&url=https://callistaenterprise.se/blogg/teknik/2010/11/28/one-liners-in-java-maybe-better-support-in-java-7/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=One Liners In Java Maybe Better Support In Java 7&u=https://callistaenterprise.se/blogg/teknik/2010/11/28/one-liners-in-java-maybe-better-support-in-java-7/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=One Liners In Java Maybe Better Support In Java 7&url=https://callistaenterprise.se/blogg/teknik/2010/11/28/one-liners-in-java-maybe-better-support-in-java-7/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

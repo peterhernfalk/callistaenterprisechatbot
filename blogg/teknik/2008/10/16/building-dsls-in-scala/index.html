@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building DSLs in Scala | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Pär Wenåker" src="../../../../../../assets/medarbetare/parwenaker_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building DSLs in Scala</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2008-10-16T00:00:00+00:00">
+            16 October 2008
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/parwenaker/index.html">Pär Wenåker</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Imagine that you could write code like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create</span> <span class="n">an</span> <span class="nc">Order</span> <span class="nf">where</span> <span class="o">(</span> <span class="nc">Id</span> <span class="n">is</span> <span class="mi">1</span><span class="o">,</span> <span class="nc">Number</span> <span class="n">is</span> <span class="mi">2</span> <span class="o">)</span> <span class="n">named</span> <span class="s">"order_1"</span>
+</code></pre></div></div>
+
+<p>This is a simple DSL that lets you create an order with specific attributes. Quite obvious isn’t it? This does not really look like something from a programming language, but it is actually valid Scala code. Let me show you how that can be.</p>
+
+<p>Let’s start with the first part (create an Order). Scala allows you to skip the dot notation when calling a method, taking only one parameter, on an object. Instead of writing <code class="language-plaintext highlighter-rouge">object.say("hello")</code> you can write <code class="language-plaintext highlighter-rouge">object say "hello"</code>. This makes the first part of our DSL simple to express. We create an object called ‘create’, gives it a method called ‘an’ that takes an object ‘Order’. Scala let’s you create singleton objects directly without requiring a class for them:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">create</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">an</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">DO</span><span class="o">)</span> <span class="k">=</span> <span class="n">o</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Order</span> <span class="k">=&gt;</span> <span class="o">...</span>
+    <span class="k">case</span> <span class="k">_</span>     <span class="k">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalDSLException</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>What is then that DO stuff? DO is a class (short for Domain Object, sorry) and the Order object is an instance of that class. The declaration of that little class hierarchy looks like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">DO</span><span class="o">()</span>
+  <span class="k">case</span> <span class="k">object</span> <span class="nc">Order</span> <span class="k">extends</span> <span class="nc">DO</span>
+</code></pre></div></div>
+
+<p>Don’t bother so much about the match/case stuff. It lets you do pattern matching on the objects and classes. Pattern matching is like if/else statements on steroids. In the <code class="language-plaintext highlighter-rouge">an</code> method above we match on the parameter <code class="language-plaintext highlighter-rouge">o</code> and if it is an <code class="language-plaintext highlighter-rouge">Order</code>, what is substituted by the … is executed. If it is not an <code class="language-plaintext highlighter-rouge">IllegalDSLException</code> is thrown.</p>
+
+<p>We now have two singleton objects, one named <code class="language-plaintext highlighter-rouge">create</code> and the other named <code class="language-plaintext highlighter-rouge">Order</code>. The <code class="language-plaintext highlighter-rouge">Order</code> object is of type <code class="language-plaintext highlighter-rouge">DO</code> and the <code class="language-plaintext highlighter-rouge">an</code> method on the <code class="language-plaintext highlighter-rouge">create</code> object takes any <code class="language-plaintext highlighter-rouge">DO</code> type as parameter. If we send it an <code class="language-plaintext highlighter-rouge">Order</code> object it will match on the first case clause and whatever  goes after the <code class="language-plaintext highlighter-rouge">=&gt;</code> in the case clause gets executed. Let’s define what should go there then.</p>
+
+<p>We begin by creating a class and give that class a method called <code class="language-plaintext highlighter-rouge">where</code>. The <code class="language-plaintext highlighter-rouge">where</code> method should take some list of arguments of some type (the <code class="language-plaintext highlighter-rouge">Id is 1</code> etc stuff). Since Scala has support for varargs we use that instead of a list. The <code class="language-plaintext highlighter-rouge">where</code> method taking a varargs parameter of type <code class="language-plaintext highlighter-rouge">Op</code> (more on that type later on) on our new class <code class="language-plaintext highlighter-rouge">OrderDSL</code> looks like this. We wait a little with the definition of what the method is actually supposed to do.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OrderDSL</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">where</span> <span class="o">(</span><span class="n">op</span><span class="k">:</span> <span class="kt">Op*</span><span class="o">)</span> <span class="k">=</span> <span class="o">...}</span>
+</code></pre></div></div>
+
+<p>The asterisk after the type in the method declaration turns it into a varargs.</p>
+
+<p>Ok, so we have an <code class="language-plaintext highlighter-rouge">OrderDSL</code> class that has a where method and the where method takes a number of <code class="language-plaintext highlighter-rouge">Op</code> parameters. The pattern match in the create object’s <code class="language-plaintext highlighter-rouge">an</code> method above should return an instance of this type. The declaration of the <code class="language-plaintext highlighter-rouge">create</code> object is now complete and will be:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">create</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">an</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">DO</span><span class="o">)</span> <span class="k">=</span> <span class="n">o</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Order</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">OrderDSL</span><span class="o">()</span>
+    <span class="k">case</span> <span class="k">_</span>     <span class="k">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalDSLException</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>What is then the <code class="language-plaintext highlighter-rouge">Op</code> parameter? Let’s define a class hierarchy like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Op</span><span class="o">()</span>
+  <span class="k">case</span> <span class="k">class</span> <span class="nc">IdOp</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Op</span>
+  <span class="k">case</span> <span class="k">class</span> <span class="nc">NumberOp</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Op</span>
+</code></pre></div></div>
+
+<p>An <code class="language-plaintext highlighter-rouge">Op</code> is either an <code class="language-plaintext highlighter-rouge">IdOp</code> or an <code class="language-plaintext highlighter-rouge">NumberOp</code>. Sounds close to what we are after, but we are not really there yet. We have to get from <code class="language-plaintext highlighter-rouge">Id</code> is 1, <code class="language-plaintext highlighter-rouge">Number</code> is 2 to the <code class="language-plaintext highlighter-rouge">IdOp</code> and <code class="language-plaintext highlighter-rouge">NumberOp</code> objects. That turns out to be simple and if you have followed along you know how to do it. Define objects <code class="language-plaintext highlighter-rouge">Id</code> and <code class="language-plaintext highlighter-rouge">Number</code> and give them <code class="language-plaintext highlighter-rouge">is</code> methods that returns the type of objects you want. In this case it is instances of <code class="language-plaintext highlighter-rouge">IdOp</code> and <code class="language-plaintext highlighter-rouge">NumberOp</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Id</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">is</span> <span class="o">(</span><span class="n">i</span> <span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">IdOp</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}</span>
+<span class="k">object</span> <span class="nc">Number</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">is</span> <span class="o">(</span><span class="n">i</span> <span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">NumberOp</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>A little strange notation maybe, but case classes come with companion objects (among other things) that allows creation of the object without the <code class="language-plaintext highlighter-rouge">new</code> keyword. When we now call:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Id</span> <span class="n">is</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>we get an <code class="language-plaintext highlighter-rouge">IdOp</code> object that encapsulate the number 1 in the <code class="language-plaintext highlighter-rouge">i</code> property.</p>
+
+<p>We still have not defined the supposed return value from the <code class="language-plaintext highlighter-rouge">where</code> method on <code class="language-plaintext highlighter-rouge">OrderDSL</code>. I guess that we should return something that is some kind of order object. Suppose that we have an order class defined like an ordinary Java bean class. In Scala we can import it under a new name, so that we do not get a name conflict. Remember we already have an Order object.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">com.callistaenterprise.model.</span><span class="o">{</span><span class="nc">Order</span> <span class="k">=&gt;</span> <span class="nc">MyOrder</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>For now on <code class="language-plaintext highlighter-rouge">MyOrder</code> is just an alias for the <code class="language-plaintext highlighter-rouge">Order</code> class and that is an ordinary Java object written in the Java language.</p>
+
+<p>Now we need to be able to create <code class="language-plaintext highlighter-rouge">MyOrder</code> objects somehow. It would be nice if we just could write <code class="language-plaintext highlighter-rouge">new MyOrder()</code>, but remember the <code class="language-plaintext highlighter-rouge">IdOp</code> and <code class="language-plaintext highlighter-rouge">NumberOp</code> classes. They had companion objects that could be used as factories for creating them. Let’s do something similar for the <code class="language-plaintext highlighter-rouge">MyOrder</code> class. Let’s create a <code class="language-plaintext highlighter-rouge">MyOrder</code> object that creates instances of the <code class="language-plaintext highlighter-rouge">MyOrder</code> class (that still just is an alias for our good old Java Order class).  We create a functor or function object. That is an object that can be called just like a function. It is done in Scala by creating an object with an apply method, in this case like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">MyOrder</span> <span class="k">extends</span> <span class="nc">DO</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">op</span><span class="k">:</span> <span class="kt">Op*</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">id</span>  <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">var</span> <span class="n">num</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nv">op</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span> <span class="k">_</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">IdOp</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">id</span> <span class="k">=</span> <span class="n">i</span>
+      <span class="k">case</span> <span class="nc">NumberOp</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">num</span> <span class="k">=</span> <span class="n">i</span>
+    <span class="o">})</span>
+    <span class="k">new</span> <span class="nc">MyOrder</span><span class="o">(</span><span class="n">id</span><span class="o">,</span><span class="n">num</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The apply method takes a varargs of <code class="language-plaintext highlighter-rouge">Op</code> and produces a <code class="language-plaintext highlighter-rouge">MyOrder</code> instance . It will iterate over the varargs using the foreach method and it will pattern match each <code class="language-plaintext highlighter-rouge">Op</code> against the actual class and extract the value it is holding. When all values have been extracted it will create the <code class="language-plaintext highlighter-rouge">MyOrder</code> instance and return it.</p>
+
+<p>When we make a call using the functor the apply method is not visible. We just make the call like this.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MyOrder</span><span class="o">(</span> <span class="nc">IdOp</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="nc">NumberOp</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">)</span>
+</code></pre></div></div>
+
+<p>The Scala compiler will look for an apply method that takes a vararg of <code class="language-plaintext highlighter-rouge">Op</code> on the <code class="language-plaintext highlighter-rouge">MyOrder</code> object and call it. Let’s fill in that last … in the OrderDSLs ‘where’ method to finish up that class.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OrderDSL</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">where</span> <span class="o">(</span><span class="n">op</span><span class="k">:</span> <span class="kt">Op*</span><span class="o">)</span> <span class="k">=</span> <span class="nc">MyOrder</span><span class="o">(</span><span class="n">op</span><span class="k">:_</span><span class="kt">*</span><span class="o">)}</span>
+</code></pre></div></div>
+
+<p>That strange <code class="language-plaintext highlighter-rouge">:_*</code> after the op parameter ensures that the vararg is passed along to the <code class="language-plaintext highlighter-rouge">MyOrder</code> functor.</p>
+
+<p>The code that we have produced so far let’s us write</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create</span> <span class="n">an</span> <span class="nc">Order</span> <span class="nf">where</span> <span class="o">(</span> <span class="nc">Id</span> <span class="n">is</span> <span class="mi">1</span><span class="o">,</span> <span class="nc">Number</span> <span class="n">is</span> <span class="mi">2</span> <span class="o">)</span>
+</code></pre></div></div>
+
+<p>and get one of our domain objects (<code class="language-plaintext highlighter-rouge">com.callistaenterprise.model.Order</code>) back, filled in with <code class="language-plaintext highlighter-rouge">id=1</code> and <code class="language-plaintext highlighter-rouge">number=2</code>. But we have to put the returned object somewhere. Normally we would put it in a variable, but let’s not bother our domain-expert-DSL-writers with that technicality. Let’s just put it in a <code class="language-plaintext highlighter-rouge">HashMap</code> under a name. This is where the last part with the call to the <code class="language-plaintext highlighter-rouge">named</code> method comes in. But the <code class="language-plaintext highlighter-rouge">Order</code> class does not have a <code class="language-plaintext highlighter-rouge">named</code> method, so we are stuck aren’t we?</p>
+
+<p>Turns out we are not (surprise!). Scala allows you to do a trick that looks like you are dynamically adding new methods to an existing class. The trick is to use Scala implicit conversions. That is a really powerful feature that I guess could turn any program into a mess if it is used the wrong way. Implicit conversions allows you to instruct the compiler to convert one object to another if it is required in the context. Sounds strange? In this particular case it would mean that when the compiler sees a call to the <code class="language-plaintext highlighter-rouge">named</code> method on the <code class="language-plaintext highlighter-rouge">Order</code> class and it finds that the <code class="language-plaintext highlighter-rouge">Order</code> class does not have such a method, it will start looking for an implicit method that can convert the <code class="language-plaintext highlighter-rouge">Order</code> to an object of some other class that has a <code class="language-plaintext highlighter-rouge">named</code> method taking a String as argument.</p>
+
+<p>Let’s define that class, <code class="language-plaintext highlighter-rouge">RichMyOrder</code>, and the convert method, <code class="language-plaintext highlighter-rouge">toRichMyOrder</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RichMyOrder</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">MyOrder</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">named</span> <span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="n">orders</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">o</span>
+<span class="o">}</span>
+<span class="k">implicit</span> <span class="k">def</span> <span class="nf">toRichMyOrder</span><span class="o">(</span><span class="n">o</span><span class="k">:</span> <span class="kt">MyOrder</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">RichMyOrder</span><span class="o">(</span><span class="n">o</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>This will allow the compiler to convert the <code class="language-plaintext highlighter-rouge">Order</code> object to an <code class="language-plaintext highlighter-rouge">RichOrder</code>, since it finds the convert method, <code class="language-plaintext highlighter-rouge">toRichMyOrder</code> and <code class="language-plaintext highlighter-rouge">RichMyOrder</code>has a <code class="language-plaintext highlighter-rouge">named</code> method that takes a String. When the <code class="language-plaintext highlighter-rouge">named</code> method is called, the <code class="language-plaintext highlighter-rouge">Order</code> object is put into a hash map ( orders ) under the name n. The Scala notation for putting stuff in hash maps is</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map</span> <span class="o">+=</span> <span class="n">key</span> <span class="o">-&gt;</span> <span class="n">value</span>
+</code></pre></div></div>
+
+<p>Quite intuitive actually. Key points to the value and append (<code class="language-plaintext highlighter-rouge">+=</code>) key/value pair to the map.</p>
+
+<p>Now we are finished!</p>
+
+<p>Scala is a very powerful language as you can see and it let’s you derive your own language from it. As you saw when we follow the pattern ‘object’ ‘method’ ‘object’ ‘method’ etc. we can define a near-English-looking-DSL. Nice isn’t it? I have recently used exactly this technique for developing a simple DSL that let’s you define test case scenarios for a web service client application. The bonus here is that since Scala is statically typed, the statements defined by the DSL are type safe and the compiler will help you getting them right!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Dsls In Scala&url=https://callistaenterprise.se/blogg/teknik/2008/10/16/building-dsls-in-scala/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Dsls In Scala&u=https://callistaenterprise.se/blogg/teknik/2008/10/16/building-dsls-in-scala/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Dsls In Scala&url=https://callistaenterprise.se/blogg/teknik/2008/10/16/building-dsls-in-scala/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

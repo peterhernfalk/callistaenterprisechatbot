@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Get rid of your tedious and error-prone release process | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Ekstrand" src="../../../../../../assets/medarbetare/magnusekstrand_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Get rid of your tedious and error-prone release process</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2010-06-13T00:00:00+00:00">
+            13 June 2010
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnusekstrand/index.html">Magnus Ekstrand</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>It’s best practice to tag each of your stable releases in your version control system for futurereference. However, it is very rare that this sort of work is free from failure. Like many tedious, error-prone tasks, it is one of those things that could do with a bit of automation.</p>
+
+<p>Luckily, the <strong>Maven Release plugin</strong> can help you automate the whole process of upgrading your POM version number and tagging a release version in your version control system, and all of this with a single maven command. You can even automate the entire release process by running the command in a cronjob or a Continuous Integration system. Amazing!</p>
+
+<p>Here is an extract from a project’s top POM file, showing the version number that uniquely identifies this version.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project&gt;
+  ...
+  &lt;groupId&gt;se.nll.mhp&lt;/groupId&gt;
+  &lt;artifactId&gt;mhp&lt;/artifactId&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
+  &lt;version&gt;1.1-SNAPSHOT&lt;/version&gt;
+  ...
+&lt;/project&gt;
+</code></pre>
+
+<p>The SNAPSHOT suffix means that each time I deploy this version, a new snapshot will be deployed into my local Maven repository. Anyone who wants to use the latest, bleeding-edge SNAPSHOT version can add a SNAPSHOT dependency in their project. Snapshots, by definition, tend to be fairly unstable beasts.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project&gt;
+  ...
+  &lt;dependencies&gt;
+    ...
+    &lt;dependency&gt;
+      &lt;groupId&gt;se.nll.mhp&lt;/groupId&gt;
+      &lt;artifactId&gt;mhp-bc&lt;/artifactId&gt;
+      &lt;version&gt;1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    ...
+  &lt;/dependencies&gt;
+  ...
+&lt;/project&gt; `
+</code></pre>
+
+<p>When the version 1.1 is ready, you need to:</p>
+
+<ol>
+  <li>update the POM file</li>
+  <li>commit the new POM file to version control</li>
+  <li>tag this version as a release</li>
+  <li>and then move on to work on version 1.2</li>
+</ol>
+
+<p>The Maven Release plugin can automate much of this process. However, before the Maven Release plugin can do its work, you need to make sure you have everything it needs set up in your POM file.</p>
+
+<p>First of all, you need to be working with a SNAPSHOT release. However, when you are ready to release your new version, you should <strong>remove any references to snapshots in your dependencies</strong>. This is because a release needs to be stable, and a build using snapshots is, by definition, not always reproducible. Maven will not accept any snapshot references and force the user to change it during the release process. If you answer is no (as below) to the question of resolving dependencies or not, Maven will fail your build.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] Checking dependencies and plugins for snapshots ...
+There are still some remaining snapshot dependencies.: Do you want to resolve them now? (yes/no) no: : no
+[INFO] ---------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ---------------------------------------------------------
+[INFO] Can't release project due to non released dependencies :
+eu.jakubiak:jakubiak-red5-core:jar:0.9-SNAPSHOT:provided in project 'mhp-red5' (se.nll.mhp:mhp-red5:war:1.1-SNAPSHOT)
+</code></pre></div></div>
+
+<p>The next thing you need is another section in your POM file. Maven will tag your project and commit it to your source control system. So it needs to know the location of your source control system. You generally don’t need to specify credentials as Maven inherits those from the environment. If Maven needs credentials it will prompt you during the release process.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project&gt;
+  ...
+  &lt;scm&gt;
+    &lt;connection&gt;scm:svn:https://svn.forge.osor.eu/svn/mhp/code/trunk&lt;/connection&gt;
+    &lt;developerConnection&gt;scm:svn:https://svn.forge.osor.eu/svn/mhp/code/trunk&lt;/developerConnection&gt;
+    &lt;url&gt;https://svn.forge.osor.eu/svn/mhp/code/trunk&lt;/url&gt;
+  &lt;/scm&gt;
+  ...
+&lt;/project&gt;
+</code></pre>
+
+<p>You can find reference documentation for the <code class="language-plaintext highlighter-rouge">&lt;scm&gt;</code> tag <a href="http://maven.apache.org/scm/scm-url-format.html">here</a>.</p>
+
+<p>Next, you need to configure the Release plugin itself. This mainly involves telling Maven where your release tags go, via the “tagBase” configuration element. If you are using the Subversion trunk/tags/branches convention, Maven will automatically put release tags in the “tags” directory. I prefer to use a a slight variation on the normal convention, and place releases in the “tags/releases” directory:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project&gt;
+  ...
+  &lt;plugins&gt;
+    ...
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-release-plugin&lt;/artifactId&gt;
+      &lt;configuration&gt;
+        &lt;tagBase&gt;https://svn.forge.osor.eu/svn/mhp/code/tags/releases&lt;/tagBase&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+    ...
+  &lt;/plugins&gt;
+  ...
+&lt;/project&gt;
+</code></pre>
+
+<p>Now it’s time to get down to business, and try out a (semi-)automated release. The first thing you need to do is to make sure all your latest changes have been committed to your SCM system. If there are any outstanding changes, Maven won’t let you do a release. First of all, you need to prepare the release, using the “prepare” goal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn release:prepare
+</code></pre></div></div>
+
+<p>This goal will ask you a series of questions to confirm:</p>
+
+<ul>
+  <li>what version number you want to release</li>
+  <li>what new snapshot version number you want to use</li>
+  <li>where you want to place the release tag.</li>
+</ul>
+
+<p>If you have set up your POM file correctly, these will have sensible defaults, and you won’t have to do much thinking. If you which you can disable these questions using the “–batch-mode” command line option. But to me it’s a good last healthy check walking through these questions.</p>
+
+<p>If you want to know exactly what Maven will do to your POM file and your SCM ahead of time (generally a good idea), you can run the operation in the “dry-run” mode, as shown here.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn release:prepare -DdryRun=true
+</code></pre></div></div>
+
+<p>This useful trick simulates the SCM operations by writing them out to the console, and creates three sample POM files that you can consult:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pom.xml.tag</code>, which is the pom file that will be committed to Subversion and tagged</li>
+  <li><code class="language-plaintext highlighter-rouge">pom.xml.next</code>, which contains the next snapshot version number</li>
+</ul>
+
+<p>I recommend you to do a dry-run the first time you’re doing you use the Maven Release plugin. It is very useful and will learn you about the set up of your own project and sub-projects. When you’re satisfied with what Maven will do, you can do it for real:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn release:clean release:prepare
+</code></pre></div></div>
+
+<p>Things you should know about the prepare goal:</p>
+
+<ol>
+  <li>The command checks for local modifications. If you have any modified files but not checked in, the command will stop and ask you to first check-in modified files.</li>
+  <li>Your project cannot have any SNAPSHOT dependencies in your project. It’s a requirement.</li>
+  <li>You will be asked to specify versions for the release and the next SNAPSHOT (e.g. going from “1.1-SNAPSHOT” to “1.1”). Accept the default values if unsure.</li>
+  <li>Maven will run all your unit tests to make sure they work after changing the project version in <code class="language-plaintext highlighter-rouge">pom.xml</code>.</li>
+  <li>Commit the changes made to the POM file</li>
+  <li>If all tests pass, Maven will tag the source in the source control with the release version you specified in step 3 above.</li>
+  <li>Update the SNAPSHOT version number to a new SNAPSHOT version (e.g. going from “1.1” to “1.2-SNAPSHOT”)</li>
+  <li>Maven collects all the information that you provide and write a local file called <code class="language-plaintext highlighter-rouge">release.properties</code>. This file lets you continue from where you left in case of errors.</li>
+  <li>You can undo everything you’ve done so far with <code class="language-plaintext highlighter-rouge">mvn release:clean</code> to start all over.</li>
+</ol>
+
+<p>Indeed, the prepare goal does quite a lot. Once you’re finished, you have your release version tagged in Subversion and you are working on a new SNAPSHOT version.</p>
+
+<h2 id="release-it">Release it</h2>
+
+<p>So far we have only set everything up in preparation for the release. Nothing have actually been released yet. But dont worry, performing the release is easy. Just use <code class="language-plaintext highlighter-rouge">mvn release:perform</code> command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn release:perform
+</code></pre></div></div>
+
+<p>This will effectively do a mvn deploy with the release we have just created. More precisely, it will use the release.properties file generated by the release:prepare goal to do the following:</p>
+
+<ul>
+  <li>Check out the release we just tagged</li>
+  <li>Build the application (compiling, testing and packaging)</li>
+  <li>Deploy the release version to local and remote repositories</li>
+</ul>
+
+<p>However, both of these steps can be made into a single line command and placed, for example, on a Hudson server.</p>
+
+<h2 id="single-line-release-process">Single line release process</h2>
+
+<p>This single line command will tag source control, bump up the current pom.xml, version and push a tagged artifact (jar or war) to a remote repo.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn release:prepare release:perform -B
+</code></pre></div></div>
+
+<p>For example, if your current project version was 1.1.2-SNAPSHOT</p>
+
+<ol>
+  <li>The release version will be 1.1.2</li>
+  <li>The next development version will be 1.1.3-SNAPSHOT</li>
+  <li>The SCM tagged version will be artifactId-1_1_2</li>
+</ol>
+
+<p>If you want to specify the versions manually, then you use the commands described earlier. A single line release command is good for productivity and great for automation. You can make a build plan on your Continuous Integration server with the above command to automatically tag the current version, bump the SNAPSHOT version and deploy to a repository of your choice.</p>
+
+<h2 id="publish-release-to-remote-repository">Publish release to remote repository</h2>
+
+<p>After versioning your project, Maven can deploy, if configured, your project artifact (jar or war) to a remote repository of your choice. You can do this by using scp, webdav, sftp etc. I will descripe how to set up your pom.xml for scp and sftp.</p>
+
+<p>Assume you have a Maven repository and you have SSH access to the repository, then you can publish your artifacts using <strong>scp</strong>:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;distributionManagement&gt;
+  &lt;!--  Publish the versioned releases here --&gt;
+  &lt;repository&gt;
+    &lt;id&gt;repo&lt;/id&gt;
+    &lt;name&gt;Callista  Enterprise Maven 2 repository&lt;/name&gt;
+    &lt;url&gt;scp://username@maven.callistaenterprise.se/home/maven2/html&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/distributionManagement&gt;
+</code></pre>
+
+<p>When using <strong>sftp</strong>, the XML configuration looks like this</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;distributionManagement&gt;
+  &lt;!-- Publish the versioned releases here --&gt;
+  &lt;repository&gt;
+    &lt;id&gt;repo&lt;/id&gt;
+    &lt;name&gt;Callista Maven 2 repository&lt;/name&gt;
+    &lt;url&gt;sftp://maven.callistaenterprise.se/repo&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/distributionManagement&gt;
+</code></pre>
+
+<p>If using either <strong>scp</strong> or <strong>sftp</strong> for publishing, and having SSH as your underlying transfer mechanism, you could setup SSH without password on the repository machine. If not, Maven will ask you to enter password each time doing these operations.</p>
+
+<p>Alternatively you can specify the remote repository credentials in your <code class="language-plaintext highlighter-rouge">M2_HOME/settings.xml</code> file. On Linux/Mac OS X operating systems you should find the file here: <code class="language-plaintext highlighter-rouge">~/.m2/settings.xml</code></p>
+
+<p>Open the file and use these setting</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;settings&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;!-- this is the id of the repo tag specified in distributionManagement --&gt;
+      &lt;id&gt;repo&lt;/id&gt;
+      &lt;username&gt;yourusername&lt;/username&gt;
+      &lt;password&gt;yourpassword&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;
+</code></pre>
+
+<p>As an alternative of deploying your artifacts to a remote Maven repository (i.e. those spedcified in <code class="language-plaintext highlighter-rouge">&lt;distributionManagement&gt;</code>), you could use the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn deploy -DaltDeploymentRepository=local::default::file:///tmp/foo
+</code></pre></div></div>
+
+<p>The command will deploy your artifacts to the directory <code class="language-plaintext highlighter-rouge">/tmp/foo</code> on your local machine. The command binds by default to the lifecycle phase: deploy.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>Releasing software is difficult. It is usually tedious and error prone, full of manual steps that need to be completed in a particular order. Worse, it happens at the end of a long period of development when all everyone on the team wants to do is get it out there, which often leads to omissions or short cuts. Finally, once a release has been made, it is usually difficult or impossible to correct mistakes other than to make another, new release.</p>
+
+<p>To make the release management process smooth, consistent and free from errors, working with a good tool is vital. Maven provides a release plugin that provides the basic functions of a standard release process. If you have work with Maven before, try it out. In the end, it will save you a lot of valuable time.</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="http://maven.apache.org/plugins/maven-release-plugin/introduction.html">Official Maven Release Plugin documentation</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Get Rid Of Your Tedious And Error Prone Release Process 2&url=https://callistaenterprise.se/blogg/teknik/2010/06/13/get-rid-of-your-tedious-and-error-prone-release-process-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Get Rid Of Your Tedious And Error Prone Release Process 2&u=https://callistaenterprise.se/blogg/teknik/2010/06/13/get-rid-of-your-tedious-and-error-prone-release-process-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Get Rid Of Your Tedious And Error Prone Release Process 2&url=https://callistaenterprise.se/blogg/teknik/2010/06/13/get-rid-of-your-tedious-and-error-prone-release-process-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

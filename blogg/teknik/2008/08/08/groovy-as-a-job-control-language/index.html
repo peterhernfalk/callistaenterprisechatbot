@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Groovy as a job control language | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Groovy as a job control language</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2008-08-08T00:00:00+00:00">
+            08 August 2008
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>If you need to automate a fairly complex process - like a batch job - Groovy may come in handy. Designing a Java batch job is typically a task that involves the following mechanisms:</p>
+
+<ul>
+  <li>Job control infrastructure that triggers the job as a shell command</li>
+  <li>A script that (e.g. ant) that initializes the class path and triggers the main class</li>
+  <li>A main class that implements the job control logic
+    <ol>
+      <li>Create POJOs from input XML</li>
+      <li>Execute the batch business logic by invoking service pojos in multiple components (jar files)</li>
+      <li>Produce the output XML files</li>
+    </ol>
+  </li>
+</ul>
+
+<p>It is generally cumbersome to realize most  of these mechanisms and steps in Java. Ant is nice for very high-level tasks, but doesn’t solve the jar distribution problem in a nice way. Batch processing logic typically involve processing that is complex in Java - or at least complex to set-up in Java: Parsing XML into POJOs (Full binding with JAXB complicate the build process and is usually not necessary). We may not even have a schema. Next, batch processing in Java is often about comparing, sorting, merging and filtering of POJOs, an creating new result structures to be serialized in XML. If you once did this kind of processing in Smalltalk or Ruby, you start dreaming of what you could have done in your spare time if you didn’t have to work around the clock coding Java iteration logic.</p>
+
+<h2 id="groovy-and-friends-to-the-rescue">Groovy and friends to the rescue</h2>
+
+<p>Well, Smalltalk or Ruby may not be an option, if you are required to solve your problem without impact on what’s deployed on your batch execution environment. Groovy is a language built on the JDK, that shares a lot (but not all) of the expressiveness of Ruby. It is distributed as a jar, so you really don’t need to install anything, as long as you have access to a Maven repo with <code class="language-plaintext highlighter-rouge">groovy-all-1.5.jar</code> (and of cause - have Maven installed).</p>
+
+<p>Groovy is not only a dynamic language for the JVM - it also has the JDK as its object model. Your Java code and Groovy code shares the same object model.</p>
+
+<h2 id="ant-and-maven-with-groovy">Ant and Maven with Groovy</h2>
+
+<p>To simplify packaging and class-path management of the batch and all its required jars (the logic as well as utility jars), <a href="http://maven.apache.org">Maven</a> dependency management does a good job. <a href="http://ant.apache.org/ivy/">Ivy</a> is another option. I’ve chosen Maven, since it used by most of our customers. We are not concerned with software build and release management - but batch processing. It would be both complex and artificial to use Maven to initialize the process. Using Ant as the shell command script we can benefit from Maven dependency management by using a <a href="http://maven.apache.org/ant-tasks.html">Maven ant task</a> for resolving the class-path by automatically pulling the required jars from the maven repo (only the first time, of cause - there after, they will be in the local repo of the batch user). This will include a dependency to the Groovy runtime jar. That way, we can bootstrap our scripting language at the same time as we resolve all dependencies of the Groovy batch script. The complete distribution of the batch script will consist of the following artifacts:</p>
+
+<ul>
+  <li>The bootstrapping ant script</li>
+  <li>A maven POM that declares the dependencies</li>
+  <li>The Groovy script file (which may contain multiple Groovy classes)</li>
+</ul>
+
+<p>The best of all: The ant script <code class="language-plaintext highlighter-rouge">MyBatch.xml</code> is as simple as this:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project basedir="." default="run" xmlns:artifact="antlib:org.apache.maven.artifact.ant" &gt;
+  &lt;description&gt;
+    Bootstrap Groovy, the Groovy script and its dependent jars.
+    Pre-reqs: 1. Ant 1.6 installed
+	          2. Maven 2.0.9 (for access of maven properties) installed
+              3. Maven ant task jar deployed to the ant lib directory
+  &lt;/description&gt;
+
+  &lt;artifact:pom id="maven.project" file="pom.xml" /&gt;
+
+  &lt;artifact:dependencies pathId="dependency.classpath"&gt;
+    &lt;pom refid="maven.project"/&gt;
+  &lt;/artifact:dependencies&gt;
+
+  &lt;taskdef name="groovy"
+      classname="org.codehaus.groovy.ant.Groovy"
+      classpathref="dependency.classpath"/&gt;
+
+  &lt;target name="run" description="Run the groovy script"&gt;
+      &lt;!-- Groovy has access to Ant properties, but not Maven properties.
+ 	       We need to re-bind maven properties (i.e. defined in
+	       settings.xml of the batch user) to ant properties,
+	       in order to get them into the scope of the Groovy script.
+	       In this sample, the script needs access to the svn credentials
+	       of the batch user. To avoid redundant specification of
+	       credentials within an ant properties file or in the script
+	       itself, we pull them from the maven settings file. --&gt;
+    &lt;property name="svnuser" value="${maven.project.properties.svnusername}"/&gt;
+    &lt;property name="svnpassword" value="${maven.project.properties.svnpassword}"/&gt;
+    &lt;groovy src="MyGroovyBatch.groovy" /&gt;
+  &lt;/target&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>The Maven POM is just as minimalistic. It simply declares the dependencies:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;project&gt;
+&lt;!--
+    This pom only serves the ant script with dependency management.
+    It is never used to run mvn - only as support for the maven ant task used by build.xml.
+--&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;artifactId&gt;my-batch-dependencies&lt;/artifactId&gt;
+  &lt;groupId&gt;se.callistaenterprise.groovybatches&lt;/groupId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+	  &lt;!-- This is the groovy runtime AND the groovy ant task --&gt;
+      &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+      &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
+      &lt;version&gt;1.5.4&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;my.business.logic-components&lt;/groupId&gt;
+      &lt;artifactId&gt;business-logic-used-by-batch&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;my.utils&lt;/groupId&gt;
+      &lt;artifactId&gt;my-opensource-util&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>And finally, the Groovy script named <code class="language-plaintext highlighter-rouge">MyGroovyBatch.groovy</code>:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">println</span> <span class="s2">"The groovy batch says hello to ${properties.svnuser}"</span>
+<span class="n">ant</span><span class="o">.</span><span class="na">echo</span> <span class="s2">"I can still use ant from in here, using the Ant DSL"</span>
+</code></pre></div></div>
+
+<p>The shell command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ant -f MyBatch.xml
+</code></pre></div></div>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Groovy As A Job Control Language&url=https://callistaenterprise.se/blogg/teknik/2008/08/08/groovy-as-a-job-control-language/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Groovy As A Job Control Language&u=https://callistaenterprise.se/blogg/teknik/2008/08/08/groovy-as-a-job-control-language/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Groovy As A Job Control Language&url=https://callistaenterprise.se/blogg/teknik/2008/08/08/groovy-as-a-job-control-language/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

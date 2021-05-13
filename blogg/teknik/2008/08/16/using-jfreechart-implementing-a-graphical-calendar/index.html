@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Using JFreeChart implementing a graphical calendar | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Annica Sunnman" src="../../../../../../assets/medarbetare/annicasunnman_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Using JFreeChart implementing a graphical calendar</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2008-08-16T00:00:00+00:00">
+            16 August 2008
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Annica Sunnman
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I am amazed each time I am working with timestamps and calendars - how hard can it be? It’s hard to meet all requirement since each person is used to their own calendar. Latest I been implementing a calendar, to be displayed graphcial, in <a href="../../../../2007/09/15/overraskande-positiva-erfarenheter-fran-eclipse-rcp/index.html">Eclipse RCP</a>.</p>
+
+<p>Imaging a calendar that is representing working hours for a factory or shop, the working hours is represented in duties and breaks that is represented in the database in open intervals. A day could look like:</p>
+
+<ul>
+  <li>Monday 08:00-12:00</li>
+  <li>Lunch: 12:00-12:45</li>
+  <li>Afternoon: 12:45-17:00</li>
+</ul>
+
+<p>Then of course each day of a year is not equal to another - Christmas is a thing that happens each year, I have heard. Another thing that could affect the normal calendar is of course meetings, education etc. So besides the normal duty and open times we need to have some kind of deviation handling.</p>
+
+<p>The easy deviation - close down whole days, for example on Christmas eve is one type of deviation. Another type of deviation is when someone has a birthday for example - cake break! Then you need to add deviations to just close hours and minutes, so you have your original schema with duties and breaks, and then add an extra cake break:</p>
+
+<ul>
+  <li>Monday 08:00-12:00</li>
+  <li>Lunch: 12:00-12:45</li>
+  <li>Afternoon: 12:45-15:00</li>
+  <li>Break: 15:00-15:30</li>
+  <li>End day: 15:30-17:00</li>
+</ul>
+
+<p>In the data base the open intervals will be saved in only the open interval:</p>
+
+<ol>
+  <li>08:00-12:00</li>
+  <li>12:45-15:00</li>
+  <li>15:30-17:00</li>
+</ol>
+
+<p>To show this graphical I am using <a href="http://www.jfree.org/jfreechart/">JfreeChart</a>. There are some good graphical samples to download. The samples code is only “free” for those who buy a licence for the development tool.</p>
+
+<p>It was quite easy to implement an easy Gantt renderer to get the first outline.</p>
+
+<p><em>Bild saknas</em></p>
+
+<p>Code if someone is interested:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TaskSeries</span> <span class="n">taskSeries</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TaskSeries</span><span class="o">(</span><span class="k">new</span> <span class="nc">Timestamp</span><span class="o">(</span><span class="n">viewStart</span><span class="o">.</span><span class="na">getTime</span><span class="o">()).</span><span class="na">toString</span><span class="o">());</span>
+
+<span class="nc">Date</span> <span class="n">startChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Date</span><span class="o">(</span><span class="n">viewStart</span><span class="o">.</span><span class="na">getTime</span><span class="o">());</span>
+<span class="nc">Date</span> <span class="n">endChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Date</span><span class="o">(</span><span class="n">viewEnd</span><span class="o">.</span><span class="na">getTime</span><span class="o">());</span>
+<span class="nc">Task</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Task</span><span class="o">(</span><span class="s">""</span><span class="o">,</span> <span class="n">startChart</span><span class="o">,</span> <span class="n">endChart</span><span class="o">);</span>
+
+<span class="c1">// Loop data and add the dates to get the open times</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">OpenTime</span> <span class="n">open</span> <span class="o">:</span> <span class="n">openTimes</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Timestamp</span> <span class="n">localstarttime</span> <span class="o">=</span> <span class="nc">DateFormat</span><span class="o">.</span><span class="na">getLocalTime</span><span class="o">(</span><span class="n">open</span><span class="o">.</span><span class="na">getStart</span><span class="o">());</span>
+  <span class="nc">Timestamp</span> <span class="n">localstoptime</span> <span class="o">=</span> <span class="nc">DateFormat</span><span class="o">.</span><span class="na">getLocalTime</span><span class="o">(</span><span class="n">open</span><span class="o">.</span><span class="na">getEnd</span><span class="o">());</span>
+  <span class="nc">Task</span> <span class="n">subtask</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Task</span><span class="o">(</span><span class="s">""</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Date</span><span class="o">(</span><span class="n">localstarttime</span><span class="o">.</span><span class="na">getTime</span><span class="o">()),</span>
+      <span class="k">new</span> <span class="nf">Date</span><span class="o">(</span><span class="n">localstoptime</span><span class="o">.</span><span class="na">getTime</span><span class="o">()));</span>
+  <span class="n">task</span><span class="o">.</span><span class="na">addSubtask</span><span class="o">(</span><span class="n">subtask</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nc">JFreeChart</span> <span class="n">chart</span> <span class="o">=</span> <span class="nc">ChartFactory</span><span class="o">.</span><span class="na">createGanttChart</span><span class="o">(</span><span class="s">""</span><span class="o">,</span> <span class="s">""</span><span class="o">,</span> <span class="s">""</span><span class="o">,</span> <span class="n">dataset</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+<span class="nc">GanttRenderer</span> <span class="n">renderer</span> <span class="o">=</span> <span class="o">(</span><span class="nc">GanttRenderer</span><span class="o">)</span> <span class="n">chart</span><span class="o">.</span><span class="na">getCategoryPlot</span><span class="o">().</span><span class="na">getRenderer</span><span class="o">();</span>
+
+<span class="n">chartComposite</span><span class="o">.</span><span class="na">setChart</span><span class="o">(</span><span class="n">chart</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>There is some default zooming out and in on the calendar that works instant. But the calendar is not that functional only showing the open times in green:</p>
+
+<p><em>Bild saknas</em></p>
+
+<p>I added tooltip when hovering over the green open times to display more information about each duty. Unfortunately the business wants information about the red part sometimes, when a deviation is added on normal open time. That I haven’t solved yet. Since the chart is based on the open times, I am not sure if it is possible to add information about the closed times without changing the setup in the database.</p>
+
+<p>To improve the display and show more information about each duty and break I added tooltip when mouse hovering over the green open times. The tooltip generator was not complete for the default implementation so I implemented my own with ids for each open times:</p>
+
+<p><em>Bild saknas</em></p>
+
+<p>The implementation of Jfreechart is quite straight forward, but as always when using a new tool it takes times to get the finish of the graphical layout. It was a lot of trial and error the see what happens each time you change a setting or property.</p>
+
+<p>We are not sure if this will be enough for the business to display the calendar - the JfreeChart was probably not the best tool to show a calendar. But we will try it for the first release and then investigate what the business use and not use. JfreeChart have a lot of renderer to display other charts in various ways, look into the samples on the <a href="http://www.jfree.org/jfreechart/">homepage</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Using Jfreechart Implementing A Graphical Calendar&url=https://callistaenterprise.se/blogg/teknik/2008/08/16/using-jfreechart-implementing-a-graphical-calendar/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Using Jfreechart Implementing A Graphical Calendar&u=https://callistaenterprise.se/blogg/teknik/2008/08/16/using-jfreechart-implementing-a-graphical-calendar/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Using Jfreechart Implementing A Graphical Calendar&url=https://callistaenterprise.se/blogg/teknik/2008/08/16/using-jfreechart-implementing-a-graphical-calendar/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
