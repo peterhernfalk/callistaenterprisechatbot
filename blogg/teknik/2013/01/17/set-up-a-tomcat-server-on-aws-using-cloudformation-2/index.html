@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Set up a Tomcat server on AWS using CloudFormation | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    <img alt="Callista medarbetare         Albert Örwall" src="../../../../../../assets/medarbetare/albertorwall_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Set up a Tomcat server on AWS using CloudFormation</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2013-01-17T00:00:00+00:00">
+            17 January 2013
+        </time>
+        //
+        
+        
+        
+        
+
+        
+        
+                Albert Örwall
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I’ve been using CloudFormation in my latest project to automate the process of creating new environments. With CloudFormation one can use predefined templates to deploy new infrastructure on Amazon Web Services.</p>
+
+<p></p>
+
+<p>In the following example I will create a new EC2 instance with an Apache Tomcat server, Apache HTTP Server and two web applications. I’ll also set up security settings and attach an elastic IP address to the instance.  The template can be found <a href="https://s3-eu-west-1.amazonaws.com/callista/TomcatExample.template">here</a>. To deploy the stack described in the template choose “CloudFormation” in the AWS Management Console. Then click “Create stack” and upload the template file.</p>
+
+<p>First of all we want the user to fill in some parameters when creating the stack in CloudFormation. In this case an existing EC2 KeyPair and the instance type:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Parameters</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">KeyName</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Description</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Name of an existing EC2 KeyPair to enable SSH access to the instances</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">String</span><span class="dl">"</span>
+  <span class="p">},</span>
+
+  <span class="dl">"</span><span class="s2">InstanceType</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Description</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">FormEngine EC2 instance type</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">String</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">Default</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">m1.small</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Specify conditional values using Mappings. <code class="language-plaintext highlighter-rouge">AWSInstanceType2Arch</code> specifies allowed EC2 instance types. <code class="language-plaintext highlighter-rouge">AWSRegionArch2AMI</code> defines which AMI that should be used in each region. We will use EBS backed Amazon Linux AMI:s.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Mappings</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">AWSInstanceType2Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">t1.micro</span><span class="dl">"</span>    <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m1.small</span><span class="dl">"</span>    <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m1.medium</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m1.large</span><span class="dl">"</span>    <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m1.xlarge</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m2.xlarge</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m2.2xlarge</span><span class="dl">"</span>  <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">m2.4xlarge</span><span class="dl">"</span>  <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">c1.medium</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">c1.xlarge</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">cc1.4xlarge</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">AWSRegionArch2AMI</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">us-east-1</span><span class="dl">"</span>      <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-1a249873</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-1624987f</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">us-west-1</span><span class="dl">"</span>      <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-2231bf12</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-2a31bf1a</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">us-west-2</span><span class="dl">"</span>      <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-19f9de5c</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-1bf9de5e</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">eu-west-1</span><span class="dl">"</span>      <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-937474e7</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-c37474b7</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">ap-southeast-1</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-a2a7e7f0</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-a6a7e7f4</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">ap-northeast-1</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-486cd349</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-4e6cd34f</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">ap-southeast-2</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-b3990e89</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-bd990e87</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">sa-east-1</span><span class="dl">"</span>      <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">32</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-e209d0ff</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">64</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">ami-1e08d103</span><span class="dl">"</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then we define the AWS resources that should be created.</p>
+
+<p><code class="language-plaintext highlighter-rouge">WebServerGroup</code> is the security group used by the AWS instance to define the firewall rules. In this case it should be possible to connect to the server with SSH and HTTP.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">WebServerGroup</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::EC2::SecurityGroup</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">GroupDescription</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Enable SSH and HTTP access</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">SecurityGroupIngress</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="dl">"</span><span class="s2">IpProtocol</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">tcp</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">FromPort</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">22</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">ToPort</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">22</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">CidrIp</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">0.0.0.0/0</span><span class="dl">"</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="dl">"</span><span class="s2">IpProtocol</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">tcp</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">FromPort</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">80</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">ToPort</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">80</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">CidrIp</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">0.0.0.0/0</span><span class="dl">"</span> <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Specify an admin user with full administrator rights</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">CfnUser</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::IAM::User</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Path</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">Policies</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[{</span>
+      <span class="dl">"</span><span class="s2">PolicyName</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Admin</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">PolicyDocument</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">Statement</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[{</span>
+          <span class="dl">"</span><span class="s2">Effect</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Allow</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">Action</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">Resource</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span>
+	    <span class="p">}]</span>
+      <span class="p">}</span>
+    <span class="p">}]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Generate a secret access key and assign it to the admin user.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">HostKeys</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::IAM::AccessKey</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">UserName</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CfnUser</span><span class="dl">"</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Create the web service instance and specify the packages to install. In our case the Java JDK, Apache Tomcat and Apache HTTP server.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">WebServer</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::EC2::Instance</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Metadata</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">AWS::CloudFormation::Init</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">config</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">packages</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="dl">"</span><span class="s2">yum</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">java-1.6.0-openjdk</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[],</span>
+            <span class="dl">"</span><span class="s2">tomcat6</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[],</span>
+            <span class="dl">"</span><span class="s2">httpd</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[]</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+</code></pre></div></div>
+
+<p>Download the web applications to deploy. Artifacts found in a S3 bucket in this case.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">files</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">/usr/share/tomcat6/webapps/webapp1.war</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">source</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">http://S3_LOCATION/webapp1.war</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">mode</span><span class="dl">"</span>   <span class="p">:</span> <span class="dl">"</span><span class="s2">000500</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">owner</span><span class="dl">"</span>  <span class="p">:</span> <span class="dl">"</span><span class="s2">tomcat</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">group</span><span class="dl">"</span>  <span class="p">:</span> <span class="dl">"</span><span class="s2">tomcat</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">/usr/share/tomcat6/webapps/webapp2.war</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">source</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">http://S3_LOCATION/webapp21.war</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">mode</span><span class="dl">"</span>   <span class="p">:</span> <span class="dl">"</span><span class="s2">000500</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">owner</span><span class="dl">"</span>  <span class="p">:</span> <span class="dl">"</span><span class="s2">tomcat</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">group</span><span class="dl">"</span>  <span class="p">:</span> <span class="dl">"</span><span class="s2">tomcat</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Set AMI specified in <code class="language-plaintext highlighter-rouge">AWSRegionArch2AMI</code> by region. <code class="language-plaintext highlighter-rouge">KeyName</code> and <code class="language-plaintext highlighter-rouge">InstanceType</code> is set by the user when the stack is created (see Parameters). Set name of the instance to <code class="language-plaintext highlighter-rouge">WebServer</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">ImageId</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Fn::FindInMap</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">AWSRegionArch2AMI</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::Region</span><span class="dl">"</span> <span class="p">},</span>
+             <span class="p">{</span> <span class="dl">"</span><span class="s2">Fn::FindInMap</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">AWSInstanceType2Arch</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">InstanceType</span><span class="dl">"</span> <span class="p">},</span> <span class="dl">"</span><span class="s2">Arch</span><span class="dl">"</span> <span class="p">]</span> <span class="p">}]</span> <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">InstanceType</span><span class="dl">"</span>   <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">InstanceType</span><span class="dl">"</span> <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">SecurityGroups</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span><span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WebServerGroupGroup</span><span class="dl">"</span><span class="p">}</span> <span class="p">],</span>
+  <span class="dl">"</span><span class="s2">KeyName</span><span class="dl">"</span>        <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">KeyName</span><span class="dl">"</span> <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">Tags</span><span class="dl">"</span>           <span class="p">:</span> <span class="p">[{</span> <span class="dl">"</span><span class="s2">Key</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Name</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Value</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WebServer</span><span class="dl">"</span> <span class="p">}],</span>
+</code></pre></div></div>
+
+<p>Define scripts to run on the server on first startup:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">UserData</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Fn::Base64</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Fn::Join</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span><span class="dl">""</span><span class="p">,</span> <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">#!/bin/bash -v</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">date &gt; /home/ec2-user/starttime</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">yum update -y aws-cfn-bootstrap</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2">## Error reporting helper function</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">function error_exit</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">{</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">   /opt/aws/bin/cfn-signal -e 1 -r </span><span class="se">\"</span><span class="s2">$1</span><span class="se">\"</span><span class="s2"> '</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WaitHandle</span><span class="dl">"</span> <span class="p">},</span> <span class="dl">"</span><span class="s2">'</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">   exit 1</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">}</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2">## Initialize CloudFormation bits</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">/opt/aws/bin/cfn-init -v -s </span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::StackName</span><span class="dl">"</span> <span class="p">},</span> <span class="dl">"</span><span class="s2"> -r FormEngine</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">   --access-key </span><span class="dl">"</span><span class="p">,</span>  <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">HostKeys</span><span class="dl">"</span> <span class="p">},</span>
+      <span class="dl">"</span><span class="s2">   --secret-key </span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span><span class="dl">"</span><span class="s2">Fn::GetAtt</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">HostKeys</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">SecretAccessKey</span><span class="dl">"</span><span class="p">]},</span>
+      <span class="dl">"</span><span class="s2">   --region </span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::Region</span><span class="dl">"</span> <span class="p">},</span> <span class="dl">"</span><span class="s2"> &gt; /tmp/cfn-init.log 2&gt;&amp;1 || error_exit $(&lt;/tmp/cfn-init.log)</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Add Tomcat user to sudoers and disable tty</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">tomcat ALL=(ALL) NOPASSWD:ALL</span><span class="se">\"</span><span class="s2"> &gt;&gt; /etc/sudoers</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">Defaults:%tomcat !requiretty</span><span class="se">\"</span><span class="s2"> &gt;&gt; /etc/sudoers</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">Defaults:tomcat !requiretty</span><span class="se">\"</span><span class="s2"> &gt;&gt; /etc/sudoers</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Set JVM settings</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">JAVA_OPTS='${JAVA_OPTS} -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=512m'</span><span class="se">\"</span><span class="s2"> &gt;&gt; /etc/tomcat6/tomcat6.conf</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Tomcat Setup</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">chown -R tomcat:tomcat /usr/share/tomcat6/</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">chkconfig tomcat6 on</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">chkconfig --level 345 tomcat6 on</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Configure Apache HTTPD</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">chkconfig httpd on</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">chkconfig --level 345 httpd on</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Proxy all requests to Tomcat</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">ProxyPass  / ajp://localhost:8009/</span><span class="se">\"</span><span class="s2"> &gt;&gt; /etc/httpd/conf/httpd.conf</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Start servers</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">service tomcat6 start</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">/etc/init.d/httpd start</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2"># Send signal to WaitHandle that the setup is completed</span><span class="se">\n</span><span class="dl">"</span>
+      <span class="dl">"</span><span class="s2">/opt/aws/bin/cfn-signal</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2"> -e 0</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2"> '</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WaitHandle</span><span class="dl">"</span> <span class="p">},</span> <span class="dl">"</span><span class="s2">'</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">,</span>
+
+      <span class="dl">"</span><span class="s2">date &gt; /home/ec2-user/stoptime</span><span class="dl">"</span>
+    <span class="p">]]}}</span>
+  <span class="p">}</span>
+<span class="p">},</span>
+</code></pre></div></div>
+
+<p>Create an elastic IP and bind it to the instance:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">IPAddress</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::EC2::EIP</span><span class="dl">"</span>
+<span class="p">},</span>
+
+<span class="dl">"</span><span class="s2">IPAssoc</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::EC2::EIPAssociation</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">InstanceId</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WebServer</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">EIP</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">IPAddress</span><span class="dl">"</span> <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Wait for the scripts defined in the WebServer configuration to complete before completing the stack creation.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">WaitHandle</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::CloudFormation::WaitConditionHandle</span><span class="dl">"</span>
+<span class="p">},</span>
+
+<span class="dl">"</span><span class="s2">WaitCondition</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">Type</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">AWS::CloudFormation::WaitCondition</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">DependsOn</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WebServer</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Properties</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Handle</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">WaitHandle</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">Timeout</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">1200</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Return the IP address and public DNS name of the new instance when the stack is created.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Outputs</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">InstanceIPAddress</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Value</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Ref</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">IPAddress</span><span class="dl">"</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">Description</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">public IP address of the new WebServer</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">InstanceName</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">Value</span><span class="dl">"</span> <span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">Fn::GetAtt</span><span class="dl">"</span> <span class="p">:</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">WebServer</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">PublicDnsName</span><span class="dl">"</span> <span class="p">]},</span>
+    <span class="dl">"</span><span class="s2">Description</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">public DNS name of the new WebServer</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For a more comprehensive guide, check out the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html">CloudFormation User Guide</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Set Up A Tomcat Server On Aws Using Cloudformation 2&url=https://callistaenterprise.se/blogg/teknik/2013/01/17/set-up-a-tomcat-server-on-aws-using-cloudformation-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Set Up A Tomcat Server On Aws Using Cloudformation 2&u=https://callistaenterprise.se/blogg/teknik/2013/01/17/set-up-a-tomcat-server-on-aws-using-cloudformation-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Set Up A Tomcat Server On Aws Using Cloudformation 2&url=https://callistaenterprise.se/blogg/teknik/2013/01/17/set-up-a-tomcat-server-on-aws-using-cloudformation-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

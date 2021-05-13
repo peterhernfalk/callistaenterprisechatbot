@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>C10k: Developing non-blocking REST services with Spring MVC | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">C10k: Developing non-blocking REST services with Spring MVC</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2014-04-22T00:00:00+00:00">
+            22 April 2014
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog we will show you how to develop non-blocking REST services using <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a>. We will also demonstrate the vast difference in scalability that non-blocking services provide compared to traditional blocking services.</p>
+
+<p>We will use <a href="../../15/a-first-look-at-spring-boot/index.html">Spring Boot</a> to create a web app for deployment in a <a href="https://jcp.org/aboutJava/communityprocess/final/jsr315/">Servlet 3.0</a> compliant web-server and <a href="../../14/a-first-look-at-gradle/index.html">Gradle</a> to build and execute the web app. Finally we will use <a href="../../16/a-first-look-at-gatling-a-dsl-based-load-test-tool/index.html">Gatling</a> to load test the REST services.</p>
+
+<p></p>
+
+<p>But first some background on history and theory on the subject…</p>
+
+<h2 id="background">Background</h2>
+<p>With an ever increasing number of connected devices, e.g. mobile devices and <a href="http://en.wikipedia.org/wiki/Internet_of_things">Internet of Things</a>, the requirement of handling large number of concurrent requests in the application servers becomes more critical in many projects.</p>
+
+<p>The key technology for an application server to meet this requirement is the capability to handle requests in a non-blocking way, i.e. without allocating a thread to each request. This is equally important for both incoming and outgoing requests.</p>
+
+<p>Non-blocking I/O has been supported by the Java platform since 2002 with Java SE v1.4 and its API’s called <a href="http://en.wikipedia.org/wiki/New_I/O">New I/O (NIO)</a>. It was initially hard to use, specifically with portability in mind. A number of Java based web servers and frameworks for HTTP, such as <a href="http://jetty.codehaus.org/jetty/">Jetty</a> and <a href="https://netty.io/">Netty</a>, evolved to fill the gaps and today they provide a solid ground for non-blocking I/O, but with product specific API’s.</p>
+
+<p>In December 2009 the <a href="https://jcp.org/aboutJava/communityprocess/final/jsr315/">Servlet 3.0</a> specification was released as a part of <a href="https://jcp.org/aboutJava/communityprocess/final/jsr316/index.html">Java EE 6</a>. This was an important release in terms of standardization of how to perform non-blocking processing towards the underlying web servers and frameworks. With Servlet 3.0 a non-blocking application can be deployed on any web server that supports the specification, e.g. <a href="https://glassfish.java.net/">GlassFish</a>, <a href="http://tomcat.apache.org/">Tomcat</a>, <a href="http://jetty.codehaus.org/jetty/">Jetty</a>, <a href="http://caucho.com/">Resin</a> or any of the commercial alternatives.</p>
+
+<p>In December 2013 <a href="https://spring.io/blog/2013/12/12/announcing-spring-framework-4-0-ga-release">Spring 4.0</a> was released with an unparalleled simplicity for developing non-blocking REST services using Spring MVC and deploying them on any Servlet 3.0 compliant web server using <a href="http://projects.spring.io/spring-boot/">Spring Boot</a>.</p>
+
+<p>Before we jump into the code let’s look into, from an architectural perspective, how Spring MVC handles blocking and non-blocking REST services.</p>
+
+<h3 id="blocking-and-non-blocking-rest-services-with-spring-mvc">Blocking and non-blocking REST services with Spring MVC</h3>
+<p>Developing a traditional blocking style REST service with Spring MVC is very straightforward:</p>
+
+<p>Blocking REST service with Spring MVC</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProcessingController</span> <span class="o">{</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/process-blocking"</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="nc">ProcessingStatus</span> <span class="nf">blockingProcessing</span><span class="o">(...)</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ProcessingStatus</span><span class="o">(...);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code is compact and simple to understand since the annotations handles all the REST, JSON and XML machinery. The problem, from a scalability perspective, is that the request thread is locked during the processing of this method. If the method needs to make a long running call to an external resource, such as another REST or SOAP service or a database, the request thread will be blocked during the wait for the external resource to respond. The following picture illustrates this:</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/Blocking-Request-Blocking-Resource.jpg" alt="" /></p>
+
+<p>To avoid the blocking of the request thread the programming model is changed to a callback model. The REST service doesn’t return the actual result to the Servlet container but instead an object, called a <code class="language-plaintext highlighter-rouge">DeferredResult</code>, that will receive the result at some time in the future. The result will be filled in by some other thread, typically using a callback-object. Spring MVC will hand over the result to the Servlet container that sends it back to the client. In the REST service we have to initiate this processing before we return the <code class="language-plaintext highlighter-rouge">DeferredResult</code> object to the Servlet container like:</p>
+
+<p>Non-blocking REST service with Spring MVC</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProcessingController</span> <span class="o">{</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/process-non-blocking"</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="nf">nonBlockingProcessing</span><span class="o">(...)</span> <span class="o">{</span>
+
+    <span class="c1">// Initiate the processing in another thread</span>
+    <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DeferredResult</span><span class="o">&lt;&gt;();</span>
+    <span class="nc">ProcessingTask</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProcessingTask</span><span class="o">(</span><span class="n">deferredResult</span><span class="o">,</span> <span class="o">...);</span>
+    <span class="n">dispatch</span><span class="o">(</span><span class="n">task</span><span class="o">);</span>
+
+    <span class="c1">// Return to let go of the precious thread we are holding on to...</span>
+    <span class="k">return</span> <span class="n">deferredResult</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The callback object will be called some time in the future and it will then set the response in the <code class="language-plaintext highlighter-rouge">DeferredResult</code> object to complete the processing of the request:</p>
+
+<p>Callback class for on-blocking REST service with Spring MVC</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProcessingTask</span> <span class="kd">extends</span> <span class="nc">SomeCallbackInterface</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">ProcessingTask</span><span class="o">(</span><span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span><span class="o">,</span> <span class="o">...)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">deferredResult</span> <span class="o">=</span> <span class="n">deferredResult</span><span class="o">;</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">deferredResult</span><span class="o">.</span><span class="na">isSetOrExpired</span><span class="o">())</span> <span class="o">{</span>
+      <span class="no">LOG</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Processing of non-blocking request already expired"</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="kt">boolean</span> <span class="n">deferredStatus</span> <span class="o">=</span> <span class="n">deferredResult</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="k">new</span> <span class="nc">ProcessingStatus</span><span class="o">(...));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>…under the hood this maps up to the Servlet 3.0 specification with its corresponding support for Asynchronous Servlets.</p>
+
+<p>Now a long running call to an external resource can take place without blocking the request thread.</p>
+
+<p>Typically there are two scenarios to consider:</p>
+
+<h4 id="1-the-external-resource-api-is-also-non-blocking">1. The external resource API is also non-blocking.</h4>
+<p>This case it’ straight forward, we just have to ensure that the callback from the external resource API fills in the <code class="language-plaintext highlighter-rouge">DeferredResult</code> object on its completion. This will, as described above, notify the Servlet container of the completion of the request.</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/Non-blocking-Request-Non-blocking-Resource.jpg" alt="" /></p>
+
+<h4 id="2-the-external-resource-api-is-blocking">2. The external resource API is blocking.</h4>
+<p>For blocking API’s we need to allocate a thread for the blocking processing, typically coming from a Thread pool allocated for the specific external resource.</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/Non-blocking-Request-Blocking-Resource.jpg" alt="" /></p>
+
+<p><strong>Note:</strong> If we only perform calls to one and the same external resource using a blocking resource API in our REST Services we have actually more or less moved the problem one step back and not solved much of the scalability problem. In most cases however there is a mix of processing in the various REST services in a web server. Some don’t need access to resources at all, other can access resources using a non blocking API and some need to access resources using a blocking API. So overall the scalability will improve significantly if the blocking of threads can be moved back to the specific resource API’s that require blocking execution.</p>
+
+<p>With this in mind let’s look at some real code!</p>
+
+<h2 id="walk-through-of-the-source-code">Walk through of the source code</h2>
+<p>The source code in this blog is based on the <a href="../../15/a-first-look-at-spring-boot/index.html">blog</a> regarding Spring Boot. We will only go through the parts of the code added specifically for this blog. Please read through the <a href="../../15/a-first-look-at-spring-boot/index.html">Spring Boot blog</a> for background information.</p>
+
+<h3 id="get-the-source-code">Get the source code</h3>
+<p>If you want to check out the source code and test it on your own you need to have Java SE 7 and Git installed. Then perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-non-blocking-rest-service-with-spring-mvc.git
+$ cd blog-non-blocking-rest-service-with-spring-mvc/spring-mvc-asynch-teststub
+$ git checkout -b my-branch-1.0 v1.0
+$ tree
+</code></pre></div></div>
+
+<p>This should result in a tree structure like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── build.gradle
+├── docs
+│   └── …
+├── gatling
+│   └── spring-mvc-asynch-teststub-simulation.scala
+├── gradle
+│   └── …
+├── gradlew
+├── gradlew.bat
+└── src
+    └── main
+        ├── java
+        │   └── se
+        │       └── callista
+        │           └── springmvc
+        │               └── asynch
+        │                   └── teststub
+        │                       ├── Application.java
+        │                       ├── MyEmbeddedServletContainerCustomizer.java
+        │                       ├── ProcessingController.java
+        │                       ├── ProcessingStatus.java
+        │                       └── ProcessingTask.java
+        └── resources
+            ├── application.properties
+            └── logback.xml
+</code></pre></div></div>
+
+<h3 id="spring-mvc-rest-service--non-blocking-style">Spring MVC REST service – non-blocking style</h3>
+<p>In the <a href="../../15/a-first-look-at-spring-boot/index.html">Spring Boot blog</a> we developed a blocking REST service as a plain <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html#mvc-ann-restcontroller">Spring MVC Rest Controller</a>. The service takes two query parameters, <code class="language-plaintext highlighter-rouge">minMs</code> and <code class="language-plaintext highlighter-rouge">maxMs</code>, that defines the boundaries of the processing time of the service. The blocking service simulates a response time between the given boundaries simply by calling <code class="language-plaintext highlighter-rouge">Thread.sleep()</code>. We will not go through the code in this blog but you can find it in the method <code class="language-plaintext highlighter-rouge">ProcessingController.blockingProcessing()</code>.</p>
+
+<p>To simulate that our non-blocking REST service waits on an external resource we can’t use <code class="language-plaintext highlighter-rouge">Thread.sleep()</code> since it will block our request thread. Instead we use the Java SE Scheduler that we ask to invoke our callback object when the simulated waiting of the external resource is over.</p>
+
+<p>First we create our <code class="language-plaintext highlighter-rouge">DeferredResult</code> that we use to initiate the callback object, task. Finally we schedule the task object for the calculated time-period:</p>
+
+<p>Non-blocking REST Service</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProcessingController</span> <span class="o">{</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/process-non-blocking"</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="nf">nonBlockingProcessing</span><span class="o">(</span>
+    <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"minMs"</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"0"</span><span class="o">)</span> <span class="kt">int</span> <span class="n">minMs</span><span class="o">,</span>
+    <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"maxMs"</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"0"</span><span class="o">)</span> <span class="kt">int</span> <span class="n">maxMs</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="kt">int</span> <span class="n">processingTimeMs</span> <span class="o">=</span> <span class="n">calculateProcessingTime</span><span class="o">(</span><span class="n">minMs</span><span class="o">,</span> <span class="n">maxMs</span><span class="o">);</span>
+
+    <span class="c1">// Create the deferredResult and initiate a callback object, task, with it</span>
+    <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DeferredResult</span><span class="o">&lt;&gt;();</span>
+    <span class="nc">ProcessingTask</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProcessingTask</span><span class="o">(</span><span class="n">reqId</span><span class="o">,</span> <span class="n">processingTimeMs</span><span class="o">,</span> <span class="n">deferredResult</span><span class="o">);</span>
+
+    <span class="c1">// Schedule the task for asynch completion in the future</span>
+    <span class="n">timer</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="n">task</span><span class="o">,</span> <span class="n">processingTimeMs</span><span class="o">);</span>
+
+    <span class="c1">// Return to let go of the precious thread we are holding on to...</span>
+    <span class="k">return</span> <span class="n">deferredResult</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When the time period has elapsed the <code class="language-plaintext highlighter-rouge">run()</code>-method in our task object will be invoked by the Java SE Scheduler and the task object will create a simulated answer from the external resource and set it on the <code class="language-plaintext highlighter-rouge">DeferredResult</code> object. This will cause the Servlet container to wake up and finalize the corresponding request by sending back the response we set on the <code class="language-plaintext highlighter-rouge">DeferredResult</code> object:</p>
+
+<p>Callback for the non-blocking REST Service</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProcessingTask</span> <span class="kd">extends</span> <span class="nc">TimerTask</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="no">LOG</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">ProcessingTask</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="kd">private</span> <span class="kt">long</span> <span class="n">reqId</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">processingTimeMs</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">ProcessingTask</span><span class="o">(</span><span class="kt">long</span> <span class="n">reqId</span><span class="o">,</span> <span class="kt">int</span> <span class="n">processingTimeMs</span><span class="o">,</span> <span class="nc">DeferredResult</span><span class="o">&lt;</span><span class="nc">ProcessingStatus</span><span class="o">&gt;</span> <span class="n">deferredResult</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">reqId</span> <span class="o">=</span> <span class="n">reqId</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">processingTimeMs</span> <span class="o">=</span> <span class="n">processingTimeMs</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">deferredResult</span> <span class="o">=</span> <span class="n">deferredResult</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">deferredResult</span><span class="o">.</span><span class="na">isSetOrExpired</span><span class="o">())</span> <span class="o">{</span>
+      <span class="no">LOG</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Processing of non-blocking request #{} already expired"</span><span class="o">,</span> <span class="n">reqId</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="kt">boolean</span> <span class="n">deferredStatus</span> <span class="o">=</span> <span class="n">deferredResult</span><span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="k">new</span> <span class="nc">ProcessingStatus</span><span class="o">(</span><span class="s">"Ok"</span><span class="o">,</span> <span class="n">processingTimeMs</span><span class="o">));</span>
+     <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Processing of non-blocking request #{} done, deferredStatus = {}"</span><span class="o">,</span> <span class="n">reqId</span><span class="o">,</span> <span class="n">deferredStatus</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Time for a test run before we start the heavy lifting!</p>
+
+<p>A test run
+Start the web app in an embedded Tomcat instance with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./gradlew bootRun
+</code></pre></div></div>
+
+<p>Note: We are using Gradle as out build tool. If you want to know more about it, please read our <a href="../../14/a-first-look-at-gradle/index.html">blog about Gradle</a>.</p>
+
+<p>Now, try out the blocking REST service with a command like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl "http://localhost:9090/process-blocking?minMs=1000&amp;maxMs=2000"
+
+{"status":"Ok","processingTimeMs":1374}
+</code></pre></div></div>
+
+<p>Here we ask the blocking service to process our request and respond in between 1 and 2 secs. The response reports that the internal processing actually took 1374 ms.</p>
+
+<p>Ok, lets try the non-blocking version as well:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl "http://localhost:9090/process-non-blocking?minMs=1000&amp;maxMs=2000"
+
+{"status":"Ok","processingTimeMs":1506}
+</code></pre></div></div>
+
+<p>Not that exiting, it simply works in the same way (it will become a bit more exiting when we put it under some load however…)</p>
+
+<p>Great, single requests works both for the blocking and the non-block service. Time to put the services under some pressure!</p>
+
+<h2 id="load-test">Load test</h2>
+<p>We will use Gatling as our load test tool. If you want to know more about Gatling and how we performed the tests, please read our <a href="../../16/a-first-look-at-gatling-a-dsl-based-load-test-tool/index.html">Gatling blog</a>.</p>
+
+<p>As described in the blog, the blocking REST service is not very sustainable to increasing numbers of concurrent users. Even if we increase its request thread pool to very high values it hits the roof after a while and gets unresponsive. A load test for a blocking service typically looks like (copied from the blog):</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/c10k-3-blocking-io-fails.png" alt="" /></p>
+
+<p>As you can see from the figure above we ramp up the number of concurrent users to 5000 (the <strong style="color: #f9a743">orange</strong> line). In the beginning the blocking REST service runs fine (the <strong style="color: #a5b33c">green</strong> line) but fairly soon the number of concurrent requests flatten out at 400 reqs/sec meaning that we are starting to build up a request queue inside the Servlet container. A short while later the delays caused by the request queue results in timeouts (the <strong style="color: #fb0219">red</strong> line) and the number of successful request falls down to below 50 reqs/sec.</p>
+
+<p>If we look at the actual response times it actually looks even worse:</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/c10k-3-blocking-io-fatal-response-times.png" alt="" /></p>
+
+<p>Initially the response times are as expected, between 1 – 2 secs but very soon they starts to raise (that’s when the thread pool runs out of available threads) and after a while most requests turns into red.</p>
+
+<p>You can find a full Gatling report in the folder <code class="language-plaintext highlighter-rouge">spring-mvc-asynch-teststub/docs/blocking</code> together with a screen shot from JConsole demonstrating the constant use of 500 threads during the load test.</p>
+
+<p>Not so impressive…</p>
+
+<p>Over to the non-blocking REST service!</p>
+
+<p>To make it a bit more challenging we lowered the maximum threads in the request pool to 50, a tenth of what the blocking REST service was allowed to consume.</p>
+
+<p>The following picture says it all:</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/c10k-3-non-blocking-io-scales-just-fine.png" alt="" /></p>
+
+<p>Not a glitch during the whole load test. After the ramp up period the non-blocking REST service handles some 1400 requests/sec without any problems!</p>
+
+<p>If we look at the response times it gets even more impressive:</p>
+
+<p><img src="../../../../../../assets/blogg/c10k-developing-non-blocking-rest-services-with-spring-mvc/c10k-3-non-blocking-response-times-rock-solid.png" alt="" /></p>
+
+<p>The response times is, except for a few small exceptions, within the configures response time 1-2 secs!</p>
+
+<p>If you look into the full test report in <code class="language-plaintext highlighter-rouge">spring-mvc-asynch-teststub/docs/non-blocking</code> you will find that the 99th percentile is at 1990 ms.</p>
+
+<p>So even if it only got a tenth of the resources (in terms of threads) it outperformed the blocking version when the load went up, exactly according to the theory!</p>
+
+<h2 id="summary">Summary</h2>
+<p>We have seen how elegantly and efficiently Spring MVC and Spring Boot can help us to develop highly scalable non-blocking REST services that can be deployed on any Servlet 3.0 compliant web server!</p>
+
+<p>In the next blog we will focus on how external resources are used from non-blocking REST services, both using blocking API’s and non-blocking API’s. If external resources are used incorrectly we can easily loose the scalability capabilities that we just achieved from using Spring MVC and its support for non-blocking I/O. So this is a very important aspect. Stay tuned…</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=C10k Developing Non Blocking Rest Services With Spring Mvc&url=https://callistaenterprise.se/blogg/teknik/2014/04/22/c10k-developing-non-blocking-rest-services-with-spring-mvc/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=C10k Developing Non Blocking Rest Services With Spring Mvc&u=https://callistaenterprise.se/blogg/teknik/2014/04/22/c10k-developing-non-blocking-rest-services-with-spring-mvc/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=C10k Developing Non Blocking Rest Services With Spring Mvc&url=https://callistaenterprise.se/blogg/teknik/2014/04/22/c10k-developing-non-blocking-rest-services-with-spring-mvc/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

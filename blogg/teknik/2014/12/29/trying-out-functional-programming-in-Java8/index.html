@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Trying out functional programming in Java 8 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Trying out functional programming in Java 8</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2014-12-29T00:00:00+00:00">
+            29 December 2014
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I guess you have noted that <a href="http://en.wikipedia.org/wiki/Functional_programming">functional programming</a> is gaining popularity?
+With Java 8 even Java SE has received support for functional programming. In this blog I have tried to use Lambda Expressions and the Streaming API to address a typical every day problem, building a query API for the well-known object structure of Orders, Order Lines and Products.</p>
+
+<p></p>
+
+<p>After defining the query API I first implemented the API using a traditional <a href="http://en.wikipedia.org/wiki/Imperative_programming">imperative programming</a> style and then I tried to re-implement it using a more functional oriented programming style. Let’s see how that worked out…</p>
+
+<h2 id="object-model-and-query-api">Object model and query API</h2>
+
+<p>Let’s start with a minimalistic (close to oversimplified) model over the well-known structure Order, Order Line and Product:</p>
+
+<p><img src="../../../../../../assets/blogg/trying-out-functional-programming-in-Java8/model.png" alt="" /></p>
+
+<p>I decided to write a query API that could be used to answer the following questions:</p>
+
+<ol>
+  <li>
+    <p>What products from category X have been ordered in the date interval M to N? 
+I want them ordered by their weight!</p>
+  </li>
+  <li>
+    <p>What products with weight from X to Y have been sold in orders with an order value from M to N?
+I want them ordered by their product ID!</p>
+  </li>
+</ol>
+
+<p>First I defined a Java interface:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">QueryApi</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByDateAndCategoryOrderByWeight</span><span class="o">(</span>
+        <span class="nc">LocalDate</span> <span class="n">minDate</span><span class="o">,</span> 
+        <span class="nc">LocalDate</span> <span class="n">maxDate</span><span class="o">,</span> 
+        <span class="nc">String</span> <span class="n">category</span><span class="o">);</span>
+
+
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByOrderValueAndWeightOrderByProductId</span><span class="o">(</span>
+        <span class="kt">int</span> <span class="n">minOrderValue</span><span class="o">,</span> 
+        <span class="kt">int</span> <span class="n">maxOrderValue</span><span class="o">,</span> 
+        <span class="kt">int</span> <span class="n">minProductWeight</span><span class="o">,</span> 
+        <span class="kt">int</span> <span class="n">maxProductWeight</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Yes, I know, I like long descriptive method names ☺</p>
+
+<h2 id="a-traditional-imperative-implementation">A traditional imperative implementation</h2>
+
+<p>Next, I implemented the interface in the good old way using imperative programming. The first query-method <code class="language-plaintext highlighter-rouge">getProductsByDateAndCategoryOrderByWeight()</code> looks like:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByDateAndCategoryOrderByWeight</span><span class="o">(</span>
+    <span class="nc">LocalDate</span> <span class="n">minDate</span><span class="o">,</span> <span class="nc">LocalDate</span> <span class="n">maxDate</span><span class="o">,</span> <span class="nc">String</span> <span class="n">category</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">getOrders</span><span class="o">();</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// Filter on order date</span>
+        <span class="nc">LocalDate</span> <span class="n">date</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">date</span><span class="o">.</span><span class="na">isAfter</span><span class="o">(</span><span class="n">minDate</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">date</span><span class="o">.</span><span class="na">isBefore</span><span class="o">(</span><span class="n">maxDate</span><span class="o">))</span> <span class="o">{</span>
+
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">OrderLine</span><span class="o">&gt;</span> <span class="n">orderLines</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderLines</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">OrderLine</span> <span class="n">orderLine</span> <span class="o">:</span> <span class="n">orderLines</span><span class="o">)</span> <span class="o">{</span>
+
+                <span class="c1">// Filter on product category</span>
+                <span class="nc">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">orderLine</span><span class="o">.</span><span class="na">getProduct</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">product</span><span class="o">.</span><span class="na">getCategory</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">category</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">products</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">product</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Remove any duplicates from the list of selected products</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;(</span><span class="n">products</span><span class="o">));</span>
+
+    <span class="c1">// Sort on product weight</span>
+    <span class="nc">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">products</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Product</span> <span class="n">p1</span><span class="o">,</span> <span class="nc">Product</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> 
+                   <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+
+    <span class="k">return</span> <span class="n">products</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As you can see I assumed that we can acquire all orders using the method <code class="language-plaintext highlighter-rouge">getOrders()</code> and I don’t really care how it is implemented for now. The implementation of the query-method is based on traditional for-loops and if-statements to filter out the products that meet the specific requirements. The implementation wraps up with removing duplicates and sorting the result as required.</p>
+
+<p>The second query-method <code class="language-plaintext highlighter-rouge">getProductsByDateAndCategoryOrderByWeight()</code> looks very similar in its structure with the only differences being the specific implementation of its filtering and sorting rules:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByOrderValueAndWeightOrderByProductId</span><span class="o">(</span>
+    <span class="kt">int</span> <span class="n">minOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">minProductWeight</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxProductWeight</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">getOrders</span><span class="o">();</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// Filter on order value</span>
+        <span class="kt">int</span> <span class="n">orderValue</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderValue</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">minOrderValue</span> <span class="o">&lt;=</span> <span class="n">orderValue</span> <span class="o">&amp;&amp;</span> <span class="n">orderValue</span> <span class="o">&lt;=</span> <span class="n">maxOrderValue</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">OrderLine</span><span class="o">&gt;</span> <span class="n">orderLines</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderLines</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">OrderLine</span> <span class="n">orderLine</span> <span class="o">:</span> <span class="n">orderLines</span><span class="o">)</span> <span class="o">{</span>
+
+                <span class="c1">// Filter on product weight</span>
+                <span class="nc">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">orderLine</span><span class="o">.</span><span class="na">getProduct</span><span class="o">();</span>
+                <span class="kt">int</span> <span class="n">productWeight</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="na">getWeight</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">minProductWeight</span> <span class="o">&lt;=</span> <span class="n">productWeight</span> <span class="o">&amp;&amp;</span> <span class="n">productWeight</span> <span class="o">&lt;=</span> <span class="n">maxProductWeight</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">products</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">product</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Remove any duplicates from the list of selected products</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;(</span><span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;(</span><span class="n">products</span><span class="o">));</span>
+
+    <span class="c1">// Sort on product Id</span>
+    <span class="nc">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">products</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Product</span> <span class="n">p1</span><span class="o">,</span> <span class="nc">Product</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> 
+                   <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+
+    <span class="k">return</span> <span class="n">products</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When looking at the result I see source code in common with the two query-methods and in general excessive code that is required to navigate through the object structure. Not good. Can we rewrite the code to be more concise and unambiguous?</p>
+
+<h2 id="first-attempt-using-functional-programming">First attempt using functional programming</h2>
+
+<p>Let’s see if we can improve using the Java 8 Stream API and support for Lambda Expressions!</p>
+
+<p>If the Java 8 Stream API and support for lambda expressions are new to you it might be worth spending a few minutes reading:
+•	Lambda Expressions, <a href="http://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html">Part 1</a> and <a href="http://www.oracle.com/technetwork/articles/java/architect-lambdas-part2-2081439.html">Part 2</a> 
+•	Java SE 8 Streams, <a href="http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html">Part 1</a> and <a href="http://www.oracle.com/technetwork/articles/java/architect-streams-pt2-2227132.html">Part 2</a></p>
+
+<p>My first attempt looks like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByDateAndCategoryOrderByWeight</span><span class="o">(</span>
+    <span class="nc">LocalDate</span> <span class="n">minDate</span><span class="o">,</span> <span class="nc">LocalDate</span> <span class="n">maxDate</span><span class="o">,</span> <span class="nc">String</span> <span class="n">category</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="nf">getOrders</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">o</span>  <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">().</span><span class="na">isAfter</span><span class="o">(</span><span class="n">minDate</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">().</span><span class="na">isBefore</span><span class="o">(</span><span class="n">maxDate</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">flatMap</span> <span class="o">(</span><span class="n">o</span>  <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderLines</span><span class="o">().</span><span class="na">stream</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">map</span>     <span class="o">(</span><span class="n">ol</span> <span class="o">-&gt;</span> <span class="n">ol</span><span class="o">.</span><span class="na">getProduct</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">p</span>  <span class="o">-&gt;</span> <span class="n">p</span><span class="o">.</span><span class="na">getCategory</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">category</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">distinct</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">sorted</span>  <span class="o">((</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">collect</span> <span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Okay, the code is much more concise but what is actually going on?</p>
+
+<p>First we convert the list of order-objects that <code class="language-plaintext highlighter-rouge">getOrders()</code> return into a stream of order-objects (so that we can start to use the Stream API):</p>
+
+<p><code class="language-plaintext highlighter-rouge">getOrders().stream()</code></p>
+
+<p>Next we apply a filter() function to the order-objects, in order to keep the ones that are within the specified date interval:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.filter(o -&gt; o.getOrderDate().isAfter(minDate) &amp;&amp; o.getOrderDate().isBefore(maxDate))</code></p>
+
+<blockquote>
+  <p><strong>Note:</strong> I use type inference (explained in the lambda article above) to make the lambda expressions shorter like <code class="language-plaintext highlighter-rouge">o -&gt; o.getOrderDate()...</code> instead of the longer <code class="language-plaintext highlighter-rouge">(Order o) -&gt; o.getOrderDate()...</code>.</p>
+
+  <p>Type inference should be used wisely, or else the code can be hard to read for others then the writer, but I hope you find it proper to use in this case. The type of the parameter is given by the result of the previous method call. In this case the call to <code class="language-plaintext highlighter-rouge">getOrders().stream()</code> returns a stream of <code class="language-plaintext highlighter-rouge">Order</code> objects and therefore the parameter <code class="language-plaintext highlighter-rouge">o</code> must be of type <code class="language-plaintext highlighter-rouge">Order</code>.</p>
+</blockquote>
+
+<p>After that we need to attain the products in the selected orders. We find the products by traversing the order lines of each order. To transform the stream of orders to a stream of order lines we use the <code class="language-plaintext highlighter-rouge">flatmap()</code> function:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.flatMap(o -&gt; o.getOrderLines().stream())</code></p>
+
+<blockquote>
+  <p><strong>Note:</strong> Using the normal <code class="language-plaintext highlighter-rouge">map()</code> function to transform a stream of orders to a stream of order lines as observed in the following example:</p>
+
+  <p><code class="language-plaintext highlighter-rouge">.map(o -&gt; o.getOrderLines())</code></p>
+
+  <p>… is not working since the <code class="language-plaintext highlighter-rouge">map()</code> function should return a stream of lists of order lines instead of a stream of order lines. The <code class="language-plaintext highlighter-rouge">flatmap()</code> function on the other hand is capable of flattening out multiple streams into one stream, providing us with one single stream of order lines. Note that since the <code class="language-plaintext highlighter-rouge">flatmap()</code> function works on streams of streams, we have to transform the list of order lines that the method <code class="language-plaintext highlighter-rouge">o.getOrderLines()</code> returns to a stream of order lines with a call to the <code class="language-plaintext highlighter-rouge">stream()</code> method on the list.</p>
+</blockquote>
+
+<p>Given a stream of order lines we can easily transform it to a stream of products as:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.map(ol -&gt; ol.getProduct())</code></p>
+
+<p>…and filter out the products from the selected category:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.filter(p -&gt; p.getCategory().equals(category))</code></p>
+
+<p>We wrap up the processing of the stream with removing any duplicates (i.e. if the same product is part of different orders) with the <code class="language-plaintext highlighter-rouge">distinct()</code> function and sort the result as required with the <code class="language-plaintext highlighter-rouge">sorted()</code> function:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.distinct()</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">.sorted((p1, p2) -&gt; (p1.getWeight() &lt; p2.getWeight()) ? -1 : 1)</code></p>
+
+<p>…and return the stream as a list of products using the <code class="language-plaintext highlighter-rouge">collect()</code> function:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.collect(Collectors.toList());</code></p>
+
+<p>Doesn’t that look promising?</p>
+
+<p>Let’s also quickly look at the other query-method:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByOrderValueAndWeightOrderByProductId</span><span class="o">(</span>
+    <span class="kt">int</span> <span class="n">minOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">minProductWeight</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxProductWeight</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="nf">getOrders</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">o</span>  <span class="o">-&gt;</span> <span class="n">minOrderValue</span> <span class="o">&lt;=</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderValue</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderValue</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">maxOrderValue</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">flatMap</span> <span class="o">(</span><span class="n">o</span>  <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderLines</span><span class="o">().</span><span class="na">stream</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">map</span>     <span class="o">(</span><span class="n">ol</span> <span class="o">-&gt;</span> <span class="n">ol</span><span class="o">.</span><span class="na">getProduct</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">p</span>  <span class="o">-&gt;</span> <span class="n">minProductWeight</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">maxProductWeight</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">distinct</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">sorted</span>  <span class="o">((</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">collect</span> <span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This code looks very similar to the implementation of the first query-method. Much more concise than before, but both methods still share source code of how to traverse the <code class="language-plaintext highlighter-rouge">order –&gt; order lines -&gt; product</code> structure. Can we avoid repeating this?</p>
+
+<h2 id="second-attempt-using-functional-programming">Second attempt using functional programming</h2>
+
+<p>Yes, we can!</p>
+
+<p>Let’s define a third method that takes three functions as parameters, two predicate functions to perform the filtering on orders and products respectively and one comparator function to perform the final sorting:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProducts</span><span class="o">(</span>
+    <span class="nc">Predicate</span><span class="o">&lt;</span><span class="nc">Order</span><span class="o">&gt;</span> <span class="n">orderFilter</span><span class="o">,</span> 
+    <span class="nc">Predicate</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="n">productFilter</span><span class="o">,</span> 
+    <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="n">productComparator</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="nf">getOrders</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">orderFilter</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">flatMap</span> <span class="o">(</span><span class="n">o</span> <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderLines</span><span class="o">().</span><span class="na">stream</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">map</span>     <span class="o">(</span><span class="n">ol</span> <span class="o">-&gt;</span> <span class="n">ol</span><span class="o">.</span><span class="na">getProduct</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">filter</span>  <span class="o">(</span><span class="n">productFilter</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">distinct</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">sorted</span>  <span class="o">(</span><span class="n">productComparator</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">collect</span> <span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now we have encapsulated the knowledge on how to traverse the object structure in one single method and the implementation of the query-methods is only about expressing the specific logic for their filters and ordering:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByDateAndCategoryOrderByWeight</span><span class="o">(</span>
+    <span class="nc">LocalDate</span> <span class="n">minDate</span><span class="o">,</span> <span class="nc">LocalDate</span> <span class="n">maxDate</span><span class="o">,</span> <span class="nc">String</span> <span class="n">category</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="nf">getProducts</span><span class="o">(</span>
+        <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">().</span><span class="na">isAfter</span><span class="o">(</span><span class="n">minDate</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">().</span><span class="na">isBefore</span><span class="o">(</span><span class="n">maxDate</span><span class="o">),</span>
+        <span class="n">p</span> <span class="o">-&gt;</span> <span class="n">p</span><span class="o">.</span><span class="na">getCategory</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">category</span><span class="o">),</span>
+        <span class="o">(</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">)));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">getProductsByOrderValueAndWeightOrderByProductId</span><span class="o">(</span>
+    <span class="kt">int</span> <span class="n">minOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxOrderValue</span><span class="o">,</span> <span class="kt">int</span> <span class="n">minProductWeight</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxProductWeight</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="nf">getProducts</span><span class="o">(</span>
+        <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">minOrderValue</span> <span class="o">&lt;=</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderValue</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">o</span><span class="o">.</span><span class="na">getOrderValue</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">maxOrderValue</span><span class="o">,</span>
+        <span class="n">p</span> <span class="o">-&gt;</span> <span class="n">minProductWeight</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">maxProductWeight</span><span class="o">,</span>
+        <span class="o">(</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">((</span><span class="n">p1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">)));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We now have source code that is concise and contains no code duplication, i.e. we are following the <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY principle</a>!</p>
+
+<p>Great, isn’t it?</p>
+
+<h2 id="try-it-out">Try it out!</h2>
+
+<p>The source code of this blog can be found at GitHub and given that you have Java 8 as your default Java environment you can try it with the following commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git@github.com:callistaenterprise/blog-java-8.git
+$ cd blog-java-8
+$ ./gradlew run
+</code></pre></div></div>
+
+<p>It should produce output similar to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:run
+2014-12-27 21:46:09:844 INFO  main s.c.b.j.Application:116 - Test with 1000 orders and 915 products, product categories: C1 - C8, product weights: 50 - 499
+2014-12-27 21:46:09:850 INFO  main s.c.b.j.Application:42 - Testing ImperativeImpl
+2014-12-27 21:46:09:855 INFO  main s.c.b.j.Application:48 - Count #1: 65, categories: C1 - C1
+2014-12-27 21:46:09:858 INFO  main s.c.b.j.Application:54 - Count #2: 102, weights: 100 - 200
+2014-12-27 21:46:09:859 INFO  main s.c.b.j.Application:42 - Testing FunctionalImpl1
+2014-12-27 21:46:09:865 INFO  main s.c.b.j.Application:48 - Count #1: 65, categories: C1 - C1
+2014-12-27 21:46:09:870 INFO  main s.c.b.j.Application:54 - Count #2: 102, weights: 100 - 200
+2014-12-27 21:46:09:871 INFO  main s.c.b.j.Application:42 - Testing FunctionalImpl2
+2014-12-27 21:46:09:876 INFO  main s.c.b.j.Application:48 - Count #1: 65, categories: C1 - C1
+2014-12-27 21:46:09:878 INFO  main s.c.b.j.Application:54 - Count #2: 102, weights: 100 - 200
+
+BUILD SUCCESSFUL
+
+Total time: 3.379 secs
+</code></pre></div></div>
+
+<p>Given that you are a little accustomed to the Java 8 Streaming API and the support for Lambda Expressions, I’m sure you will enjoy functional programming in Java. You will start to find more and more areas where you can use it to make your code more concise and unambiguous, i.e. easier to write, read and maintain!</p>
+
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Trying Out Functional Programming In Java8&url=https://callistaenterprise.se/blogg/teknik/2014/12/29/trying-out-functional-programming-in-Java8/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Trying Out Functional Programming In Java8&u=https://callistaenterprise.se/blogg/teknik/2014/12/29/trying-out-functional-programming-in-Java8/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Trying Out Functional Programming In Java8&url=https://callistaenterprise.se/blogg/teknik/2014/12/29/trying-out-functional-programming-in-Java8/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

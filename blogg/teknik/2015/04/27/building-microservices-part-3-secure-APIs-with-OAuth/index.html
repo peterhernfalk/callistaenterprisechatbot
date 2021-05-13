@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building microservices, part 3. Secure API's with OAuth 2.0 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building microservices, part 3. Secure API's with OAuth 2.0</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-04-27T00:00:00+00:00">
+            27 April 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog post we will create a secure API for external access, using <a href="http://oauth.net">OAuth 2.0</a>, to the microservices we created in <a href="../../10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/index.html">Part 1</a> and <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a>.</p>
+
+<p></p>
+
+<p>For information about OAuth 2.0 either see introductory material <a href="http://aaronparecki.com/articles/2012/07/29/1/oauth2-simplified">Parecki - OAuth 2 Simplified</a> and <a href="http://tutorials.jenkov.com/oauth2/index.html">Jenkov - OAuth 2.0 Tutorial</a> or the specification <a href="https://tools.ietf.org/html/rfc6749">IETF RFC 6749</a>.</p>
+
+<p>We will add a new microservice, <code class="language-plaintext highlighter-rouge">product-api</code>, that will act as the external API (a <em>Resource Server</em> in OAuth terminology) and we will expose its services through the edge server that we introduced in <a href="../../10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/index.html">Part 1</a> acting as a <em>token relay</em>, i.e. forwarding OAuth access tokens from the client to the resource server. We will also add an <em>OAuth Authorization Server</em> and an <em>OAuth client</em>, i.e. service consumer, we will continue to use <code class="language-plaintext highlighter-rouge">cURL</code>.</p>
+
+<p>The system landscape from <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> will be complemented with the new OAuth components (marked with a red line):</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-3/system-landscape.png" alt="system-landscape" /></p>
+
+<p>We will demonstrate how a client can use any of the four standard authorization grant flows to get an access token from the authorization server and then use the access token to make a secure request to the resource server, i.e. the API.</p>
+
+<blockquote>
+  <p><strong>NOTES:</strong></p>
+
+  <ol>
+    <li>
+      <p>Protecting external API’s is nothing specific to microservices, so this blog post is applicable to any architecture where there is a need to secure external API’s using OAuth 2.0!</p>
+    </li>
+    <li>
+      <p>We will provide a lightweight OAuth authorization server only useful for development and testing. In a real world usage it needs to be replaced, e.g. by an API platform or by delegating the sign in and authorization process to social networks such as Facebook or Twitter.</p>
+    </li>
+    <li>
+      <p>We are on purpose only using HTTP in this blog post to reduce complexity. In any real world usage of OAuth all traffic should be protected using TLS, i.e. HTTPS!</p>
+    </li>
+    <li>
+      <p>As in the previous posts we emphasize the differences between microservices and monolithic applications by running each service in a separate microservice, i.e. in separate processes.</p>
+    </li>
+  </ol>
+</blockquote>
+
+<h1 id="1-build-from-source">1. Build from source</h1>
+
+<p>As in <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> we use Java SE 8, Git and Gradle. So, to access the source code and build it perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/callistaenterprise/blog-microservices.git
+cd blog-microservices
+git checkout -b B3 M3.1
+./build-all.sh
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you are on <strong>Windows</strong> you can execute the corresponding bat-file <code class="language-plaintext highlighter-rouge">build-all.bat</code>!</p>
+</blockquote>
+
+<p>Two new source code components have been added since <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a>, an <em>OAuth Authorization Server</em>, <code class="language-plaintext highlighter-rouge">auth-server</code>, and the <em>OAuth Resource Server</em>, <code class="language-plaintext highlighter-rouge">product-api-service</code>:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-3/source-code.png" alt="source-code" /></p>
+
+<p>The build should result in ten log messages that all says:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BUILD SUCCESSFUL
+</code></pre></div></div>
+
+<h1 id="2-source-code-walkthrough">2. Source code walkthrough</h1>
+
+<p>Let’s look into how the two new components are implemented and how the edge server is updated to be able to relay the OAuth access tokens. We will also change the URL for the API to make it a bit more convenient to use.</p>
+
+<h2 id="21-gradle-dependencies">2.1 Gradle dependencies</h2>
+
+<p>To be able to use OAuth 2.0 we will bring in the open source projects <a href="http://cloud.spring.io/spring-cloud-security/"><code class="language-plaintext highlighter-rouge">spring-cloud-security</code></a> and <a href="http://projects.spring.io/spring-security-oauth/"><code class="language-plaintext highlighter-rouge">spring-security-oauth2</code></a> with the following dependencies.</p>
+
+<p>For the <code class="language-plaintext highlighter-rouge">auth-server</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2:2.0.6.RELEASE")
+</code></pre></div></div>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/support/auth-server/build.gradle">auth-server/build.gradle</a>.</p>
+
+<p>For the <code class="language-plaintext highlighter-rouge">product-api-service</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    compile("org.springframework.cloud:spring-cloud-starter-security:1.0.0.RELEASE")
+    compile("org.springframework.security.oauth:spring-security-oauth2:2.0.6.RELEASE")
+</code></pre></div></div>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/api/product-api-service/build.gradle">product-api-service/build.gradle</a>.</p>
+
+<h2 id="22-auth-server">2.2 auth-server</h2>
+
+<p>The implementation of the authorization server is straight forward. It is brought to life using an annotation, <code class="language-plaintext highlighter-rouge">@EnableAuthorizationServer</code>. Then we use a configuration class to register (in-memory only) the approved client applications, specifying client-id, client-secret, allowed grant flows and scopes:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  @EnableAuthorizationServer
+  protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+      clients.inMemory()
+        .withClient("acme")
+        .secret("acmesecret")
+        .authorizedGrantTypes("authorization_code", "refresh_token", "implicit", "password", "client_credentials")
+        .scopes("webshop");
+    }
+  }
+</code></pre></div></div>
+
+<p>This approach obviously only works for development and test to simulate a client application registration process provided by real world OAuth Authorization Servers, e.g. <a href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn</a> or <a href="https://github.com/settings/applications/new">GitHub</a>.</p>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/support/auth-server/src/main/java/demo/AuthserverApplication.java">AuthserverApplication.java</a>.</p>
+
+<p>Registration of users (<em>Resource Owner</em> in OAuth terminology), simulating a real world Identity Provider (IdP), is done by adding one line per user in the file <code class="language-plaintext highlighter-rouge">application.properties</code>, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>security.user.password=password
+</code></pre></div></div>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/support/auth-server/src/main/resources/application.properties">application.properties</a>.</p>
+
+<p>The implementation also comes with two simple web based user interfaces for user authentication and user consent, see the <a href="https://github.com/callistaenterprise/blog-microservices/tree/B3/microservices/support/auth-server/src/main/resources/templates">source code</a> for details.</p>
+
+<h2 id="23-product-api-service">2.3 product-api-service</h2>
+
+<p>To make our API-implementation act as a <em>OAuth Resource Server</em> we only need to annotate the <code class="language-plaintext highlighter-rouge">main</code>-method with the <code class="language-plaintext highlighter-rouge">@EnableOAuth2Resource</code>-annotation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@EnableOAuth2Resource
+public class ProductApiServiceApplication {
+</code></pre></div></div>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/api/product-api-service/src/main/java/se/callista/microservices/api/product/ProductApiServiceApplication.java">ProductApiServiceApplication.java</a>.</p>
+
+<p>The implementation of the API-service is very similar to the composite service in <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a>. To be able to verify that OAuth works we have added logging of the user-id and the access token:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RequestMapping("/{productId}")
+    @HystrixCommand(fallbackMethod = "defaultProductComposite")
+    public ResponseEntity&lt;String&gt; getProductComposite(
+        @PathVariable int productId,
+        @RequestHeader(value="Authorization") String authorizationHeader,
+        Principal currentUser) {
+
+        LOG.info("ProductApi: User={}, Auth={}, called with productId={}", 
+          currentUser.getName(), authorizationHeader, productId);
+        ...        
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>NOTES:</strong></p>
+
+  <ol>
+    <li>
+      <p>Spring MVC will fill in the extra parameters for the current user and the authorization header automatically.</p>
+    </li>
+    <li>
+      <p>We have removed the uri <code class="language-plaintext highlighter-rouge">/product</code> from the <code class="language-plaintext highlighter-rouge">@RequestMapping</code> to be able to get a more compact URL when using the edge server since it will add a <code class="language-plaintext highlighter-rouge">/product</code> prefix to the url to be able to route the request to the correct service.</p>
+    </li>
+    <li>
+      <p>Writing access tokens to the log is probably not to recommend from a security perspective in a real world application.</p>
+    </li>
+  </ol>
+</blockquote>
+
+<h2 id="24-updates-to-the-edge-server">2.4 Updates to the edge server</h2>
+
+<p>Finally we need to make the edge server forward the OAuth access tokens down to the API-service. Fortunately this is actually already the default behavior, so we don’t need to do anything in this case :-)</p>
+
+<p>To make the URL’s a bit more compact we have modified the route configuration slightly from <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zuul:
+  ignoredServices: "*"
+  prefix: /api
+  routes:
+    productapi: /product/**
+</code></pre></div></div>
+
+<p>This makes it possible to use URL’s like: <code class="language-plaintext highlighter-rouge">http://localhost:8765/api/product/123</code> instead of <code class="language-plaintext highlighter-rouge">http://localhost:8765/productapi/product/123</code> as we used in the previous posts.</p>
+
+<p>We have also replaced the route to the <code class="language-plaintext highlighter-rouge">composite-service</code> with a route to the <code class="language-plaintext highlighter-rouge">api-service</code>.</p>
+
+<p>For full source code see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B3/microservices/support/edge-server/src/main/resources/application.yml">application.yml</a>.</p>
+
+<h1 id="3-start-up-the-system-landscape">3. Start up the system landscape</h1>
+
+<blockquote>
+  <p>As in <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a>, we will start the microservices as java processes in our local development environment and you need to have the <a href="http://curl.haxx.se">cURL</a> and <a href="http://stedolan.github.io/jq/">jq</a> tools installed to be able to run some of the commands below. See <a href="../../15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> for details on how to start up the system landscape.</p>
+</blockquote>
+
+<p>First start RabbitMQ:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ~/Applications/rabbitmq_server-3.4.3/sbin/rabbitmq-server
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you are on <strong>Windows</strong> use Windows Services to ensure that the RabbitMQ service is started!</p>
+</blockquote>
+
+<p>Then start the infrastructure microservices, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd support/auth-server;       ./gradlew bootRun
+$ cd support/discovery-server;  ./gradlew bootRun
+$ cd support/edge-server;       ./gradlew bootRun
+$ cd support/monitor-dashboard; ./gradlew bootRun
+$ cd support/turbine;           ./gradlew bootRun
+</code></pre></div></div>
+
+<p>Finally launch the business microservices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd core/product-service;                ./gradlew bootRun
+$ cd core/recommendation-service;         ./gradlew bootRun
+$ cd core/review-service;                 ./gradlew bootRun
+$ cd composite/product-composite-service; ./gradlew bootRun 
+$ cd api/product-api-service;             ./gradlew bootRun
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you are on <strong>Windows</strong> you can execute the corresponding bat-file <code class="language-plaintext highlighter-rouge">start-all.bat</code>!</p>
+</blockquote>
+
+<p>Once the microservices are started up and registered with the service discovery server they should write the following in the log:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DiscoveryClient ... - registration status: 204
+</code></pre></div></div>
+
+<p>We are now ready to try out obtaining an access token and then use it to call the API in a secure way!</p>
+
+<h1 id="4-trying-out-the-four-oauth-authorization-grant-flows">4 Trying out the four OAuth authorization grant flows</h1>
+
+<p>The OAuth 2.0 specification defines four grant flows to obtain an access token:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-3/grant-flows.png" width="500" /></p>
+
+<p>See <a href="http://tutorials.jenkov.com/oauth2/authorization.html">Jenkov - OAuth 2.0 Authorization</a> for more details regarding the grant flows.</p>
+
+<blockquote>
+  <p><strong>NOTE</strong>: The grant flows <em>Authorization Code</em> and <em>Implicit</em> are the most frequently used and the two remaining are considered to cover corner cases where the first two does not apply.</p>
+</blockquote>
+
+<p>Let’s go through each grant flow and see how it can be used to obtain an access token!</p>
+
+<h2 id="41-authorization-code-grant">4.1 Authorization Code Grant</h2>
+
+<p>First we need to get a <code class="language-plaintext highlighter-rouge">code grant</code> (its like a one time password) using a web browser. Go to:</p>
+
+<p><a href="http://localhost:9999/uaa/oauth/authorize?response_type=code&amp;client_id=acme&amp;redirect_uri=http://example.com&amp;scope=webshop&amp;state=97536">http://localhost:9999/uaa/oauth/authorize?
+ response_type=code&amp;
+ client_id=acme&amp;
+ redirect_uri=http://example.com&amp;
+ scope=webshop&amp;
+ state=97536</a></p>
+
+<p>Login (<code class="language-plaintext highlighter-rouge">user</code>/<code class="language-plaintext highlighter-rouge">password</code>) and give your consent in the web pages that are displayed. The web browser should redirect you to a URL like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://example.com/?
+  code=IyJh4Y&amp;
+  state=97536
+</code></pre></div></div>
+
+<p><strong>NOTE:</strong> The <code class="language-plaintext highlighter-rouge">state</code> parameter should be set to a random value in the request and checked on the response for preventing cross-site request forgery</p>
+
+<p>Take the <code class="language-plaintext highlighter-rouge">code</code> parameter from the redirect URL you got as the response and store it in an environment variable:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CODE=IyJh4Y
+</code></pre></div></div>
+
+<p>Now act as the secure web server and use the <code class="language-plaintext highlighter-rouge">code grant</code> to get the access token:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl acme:acmesecret@localhost:9999/uaa/oauth/token \
+ -d grant_type=authorization_code \
+ -d client_id=acme \
+ -d redirect_uri=http://example.com \
+ -d code=$CODE -s | jq .
+{
+  "access_token": "eba6a974-3c33-48fb-9c2e-5978217ae727",
+  "token_type": "bearer",
+  "refresh_token": "0eebc878-145d-4df5-a1bc-69a7ef5a0bc3",
+  "expires_in": 43105,
+  "scope": "webshop"
+}
+</code></pre></div></div>
+
+<p>Save the access token in an environment variable for later use when we access the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOKEN=eba6a974-3c33-48fb-9c2e-5978217ae727
+</code></pre></div></div>
+
+<p>Let’s make a second attempt to get an access token for the same code. It should fail, e.g. the code is actually working as a one time password:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl acme:acmesecret@localhost:9999/uaa/oauth/token \
+ -d grant_type=authorization_code \
+ -d client_id=acme \
+ -d redirect_uri=http://example.com \
+ -d code=$CODE -s | jq .
+{
+  "error": "invalid_grant",
+  "error_description": "Invalid authorization code: IyJh4Y"
+}
+</code></pre></div></div>
+
+<h2 id="42-implicit-grant">4.2 Implicit Grant</h2>
+
+<p>With implicit grant we skip the code grant, instead we request the access token directly from the web browser (lowering the security). Use the following URL in a web browser:</p>
+
+<p><a href="http://localhost:9999/uaa/oauth/authorize?response_type=token&amp;client_id=acme&amp;redirect_uri=http://example.com&amp;scope=webshop&amp;state=48532">http://localhost:9999/uaa/oauth/authorize?
+  response_type=token&amp;
+  client_id=acme&amp;
+  redirect_uri=http://example.com&amp;
+  scope=webshop&amp;
+  state=48532</a></p>
+
+<p>Login (<code class="language-plaintext highlighter-rouge">user</code>/<code class="language-plaintext highlighter-rouge">password</code>) and give your consent, if required, in the web pages that are displayed. The web browser should redirect you to a URL like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://example.com/#
+ access_token=00d182dc-9f41-41cd-b37e-59de8f882703&amp;
+ token_type=bearer&amp;
+ state=48532&amp;
+ expires_in=42704
+</code></pre></div></div>
+
+<p><strong>NOTE:</strong> The <code class="language-plaintext highlighter-rouge">state</code> parameter should be set to a random value in the request and checked on the response for preventing cross-site request forgery</p>
+
+<p>Save the access token in an environment variable for later use when we access the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOKEN=00d182dc-9f41-41cd-b37e-59de8f882703
+</code></pre></div></div>
+
+<h2 id="43-resource-owner-password-credentials-grant">4.3 Resource Owner Password Credentials Grant</h2>
+
+<p>In this case the user typically don’t have access to a web browser, instead the user have to give his/her credentials to the client application that use them to obtain an access token (not a very good idea from a security perspective if you can’t trust the client application):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s acme:acmesecret@localhost:9999/uaa/oauth/token  \
+ -d grant_type=password \
+ -d client_id=acme \
+ -d scope=webshop \
+ -d username=user \
+ -d password=password | jq .
+{
+  "access_token": "62ca1eb0-b2a1-4f66-bcf4-2c0171bbb593",
+  "token_type": "bearer",
+  "refresh_token": "920fd8e6-1407-41cd-87ad-e7a07bd6337a",
+  "expires_in": 43173,
+  "scope": "webshop"
+}
+</code></pre></div></div>
+
+<p>Save the access token in an environment variable for later use when we access the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOKEN=62ca1eb0-b2a1-4f66-bcf4-2c0171bbb593
+</code></pre></div></div>
+
+<h2 id="44-client-credentials-grant">4.4 Client Credentials Grant</h2>
+
+<p>In the last case we assume that there is no need of a user consent to access the API. The client application can, in this case, authenticate it self to the authorization server and obtain an access token:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s acme:acmesecret@localhost:9999/uaa/oauth/token  \
+ -d grant_type=client_credentials \
+ -d scope=webshop | jq .
+{
+  "access_token": "8265eee1-1309-4481-a734-24a2a4f19299",
+  "token_type": "bearer",
+  "expires_in": 43189,
+  "scope": "webshop"
+}
+</code></pre></div></div>
+
+<p>Save the access token in an environment variable for later use when we access the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOKEN=8265eee1-1309-4481-a734-24a2a4f19299
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note that the access token in this case represent the client application, not the resource owner (i.e. the user), resulting in that <code class="language-plaintext highlighter-rouge">currentUser.getName()</code> will return <code class="language-plaintext highlighter-rouge">acme</code> and not <code class="language-plaintext highlighter-rouge">user</code> when called from the <code class="language-plaintext highlighter-rouge">product-api-service</code>.</p>
+</blockquote>
+
+<h1 id="5-accessing-the-api">5. Accessing the API</h1>
+
+<p>Now, when we have an access token, we can start to access the actual API.</p>
+
+<p>First try to access the API without an access token, it should fail:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl 'http://localhost:8765/api/product/123' -s | jq .
+{
+  "error": "unauthorized",
+  "error_description": "Full authentication is required to access this resource"
+}
+</code></pre></div></div>
+
+<p>Great, we are stopped as expected!</p>
+
+<p>Next, try with a invalid access token, it should fail as well:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl 'http://localhost:8765/api/product/123' \
+ -H  "Authorization: Bearer invalid-access-token" -s | jq .
+{
+  "error": "access_denied",
+  "error_description": "Unable to obtain a new access token for resource 'null'. The provider manager is not configured to support it."
+}
+</code></pre></div></div>
+
+<p>Again, we are denied access as expected!</p>
+
+<p>Now, let’s try to perform a correct request supplying one of the access tokens we received from the grant flows above:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl 'http://localhost:8765/api/product/123' \
+ -H  "Authorization: Bearer $TOKEN" -s | jq .
+{
+  "productId": 123,
+  "name": "name",
+  "weight": 123,
+  "recommendations": [...],
+  "reviews": [... ]
+}
+</code></pre></div></div>
+
+<p>Great, it works!</p>
+
+<p>Also take a look at the log events printed by the api-service, <code class="language-plaintext highlighter-rouge">product-api-service</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2015-04-23 18:39:59.014  INFO 79321 --- [ XNIO-2 task-20] o.s.c.s.o.r.UserInfoTokenServices        : Getting user info from: http://localhost:9999/uaa/user
+2015-04-23 18:39:59.030  INFO 79321 --- [ctApiService-10] s.c.m.a.p.service.ProductApiService      : ProductApi: User=user, Auth=Bearer a0f91d9e-00a6-4b61-a59f-9a084936e474, called with productId=123
+2015-04-23 18:39:59.381  INFO 79321 --- [ctApiService-10] s.c.m.a.p.service.ProductApiService      : GetProductComposite http-status: 200
+</code></pre></div></div>
+
+<p>We can see that the API contacts the Authorization Server to get info about the user and then prints out the username and the access token in the log!</p>
+
+<p>Finally, let’s try to invalidate the access token, e.g. simulating that it has expired. One way to do that is to restart the <code class="language-plaintext highlighter-rouge">auth-server</code> (it only stores information in the memory…) and then retry the request from above:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl 'http://localhost:8765/api/product/123' \
+ -H  "Authorization: Bearer $TOKEN" -s | jq .
+{
+  "error": "access_denied",
+  "error_description": "Unable to obtain a new access token for resource 'null'. The provider manager is not configured to support it."
+}
+</code></pre></div></div>
+
+<p>The previously accepted access token is now rejected, as expected!</p>
+
+<h1 id="6-summary">6. Summary</h1>
+
+<p>We have seen how we, thanks to the open source projects <em>spring-cloud-security</em> and <em>spring-security-auth</em>, easily can set up a secure API based on OAuth 2.0. Remember, however, that the Authorization Server we used only is useful for development and testing!</p>
+
+<h1 id="7-next-step">7. Next step</h1>
+
+<p>Next up in the <a href="../../../05/20/blog-series-building-microservices.html">Blog Series - Building Microservices</a> is centralized log management using the ELK stack, i.e. Elasticsearch, LogStash and Kibana.</p>
+
+<p>Stay tuned!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices Part 3 Secure Apis With Oauth&url=https://callistaenterprise.se/blogg/teknik/2015/04/27/building-microservices-part-3-secure-APIs-with-OAuth/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices Part 3 Secure Apis With Oauth&u=https://callistaenterprise.se/blogg/teknik/2015/04/27/building-microservices-part-3-secure-APIs-with-OAuth/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices Part 3 Secure Apis With Oauth&url=https://callistaenterprise.se/blogg/teknik/2015/04/27/building-microservices-part-3-secure-APIs-with-OAuth/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

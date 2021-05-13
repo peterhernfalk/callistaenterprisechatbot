@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Setting up your Eclipse environment for Groovy and Grails | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Christian Hilmersson" src="../../../../../../assets/medarbetare/christianhilmersson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Setting up your Eclipse environment for Groovy and Grails</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-01-13T00:00:00+00:00">
+            13 January 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Christian Hilmersson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This article covers how to setup your standard Eclipse environment with plugins from SpringSource for developing Groovy and Grails applications without using the full SpringSource Tool Suite.</p>
+
+<p></p>
+
+<h2 id="background">Background</h2>
+<p>It is more and more common that we see other languages than Java running on the JVM. One such language is Groovy which together with the Ruby on Rails inspired framework Grails forms a good platform for rapid development of simple web applications.</p>
+
+<p>SpringSource Tool Suite is an extended Eclipse with support for a lot of interesting things. There’s is good support for developing Groovy and Grails applications in the SpringSource Tool Suite IDE, easy to setup via the built-in extension mechanism which is available in the Extensions tab on the STS Dashboard.</p>
+
+<p>If however, we are interested in developing Groovy and Grails applications and don’t care so much about all the other stuff that SpringSource Tool Suite is packaging it is possible to pick out only the plug-ins that we need from the SpringSource Tool Suite and apply them to a clean Eclipse version.</p>
+
+<p>This article presents a way of setting up a development environment for Groovy and Grails inside Eclipse.</p>
+
+<h2 id="download-java-development-kit">Download Java Development Kit</h2>
+<p>Some of the functionalities in the Grails framework requires you to have a JDK installed.</p>
+
+<p>Make sure that you have a JDK of version J2SE 1.6 installed and that your <code class="language-plaintext highlighter-rouge">JAVA_HOME</code> environment variable points to the JDK and that Eclipse uses it on the build path of your projects, otherwise follow the instructions below.</p>
+
+<ul>
+  <li>Go to the <a href="https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-6u23-oth-JPR@CDS-CDS_Developer">JDK Download page</a> at Oracle and download Java SE Development Kit 6u23.</li>
+  <li>Follow the instructions in the installer to install the JDK on your computer.</li>
+  <li>Make sure that the <code class="language-plaintext highlighter-rouge">JAVA_HOME</code> environment variable exists and points at your installed JDK <code class="language-plaintext highlighter-rouge">JAVA_HOME="c:\Program Files\Java\jdk1.6.0_23"</code></li>
+  <li>Start Eclipse and open <strong>Preferences/Java/Installed JREs</strong></li>
+  <li>Click <strong>Add…</strong>, Choose <strong>Standard VM</strong> and click <strong>Next</strong>.</li>
+  <li>Click <strong>Directory</strong> and choose the home folder of your JDK (e.g. <code class="language-plaintext highlighter-rouge">c:\Program Files\Java\jdk1.6.0_23</code>)</li>
+  <li>Click <strong>Finish</strong> to get back to the preferences.</li>
+  <li>Use the checkbox next to the JDK to activate it.</li>
+  <li>Click <strong>OK</strong> to save settings and close preferences.</li>
+</ul>
+
+<h2 id="installing-the-eclipse-plug-ins">Installing the Eclipse plug-ins</h2>
+<p>We will start with a clean version of Eclipse 3.6.1 from Eclipse’s download page and install the plug-ins we need.</p>
+
+<ul>
+  <li>Open a browser and go to <a href="http://www.eclipse.org/downloads">http://www.eclipse.org/downloads</a></li>
+  <li>Download the package named:  <strong>Eclipse IDE for Java EE Developers</strong></li>
+  <li>Unpack the downloaded package in the location of your choice and start Eclipse.</li>
+  <li>Open up <strong>Install New Software</strong> under the Help menu.</li>
+  <li>Add two update sites
+    <ol>
+      <li>SpringSource update site for Eclipse 3.6 Release
+<a href="http://dist.springsource.com/release/TOOLS/update/e3.6">http://dist.springsource.com/release/TOOLS/update/e3.6</a></li>
+      <li>SpringSource update site for Eclipse 3.6 Release dependencies
+<a href="http://dist.springsource.com/release/TOOLS/composite/e3.6">http://dist.springsource.com/release/TOOLS/composite/e3.6</a></li>
+    </ol>
+  </li>
+  <li>Back in the <strong>Install New Software</strong> window, choose to work with: <strong>SpringSource update site for Eclipse 3.6 Release</strong></li>
+  <li>Select <strong>SpringSource Tool Suite Grails Support</strong> under the category <strong>Extensions / STS</strong></li>
+  <li>Press the <strong>Next</strong> button and follow the wizard to complete the installation. The installation might seem to be stuck at zero percent for a couple of minutes, just be patient. You will also get a warning that you are trying to install unsigned content which is normal in this case.</li>
+  <li>Restart Eclipse</li>
+  <li>You might get a question about uploading data to SpringSource with Spring User Agent Analysis, which you can answer in the way you want.</li>
+</ul>
+
+<h2 id="adding-the-grails-framework">Adding the Grails framework</h2>
+<p>To make the plug-ins work we also need to download the Grails framework.</p>
+
+<ul>
+  <li>Open up a browser and go to<a href="http://www.grails.org/Download"> http://www.grails.org/Download</a></li>
+  <li>Choose to download version 1.3.6 Binary Zip</li>
+  <li>Unpack the Grails framework where you like to store your development tools e.g. <code class="language-plaintext highlighter-rouge">c:\tools</code></li>
+  <li>Add an environment variable <code class="language-plaintext highlighter-rouge">GRAILS_HOME</code> that points to your Grails installation folder (Not mandatory when running Grails inside Eclipse) <code class="language-plaintext highlighter-rouge">GRAILS_HOME=c:\tools\grails-1.3.6</code></li>
+  <li>Also update the <code class="language-plaintext highlighter-rouge">PATH</code> environment variable to point at <code class="language-plaintext highlighter-rouge">${GRAILS_HOME}\bin</code> (Not mandatory when running Grails inside Eclipse) <code class="language-plaintext highlighter-rouge">PATH=%PATH%;%GRAILS_HOME%\bin</code></li>
+  <li>In Eclipse, go to <strong>Preferences/Groovy/Grails</strong> and <strong>Add…</strong></li>
+  <li>Enter <strong>Grails</strong> in the <strong>Name</strong> field.</li>
+  <li>Press <strong>Browse…</strong> and point out the the root folder of your unzipped your Grails framework e.g. <code class="language-plaintext highlighter-rouge">c:\tools\grails-1.3.6</code></li>
+  <li>Press <strong>OK</strong>.</li>
+</ul>
+
+<p>Your Eclipse environment is now ready for developing Groovy and Grails applications.</p>
+
+<h2 id="simple-groovy-script-to-test-your-setup">Simple Groovy script to test your setup</h2>
+<p>Follow these steps to perform a simple test to see that Groovy now works inside Eclipse. As a side effect you also get a shortcut to a great tool for trying out groovy scripts, the Groovy Console.</p>
+
+<h3 id="enter-the-grails-perspective">Enter the Grails perspective</h3>
+<p>You should now have a Grails perspective in Eclipse.</p>
+
+<ul>
+  <li>Choose <strong>Open Perspective/Other…</strong> from the <strong>Window</strong> menu</li>
+  <li>Select <strong>Grails</strong> and click <strong>OK</strong></li>
+</ul>
+
+<h3 id="create-a-groovy-project">Create a Groovy project</h3>
+<ul>
+  <li>Right click in the <strong>Project Explorer</strong> and open <strong>New/Other…</strong></li>
+  <li>Select <strong>Groovy Project</strong> and click <strong>Next</strong></li>
+  <li>Add a project name e.g. <strong>GroovyConsole</strong> and click <strong>Finish</strong></li>
+</ul>
+
+<h2 id="create-a-groovy-class">Create a Groovy class</h2>
+<ul>
+  <li>Right click your project named <strong>GroovyConsole</strong> and open <strong>New/Other…</strong></li>
+  <li>Select <strong>Groovy Class</strong> and click <strong>Next</strong></li>
+  <li>Enter <strong>GroovyConsole</strong> in the name field, check the <strong>Create Script</strong> select box and click <strong>Finish</strong></li>
+  <li>Open the newly created file <code class="language-plaintext highlighter-rouge">GroovyConsole.groovy</code> and insert the following code:</li>
+</ul>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">groovy.ui.Console</span>
+<span class="kt">def</span> <span class="n">console</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Console</span><span class="o">()</span>
+<span class="n">console</span><span class="o">.</span><span class="na">run</span><span class="o">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Save the file.</li>
+</ul>
+
+<h3 id="run-the-groovy-class">Run the Groovy class</h3>
+<p>Right click <code class="language-plaintext highlighter-rouge">GroovyConsole.groovy</code> and click on <strong>Run As/Groovy Script</strong></p>
+
+<ul>
+  <li>You shall now get a Groovy Console opened which verifies that Groovy is working inside Eclipse. You can also use the Groovy Console for testing groovy scripts.</li>
+</ul>
+
+<h2 id="links-and-references">Links and references</h2>
+<p>For more information about the technologies and tools used in this article there is more to read on these locations:</p>
+
+<ul>
+  <li>Groovy – <a href="http://groovy.codehaus.org/">http://groovy.codehaus.org/</a></li>
+  <li>Grails – <a href="http://www.grails.org/">http://www.grails.org/</a></li>
+  <li>SpringSource Tool Suite – <a href="http://www.springsource.com/developer/sts">http://www.springsource.com/developer/sts</a></li>
+  <li>Eclipse – <a href="http://www.eclipse.org/">http://www.eclipse.org/</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Setting Up Your Eclipse Environment For Groovy And Grails&url=https://callistaenterprise.se/blogg/teknik/2011/01/13/setting-up-your-eclipse-environment-for-groovy-and-grails/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Setting Up Your Eclipse Environment For Groovy And Grails&u=https://callistaenterprise.se/blogg/teknik/2011/01/13/setting-up-your-eclipse-environment-for-groovy-and-grails/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Setting Up Your Eclipse Environment For Groovy And Grails&url=https://callistaenterprise.se/blogg/teknik/2011/01/13/setting-up-your-eclipse-environment-for-groovy-and-grails/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

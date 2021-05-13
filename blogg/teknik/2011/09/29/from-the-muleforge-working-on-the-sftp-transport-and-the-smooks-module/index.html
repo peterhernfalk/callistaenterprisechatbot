@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>From the MuleForge: Working on the SFTP Transport and the Smooks Module | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">From the MuleForge: Working on the SFTP Transport and the Smooks Module</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-09-29T00:00:00+00:00">
+            29 September 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>While Web Services (SOAP or REST based) gets all the attention in the press, there are many companies still struggling with file transfers and transformation of very large files (for the scope of this blog defined as files of size &gt; 1 GB). Typically, these companies, can’t get a file of that size through their integration platform and messaging backbone without having to do all sort of tricks such as <a href="http://www.enterpriseintegrationpatterns.com/Sequencer.html">splitting</a> files into smaller one and later on both <a href="http://www.enterpriseintegrationpatterns.com/Resequencer.html">re-sequence</a> and <a href="http://www.enterpriseintegrationpatterns.com/Aggregator.html">aggregate</a> them back again and/or setting up huge memory heaps on their servers and so on…</p>
+
+<p>On top of that, many companies still use FTP for sending files unencrypted and resulting in a lot of usernames/passwords cluttered all over the system landscape, where instead SFTP can provide a secure transport and more easy managed authentication through its use of SSH and PKI.</p>
+
+<p>In this blog I will describe how I have been working with some of our customers to help them find inexpensive and simple (removing unnecessary complexity) but still robust solutions, using open source products such as <a href="http://www.mulesoft.org/">Mule ESB</a> and the transformation framework <a href="http://www.smooks.org/">Smooks</a>, to achieve large file transfer and transformation.</p>
+
+<p></p>
+
+<p>It turned out during this work that the current status of some of the open source components we decided to use did not meet all our requirements. But since we are talking about open source there is a very good solution to that, add the missing pieces yourself (in the way you want it) and bring it back to the open source project!</p>
+
+<p>The open source projects mentioned below lives in the <a href="http://www.mulesoft.org/muleforge">MuleForge</a>, a hosting site and community for development and sharing of open source extensions to Mule ESB and that is where my contributions ended up.</p>
+
+<h2 id="sftp">SFTP</h2>
+<p>In late 2009, I was involved in a customer project using Mule ESB. In this project we needed to transfer large files but we didn’t want to use FTP. In fact we strived to replace FTP with SFTP.</p>
+
+<p>We started to evaluate the SFPT transport in Mule ESB (that lived in the MuleForge at that time). We found out that the SFTP transport, thanks to its streaming capabilities, could handle large files very well but there were a number of other features required by the customer that were missing in the transport, such as archive functionality, handling of duplicate file names, file-size checks to determine if a file is completely created before consuming it and so on.</p>
+
+<p>To address these shortcomings I decided to join the SFTP-transport project. A couple months later the project released a new version of the transport that solved the mentioned concerns. Since then, our customer has been using the SFTP-transport in production.</p>
+
+<p>Below is a very basic example of a file transfer from one SFTP-server to another SFTP-server applying a Java based transformation of the content. If you download the source code of the transport and take a look in the integration tests and their <a href="http://svn.codehaus.org/mule/branches/mule-3.x/transports/sftp/src/test/resources/">mule-config-files</a>, you can find many other examples of its use.</p>
+
+<p><img src="../../../../../../assets/blogg/from-the-muleforge-working-on-the-sftp-transport-and-the-smooks-module/Skärmavbild-2011-09-27-kl.-23.47.24.png" alt="" /></p>
+
+<p><strong>Note #1:</strong> The example assumes usage of PKI-keys and not old style username/password.</p>
+
+<p><strong>Note #2:</strong> In a real-world case attributes such as address would not be hardcoded but instead be provided as a configurable property.</p>
+
+<p>Over time the SFTP-transport has been used more and more widely and in early 2011, MuleSoft decided to add the SFTP-transport as a core transport of the Mule ESB product. Since Mule ESB v3.1.2 the SFTP-transport is part of the Mule ESB distribution.</p>
+
+<p>…and my work as a MuleForge committer was over for the time being…</p>
+
+<h2 id="smooks">Smooks</h2>
+<p>Earlier this year (2011) I started to look at the <a href="http://www.smooks.org/">Smooks project</a>, specifically regarding its capabilities to transform between many different formats using a declarative and template driven approach. Added to that Smooks also have support for stream based transformation opening up for transforming very large files without any hassle (as described above). Very compelling when combined with the streaming capabilities of Mule ESB’s file transports (file, FTP and of course SFTP)!</p>
+
+<p>The way to integrate Smooks in Mule ESB is to use the <a href="http://www.mulesoft.org/documentation/display/SMOOKS/Home">Smooks Module for Mule</a> at the MuleForge, i.e. Smooks support in Mule is not a core part of the Mule ESB product.</p>
+
+<p>Using the Smooks Module you can for example easily replace the Java based transformer in the SFTP-transport example above with a much more versatile Smooks based transformer by replacing the line:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;custom-transformer class="...MyTransformer"/&gt;
+</code></pre>
+
+<p>with:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;smooks:transformer configFile="my-smooks-transformer.xml"/&gt;
+</code></pre>
+
+<p>A problem I found out working with Smooks and Mule was that the Smooks Module for Mule was not yet released for Mule 3, only for Mule 1.x and Mule 2.x. However, all changes required for Mule 3 was already developed and committed but no one have had time to do the final testing and release management for a Mule 3 compatible release.</p>
+
+<p>…so I decided to join in again, this time with the goal to release a Mule 3 compatible version of the Smooks Module!</p>
+
+<p>Last weekend we released a release candidate for the next version, v1.3-RC1, which brings in compatibility with Mule 3.1.x. See <a href="http://www.mulesoft.org/documentation/display/SMOOKS/Smooks+for+Mule+1.3-RC1+released">Smooks for Mule v1.3-RC1 released</a> for details!</p>
+
+<p>A very good example of what the Smooks framework is capable of doing for you is the example in the Smooks distribution called <strong>freemarker-huge-transform</strong>. It demonstrates a setup where Smooks transforms very large XML-files containing order heads and order lines. An outer streaming SAX-parser is setup to stream through the order head elements and delegates the processing of the order lines to a DOM-parser. This means that the memory intensive DOM models only exist for one order line at the time resulting in a very small memory footprint even for transforming very large files. Freemarker is used as the templating language to declare what the actual transformation should do with each order head and order line.</p>
+
+<p>Copy of the <a href="https://github.com/smooks/smooks/blob/master/smooks-examples/freemarker-huge-transform/smooks-config.xml">smooks-config – file</a> from the example, comments removed to keep the size down:</p>
+
+<p><img src="../../../../../../assets/blogg/from-the-muleforge-working-on-the-sftp-transport-and-the-smooks-module/Skärmavbild-2011-09-27-kl.-23.36.36.png" alt="" /></p>
+
+<p>Going through the example in detail is out of the scope for this blog (see <a href="http://www.smooks.org/mediawiki/index.php?title=Smooks_v1.4_Examples">Smooks v1.4 Examples</a> for details) but some interesting aspects are worth mentioning:</p>
+
+<ul>
+  <li>The outer sax-parser that read order lines with a streaming approach:</li>
+</ul>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;core:filterSettings type="SAX" defaultSerialization="false" /&gt;
+</code></pre>
+
+<ul>
+  <li>The two Freemarker based templates that work together. The outer template handling transformation of order-heads (using the streaming SAX-parser) and the inner template transforming order-lines one-by-one using a traditional DOM-parser.</li>
+  <li>The Freemarker templates declare the outline of the transformed outgoing message format and the variables <code class="language-plaintext highlighter-rouge">${...order...}</code> refers to elements in the incoming message and declares where their corresponding values should be placed in the outgoing transformed message.</li>
+</ul>
+
+<h2 id="to-summarize">To summarize</h2>
+<p>By combining a couple of open source products and making some contributions of your own, if required, you can construct very cost-effective, low-complex but still very robust solutions to problems that traditionally are concerned to be very hard, complex and expensive to solve.</p>
+
+<p><strong>Feel the power of open source!</strong></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=From The Muleforge Working On The Sftp Transport And The Smooks Module&url=https://callistaenterprise.se/blogg/teknik/2011/09/29/from-the-muleforge-working-on-the-sftp-transport-and-the-smooks-module/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=From The Muleforge Working On The Sftp Transport And The Smooks Module&u=https://callistaenterprise.se/blogg/teknik/2011/09/29/from-the-muleforge-working-on-the-sftp-transport-and-the-smooks-module/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=From The Muleforge Working On The Sftp Transport And The Smooks Module&url=https://callistaenterprise.se/blogg/teknik/2011/09/29/from-the-muleforge-working-on-the-sftp-transport-and-the-smooks-module/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

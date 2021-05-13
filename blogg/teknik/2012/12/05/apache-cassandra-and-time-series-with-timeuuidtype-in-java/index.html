@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Apache Cassandra and time series with TimeUUIDType in Java | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Peter Larsson" src="../../../../../../assets/medarbetare/peterlarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Apache Cassandra and time series with TimeUUIDType in Java</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2012-12-05T00:00:00+00:00">
+            05 December 2012
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/peterlarsson/index.html">Peter Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>As almost everybody knows; one of the main benefits with Apache Cassandra is the possibility to create column indexed time series, i.e. use <code class="language-plaintext highlighter-rouge">TimeUUIDType</code> as comparator and you get a chronologically arranged list of indexed column names and an excellent performance when performing slice queries.</p>
+
+<p></p>
+
+<blockquote>
+  <p>If millisecond precision is good enough for you to create an unique id, then you might skip the rest of this article.</p>
+</blockquote>
+
+<p>However Apache Cassandra uses UUID of type 1, and <code class="language-plaintext highlighter-rouge">java.util.UUID</code> has poor support for this type. Fortunately a utility class <a href="https://github.com/stephenc/eaio-uuid">com.eaio.uuid.UUIDGen</a> created by Johann Burkard  can be used to create unique <code class="language-plaintext highlighter-rouge">java.util.UUID</code> of type 1, and this utility also is included in the Hector Client API.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="c1">// create a unique java.util.UUID of type 1, and use it to create a column name (Hector API)</span>
+<span class="no">UUID</span> <span class="n">uuid</span> <span class="o">=</span> <span class="k">new</span> <span class="no">UUID</span><span class="o">(</span><span class="nc">UUIDGen</span><span class="o">.</span><span class="na">createTime</span><span class="o">(</span><span class="n">timestamp</span><span class="o">),</span> <span class="nc">UUIDGen</span><span class="o">.</span><span class="na">getClockSeqAndNode</span><span class="o">());</span>
+<span class="nc">HColumn</span><span class="o">&lt;</span><span class="no">UUID</span><span class="o">,</span> <span class="nc">Composite</span><span class="o">&gt;</span> <span class="n">column</span> <span class="o">=</span> <span class="nc">HFactory</span><span class="o">.</span><span class="na">createColumn</span><span class="o">(</span><span class="n">uuid</span><span class="o">,</span> <span class="o">&lt;</span><span class="n">some_value</span><span class="o">&gt;,</span>
+    <span class="nc">UUIDSerializer</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">CompositeSerializer</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<h2 id="the-problem">The problem</h2>
+<p>Now I wan’t to query my columns, and the main question is; how do I create a <code class="language-plaintext highlighter-rouge">java.util.UUID</code> of type 1 to position my slice query in the column name index?</p>
+
+<p><code class="language-plaintext highlighter-rouge">UUIDGe</code>n is designed to generate unique times (nano), but the actual algorithm to create a corresponding query <code class="language-plaintext highlighter-rouge">java.util.UUID</code> is not provided, i.e. <code class="language-plaintext highlighter-rouge">UUIDGen</code> can only be used to create new unique <code class="language-plaintext highlighter-rouge">java.util.UUID</code> column names. There’s actually an implementation in <code class="language-plaintext highlighter-rouge">me.prettyprint.cassandra.utils.TimeUUIDUtils</code>, but this method  is private, so this class can calculate the original timestamp in millis, but can’t help out creating UUID for queries.</p>
+
+<h2 id="the-solution">The solution</h2>
+<p>To solve the problem, I had to copy the actual unique time generation from <code class="language-plaintext highlighter-rouge">UUIDGen</code> and remove the stuff that makes the generated time unique, and then it was pretty simple to create <code class="language-plaintext highlighter-rouge">java.util.UUID</code> that could be used in my queries. Furthermore to retrieve the original timestamp in millis the helper <code class="language-plaintext highlighter-rouge">TimeUUIDUtils.getTimeFromUUID</code> fix this for you.</p>
+
+<h3 id="steps">Steps</h3>
+<ol>
+  <li>Create a unique UUID based on an origin timestamp in millis with <code class="language-plaintext highlighter-rouge">UUDIGen</code> and use this as a column name</li>
+  <li>Create a query UUID with your own <code class="language-plaintext highlighter-rouge">createQueryTime</code> described  below.</li>
+  <li>Retrieve the actual origin timestamp in millis with <code class="language-plaintext highlighter-rouge">TimeUUIDUtils.getTimeFromUUID</code></li>
+</ol>
+
+<blockquote>
+  <p>Pretty heavy stuff to perform such a simple task, and please enlighten me if I’ve missed something fundamental!</p>
+</blockquote>
+
+<p>Method to use to cerate query UUIDs:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">createQueryTime</span><span class="o">(</span><span class="kt">long</span> <span class="n">currentTimeMillis</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">long</span> <span class="n">time</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="kt">long</span> <span class="n">timeMillis</span> <span class="o">=</span> <span class="o">(</span><span class="n">currentTimeMillis</span> <span class="o">*</span> <span class="mi">10000</span><span class="o">)</span> <span class="o">+</span> <span class="mh">0x01B21DD213814000</span><span class="no">L</span><span class="o">;</span>
+  <span class="n">time</span> <span class="o">=</span> <span class="n">timeMillis</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="o">;</span>
+  <span class="n">time</span> <span class="o">|=</span> <span class="o">(</span><span class="n">timeMillis</span> <span class="o">&amp;</span> <span class="mh">0xFFFF00000000</span><span class="no">L</span><span class="o">)</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="o">;</span>
+  <span class="n">time</span> <span class="o">|=</span> <span class="mh">0x1000</span> <span class="o">|</span> <span class="o">((</span><span class="n">timeMillis</span> <span class="o">&gt;&gt;</span> <span class="mi">48</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0x0FFF</span><span class="o">);</span> <span class="c1">// version 1</span>
+  <span class="k">return</span> <span class="n">time</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And now it’s just to start browsing the column name index with timestamps that means something like log record timestamps etc.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="no">UUID</span> <span class="n">queryUUID</span> <span class="o">=</span> <span class="k">new</span> <span class="no">UUID</span><span class="o">(</span><span class="n">createQueryTime</span><span class="o">(</span><span class="n">timestamp</span><span class="o">),</span> <span class="nc">UUIDGen</span><span class="o">.</span><span class="na">getClockSeqAndNode</span><span class="o">());</span>
+<span class="nc">SliceQuery</span><span class="o">&lt;</span><span class="nc">Composite</span><span class="o">,</span> <span class="no">UUID</span><span class="o">,</span> <span class="nc">Composite</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="nc">HFactory</span><span class="o">.</span><span class="na">createSliceQuery</span><span class="o">(</span><span class="n">getKeySpace</span><span class="o">(),</span>
+    <span class="nc">CompositeSerializer</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">UUIDSerializer</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">CompositeSerializer</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="n">query</span><span class="o">.</span><span class="na">query</span><span class="o">.</span><span class="na">setColumnFamily</span><span class="o">(</span><span class="s">"someCF"</span><span class="o">).</span><span class="na">setKey</span><span class="o">(</span><span class="n">someKey</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setRange</span><span class="o">(</span><span class="n">queryUUID</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+<span class="o">...</span>
+<span class="c1">// use TimeUUIDUtils to get the original timestamp in millies</span>
+<span class="o">...</span>
+<span class="kt">long</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="nc">TimeUUIDUtils</span><span class="o">.</span><span class="na">getTimeFromUUID</span><span class="o">(</span><span class="n">col</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Finally</p>
+</blockquote>
+
+<p>See also this <a href="http://blog.nikhilism.com/2012/04/apache-cassandra-iterate-over-all.html">article</a> for a nice way to iterate over a lot of columns, at least with some modifications attached.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Apache Cassandra And Time Series With Timeuuidtype In Java&url=https://callistaenterprise.se/blogg/teknik/2012/12/05/apache-cassandra-and-time-series-with-timeuuidtype-in-java/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Apache Cassandra And Time Series With Timeuuidtype In Java&u=https://callistaenterprise.se/blogg/teknik/2012/12/05/apache-cassandra-and-time-series-with-timeuuidtype-in-java/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Apache Cassandra And Time Series With Timeuuidtype In Java&url=https://callistaenterprise.se/blogg/teknik/2012/12/05/apache-cassandra-and-time-series-with-timeuuidtype-in-java/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Creating a Golf Distance app for Garmin devices | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Creating a Golf Distance app for Garmin devices</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-10-09T00:00:00+00:00">
+            09 October 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog we’ll do something quite different compared to the usual heavyweight stuff here on the blog. This blog post is 100 % guaranteed free from Microservices, Integration Patterns and ESB’s. We’ll build a “Golf Distance” smartwatch app for Garmin Connect IQ compatible devices.</p>
+
+<p><img src="../../../../../../assets/blogg/garmin-connect/frilagd-liten.jpg" alt="frilagd-liten.jpg" /></p>
+
+<h2 id="what-and-why">What and why</h2>
+<p>First of all, what is a “Golf Distance” application and why do I want one on my watch? Basically, as a golfer, you always want to know the distance to the green (and bunkers, water etc.) from any given point on the hole you’re currently playing. Either you buy a laser rangefinder, use some smartphone app, buy an expensive purpose-built device or you hire a kick-ass caddie. Or you decide your brand new Garmin Fenix 3 multisport watch should be able to do the job too. Only that it doesn’t. Quite natural as Garmin has a separate product line for those club-swinging wanna-be Tigers/Jordans/Stensons. However - to my great enjoyment many new Garmin devices supports custom app development and deployment through their Garmin Connect IQ SDK. So instead of spending $300 or so for a another device, I decided to go down the DIY route and brew my very own distance measurement application.</p>
+
+<p>Conceptually, it’s extremely simple. At 1-second intervals let the <a href="http://developer.garmin.com/connect-iq/developer-tools/positioning-sensors/">Positioning service</a> give us the current geoposition of the device. Golf course data, e.g. hole information such as hole index, hcp, par and geoposition of the centre of the green, can either be loaded over the built-in HTTP client from an external service (requires BlueTooth connection to phone), stored in an app-specific <a href="https://callistaenterprise.se/blogg/teknik/2015/10/09/garmin-connect/persistent">http://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/Application/AppBase.html#loadProperties-instance_method</a> property or plain hardcoded. For the selected course and current hole, just perform a distance calculation between current watch geoposition and centre green geoposition and render this as text to the screen together with some hole info.</p>
+
+<p>Example hard-coded course data, e.g. array of objects. Quite similar to javascript except the =&gt; instead of :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var testCourseHoles = [
+	{"hcp" =&gt; 7, "par" =&gt; 4, "lat" =&gt; 58.433293, "lon" =&gt; 11.376316},
+	{"hcp" =&gt; 13, "par" =&gt; 3, "lat" =&gt; 58.432704, "lon" =&gt; 11.374762},
+    ...
+    ...
+]
+</code></pre></div></div>
+
+<h2 id="monkey-c">Monkey C</h2>
+<p>This is the programming language you use when writing code for Connect IQ applications. It’s a nice little language having a lot more in common with Java, PHP or Python than C in my humble opinion. It’s object-oriented, uses reference count based memory management and is Duck Typed. I love this little quote from the official Monkey C docs about duck typing:</p>
+
+<p><em>“Duck typing is the concept that if it walks like a duck, and quacks like a duck, then it must be a duck”</em></p>
+
+<p>The code is very readable and easy to follow if you’re used to some of the languages mentioned above. Here’s a little snippet from the GolfDistance application where we declare a onHold function that the underlying framework will execute when a given button has been pressed for more than N seconds:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class KeyDelegate extends Ui.InputDelegate {
+
+	function onHold(key) {
+		Sys.println("onHold");
+		Ui.pushView(
+        	new Rez.Menus.MainMenu(), 
+        	new GolfDistanceMenuDelegate(), 
+            Ui.SLIDE_UP
+        );
+    	return true;
+	}
+}
+</code></pre></div></div>
+
+<p>Here’s another snippet with “import”-statements from our main “view” class:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>using Toybox.WatchUi as Ui;
+using Toybox.Graphics as Gfx;
+using Toybox.System as Sys;
+using Toybox.Lang as Lang;
+using Toybox.Position as Position;
+using Toybox.Math as Math;
+</code></pre></div></div>
+
+<p>Very similar to imports in java, with each imported module given an alias. Yes, <em>module</em>. Those aliased imports aren’t classes, they’re modules now available to use in the namespace of the given .mc file we’re working in. Scoping is somewhat loose in Monkey C. A .mc file can contain any number of classes, functions and variable declarations. Variables and methods declared outside of the class scope becomes global and can be accessed throughout the application. Imported modules are made available to all classes and functions declared in the file.</p>
+
+<p>Finally, let’s have a quick look at a function to calculate the equirectangular distance between two geopositions. It shows use of Math functions and built in number formatting on the duck-typed distance variable (probably a Double). No primitives in Monkey C btw.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function distance(lat1, lon1, lat2, lon2) {
+		var x = deg2rad((lon2 - lon1)) * Math.cos(deg2rad( (lat1 + lat2) / 2));
+		var y = deg2rad(lat2 - lat1);
+		var distance = Math.sqrt(x * x + y * y) * R;
+		return distance.format("%d");
+   	 }
+</code></pre></div></div>
+
+<h2 id="exploring-the-connect-iq-sdk">Exploring the Connect IQ SDK</h2>
+<p>Connect IQ applications runs in a virtual machine called Monkey Brains which exposes various APIs for accessing functionality from the underlying OS such a graphics, location services, storage and communication. The APIs are well <a href="http://developer.garmin.com/connect-iq/api-docs/">documented</a> and the limited scope for Connect IQ applications makes the APIs easy to comprehend and find one’s way around.</p>
+
+<p>One of the quirkier things to consider is probably familiar to mobile developers - how does the underlying framework help me differ different devices from another? Some Garmin units have round screens, other rectangular. Some might have color displays, other b&amp;w. Some units have certain sensors or features not available on others. Some uses touch screens, others buttons. Here is a list of <a href="http://developer.garmin.com/connect-iq/compatible-devices/">current compatible devices</a> directly from the manufacturer.</p>
+
+<p>The Connect IQ SDK lets developers sort this out using a number of mechanisms. First of all, <a href="http://developer.garmin.com/connect-iq/developer-tools/manifest-file/">manifest XML</a> files declaring app permissions, features required and similar stuff let’s the Garmin Connect Store show/hide your application from being installable on devices that’s never going to be able to run your app. Sounds rather similar to what Android does, right?</p>
+
+<p>Furthermore, application resources such as layouts, images and fonts can be either defined in a device-specific manner or be overridden for certain types of devices. User input (be it from a touchscreen or a button) is handled through an <a href="http://developer.garmin.com/downloads/connect-iq/monkey-c/doc/Toybox/WatchUi/InputDelegate.html">Input Delegate</a> that provides an abstraction letting you be key or touchscreen agnostic to a certain degree. Another mechanism is the ‘has’ keyword that during runtime can query the current device for support for a given API. This device doesn’t support barometric pressure? Ok, let’s hide that data field.</p>
+
+<p>There’s a lot more to the Connect IQ SDK, but it’s time we got started with some actual coding.</p>
+
+<p>Stop right there. Coding? Where do I code this stuff? Emacs? Notepad? Vi? Is there an IDE? Yes, there is an IDE - or at least a nicely working Eclipse Plug-in for Eclipse Luna. After installing the plug-in and SDK, building applications and running them in the simulator or on your device is straightforward and trouble-free. <a href="http://developer.garmin.com/connect-iq/getting-started/">Get started here</a>.</p>
+
+<p><img src="../../../../../../assets/blogg/garmin-connect/filetree.png" alt="filetree.png" /></p>
+
+<h2 id="application-architecture-and-boilerplate-code">Application architecture and boilerplate code</h2>
+<p>The heading sounds more heavyweight than it really is. The “architecture” of our application is more or less forced by Connect IQ and Monkey C conventions, but can be summarized in the sketch below:
+<img src="../../../../../../assets/blogg/garmin-connect/ConnectIQ.jpg" alt="ConnectIQ.jpg" /></p>
+
+<p>“<a href="https://github.com/eriklupander/Fenix3GolfDistance/tree/master/resources">Resources</a>” are the images, layouts, fonts, translatable texts and similar resources your application uses.</p>
+
+<p>The “<a href="https://github.com/eriklupander/Fenix3GolfDistance/blob/master/source/GolfDistanceApp.mc">App</a>” is the entry point, let’s say the “main()”-method lives there even though there is no main method. But so you Javaheads get it. The App class also has some lifecycle methods in it. Most importantly, it declares the initial view of the system and what InputDelegate subclass to use for handling user input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class GolfDistanceApp extends App.AppBase {
+
+	//! onStart() is called on application start up
+	function onStart() { }
+
+	//! onStop() is called when your application is exiting
+	function onStop() { }
+
+	//! Return the initial view of your application here
+	function getInitialView() {
+	    return [ new GolfDistanceView(), new KeyDelegate() ];
+	}
+}
+</code></pre></div></div>
+
+<p>The two input delegates takes care of key presses (InputDelegate) and Menu options (MenuInputDelegate), an example of such code was displayed earlier in this blog post.</p>
+
+<p>The <a href="https://github.com/eriklupander/Fenix3GolfDistance/blob/master/source/GolfDistanceView.mc">Ui.View</a> takes care of actual rendering and also a bit of application logic.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class GolfDistanceView extends Ui.View {
+
+	// Load your resources here
+	function onLayout(dc) {
+	    setLayout(Rez.Layouts.MainLayout(dc));
+	}
+
+	// Called when this View is brought to the foreground. Restore
+	// the state of this View and prepare it to be shown. This includes
+	// loading resources into memory.
+	function onShow() {
+		Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
+   	 }
+</code></pre></div></div>
+
+   	 // Update the view
+   	 function onUpdate(dc) {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	...... // We'll return to this!
+</code></pre></div></div>
+
+<p>It has a few lifecycle methods that let’s us specify the (XML-based) layout and an onShow() callback invoked when the View beomes visible.</p>
+
+<h2 id="getting-geoposition-and-passing-it-to-the-views">Getting geoposition and passing it to the views</h2>
+<p>That onShow() method invokes Position.enableLocationEvents that in our case tells the OS to give us continuous positional updates and to hand them as they become available to the <em>onPosition</em> method. Note the method reference using <em>:[methodName]</em>. Pretty nice!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function onPosition(geoPositionInfo) {
+    posnInfo = info;
+    Ui.requestUpdate();
+}
+</code></pre></div></div>
+
+<p>Above, we see us assigning the <em>geoPositionInfo</em> to the globally declared variable <em>posnInfo</em> and then requesting a Ui re-render which kicks off the <em>onUpdate()</em> method.</p>
+
+<h2 id="onupdate-and-the-rendering-lifecycle">onUpdate and the rendering lifecycle</h2>
+<p>The onUpdate() method contains the code that tells the UI rendering API what to render. To reduce memory and cpu cycles, the onUpdate() method needs to be explicitly invoked through Ui.requestUpdate() whenever the state has changed in such a way so the developer thinks the UI needs to be redrawn. In the GolfDistance application, each time a GPS position update is executed in the onPosition() method, we request an UI update. I also believe UI updates are performed when we let an Input event propagate from the event handler after our own stuff is done.</p>
+
+<h2 id="drawing-stuff">Drawing stuff</h2>
+<p>In the <em>function onUpdate(dc) {</em> method, we get a <em>deviceContext</em> as argument. Using the deviceContext, we can draw stuff to the screen. For a full set of what one can do, <a href="http://developer.garmin.com/connect-iq/api-docs/">check the docs</a>. In short, it’s quite standard canvas-drawing stuff such as drawText, drawBitmap, fillPolygon as well as useful helpers for getting screen dimensions and measuring text size given a certain font and string.</p>
+
+<p>In the GolfDistance app, we just draw text in various sizes, though it would be cool to do some graphical representation of distance left to hole. The current drawing code looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dc.setColor( Gfx.COLOR_TRANSPARENT, Gfx.COLOR_BLACK );
+dc.clear();
+dc.setColor( Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT );
+if( posnInfo != null ) {
+    	
+    var lat = posnInfo.position.toDegrees()[0];
+    var lon = posnInfo.position.toDegrees()[1];
+        
+    var distanceStr = "" + distance(lat.toFloat(), lon.toFloat(), 
+        	courses[currentCourseIdx]["holes"][currentHoleIdx]["lat"], 
+        	courses[currentCourseIdx]["holes"][currentHoleIdx]["lon"]);
+        
+    dc.drawText( (dc.getWidth() / 2), ((dc.getHeight() / 5) ), Gfx.FONT_NUMBER_THAI_HOT, distanceStr, Gfx.TEXT_JUSTIFY_CENTER );
+} else {
+    dc.drawText( (dc.getWidth() / 2), (dc.getHeight() / 2), Gfx.FONT_SMALL, "Waiting for GPS position...", Gfx.TEXT_JUSTIFY_CENTER );
+}
+</code></pre></div></div>
+
+<p>Simple enough - set current rendering color and clear screen using that color. Then switch to our preferred text rendering color and check whether we have any positionInfo available. If so, extract the latitude and longitude, pass those to the distance(..) method together with the coords from the current hole. Finally, call the drawText method where we specify x, y coords, font style (THAI_HOT?), the string to render and finally the justification. If there’s no positionData available yet (maybe the GPS hasn’t fixed the geoposition yet) we render an alternate text. That’s it!</p>
+
+<p>The full rendering code also renders a bit more text, it looks like this while waiting for position in the Simulator:</p>
+
+<p><img src="../../../../../../assets/blogg/garmin-connect/simulator.png" alt="simulator.png" /></p>
+
+<h2 id="installing-on-your-device">Installing on your device</h2>
+<p>This was another one of those “should this really be so simple” moments working with the Connect IQ SDK and its companion Eclipse plug-in.</p>
+
+<p><img src="../../../../../../assets/blogg/garmin-connect/building-to-device.png" alt="filetree.png" /></p>
+
+<p>Yes, the file system of the watch is mounted on the local computer and when the “.prg” file is placed in the APPS directory, the GolfDistance app will automatically appear in the list of applications. (See screenshot on top of this blog post)</p>
+
+<h2 id="publishing-an-app">Publishing an App</h2>
+<p>Garmin has an “<a href="https://apps.garmin.com/en-US/">app store</a>” for Connect IQ apps, watch faces etc. which developers can <a href="http://developer.garmin.com/connect-iq/submit-an-app/">submit</a> their apps to. It involves an approval process, so make sure <a href="http://developer.garmin.com/connect-iq/user-experience-guide/">developer guidelines</a> are adhered to. I assume Garmin will not approve apps that doesn’t function on devices declared as compatible in the manifest or crashes if a given feature doesn’t exist and isn’t gracefully handled etc.</p>
+
+<p>Garmin allows <a href="http://developer.garmin.com/connect-iq/user-experience-guide/">monetization</a> on apps published through the app store, though it seems that involves having companion smartphone applications for money, ANT+ hardware or some kind of paid subscription service through Garmin Connect.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Well, there’s not actually that much more to this application. There’s a nice-to-have function that starts recording distance traveled on a keypress and shows it until one presses the same button again. Useful when you want to measure the actual length of a given shot or when you just want to practice your distance measuring skills. Also, by long-pressing the up button the app goes into its context menu where one can pick which of the (currently hard-coded) golf courses you’re currently playing.</p>
+
+<p>Does it work? Absolutely! Used it quite a bit during the summer. Not that it helped my remedy my horrendous on-course performance, but that can’t be blamed on the watch.</p>
+
+<p>The <a href="https://github.com/eriklupander/Fenix3GolfDistance">full source code</a> can be found on my personal github page.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Garmin Connect&url=https://callistaenterprise.se/blogg/teknik/2015/10/09/garmin-connect/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Garmin Connect&u=https://callistaenterprise.se/blogg/teknik/2015/10/09/garmin-connect/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Garmin Connect&url=https://callistaenterprise.se/blogg/teknik/2015/10/09/garmin-connect/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

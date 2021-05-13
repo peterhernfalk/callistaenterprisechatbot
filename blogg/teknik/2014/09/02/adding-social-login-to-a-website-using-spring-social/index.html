@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Adding social login to a website using Spring Social | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Adding social login to a website using Spring Social</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2014-09-02T00:00:00+00:00">
+            02 September 2014
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Handling user registration and authentication on a website is hard, both for the users required to remember yet another pair of username/password and for developers implementing a secure handling of the user credentials. With requirements of more sophisticated login-methods such as <a href="http://en.wikipedia.org/wiki/Two_factor_authentication">two-factor authentication</a> and <a href="http://en.wikipedia.org/wiki/Single_sign-on">single sign-on</a> it gets even worse. A few years ago websites started to use <a href="http://en.wikipedia.org/wiki/Social_login">social login</a>, i.e. delegating the sign in process to <a href="http://en.wikipedia.org/wiki/Social_networking_service">social network services</a> such as Facebook, Twitter and Google+ allowing users to sign in to the website using their social network accounts.</p>
+
+<p>Initially <a href="http://en.wikipedia.org/wiki/Social_login">social login</a> was rather complex to setup and a number of commercial offerings from <em>social network integration providers</em> evolved to simplify the setup. Today a free and open source based alternative exists, the <a href="http://projects.spring.io/spring-social/">Spring Social</a> project.</p>
+
+<p>This blog will describe how <a href="http://projects.spring.io/spring-social/">Spring Social</a> can be used to setup social login for a sample website. The login page looks like:</p>
+
+<p></p>
+
+<p><img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/login.png" alt="" /></p>
+
+<p>Before we delve into the details let’s go through some background on the subject…</p>
+
+<h2 id="background">Background</h2>
+<p>The benefits of social login are two-folded.</p>
+
+<ol>
+  <li>Website users can benefit from single sign-on using their social networking accounts to identify themselves for the website.</li>
+  <li>Website developers can use social login to automatically create local account for the user in the website based on the login information from the selected social network. As a website developer you can delegate the authentication process to the social network services.</li>
+</ol>
+
+<p>To enable social login an open standard, <a href="http://en.wikipedia.org/wiki/OAuth">OAuth</a>, is used. The main purpose of OAuth is actually to standardize on how a client application can be given <em>authorization</em> from a user (resource owner) to access server resources on behalf of the user, typically through an API that the service provide. But since <em>authorization</em> requires <em>authentication</em>, authentication is also provided by the social network services in various forms.</p>
+
+<p>Going through the details of the OAuth standard is out of scope for this blog but Jacob Jenkov’s <a href="http://tutorials.jenkov.com/oauth2/index.html">tutorial on OAuth 2.0</a> is recommend for the interested reader, where Jacob explains the steps in “<em>the OAuth dance</em>” illustrated in his tutorial as:</p>
+
+<p><img src="http://tutorials.jenkov.com/images/oauth2/overview-1.png" alt="OAuth 2.0" style="width: 387px; " /></p>
+
+<p>In 2011 an open source based project, <a href="http://projects.spring.io/spring-social/">Spring Social</a>, was created, as a subproject in the <a href="http://spring.io/projects">Spring family</a>, with the target to simplify access to social networking services from Java. In April 2014 v1.1 was released with support for Twitter, Facebook and LinkedIn and with, as of today, support for some 30 more social network services as either incubator or community projects.</p>
+
+<p>The Spring Social project provides:</p>
+
+<ul>
+  <li>A standard way to get access to the social network specific API’s with Java bindings to popular service provider APIs such as Facebook, Twitter, LinkedIn and GitHub.</li>
+  <li>An extensible service provider framework that greatly simplifies the process of connecting local user accounts to social network provider accounts.</li>
+  <li>Integration with Spring Security and Spring MVC
+    <ul>
+      <li>A connect controller that handles the authorization flow between your Java/Spring web application, a service provider, and your users.</li>
+      <li>A sign-in controller that enables users to authenticate with your application by signing in through a service provider.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>For more information regarding the Spring Social project and how it works see its <a href="http://docs.spring.io/spring-social/docs/1.1.0.RELEASE/reference/htmlsingle/">reference documentation</a>.</p>
+
+<h2 id="the-sample-website">The sample website</h2>
+<p>The sample website is designed to be as simple as possible providing:</p>
+
+<ul>
+  <li>a <em>login page</em>, allowing the user to login using his account at Facebook, Twitter, LinkedIn, Google+, Windows Live or GitHub</li>
+  <li>a <em>main page</em>, where the user can see some basic profile information and enter some data in the website’s database that is connected to the login</li>
+  <li>an <em>error page</em>, in case of that anything goes wrong…</li>
+</ul>
+
+<p>When the user clicks on one of the login buttons in the login page (see above) he will be redirected to the selected social network service login page (if not already logged in) and if this is the first time the website is used the social network service will also ask for permissions to share the users login information with the website. This is done in a different ways, for example Twitter displays a combined web page where the user both can login and give its consent:</p>
+
+<p><img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/twitter-login.png" alt="" /></p>
+
+<p>Once the user is signed in the main page will display some profile information in the upper right corner and present a form where the user can store some data in the website. When using Facebook it looks like:
+<img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/main-facebook.png" alt="" /></p>
+
+<p>…and when a user is signed in using LinkedIn the main page looks like:
+<img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/main-linkedin.png" alt="" /></p>
+
+<p>Clicking on the username in the upper right corner takes you to the profile page of the selected social network service, e.g. for LinkedIn:
+<img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/linkedin-profile.png" alt="" /></p>
+
+<h2 id="get-the-source-code">Get the source code</h2>
+<p>If you want to check out the source code (see below for how to build and run it) you need to have Git installed. Then perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-social-login-with-spring-social.git
+$ cd blog-social-login-with-spring-social
+$ git checkout -b my-branch-1.0 v1.0
+$ tree
+</code></pre></div></div>
+
+<h2 id="adding-spring-social-to-a-web-project">Adding Spring Social to a web project</h2>
+
+<p>The sample website use Spring Social to login users from a list of social networks and automatically create an internal user-account that is connected to the social network login. The sample website also demonstrates how a user can store user specific data and that the user can continue to work with the data the next time the user sing in using the same social network login.</p>
+
+<p>The sample website is based on <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> (<a href="https://callistaenterprise.se/teknik/blogg/2014/04/15/a-first-look-at-spring-boot/">blog</a>) and <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a> using <a href="http://www.thymeleaf.org/">Thymeleaf</a> for page rendering and <a href="http://getbootstrap.com/">Bootstrap</a> for CSS based layout of the HTML pages. It also use <a href="http://projects.spring.io/spring-security/">Spring Security</a> and <a href="http://projects.spring.io/spring-data-jpa/">Spring Data JPA</a> to simplify the Spring Social integration with the web pages and the database storage. During development it use <a href="http://www.h2database.com/html/main.html">H2</a> as a in-memory database. The website is built using <a href="index.html">Gradle</a> (<a href="https://callistaenterprise.se/teknik/blogg/2014/04/14/a-first-look-at-gradle/">blog</a>).</p>
+
+<h3 id="setup-dependencies">Setup dependencies</h3>
+
+<p>To bring in Spring Social with the providers for the selected social networks into the project we only have to add the following to our Gradle build file, <code class="language-plaintext highlighter-rouge">build.gradle</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-security:1.1.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-config:1.1.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-facebook:1.1.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-twitter:1.1.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-linkedin:1.0.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-github:1.0.0.M4"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-google:1.0.0.RELEASE"</span><span class="o">)</span>
+<span class="n">compile</span><span class="o">(</span><span class="s">"org.springframework.social:spring-social-live:1.0.0-SNAPSHOT"</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">exclude</span> <span class="nl">group:</span> <span class="err">'</span><span class="n">javax</span><span class="o">.</span><span class="na">servlet</span><span class="err">'</span><span class="o">,</span> <span class="nl">module:</span> <span class="err">'</span><span class="n">servlet</span><span class="o">-</span><span class="n">api</span><span class="err">'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>Once we have the dependencies in place we can configure Spring Social. We need to first specify a security filter and next setup the selected social network providers.</p>
+
+<h4 id="configure-a-security-filter">Configure a security filter</h4>
+<p>First we have to setup a security filter, <code class="language-plaintext highlighter-rouge">SocialAuthenticationFilter</code>, provided by Spring Social to integrate with Spring Security so that a social network provider can be activated when a user needs to be authenticated. The security filer will listen to URL’s that start with <code class="language-plaintext highlighter-rouge">/auth</code> and route incoming requests to the corresponding social network provider. E.g. a request sent to <code class="language-plaintext highlighter-rouge">/auth/facebook</code> will be redirected to the Facebook provider. The security filter is configured by an <code class="language-plaintext highlighter-rouge">SpringSocialConfigurer</code>-instance in the class <code class="language-plaintext highlighter-rouge">SecurityConfiguration</code> like:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebMvcSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfiguration</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">formLogin</span><span class="o">()...</span>
+        <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="k">new</span> <span class="nc">SpringSocialConfigurer</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">postLoginUrl</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">alwaysUsePostLoginUrl</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="configure-the-providers">Configure the providers</h4>
+<p>Next we have to configure each provider with the standard OAuth Client Id and Client Secret properties. This is done in the class <code class="language-plaintext highlighter-rouge">SocialConfigurer</code> where we add a connection factory implementation for each social network service (the example only shows two of the six to save some space):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableSocial</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SocialConfig</span> <span class="kd">implements</span> <span class="nc">SocialConfigurer</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addConnectionFactories</span><span class="o">(</span><span class="nc">ConnectionFactoryConfigurer</span> <span class="n">connectionFactoryConfigurer</span><span class="o">,</span> <span class="nc">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">connectionFactoryConfigurer</span><span class="o">.</span><span class="na">addConnectionFactory</span><span class="o">(</span><span class="k">new</span> <span class="nc">FacebookConnectionFactory</span><span class="o">(</span>
+            <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"spring.social.facebook.appId"</span><span class="o">),</span>
+            <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"spring.social.facebook.appSecret"</span><span class="o">)));</span>
+        <span class="o">....</span>
+        <span class="n">connectionFactoryConfigurer</span><span class="o">.</span><span class="na">addConnectionFactory</span><span class="o">(</span><span class="k">new</span> <span class="nc">LiveConnectionFactory</span><span class="o">(</span>
+            <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"spring.social.live.appId"</span><span class="o">),</span>
+            <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"spring.social.live.appSecret"</span><span class="o">)));</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>We specify the properties in the <code class="language-plaintext highlighter-rouge">application.properties</code> - file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.social.facebook.appId=...add your Client Id here...
+spring.social.facebook.appSecret=...add your Client Secret here...
+...
+spring.social.live.appId=...add your Client Id here...
+spring.social.live.appSecret=...add your Client Secret here...
+</code></pre></div></div>
+
+<p>See below for how to get access to you own Client Id’s and Client Secrets.</p>
+
+<h4 id="create-website-userid-and-local-account">Create website userId and local account</h4>
+<p>When it comes to creating a local user account connected to the social network service account most of the machinery is handled by the Spring Social project but we have to supply some logic to define how to:</p>
+
+<ul>
+  <li>create an internal userId for a new user in the local account</li>
+  <li>load user information when a user logs in using a social network provider</li>
+</ul>
+
+<p>Se the classes in the <code class="language-plaintext highlighter-rouge">services</code> package for details.</p>
+
+<h3 id="add-social-login-buttons-and-profile-information-to-the-html-pages">Add social login buttons and profile information to the html-pages</h3>
+
+<p>With the configuration in place we can now login a user using social login by declaring a set of login buttons in the <code class="language-plaintext highlighter-rouge">login.html</code> page like:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;table style="border-collapse: separate; border-spacing: 2px"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/linkedin}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;LinkedIn&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/facebook}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Facebook&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/twitter}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Twitter&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/live(scope='wl.signin,wl.basic')}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Microsoft&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/github}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Github&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a th:href="@{/auth/google(scope='profile')}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Google+&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+
+<p>We are using <a href="http://lipis.github.io/bootstrap-social/">Bootstrap Social Buttons</a> for the login buttons. See the source code for details on CSS usage to render the buttons.</p>
+
+<p>The information for each users connection to his social network service account is stored in a set of tables defined by Spring Security and Spring Social:
+<img src="../../../../../../assets/blogg/adding-social-login-to-a-website-using-spring-social/entity-model.png" alt="" /></p>
+
+<p>Some notes on the data model:</p>
+
+<ul>
+  <li>No real username nor password is stored in the <code class="language-plaintext highlighter-rouge">USERS</code>-table. The table is defined by Spring Security for general purpose usage and not specific for social login use-cases.</li>
+  <li>The table <code class="language-plaintext highlighter-rouge">DATA</code> is the only table that is specific to our sample website and it holds the data that the user enters in the main page.</li>
+  <li>The profile information displayed on the main page comes from the <code class="language-plaintext highlighter-rouge">USERCONNECTION</code>-table and is stored in a model-element by the Spring MVC controller, <code class="language-plaintext highlighter-rouge">MainController.java</code>, so that the Thymeleaf template engine can render it on the HTML pages using a html-framgent, <code class="language-plaintext highlighter-rouge">header.html</code>, as:</li>
+</ul>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;a th:href="${currentUserConnection.profileUrl}" class="navbar-link"&gt;
+  &lt;span th:text="${currentUserDisplayName}"/&gt;
+&lt;/a&gt;
+&lt;img th:src="${currentUserConnection.imageUrl}" width="32" height="32" /&gt;
+</code></pre>
+
+<h2 id="try-it-out">Try it out</h2>
+
+<p>To be able to build and run the sample code you need: Java SE 7, Gradle and Maven 3.</p>
+
+<p>Before you can build the source code you checked out earlier you first have to build one of the providers, the Windows Live provider, since it is yet in its early days:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git@github.com:sachin-handiekar/spring-social-live.git
+$ cd spring-social-live
+$ mvn install
+</code></pre></div></div>
+
+<p>Now you can build the sample project:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd .../blog-social-login-with-spring-social
+$ ./gradlew build
+</code></pre></div></div>
+
+<p>Before you actually can run the project you have to register your own applications at the social network services, since I don’t want to share my OAuth 2 Client Secrets with you (and I should not!). You can register your own application using the following links:</p>
+
+<ul>
+  <li><a href="https://developers.facebook.com/apps">Facebook</a>, <a href="https://apps.twitter.com">Twitter</a>, <a href="https://www.linkedin.com/secure/developer">LinkedIn</a>, <a href="https://console.developers.google.com/project">Google+</a>, <a href="https://account.live.com/developers/applications">Windows Live</a> and <a href="https://github.com/settings/applications">GitHub</a></li>
+</ul>
+
+<p>Some of the social network services don’t accept <code class="language-plaintext highlighter-rouge">localhost</code> as a hostname or <code class="language-plaintext highlighter-rouge">.local</code> as part of the hostname in the Redirect URI that you need to register for your application. Instead of setting up a fully-fledged DNS-hostname for my PC I created a made-up hostname, e.g. <code class="language-plaintext highlighter-rouge">my.host.org</code> that I used as the Redirect URI. I also added it to my <code class="language-plaintext highlighter-rouge">/etc/hosts</code> -file like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1	my.host.org
+</code></pre></div></div>
+
+<p>The Redirect URI is only resolved by the web browser, not by the social network services, so it is ok that only your web browser knows how to translate the made-up hostname.</p>
+
+<p>When you deploy it for real use you should of course replace it with a real DNS hostname!</p>
+
+<p><strong>Note</strong>. Microsoft has chosen to add an extra security check on the Redirect URI so they will not accept a made-up hostname. However they do accept localhost as a hostname so if you look carefully in the <code class="language-plaintext highlighter-rouge">login.html</code> page you can see that I have overridden the Redirect URI for the Windows Live provider as:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;td&gt;&lt;a th:href="@{/auth/live(scope='wl.signin,wl.basic',
+redirect_uri='http://localhost:8080/auth/live')}" class="..."&gt;&lt;i class="..."&gt;&lt;/i&gt;Microsoft&lt;/a&gt;&lt;/td&gt;
+</code></pre>
+
+<p>Now you can start the website with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./gradlew bootRun
+</code></pre></div></div>
+
+<p>Go to a web browser on a machine that can translate the hostname <code class="language-plaintext highlighter-rouge">my.host.org</code> (typically your own PC) and enter the URL <code class="language-plaintext highlighter-rouge">http://my.host.org:8080</code> and you should see the login page as displayed above.</p>
+
+<p>Have fun playing with the social login using the various social network services!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Adding Social Login To A Website Using Spring Social&url=https://callistaenterprise.se/blogg/teknik/2014/09/02/adding-social-login-to-a-website-using-spring-social/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Adding Social Login To A Website Using Spring Social&u=https://callistaenterprise.se/blogg/teknik/2014/09/02/adding-social-login-to-a-website-using-spring-social/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Adding Social Login To A Website Using Spring Social&url=https://callistaenterprise.se/blogg/teknik/2014/09/02/adding-social-login-to-a-website-using-spring-social/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

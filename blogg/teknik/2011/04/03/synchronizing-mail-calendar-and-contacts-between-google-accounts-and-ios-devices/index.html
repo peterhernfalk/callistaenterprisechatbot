@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Synchronizing Mail, Calendar and Contacts between Google accounts and iOS devices | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Christian Hilmersson" src="../../../../../../assets/medarbetare/christianhilmersson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Synchronizing Mail, Calendar and Contacts between Google accounts and iOS devices</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-04-03T00:00:00+00:00">
+            03 April 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Christian Hilmersson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Since people are using more and more devices to manage communication and planning data in their daily life, both for personal and professional use, there seems to be a growing challenge to keep the data on all those devices up to date and synchronized.</p>
+
+<p></p>
+
+<p>As most devices (smart phones, tablets, laptops etc) are online these days it might obviously be a good idea to let them work with the same online master data, such as a for example a Google Apps or a Gmail account, for synchronizing calendars, mail and contact information.</p>
+
+<p>The longer title of this article would be <strong>Synchronizing Mail, Calendar and Contacts between Google Apps or Gmail accounts and iOS devices (iPhone, iPad, iPod Touch)</strong> and as the title hints, this article describes one way of getting your Apple iOS devices synchronized with your Google Apps account (or ordinary Gmail accounts) in terms of calendars, mail and contacts utilizing Microsoft Exchange as protocol for instant synchronization (using push).</p>
+
+<h2 id="create-a-google-account">Create a Google account</h2>
+<p>First of all you need to have a Google Apps or Gmail account, which you probably already have if you are reading 	this. Otherwise you can create one here: <a href="http://apps.google.com/">http://apps.google.com</a> or here: <a href="https://www.google.com/accounts/NewAccount?service=mail">https://www.google.com/accounts/NewAccount?service=mail</a></p>
+
+<h2 id="important-notice">Important notice</h2>
+<p>It is a good idea to follow Google’s and Apple’s recommendations to backup your existing data before setting 	up synchronization to be on the safe side if something unexpected should happen during the synchronization process.</p>
+
+<h2 id="managing-google-sync-configuring-which-calendars-to-synchronize-with-your-device">Managing Google Sync (configuring which calendars to synchronize with your device)</h2>
+<p>The following has to be done on each device for which you want to configure Google Sync. And also once for each account, if you have more than one.</p>
+
+<ol>
+  <li>At your device, open up a browser pointing at <a href="http://m.google.com/sync">http://m.google.com</a></li>
+  <li>Tap in the square near the bottom saying something like <strong>Are you using Google Apps? Click Here to configure your domain</strong> and a dialog will appear.</li>
+  <li>In the dialog box saying <strong>Enter your Google Apps-domain</strong> enter your Google Apps domain e.g. <code class="language-plaintext highlighter-rouge">mycompany.com</code> and press the button to save your domain.</li>
+  <li>Tap on one of your Google Apps, for example the Calendar. Just to get to your Google Apps login 	page.</li>
+  <li>Login with your Google Apps credentials.</li>
+  <li>Now, while you are logged in to your account, open up the URL <a href="http://m.google.com/sync">http://m.google.com/sync</a></li>
+</ol>
+
+<blockquote>
+  <p>If you get an error messages  saying that your device is not supported, try tapping the <strong>Change language</strong> button and change language to English (US)</p>
+</blockquote>
+
+<ol>
+  <li>You should now have got a list of your devices that are registered for synchronization.</li>
+  <li>Tap on the device you want to manage synchronization for, e.g. iPad.</li>
+  <li>In the opened view you can choose which calendars you want to be synchronized to your device.</li>
+</ol>
+
+<h2 id="adding-the-account-to-your-device">Adding the account to your device</h2>
+<ol>
+  <li>Start up the Settings app and open the <strong>E-mail, contacts, calendars</strong> section.</li>
+  <li>Tap the <strong>Add new account…</strong>, choose <strong>Microsoft Exchange</strong> and enter the following:
+    <ol>
+      <li>E-mail; enter your e-mail address e.g. <code class="language-plaintext highlighter-rouge">your.mail@mycompany.com</code> (<code class="language-plaintext highlighter-rouge">your.mail@gmail.com</code> if Gmail account).</li>
+      <li>Domain; Leave blank</li>
+      <li>Username; enter your e-mail address e.g. <code class="language-plaintext highlighter-rouge">your.mail@mycompany.com</code> (<code class="language-plaintext highlighter-rouge">your.mail@gmail.com</code> if Gmail account)</li>
+      <li>Password; enter your Google Apps/Gmail password</li>
+      <li>Description: Give a short description of the account e.g. <code class="language-plaintext highlighter-rouge">My Company</code></li>
+    </ol>
+  </li>
+  <li>Tap <strong>Next</strong> and a Server field will appear
+    <ol>
+      <li>Server; enter <code class="language-plaintext highlighter-rouge">m.google.com</code></li>
+    </ol>
+  </li>
+  <li>Choose what you want to synchronize (Mail, Contacts and Calendars)</li>
+</ol>
+
+<h2 id="ready-to-go">Ready to go</h2>
+<p>Your account is now configured and your device will start to synchronize mail, contacts and your chosen calendars in the background (if you choosed push). After a 	couple of minutes your account should be synchronized and the data will be visible in 	their respective iOS app (Calendar, Mail and Contacts).</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Synchronizing Mail Calendar And Contacts Between Google Accounts And Ios Devices&url=https://callistaenterprise.se/blogg/teknik/2011/04/03/synchronizing-mail-calendar-and-contacts-between-google-accounts-and-ios-devices/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Synchronizing Mail Calendar And Contacts Between Google Accounts And Ios Devices&u=https://callistaenterprise.se/blogg/teknik/2011/04/03/synchronizing-mail-calendar-and-contacts-between-google-accounts-and-ios-devices/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Synchronizing Mail Calendar And Contacts Between Google Accounts And Ios Devices&url=https://callistaenterprise.se/blogg/teknik/2011/04/03/synchronizing-mail-calendar-and-contacts-between-google-accounts-and-ios-devices/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

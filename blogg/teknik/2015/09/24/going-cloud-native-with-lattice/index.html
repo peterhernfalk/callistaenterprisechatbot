@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>SpringOne2GX 2015 - Going Cloud Native (locally) with Lattice | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Ola Deibitsch" src="../../../../../../assets/medarbetare/oladeibitsch_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">SpringOne2GX 2015 - Going Cloud Native (locally) with Lattice</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-09-24T00:00:00+00:00">
+            24 September 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/oladeibitsch/index.html">Ola Deibitsch</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>During SpringOne2GX I listened to Matt Stine´s presentation about Lattice, a stripped-down version of <a href="https://www.cloudfoundry.org/">Cloud Foundry</a> which really lowers the barrier to get started to develop and test cloud-native architectures…</p>
+
+<p></p>
+
+<p>…literally speaking, Lattice enables a kickstart for developers to install micro-cloud environments on the their local desktops. Lattice reduces the overall footprint from an infrastructure perspective and allows to get started in just minutes.</p>
+
+<h1 id="lattice-architecture">Lattice Architecture</h1>
+<p>Behind the scenes, we recognize the following <a href="https://raw.githubusercontent.com/cloudfoundry-incubator/diego-design-notes/master/diego-overview.png">components</a> from Cloud Foundry:</p>
+
+<ul>
+  <li><a href="https://github.com/cloudfoundry/gorouter">Router</a> is responsible for load balancing traffic across running containers which can be updated dynamically as applications are launched or spun down.</li>
+  <li><a href="https://github.com/cloudfoundry-incubator/diego">Diego</a> the Cloud Foundry’s upcoming elastic runtime for containers. Diego is responsible for scheduling and running containerized workloads.</li>
+  <li><a href="https://github.com/cloudfoundry/loggregator">Doppler/Loggregator</a> is responsible for streaming logs out of running containers.</li>
+</ul>
+
+<p>Lattice consists of:</p>
+
+<ul>
+  <li>Cluster Scheduling</li>
+  <li>Load Balancing (HA Proxy)</li>
+  <li>Health Management</li>
+  <li>Log Aggregation</li>
+</ul>
+
+<h1 id="installation">Installation</h1>
+<p>Lattice is installed easiest by using Vagrant (Mac OS X):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl https://lattice.s3.amazonaws.com/nightly/lattice-bundle-v0.4.3-osx.zip
+$ unzip lattice-bundle-v0.4.3-osx
+$ cd lattice-bundle-v0.4.3-osx/vagrant
+  
+$ vagrant up
+</code></pre></div></div>
+
+<p>Within minutes, a Lattice VM will be reachable at 192.168.11.11.</p>
+
+<p>To be able to interact with Diego, Lattice offers a <a href="https://en.wikipedia.org/wiki/Command-line_interface">CLI</a>, also refered to as <code class="language-plaintext highlighter-rouge">ltc</code>, that help to manage the <a href="https://github.com/cloudfoundry-incubator/garden">Garden</a> containers.</p>
+
+<p>The Lattice CLI is a downloaded as a part of the “lattice-bundle” and in order to connect to the Lattice VM, we are using the <code class="language-plaintext highlighter-rouge">ltc</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd lattice-bundle-v0.4.3-osx
+$ ltc target 192.168.11.11.xip.io
+</code></pre></div></div>
+
+<p>To lists applications and tasks running on Lattice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc list
+</code></pre></div></div>
+
+<h1 id="deployment">Deployment</h1>
+<p>Lattice makes deployment of applications very simple and straightforward. The following demo will utilize <a href="http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html">Spring Cloud Config</a> to provide server and client support for externalized configuration.</p>
+
+<p>In order to show different deployment options with Lattice, I let the server (refered as “config server”) to be deployad as a docker container given an existing image from <code class="language-plaintext highlighter-rouge">Docker Hub</code>. A simple client (refered as “config client”) will be deployed as a minimal Spring Boot application into a droplet container.</p>
+
+<p>The client application also supports updating the properties dynamically. This is by adding a @RefreshScope annotation and a dependency to the Spring Boot Actuator.</p>
+
+<h2 id="deployment-of-a-docker-image">Deployment of a Docker Image</h2>
+<p>Now, the next step is to install the <code class="language-plaintext highlighter-rouge">config-server</code> from a Docker Hub:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc create config-server springcloud/configserver --run-as-root --memory-mb 256 --env spring.cloud.config.server.git.uri=https://github.com/deibitsch/config-repo
+</code></pre></div></div>
+
+<p>Verify that the <code class="language-plaintext highlighter-rouge">config-server</code> application is up and running on Lattice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc status config-server
+</code></pre></div></div>
+
+<h2 id="deployment-of-a-droplet">Deployment of a Droplet</h2>
+<p>This shows how to clone, build and deploy a minimal Spring Boot application into a <code class="language-plaintext highlighter-rouge">Dropet</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ~/Documents/Development/git-repos
+$ git clone https://github.com/deibitsch/config-client.git
+$ cd config-client
+$ mvn clean install
+</code></pre></div></div>
+
+<p>Build <code class="language-plaintext highlighter-rouge">config-client</code> into a droplet using a CF buildpack:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc build-droplet config-client java -p ~/Documents/Development/git-repos/config-client/target/config-client-0.0.1-SNAPSHOT.jar --env spring.cloud.config.uri=http://config-server.192.168.11.11.xip.io
+</code></pre></div></div>
+
+<p>List existing droplets:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc list-droplets
+</code></pre></div></div>
+
+<p>Launch a the droplet as an app running on Lattice by:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc launch-droplet config-client config-client
+</code></pre></div></div>
+
+<p>Verify the <code class="language-plaintext highlighter-rouge">config-client</code> app on Lattice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc status config-client
+</code></pre></div></div>
+
+<p>The client application has two endpoints:</p>
+
+<ul>
+  <li>/ returns greeting message (“HELLO LATTICE”)</li>
+  <li>/refresh enables to refresh properties from central repository (git backend) using “config-server”.</li>
+</ul>
+
+<p>You should be able to visit http://config-client.192.168.11.11.xip.io in your browser.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ open http://config-client.192.168.11.11.xip.io
+</code></pre></div></div>
+
+<p>The property <code class="language-plaintext highlighter-rouge">greeting.message</code> can now be dynamically updated by applying a new value to <code class="language-plaintext highlighter-rouge">config-client.properties</code> in central git-repo. The invocation (HTTP POST) of the <code class="language-plaintext highlighter-rouge">/refresh</code> endpoint will update property due to <code class="language-plaintext highlighter-rouge">@RefreshScope</code> annotation in the <code class="language-plaintext highlighter-rouge">config-client</code> application.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST http://config-client.192.168.11.11.xip.io/refresh
+</code></pre></div></div>
+
+<p>The updated property should be updated if you refresh http://config-client.192.168.11.11.xip.io in your browser.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ open http://config-client.192.168.11.11.xip.io
+</code></pre></div></div>
+
+<h1 id="logging">Logging</h1>
+<p>The Lattice CLI enables to stream logs from a specific application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc logs config-client
+</code></pre></div></div>
+
+<p>Simply, invoke the “/refresh” endpoint resulting in log messages to be visible in the terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST http://config-client.192.168.11.11.xip.io/refresh
+</code></pre></div></div>
+
+<h1 id="scaling">Scaling</h1>
+<p>In order to scale up the number of instances of the client application:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc scale config-client 2
+</code></pre></div></div>
+
+<p>Verify that there are two instances running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ltc status config-client
+</code></pre></div></div>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Going Cloud Native With Lattice&url=https://callistaenterprise.se/blogg/teknik/2015/09/24/going-cloud-native-with-lattice/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Going Cloud Native With Lattice&u=https://callistaenterprise.se/blogg/teknik/2015/09/24/going-cloud-native-with-lattice/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Going Cloud Native With Lattice&url=https://callistaenterprise.se/blogg/teknik/2015/09/24/going-cloud-native-with-lattice/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

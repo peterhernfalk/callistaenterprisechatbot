@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Creating self-signed certificates for use on Android | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Marcus Krantz" src="../../../../../../assets/medarbetare/marcuskrantz_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Creating self-signed certificates for use on Android</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-11-24T00:00:00+00:00">
+            24 November 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Marcus Krantz
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>A while ago I started to implement TLS/SSL mutual authentication on Android. How to actually implement the functionality on the Android platform is covered in my other article <a href="../android-tlsssl-mutual-authentication/index.html">Android - TLS/SSL Mutual Authentication</a>. Before such implementation can be done, it is important to have the keys and certificates prepared. In this article demonstrate how you can create these. However, this article is not just applicable to Android and should be usable in other scenarios as well.</p>
+
+<p></p>
+
+<p>For this article to be useful, the required tools are: openssl, Java’s Keytool and the <a href="http://www.bouncycastle.org/latest_releases.html">BouncyCastle-provider</a>. There are also some resources that I strongly recommend and has been very useful:</p>
+
+<ul>
+  <li><a href="http://www.tldp.org/HOWTO/SSL-Certificates-HOWTO/">SSL Certificates Howto</a></li>
+  <li><a href="http://www.openssl.org/docs/HOWTO/keys.txt">OpenSSL Keys Howto</a></li>
+  <li><a href="http://www.openssl.org/docs/HOWTO/certificates.txt">OpenSSL Certificates Howto</a></li>
+  <li><a href="http://download.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html">Java Keytool</a></li>
+</ul>
+
+<p>One might argue why I don’t use keytool to generate the keys and certificates and use them right away. Well, I was very curious about learning more about openssl and how to deal with various formats of keys and certificates.</p>
+
+<h2 id="1-create-private-keys">1. Create private keys</h2>
+<p>Let’s start from scratch. First of all we need private keys. We use openssl to create these:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl genrsa -des3 -out client_key.pem 2048
+$ openssl genrsa -des3 -out server_key.pem 2048
+</code></pre></div></div>
+
+<p>This will create the two keys; <code class="language-plaintext highlighter-rouge">client.pem</code> and <code class="language-plaintext highlighter-rouge">server.pem</code>. We will use these in the next step to sign our certificates with. In normal cases we would create a CA-signing request, that is sent to a CA who will issue your certificates. But since we want to self-sign our certificates this step is redundant.</p>
+
+<h2 id="2-create-self-signed-certificates">2. Create self-signed certificates</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl req -new -x509 -key client_key.pem -out client.pem -days 365
+$ openssl req -new -x509 -key server_key.pem -out server.pem -days 365
+</code></pre></div></div>
+
+<p>Additionally, instead of being prompted for the certificate’s subject line you can use the <code class="language-plaintext highlighter-rouge">-subj</code> parameter and pass it to the <code class="language-plaintext highlighter-rouge">openssl req</code> command. What we just did was basically creating a CA signing request using our private keys to sign the outgoing x509-certificates. The certificates will be coded in pem-format and valid for 365 days.</p>
+
+<h2 id="3-create-trust-stores">3. Create trust stores</h2>
+<p>In order to use our keys and certificates in Java applications we need to import them into keystores. First of all, we want the client to trust the server certificate. To do this we must create a client trust store and import the server’s certificate.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ keytool –importcert -trustcacerts –keystore clienttruststore.bks –storetype bks –storepass &lt;truststore_password&gt; -file server.pem -provider org.bouncycastle.jce.provider.BouncyCastleProvider –providerpath &lt;path_to_bcprov_jar&gt;
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> On the client side, which in our case will be an Android app we use Bouncy Castle as our provider since it is supported on the Android platform.</p>
+</blockquote>
+
+<p>Create a trust store for the server and import the client’s certificate into it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ keytool –importcert -trustcacerts –keystore  servertruststore.jks –storetype jks –storepass &lt;server_truststore_password&gt; -file client.pem
+</code></pre></div></div>
+
+<p>Currently, we have two trust stores one for the server in which we imported the client’s certificate and one for the client in which we imported the server’s certificate.</p>
+
+<h2 id="4-combine-keys-and-certificates">4. Combine keys and certificates</h2>
+<p>A problem with Java’s keytool application is that it won’t let us do such a simple thing as importing an existing private key into a keystore. The workaround to this problem is to combine the private key with the certificate into a pkcs12-file (which is understood by Java’s keytool) and then import this pkcs12 keystore into a regular keystore.</p>
+
+<p>Combine the certificate and the private key for the server and client respectively:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl pkcs12 –export –inkey  client_key.pem –in client.pem –out  client.p12
+$ openssl pkcs12 –export –inkey server_key.pem –in server.pem –out server.p12
+</code></pre></div></div>
+
+<h2 id="5-convert-from-pkcs12">5. Convert from pkcs12</h2>
+<p>Import the created keystores to new ones with common formats:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ keytool –importkeystore –srckeystore client.p12 –srcstoretype pkcs12 –destkeystore client.bks –deststoretype bks –provider org.bouncycastle.jce.provider.BouncyCastleProvider –providerpath &lt;path_to_bcprov_jar&gt;
+$ keytool –importkeystore –srckeystore server.p12 –srcstoretype pkcs12 –destkeystore server.jks –deststoretype jks
+</code></pre></div></div>
+
+<p>We should now have all files we need for a successful TLS/SSL mutual authentication. The files we move to our Android project will be: <code class="language-plaintext highlighter-rouge">clienttruststore.bks</code> and <code class="language-plaintext highlighter-rouge">client.bks</code>. The files we move to our server will be: <code class="language-plaintext highlighter-rouge">servertruststore.jks</code> and <code class="language-plaintext highlighter-rouge">server.jks</code>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Creating Self Signed Certificates For Use On Android&url=https://callistaenterprise.se/blogg/teknik/2011/11/24/creating-self-signed-certificates-for-use-on-android/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Creating Self Signed Certificates For Use On Android&u=https://callistaenterprise.se/blogg/teknik/2011/11/24/creating-self-signed-certificates-for-use-on-android/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Creating Self Signed Certificates For Use On Android&url=https://callistaenterprise.se/blogg/teknik/2011/11/24/creating-self-signed-certificates-for-use-on-android/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>An operations model for Microservices | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">An operations model for Microservices</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-03-25T00:00:00+00:00">
+            25 March 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This is not yet another introduction to microservices, for a good introduction please read <a href="http://martinfowler.com/articles/microservices.html">Fowler - Microservices</a>. Instead this blog post takes off assuming that we already have started to use microservices to decompose monolithic applications for improved deployability and scalability.</p>
+
+<p>When the number of deployed microservices increase in a system landscape new challenges will arise not apparent when only a few monolithic applications are deployed. This blog post will focus on these new challenges and define an operations model for a system landscape deployed with a large number of microservices.</p>
+
+<p></p>
+
+<p>The blog post is divided in the following sections:</p>
+
+<ol>
+  <li>Prerequisites</li>
+  <li>Scaling up</li>
+  <li>Questions</li>
+  <li>Required components</li>
+  <li>A reference model</li>
+  <li>Next step</li>
+</ol>
+
+<h2 id="1-prerequisites">1. Prerequisites</h2>
+
+<p>To start with, what is required to roll out large numbers of microservices in the system landscape?</p>
+
+<p>According to <a href="http://martinfowler.com/articles/microservices.html">Fowler’s blog post</a>, this is what we want to achieve:</p>
+
+<p><img src="../../../../../../assets/blogg/an-operations-model-for-microservices/microservices-1.png" width="700" />
+(<strong>Source:</strong> <a href="http://martinfowler.com/articles/microservices.html">http://martinfowler.com/articles/microservices.html</a>)</p>
+
+<p>However, before we can start to roll out large number of microservices in our system landscape replacing our monolithic applications there are some prerequisites that needs to be fulfilled (or at least to some extent). We need:</p>
+
+<ul>
+  <li>a target architecture</li>
+  <li>a continues delivery tool chain</li>
+  <li>a proper organization</li>
+</ul>
+
+<p>Let’s briefly look a each prerequisite.</p>
+
+<h3 id="11-a-target-architecture">1.1. A target architecture</h3>
+
+<p>First we need an architectural idea of how to partition all our microservices.
+We can <em>for example</em> partition them vertically in some layers like:</p>
+
+<ul>
+  <li><em>Core services</em>
+Handling persistence of business data and applying business rules and other logic</li>
+  <li><em>Composite services</em>
+Composite services can either orchestrate a number of core services to perform a common task or aggregating information from a number of core services.</li>
+  <li><em>API services</em>
+Expose functionality externally allowing, for example, third parties to invent creative applications that use the underlying functionality in the system landscape.</li>
+</ul>
+
+<p>…and horizontally we can apply some domain driven partitioning. This can result in a target architecture like:</p>
+
+<p><img src="../../../../../../assets/blogg/an-operations-model-for-microservices/microservices-architecture.png" width="700" /></p>
+
+<p><strong>Note:</strong> This is only a sample target architecture, your architecture can be completely different. The key thing here is that you need to have an target architecture established before you start to scale up deploying microservices. Otherwise you might end up in a system landscape that just looks like a big bowl of spaghetti with even worse characteristics than the existing monolithic applications.</p>
+
+<h3 id="12-continuous-delivery">1.2. Continuous delivery</h3>
+<p>We also assume that we have some kind of continuous delivery tool chain in place so that we can roll out our microservices in an efficient repeatable and quality driven way, e. g.:</p>
+
+<p><img src="../../../../../../assets/blogg/an-operations-model-for-microservices/microservices-1-2.png" width="700" />
+(<strong>Source:</strong> <a href="http://www.infoq.com/minibooks/emag-devops-toolchain">http://www.infoq.com/minibooks/emag-devops-toolchain</a>)</p>
+
+<h3 id="13-organization">1.3. Organization</h3>
+<p>Finally, we assume that we have adopted our organization to avoid issues with <a href="http://www.melconway.com/Home/Conways_Law.html">Conway’s law</a>. Conway’s law state that:</p>
+
+<blockquote>
+  <p>Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization’s communication structure.</p>
+</blockquote>
+
+<p><img src="../../../../../../assets/blogg/an-operations-model-for-microservices/microservices-1-1.png" width="700" />
+(<strong>Source:</strong> <a href="http://martinfowler.com/articles/microservices.html">http://martinfowler.com/articles/microservices.html</a>)</p>
+
+<h2 id="2-scaling-up">2. Scaling up</h2>
+
+<p>So, now over to the part that this blog post will focus on:</p>
+
+<blockquote>
+  <p>What will happen in a system landscape when we start to split up a few monolithic applications and replace them with a large number of microservices?</p>
+</blockquote>
+
+<ol>
+  <li>
+    <p><strong>Larger number of deployed units</strong>
+Many small microservices instead of a few big monolithic applications will, of course, result in a significantly increased number of deployed units to manage and keep track of.</p>
+  </li>
+  <li>
+    <p><strong>The microservices will both expose and consume services</strong>
+This will resulting in a system landscape where the most of the microservices are interconnected with each other</p>
+  </li>
+  <li>
+    <p><strong>Some microservices will expose an external API</strong>
+These microservices will be responsible for shielding the other microservices from external access</p>
+  </li>
+  <li>
+    <p><strong>The system landscape will be more dynamic</strong>
+New microservices are deployed, old ones are replaced or removed, new instances of existing microservices are started up to meet increased load. This means that services will come and go at a much higher frequency then before.</p>
+  </li>
+  <li>
+    <p><strong>MTBF will decrease, e.g. failures will happen more frequently in the system landscape</strong>
+Software components fails from time to time. With a large number of small deploy units the probability that some parts (even though small) in the system landscape is failing will increase compared to a system landscape with only a few big monolithic applications.</p>
+  </li>
+</ol>
+
+<h2 id="3-questions">3. Questions</h2>
+
+<p>This will result in a number of important and in some cases new runtime related questions:</p>
+
+<ol>
+  <li>
+    <p><strong>How are all my microservices configured and is it correct?</strong>
+Handling configuration is not a major issue with a few applications, e.g. each application stores its own configuration in property files on disk or configuration tables in its own database. With a large number of microservices deployed in multiple instances on multiple servers this approach becomes trickier to manage. It will result in a lot of small configuration files/tables spread all over the system landscape making is very hard to maintain in an efficient way and with good quality.</p>
+  </li>
+  <li>
+    <p><strong>What microservices are deployed and where?</strong>
+Keeping track of what host and ports services are exposed on with a few number of applications is simple due to the low numbers and a low change rate. With a large number of microservices that are deployed independently of each other there will be a more or less continuous changes in the system landscape and this can easily lead to a maintenance nightmare if handled manually.</p>
+  </li>
+  <li>
+    <p><strong>How to keep up with routing information?</strong>
+Being a consumer of services in a dynamic system landscape can also be challenging. Specifically if routing tables, in for example reverse proxies or the consumers configuration files, needs to be updated manually. Basically there will be no time for manual editing of routing tables in a landscape that is under more or less constant evolution with new microservices popping up on new host/port addresses. The delivery time will be far too long and the risk for manual mistakes will risk quality aspects and/or make the operations cost unnecessary high.</p>
+  </li>
+  <li>
+    <p><strong>How to prevent chain of failures?</strong>
+Since the microservices will be interconnected with each other special attention needs to be paid to avoid chains of failure in the system landscape. E.g. if a microservice that a number of other microservices depends on fails, the depending microservices might also start to fail and so on. If not handled properly large parts of the system landscape can be affected by a single failing microservice resulting in a fragile system landscape.</p>
+  </li>
+  <li>
+    <p><strong>How to verify that all services are up and running?</strong> 
+Keeping track of the state of a few applications is rather easy but how do we verify that all microservices are healthy and ready to receive requests?</p>
+  </li>
+  <li>
+    <p><strong>How to track messages that flow between services?</strong>
+What if the support organization starts to get complaints regarding some processing that fails?
+What microservice is the root cause of the problem? 
+How can I find out that the processing of, for example, order number 12345 is stuck because microservice A is not accessible or that a manual approval needs to be performed before microservice B can send an confirmation message regarding that order?</p>
+  </li>
+  <li>
+    <p><strong>How to ensure that only the API-services are exposed externally?</strong>
+E.g. how do we avoid unauthorized access from the outside to internal microservices?</p>
+  </li>
+  <li>
+    <p><strong>How to secure the API-services?</strong>
+Not new or specific question related to microservices but still very important to secure the microservices that actually are exposed externally.</p>
+  </li>
+</ol>
+
+<h2 id="4-required-components">4. Required components</h2>
+
+<p>To address many of these questions new operations and management functionality is required in a system landscape not required, or at least not to the same extent, when only operating a few applications. The suggested solution to the questions above include the following components:</p>
+
+<ol>
+  <li>
+    <p><strong>Central Configuration server</strong>
+Instead of a local configuration per deployed unit (i.e. microservice) we need a centralized management of configuration. We also need a configuration API that the microservices can use to fetch configuration information.</p>
+  </li>
+  <li>
+    <p><strong>Service Discovery server</strong>
+Instead of manually keeping track of what microservices that are deployed currently and on what hosts and ports we need service discovery functionality that allows, through an API, microservices to self-register at startup.</p>
+  </li>
+  <li>
+    <p><strong>Dynamic Routing and Load Balancer</strong>
+Given a service discovery function, routing components can use the discovery API to lookup where the requested microservice is deployed and load balancing components can decide what instance to route the request to if multiple instances are deployed for the requested service.</p>
+  </li>
+  <li>
+    <p><strong>Circuit Breaker</strong>
+To avoid the chain of failures problem we need to apply the Circuit Breaker pattern, for details see the book <a href="https://pragprog.com/book/mnee/release-it">Release It!</a> or read the blog post <a href="http://martinfowler.com/bliki/CircuitBreaker.html">Fowler - Circuit Breaker</a>.</p>
+  </li>
+  <li>
+    <p><strong>Monitoring</strong>
+Given that we have circuit breakers in place we can start to monitor their state and also collect run time statistics from them to get a picture of the health status of the system landscape and its current usage. This information can be collected and displayed on dashboards with possibilities for setting up automatic alarms for configurable thresholds.</p>
+  </li>
+  <li>
+    <p><strong>Centralized log analysis</strong>
+To be able to track messages and detect when they got stuck we need a centralized log analysis function that is capable to reaching out to the servers and collect the log-files that each microservice produce. The log analysis function stores this log information in a central database and provide search  and dashboard capabilities.
+<strong>Note</strong>: To be able to find related messages it is very important that all microservices use correlation id’s in the log messages.</p>
+  </li>
+  <li>
+    <p><strong>Edge Server</strong> 
+To expose the API services externally and to prevent unauthorized access to the internal microservices we need an edge server that all external traffic goes through. An edge server can reuse the dynamic routing and load balancing capabilities based on the service discovery component described above. The edge server will act as a dynamic and active reverse proxy that don’t need to be manually updated whenever the internal system landscape is changed.</p>
+  </li>
+  <li>
+    <p><strong>OAuth 2.0 protected API’s</strong>
+To protect the exposed API services the <a href="http://oauth.net">OAuth 2.0</a> standard is recommended. Applying OAuth 2.0 to the suggested solution results in:</p>
+
+    <ul>
+      <li>A new component that can act as a <em>OAuth Authorization Server</em></li>
+      <li>The API services will act as <em>OAuth Resource Server</em></li>
+      <li>The external API consumers will act as <em>OAuth Clients</em></li>
+      <li>The edge server will act as a <em>OAuth Token Relay</em> meaning:
+        <ul>
+          <li>It will act as a <em>OAuth Resource Server</em></li>
+          <li>It will pass through the <em>OAuth Access Tokens</em> that comes in the extern request to the API services</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Note:</strong> Over time the OAuth 2.0 standard will most probably be complemented with the <a href="http://openid.net/connect/">OpenID Connect</a> standard to provide improved authorization functionality.</p>
+
+<h2 id="5-a-reference-model">5. A reference model</h2>
+
+<p>All together this means that the microservices need a infrastructure with a number of supporting services as described above that the microservices interact with using their API’s. This is visualized by the following picture:</p>
+
+<p><img src="../../../../../../assets/blogg/an-operations-model-for-microservices/microservices-operations-reference-model.png" alt="P3" /></p>
+
+<p><strong>Note:</strong> To reduce complexity in the picture interactions between the microservices and the supporting services are not visualized.</p>
+
+<h2 id="6-next-step">6. Next step</h2>
+
+<p>In upcoming blog posts we will describe and demonstrate how the suggested reference model can be implemented, see the <a href="../../../05/20/blog-series-building-microservices.html">Blog Series - Building Microservices</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=An Operations Model For Microservices&url=https://callistaenterprise.se/blogg/teknik/2015/03/25/an-operations-model-for-microservices/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=An Operations Model For Microservices&u=https://callistaenterprise.se/blogg/teknik/2015/03/25/an-operations-model-for-microservices/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=An Operations Model For Microservices&url=https://callistaenterprise.se/blogg/teknik/2015/03/25/an-operations-model-for-microservices/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

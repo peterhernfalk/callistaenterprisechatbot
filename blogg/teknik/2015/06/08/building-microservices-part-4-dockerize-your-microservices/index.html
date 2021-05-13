@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Microservices, part 4. Dockerize your Microservices | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Microservices, part 4. Dockerize your Microservices</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-06-08T00:00:00+00:00">
+            08 June 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>If you tried out the earlier blog posts in our <a href="../../../05/20/blog-series-building-microservices.html">blog series</a> regarding building microservices I guess you are tired of starting the microservices manually at the command prompt? Let’s dockerize our microservices, i.e. run them in Docker containers, to get rid of that problem!</p>
+
+<p></p>
+
+<p>I assume that you already heard of Docker and the container revolution? If not, there are tons of introductory material on the subject available on Internet, e.g. <a href="https://docs.docker.com/introduction/understanding-docker/">Understanding Docker</a>.</p>
+
+<p>This blog post covers the following parts:</p>
+
+<ol>
+  <li>Install and configure Docker</li>
+  <li>Build Docker images automatically with Gradle</li>
+  <li>Configure the microservices for a Docker environment using Spring profiles</li>
+  <li>Securing access to the microservices using HTTPS</li>
+  <li>Starting and managing you Docker containers using Docker Compose</li>
+  <li>Test the dockerized microservices
+    <ol>
+      <li>Happy days</li>
+      <li>Scale up a microservice</li>
+      <li>Handle problems</li>
+    </ol>
+  </li>
+  <li>Summary</li>
+  <li>Next Step</li>
+</ol>
+
+<h1 id="1-install-and-configure-docker">1. Install and configure Docker</h1>
+
+<p>Install Docker by following the <a href="http://docs.docker.com/installation/">instructions for your platform</a>.</p>
+
+<blockquote>
+  <p>We used <a href="http://docs.docker.com/installation/mac/">Boot2Docker v1.6.2 for Mac</a> when we wrote this blog post.</p>
+</blockquote>
+
+<h2 id="11-configuration-when-using-boot2docker">1.1 Configuration when using Boot2Docker</h2>
+
+<p>First, since we will start a lot of fine grained Java based microservices we will need some more memory (4GB) than the default value in the Linux virtual server that Boot2Docker creates for us.</p>
+
+<p>The simplest way to do that is to stop Boot2Docker and recreate the virtual server with new memory parameters. If you upgraded Boot2Docker from an older version you should also perform a download of the virtual server to ensure that you have the latest version.</p>
+
+<p>Execute the following commands to create a new virtual server with 4GB memory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ boot2docker stop 
+$ boot2docker download
+$ boot2docker delete 
+$ boot2docker init -m 4096
+$ boot2docker info 
+{ ... "Memory":4096 ...}
+$ boot2docker start
+</code></pre></div></div>
+
+<p>The start command might ask you to set a number of environment variables like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DOCKER_HOST=tcp://192.168.59.104:2376
+export DOCKER_CERT_PATH=/Users/magnus/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+</code></pre></div></div>
+
+<p>Add them to you preferred config-file, e.g. <code class="language-plaintext highlighter-rouge">~/.bash_profile</code> as in my case.</p>
+
+<p>Now you can try Docker by asking it to start a CentOS based Linux server:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -it --rm centos
+</code></pre></div></div>
+
+<p>Docker will download the corresponding Docker image the first time it is used, so it takes some extra time depending on your Internet connection.</p>
+
+<p>Just leave the server, for now, with an <code class="language-plaintext highlighter-rouge">exit</code> command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@fd5773461402 /]# exit
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you try to start a new CentOS server with the same command as above you will experience the magic startup time of a brand new server when using Docker, typically a sub-second startup time!!!</p>
+</blockquote>
+
+<p>Secondly, add a line in your <code class="language-plaintext highlighter-rouge">/etc/hosts</code> - file for easier access to the Docker machine. First get the IP address of the Linux server that runs all the Docker containers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ boot2docker ip
+192.168.59.104
+</code></pre></div></div>
+
+<p>Add a line in your <code class="language-plaintext highlighter-rouge">/etc/hosts</code> file like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>192.168.59.104 docker
+</code></pre></div></div>
+
+<p>Now you can, for example, <code class="language-plaintext highlighter-rouge">ping</code> your docker environment like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ping docker
+PING docker (192.168.59.103): 56 data bytes
+64 bytes from 192.168.59.103: icmp_seq=0 ttl=64 time=0.822 ms
+64 bytes from 192.168.59.103: icmp_seq=1 ttl=64 time=4.341 ms
+64 bytes from 192.168.59.103: icmp_seq=2 ttl=64 time=1.454 ms
+</code></pre></div></div>
+
+<h1 id="2-build-docker-images-with-gradle">2. Build Docker images with Gradle</h1>
+
+<p>We have extended the Gradle build files from the earlier <a href="../../../05/20/blog-series-building-microservices.html">blog posts</a> to be able to automatically create Docker images for each microservice. We use a Gradle plugin developed by <a href="https://github.com/Transmode/gradle-docker">Transmode</a>.</p>
+
+<p>As before we use Java SE 8 and Git so to get the source code perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-microservices
+$ cd blog-microservices
+$ git checkout -b B6 M6
+</code></pre></div></div>
+
+<p>The most important additions to the Gradle build-files are:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>buildscript {
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+
+...
+
+apply plugin: 'docker'
+
+...
+
+group = 'callista'
+mainClassName = 'se.callista.microservises.core.review.ReviewServiceApplication'
+
+...
+
+distDocker {
+    exposePort 8080
+    setEnvironment 'JAVA_OPTS', '-Dspring.profiles.active=docker'
+}
+
+docker {
+    maintainer = 'Magnus Larsson &lt;magnus.larsson.ml@gmail.com&gt;'
+    baseImage = 'java:8'
+}
+</code></pre></div></div>
+
+<p><strong>Notes:</strong></p>
+
+<ol>
+  <li>
+    <p>First we declare a dependency to the <code class="language-plaintext highlighter-rouge">transmode-docker-plugin</code> and apply the <code class="language-plaintext highlighter-rouge">docker</code> - plugin.</p>
+  </li>
+  <li>
+    <p>Next, we setup a variable, <code class="language-plaintext highlighter-rouge">group</code>,  to give the Docker images a common group-name and another variable, <code class="language-plaintext highlighter-rouge">mainClassName</code>, to declare the main-class in the microservice.</p>
+  </li>
+  <li>
+    <p>Finally, we declare how the Docker image shall be built in the <code class="language-plaintext highlighter-rouge">distDocker</code> and <code class="language-plaintext highlighter-rouge">docker</code> declarations. See <a href="https://github.com/Transmode/gradle-docker">plugin documentation</a> for details.</p>
+  </li>
+  <li>
+    <p>One detail worth some extra attention is the declaration of the <code class="language-plaintext highlighter-rouge">JAVA_OPTS</code> environment variable that we use to specify what Spring profile that the microservice shall use, see below for details.</p>
+  </li>
+</ol>
+
+<p>We have also added the new task <code class="language-plaintext highlighter-rouge">distDocker</code> to the build commands in <code class="language-plaintext highlighter-rouge">build-all.sh</code>.</p>
+
+<p>Execute the <code class="language-plaintext highlighter-rouge">build-all.sh</code> file and it will result in a set of Docker images like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./build-all.sh
+... lots of output ...
+
+$ docker images | grep callista
+callista/turbine                     latest              8ea25912aad7        43 hours ago        794.6 MB
+callista/monitor-dashboard           latest              f443c2cde704        43 hours ago        793 MB
+callista/edge-server                 latest              b32bb74788ac        43 hours ago        826.6 MB
+callista/discovery-server            latest              8eceaff6cc6b        43 hours ago        838.3 MB
+callista/auth-server                 latest              90041b13c564        43 hours ago        766.1 MB
+callista/product-api-service         latest              5081a18b9cac        44 hours ago        801.9 MB
+callista/product-composite-service   latest              c200820d6cdf        44 hours ago        800.6 MB
+callista/review-service              latest              1796c14c2a5a        44 hours ago        786.1 MB
+callista/recommendation-service      latest              4f4e490cb409        44 hours ago        786.1 MB
+callista/product-service             latest              5ed6a9620bce        44 hours ago        786.1 MB
+</code></pre></div></div>
+
+<h1 id="3-configure-the-microservices-for-a-docker-environment-using-spring-profiles">3. Configure the microservices for a Docker environment using Spring profiles</h1>
+
+<p>To be able to run in a Docker environment we need to change our configuration a bit. To keep the Docker specific configuration separate from the rest we use a <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html">Spring Profile</a> called <code class="language-plaintext highlighter-rouge">Docker</code> in our <code class="language-plaintext highlighter-rouge">application.yml</code>-files, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+# For deployment in Docker containers
+spring:
+  profiles: docker
+
+server:
+  port: 8080
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+</code></pre></div></div>
+
+<p><strong>Notes:</strong></p>
+
+<ol>
+  <li>
+    <p>Since all microservices will run in their own Docker container (e.g. in its own server with its own IP address) we don’t need to care about port collisions. Therefore we can use a fixed port, <code class="language-plaintext highlighter-rouge">8080</code>, instead of dynamically assign ports as we have done until now.</p>
+  </li>
+  <li>
+    <p>Register our microservices to Eureka using hostnames in a Docker environment will not work, they will all get one and the same hostname. Instead we configure them to use its IP address during registration with Eureka.</p>
+  </li>
+  <li>
+    <p>The discovery service will be executing in a Docker container known under the name <code class="language-plaintext highlighter-rouge">discovery</code>, se below for details, so therefore we need to override the setting of the <code class="language-plaintext highlighter-rouge">serviceUrl</code>.</p>
+  </li>
+</ol>
+
+<h1 id="4-securing-access-using-https">4. Securing access using HTTPS</h1>
+
+<p>Docker runs the containers in a closed network. We will expose as few services outside of the internal Docker network as possible, e.g. the OAuth Authorization server and the Edge server. This means that our microservices will not be accessible directly from the outside. To protect the communication with the exposed services we will use HTTPS, i.e. use server side certificates, that will protect the OAuth communication from unwanted eavesdropping. The OAuth Authorization server and the Edge server uses a <a href="http://en.wikipedia.org/wiki/Self-signed_certificate">self-signed certificate</a> that comes with the source code of this blog post.</p>
+
+<blockquote>
+  <p>Don’t use this self-signed certificate for anything else than trying out our blog posts, it is not secure since its private part is publicly available in the source code!</p>
+</blockquote>
+
+<p>Our API - microservice needs to communicate with the OAuth Authorization server to get information regarding the user (<em>resource owner</em> in OAuth lingo). Therefore it needs to be able to act as a HTTPS client, validating the certificate that the OAuth Authorization service presents during the HTTPS communication. The API - microservice uses a trust store that comes with the source code of this blog post for that purpose.</p>
+
+<p>For the OAuth Authorization server and the Edge server you can find the (not so) private certificate, <code class="language-plaintext highlighter-rouge">server.jks</code>, in the folder <code class="language-plaintext highlighter-rouge">src/main/resources</code> and the <code class="language-plaintext highlighter-rouge">application.xml/.yml</code> file in the same folder contains the SSL - configuration, e.g:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  ssl:
+    key-store: classpath:server.jks
+    key-store-password: password
+    key-password: password
+</code></pre></div></div>
+
+<p>The API - microservice has its trust store, <code class="language-plaintext highlighter-rouge">truststore.jks</code>, and its configuration file in the folder <code class="language-plaintext highlighter-rouge">src/main/resources</code> as well. The SSL configuration looks a bit different since it only will act as a HTTPS-client:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  ssl:
+    enabled: false
+    # Problem with trust-store properties?
+    #
+    # Instead use: java -Djavax.net.debug=ssl -Djavax.net.ssl.trustStore=src/main/resources/truststore.jks -Djavax.net.ssl.trustStorePassword=password -jar build/libs/*.jar
+    #
+    # trust-store: classpath:truststore.jks
+    trust-store: src/main/resources/truststore.jks
+    trust-store-password: password
+</code></pre></div></div>
+
+<p>As you can see in the comment above we have experienced some problems with defining the trust store via the configuration file. Instead we use the <code class="language-plaintext highlighter-rouge">JAVA_OPTS</code> environment variable to specify it. If you look into the <code class="language-plaintext highlighter-rouge">build.gradle</code> - file of the API - microservice you will find:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>distDocker {
+    ...
+    setEnvironment 'JAVA_OPTS', '-Dspring.profiles.active=docker -Djavax.net.ssl.trustStore=truststore.jks -Djavax.net.ssl.trustStorePassword=password'
+</code></pre></div></div>
+
+<h1 id="5-managing-your-docker-containers-using-docker-compose">5. Managing your Docker containers using Docker Compose</h1>
+
+<p>To be able to start up and manage all our services with single commands we use <a href="https://docs.docker.com/compose/">Docker Compose</a>.</p>
+
+<blockquote>
+  <p>We used <a href="http://docs.docker.com/compose/install/">Docker Compose v1.2.0</a> when we wrote this blog post.</p>
+</blockquote>
+
+<p>With Docker Compose you can specify a number of containers and how they shall be executed, e.g. what Docker image to use, what ports to publish, what other Docker containers it requires to know about and so on…</p>
+
+<p>For a simple container that don’t need to know anything about other containers the following is sufficient in the configuration file, <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rabbitmq:
+  image: rabbitmq:3-management
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+
+discovery:
+  image: callista/discovery-server
+  ports:
+    - "8761:8761"
+
+auth:
+  image: callista/auth-server
+  ports:
+    - "9999:9999"
+</code></pre></div></div>
+
+<p>This will start up RabbitMQ, a discovery server and a OAuth Authorization server and publish the specified ports for external access.</p>
+
+<p>To start up services that need to know about other containers we can use the <code class="language-plaintext highlighter-rouge">links</code> - directive. e.g. for the API microservice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>api:
+  image: callista/product-api-service
+  links:
+    - auth
+    - discovery
+    - rabbitmq
+</code></pre></div></div>
+
+<p>This declaration will result in that the /etc/hosts file in the API container will be updated with one line per service that the API microservice depends on, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>172.17.0.23	auth
+172.17.0.27	discovery
+172.17.0.25	rabbitmq
+</code></pre></div></div>
+
+<h1 id="6-test-the-dockerized-microservices">6. Test the dockerized microservices</h1>
+
+<p>Ok, we now have all the new bits and pieces in place so we are ready to give it a try!</p>
+
+<p>For an overview of the microservice landscape we are about to launch see previous blog posts, specifically <a href="../../../04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/index.html">Part 1</a> but also <a href="../../../04/15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> and <a href="../../../04/27/building-microservices-part-3,&#32;secure&#32;API's&#32;with&#32;OAuth/index.html">Part 3</a>.</p>
+
+<p>Start the microservice landscape with the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
+</code></pre></div></div>
+
+<p><strong>Note:</strong> We have, a few times, noticed problems with downloading Docker images (unclear what triggers the problem). But after recreating the Boot2Docker virtual server as described in <em>1.1 Configuration when using Boot2Docker</em> the download worked again.</p>
+
+<p>This will start up all ten Docker containers. You can see its state withe the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose ps
+            Name                           Command               State                        Ports
+-------------------------------------------------------------------------------------------------------------------------
+blogmicroservices_api_1         /product-api-service/bin/p ...   Up      8080/tcp
+blogmicroservices_auth_1        /auth-server/bin/auth-server     Up      0.0.0.0:9999-&gt;9999/tcp
+blogmicroservices_composite_1   /product-composite-service ...   Up      8080/tcp
+blogmicroservices_discovery_1   /discovery-server/bin/disc ...   Up      0.0.0.0:8761-&gt;8761/tcp
+blogmicroservices_edge_1        /edge-server/bin/edge-server     Up      0.0.0.0:443-&gt;8765/tcp
+blogmicroservices_monitor_1     /monitor-dashboard/bin/mon ...   Up      0.0.0.0:7979-&gt;7979/tcp
+blogmicroservices_pro_1         /product-service/bin/produ ...   Up      8080/tcp
+blogmicroservices_rabbitmq_1    /docker-entrypoint.sh rabb ...   Up      0.0.0.0:15672-&gt;15672/tcp, 0.0.0.0:5672-&gt;5672/tcp
+blogmicroservices_rec_1         /recommendation-service/bi ...   Up      8080/tcp
+blogmicroservices_rev_1         /review-service/bin/review ...   Up      8080/tcp
+</code></pre></div></div>
+
+<p>You can monitor log output with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose logs
+...
+rec_1       | 2015-06-01 14:20:55.295 cfbfc65f-8a5f-41cc-8710-51856105bf62 recommendation  INFO  XNIO-2 task-13 s.c.m.c.r.s.RecommendationService:53 - /recommendation called, processing time: 0
+rec_1       | 2015-06-01 14:20:55.296 cfbfc65f-8a5f-41cc-8710-51856105bf62 recommendation  INFO  XNIO-2 task-13 s.c.m.c.r.s.RecommendationService:62 - /recommendation response size: 3
+...
+</code></pre></div></div>
+
+<p>…and as usual you can see the registered microservices in our discovery service, Eureka, using the URL <code class="language-plaintext highlighter-rouge">http://docker:8761</code>:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-4/docker-eureka.png" alt="system-landscape" /></p>
+
+<h2 id="61-happy-days">6.1. Happy days</h2>
+
+<p>Let’s try a happy days scenario, shall we?</p>
+
+<p>First we need to access a OAuth Token using HTTPS (See <a href="../../../04/27/building-microservices-part-3,&#32;secure&#32;API's&#32;with&#32;OAuth/index.html">Part 3</a> regarding details of the use of OAuth):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl https://acme:acmesecret@docker:9999/uaa/oauth/token \
+  -d grant_type=password -d client_id=acme \
+  -d username=user -d password=password -ks | jq .
+{
+  "access_token": "d583cc8d-5431-4241-afbf-6c6e686899d8",
+  "token_type": "bearer",
+  "refresh_token": "cf3e2136-6fb3-4c23-b3ce-0d5118b5d538",
+  "expires_in": 43199,
+  "scope": "webshop"
+}
+</code></pre></div></div>
+
+<p>Store the Access Token in an environment variable as before:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ TOKEN=d583cc8d-5431-4241-afbf-6c6e686899d8
+</code></pre></div></div>
+
+<p>With the Access Token we can now access the API, again over HTTPS:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" \
+  -ks 'https://docker/api/product/1046' | jq .
+{
+  "productId": 1046,
+  "name": "name",
+  "weight": 123,
+  "recommendations": [ ... ],
+  "reviews": [ ... ]
+}
+</code></pre></div></div>
+
+<p>Great!</p>
+
+<h2 id="62-scale-up-a-microservice">6.2. Scale up a microservice</h2>
+
+<p>Ok, let’s spin up a second instance of one of the microservices. This can be done using the <code class="language-plaintext highlighter-rouge">docker-compose</code> <code class="language-plaintext highlighter-rouge">scale</code>-command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose scale rec=2
+</code></pre></div></div>
+
+<p><strong>Note:</strong> <code class="language-plaintext highlighter-rouge">rec</code> is the name we gave the <code class="language-plaintext highlighter-rouge">recommendation</code> microservice in the docker-compose configuration file, <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>.</p>
+
+<p>This command will start up a second instance of the <code class="language-plaintext highlighter-rouge">recommendation</code> microservice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose ps rec
+         Name                        Command               State    Ports
+---------------------------------------------------------------------------
+blogmicroservices_rec_1   /recommendation-service/bi ...   Up      8080/tcp
+blogmicroservices_rec_2   /recommendation-service/bi ...   Up      8080/tcp
+</code></pre></div></div>
+
+<p>If you call the API several times with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" \
+  -ks 'https://docker/api/product/1046' | jq .
+</code></pre></div></div>
+
+<p>If you run the <code class="language-plaintext highlighter-rouge">docker-compose logs</code> command in a separate window, you will notice in the log-output, after a while, that the two <code class="language-plaintext highlighter-rouge">rec</code>-services take every second call.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rec_2       | 2015-06-01 14:20:54.357 cb6ad766-c385-442b-afbe-de9222221a23 recommendation  INFO  XNIO-2 task-2 s.c.m.c.r.s.RecommendationService:53 - /recommendation called, processing time: 0
+rec_2       | 2015-06-01 14:20:54.358 cb6ad766-c385-442b-afbe-de9222221a23 recommendation  INFO  XNIO-2 task-2 s.c.m.c.r.s.RecommendationService:62 - /recommendation response size: 3
+
+...
+
+rec_1       | 2015-06-01 14:20:55.295 cfbfc65f-8a5f-41cc-8710-51856105bf62 recommendation  INFO  XNIO-2 task-13 s.c.m.c.r.s.RecommendationService:53 - /recommendation called, processing time: 0
+rec_1       | 2015-06-01 14:20:55.296 cfbfc65f-8a5f-41cc-8710-51856105bf62 recommendation  INFO  XNIO-2 task-13 s.c.m.c.r.s.RecommendationService:62 - /recommendation response size: 3
+</code></pre></div></div>
+
+<p>Good, not let’s cause some problems in the microservice landscape!</p>
+
+<h2 id="63-handle-problems">6.3. Handle problems</h2>
+
+<p>Let’s wrap up the tests with introducing an error and see how our circuit breaker introduced in <a href="../../../04/15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> acts in an Docker environment.</p>
+
+<p>We have a backdoor in the review microservice that can be used to control its response times. If we increase the response time over the timeout configured in the circuit-breaker it will kick in…</p>
+
+<p>The problem is that we can’t access that backdoor from the outside (on the other hand, if the backdoor was accessible from the outside we would be in really big security problems…). To access the backdoor we need access to a sever that runs inside the closed Docker container network. Let’s start one!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -it --rm --link blogmicroservices_rev_1:rev centos
+[root@bbd3e4154803 /]#
+</code></pre></div></div>
+
+<p>That wasn’t that hard, was it?</p>
+
+<p>Ok, now we can use the backdoor to set the response time of the review microservice to 10 secs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@bbd3e4154803 /]# curl "http://rev:8080/set-processing-time?minMs=10000&amp;maxMs=10000"
+</code></pre></div></div>
+
+<p>Exit the container and retry the call to the API. It will respond very slowly (3 sec) and will not contain any review information:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@bbd3e4154803 /]# exit
+
+$ curl -H "Authorization: Bearer $TOKEN" -ks \
+  'https://docker/api/product/1046' | jq .
+{
+  "productId": 1046,
+  "name": "name",
+  "weight": 123,
+  "recommendations": [ ... ],
+  "reviews": null
+}
+</code></pre></div></div>
+
+<p>If you retry the call once more you will again see a very long response time, i.e. the circuit breaker has not opened the circuit yet. But if you perform two requests directly after each other the circuit will be opened.</p>
+
+<blockquote>
+  <p>We have configured the circuit breaker to be very sensitive, just for demo purposes.</p>
+</blockquote>
+
+<p>This can be seen in the circuit breakers dashboard like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-4/docker-hystrix.png" alt="system-landscape" /></p>
+
+<p><strong>Note:</strong> URL to the circuit breaker: <a href="http://docker:7979/hystrix/monitor?stream=http%3A%2F%2Fcomposite%3A8080%2Fhystrix.stream">http://docker:7979/hystrix/monitor?stream=http%3A%2F%2Fcomposite%3A8080%2Fhystrix.stream</a></p>
+
+<p>If you retry a call you will see that you get an <strong>immediate response</strong>, still without any review information of course, i.e. the circuit breaker is now open.</p>
+
+<p>Let’s heal the broken service! If you start a new container and use the backdoor to reset the response time of the review microservice to 0 sec and then retry the call to the API everything should be ok again, i.e. the system is self-healing!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -it --rm --link blogmicroservices_rev_1:rev centos
+[root@bbd3e4154803 /]# curl "http://rev:8080/set-processing-time?minMs=0&amp;maxMs=0"
+[root@bbd3e4154803 /]# exit
+
+$ curl -H "Authorization: Bearer $TOKEN" \
+  -ks 'https://docker/api/product/1046' | jq .
+{
+  "productId": 1046,
+  "name": "name",
+  "weight": 123,
+  "recommendations": [ ... ],
+  "reviews": [ ... ]
+}
+</code></pre></div></div>
+
+<p><strong>Note:</strong> The circuit breaker is configured to probe the open circuit after 30 seconds to see if the service is available again, i.e. to see if the problem is gone so it can close the circuit again. Probing is done by letting one of the incoming request through, even though that the circuit actually is open.</p>
+
+<h1 id="7-summary">7. Summary</h1>
+
+<p>We have seen how we with very little effort can dockerize our microservices and run our microservices as Docker containers. Gradle can help us to automatically build Docker images, Spring profiles can help us to keep Docker specific configuration separate from other configuration. Finally Docker Compose makes it possible to start and manage all microservices, used for example by an application, with a single command.</p>
+
+<h1 id="8-next-step">8. Next Step</h1>
+
+<p>We have already promised to demonstrate how the ELK stack can be used to provide centralized log management of our microservices. Before we demonstrate that we however need to consider how to correlate log event written by various microservices to its own log-files. So that will be the target for the next blog post in the <a href="../../../05/20/blog-series-building-microservices.html">Blog Series - Building Microservices</a>, stay tuned…</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices Part 4 Dockerize Your Microservices&url=https://callistaenterprise.se/blogg/teknik/2015/06/08/building-microservices-part-4-dockerize-your-microservices/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices Part 4 Dockerize Your Microservices&u=https://callistaenterprise.se/blogg/teknik/2015/06/08/building-microservices-part-4-dockerize-your-microservices/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices Part 4 Dockerize Your Microservices&url=https://callistaenterprise.se/blogg/teknik/2015/06/08/building-microservices-part-4-dockerize-your-microservices/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Remote deploy to Tomcat 7 using Cargo | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Marcus Krantz" src="../../../../../../assets/medarbetare/marcuskrantz_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Remote deploy to Tomcat 7 using Cargo</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2012-03-12T00:00:00+00:00">
+            12 March 2012
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Marcus Krantz
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>One of the last days in my current project I was about to freeze the codebase and finish things up. Luckily, I had a couple of hours left to play around with something that I have been thinking about throughout the project but never had time to implement. My mission was to deploy the application to a remote tomcat container. The requirements I made up was:</p>
+
+<ul>
+  <li>Maven-based (no custom schell scripting :)</li>
+  <li>Minimal configuration</li>
+  <li>Multiple servers (test, qa, production)</li>
+  <li>Application server independent</li>
+</ul>
+
+<p>After some research, I found Cargo that seemed to meet my requirements and I decided to try it out. I used the following setup to test Cargo:</p>
+
+<ul>
+  <li>Apache Tomcat 7.0.26</li>
+  <li>Maven 3.0.3</li>
+  <li>example.war deployed in my local maven repository</li>
+</ul>
+
+<h2 id="1-create-maven-deployer-project">1. Create maven deployer project</h2>
+<p>First of all I created a new empty project called <code class="language-plaintext highlighter-rouge">example-deployer</code>, the idea was to use this project to deploy my <code class="language-plaintext highlighter-rouge">example.war</code> to various servers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mvn archetype:generate -Dversion=1.0-SNAPSHOT -DgroupId=org.example -DartifactId=example-deployer -Dpackaging=pom
+</code></pre></div></div>
+
+<h2 id="2-create-maven-profiles">2. Create maven profiles</h2>
+<p>Next, I wanted to be able to deploy to two different servers: <code class="language-plaintext highlighter-rouge">qa</code> and <code class="language-plaintext highlighter-rouge">production</code>. Since I used different ports, different protocols and different context paths for these two environment I created two Maven profiles that can be activated using the <code class="language-plaintext highlighter-rouge">env-property</code>. In these two profiles I set property values for each environment.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;profiles&gt;
+  &lt;profile&gt;
+    &lt;id&gt;prod&lt;/id&gt;
+    &lt;activation&gt;
+      &lt;property&gt;
+        &lt;name&gt;env&lt;/name&gt;
+        &lt;value&gt;prod&lt;/value&gt;
+      &lt;/property&gt;
+    &lt;/activation&gt;
+    &lt;properties&gt;
+      &lt;remote.protocol&gt;https&lt;/remote.protocol&gt;
+      &lt;remote.port&gt;443&lt;/remote.port&gt;
+      &lt;remote.hostname&gt;prod.example.org&lt;/remote.hostname&gt;
+      &lt;remote.context&gt;/&lt;/remote.context&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
+  &lt;profile&gt;
+    &lt;id&gt;qa&lt;/id&gt;
+    &lt;activation&gt;
+      &lt;property&gt;
+        &lt;name&gt;env&lt;/name&gt;
+        &lt;value&gt;qa&lt;/value&gt;
+      &lt;/property&gt;
+    &lt;/activation&gt;
+    &lt;properties&gt;
+      &lt;remote.protocol&gt;http&lt;/remote.protocol&gt;
+      &lt;remote.hostname&gt;qa.example.org&lt;/remote.hostname&gt;
+      &lt;remote.port&gt;8080&lt;/remote.port&gt;
+      &lt;remote.context&gt;/qa&lt;/remote.context&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
+&lt;/profiles&gt;
+</code></pre>
+
+<p>It is now possible to activate the qa or prod profile by adding <code class="language-plaintext highlighter-rouge">-Denv=prod</code> or <code class="language-plaintext highlighter-rouge">-Denv=qa</code></p>
+
+<h2 id="3-configure-cargo">3. Configure Cargo</h2>
+<p>I was surprised how easy it was to configure Cargo’s maven plugin. There are basically three blocks of configuration 1) The container to use, 2) Configuration how to access the container and 3) the war-artifact to deploy to the remote container.</p>
+
+<p>Since I do not want to exploit the username and password to the application server, I enter these manually during deploy time. Here is the configuration used:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.codehaus.cargo&lt;/groupId&gt;
+      &lt;artifactId&gt;cargo-maven2-plugin&lt;/artifactId&gt;
+      &lt;version&gt;1.2.0&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;container&gt;
+          &lt;containerId&gt;tomcat7x&lt;/containerId&gt;
+          &lt;type&gt;remote&lt;/type&gt;
+        &lt;/container&gt;
+        &lt;configuration&gt;
+          &lt;type&gt;runtime&lt;/type&gt;
+          &lt;properties&gt;
+            &lt;cargo.hostname&gt;${remote.hostname}&lt;/cargo.hostname&gt;
+            &lt;cargo.protocol&gt;${remote.protocol}&lt;/cargo.protocol&gt;
+            &lt;cargo.servlet.port&gt;${remote.port}&lt;/cargo.servlet.port&gt;
+            &lt;cargo.remote.username&gt;${remote.user}&lt;/cargo.remote.username&gt;
+            &lt;cargo.remote.password&gt;${remote.pass}&lt;/cargo.remote.password&gt;
+          &lt;/properties&gt;
+        &lt;/configuration&gt;
+        &lt;deployer&gt;
+          &lt;type&gt;remote&lt;/type&gt;
+          &lt;deployables&gt;
+            &lt;deployable&gt;
+              &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+              &lt;artifactId&gt;example-web&lt;/artifactId&gt;
+              &lt;type&gt;war&lt;/type&gt;
+              &lt;properties&gt;
+                &lt;context&gt;${remote.context}&lt;/context&gt;
+              &lt;/properties&gt;
+            &lt;/deployable&gt;
+          &lt;/deployables&gt;
+        &lt;/deployer&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+
+<p>The last thing we need to add to the configuration is to include a dependency to the war-artifcact that we want to deploy.</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;example-web&lt;/artifactId&gt;
+    &lt;version&gt;${project.version}&lt;/version&gt;
+    &lt;type&gt;war&lt;/type&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+
+<p>It is now possible to deploy to out qa or prod server. Note that if we don’t want to expose the username and password in the script (that probably is in our source code repo) we can force the user to specify them on the command line. We are now ready to deploy, execute the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn cargo:deploy -Denv=qa -Dremote.user= -Dremote.pass=
+</code></pre></div></div>
+
+<p>The example above does not work out of the box without some configuration of the application server. For example, in the Apache Tomcat case, you will need the manager web application to be deployed and configured to allow username/password access of a certain user. You can find all the details in the reference documentation as well as in the Apache Tomcat container documentation:</p>
+
+<ul>
+  <li><a href="http://cargo.codehaus.org/Maven2+Plugin+Reference+Guide">Cargo Reference Documentation</a></li>
+  <li><a href="http://cargo.codehaus.org/Tomcat+7.x">Cargo Tomcat Reference</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Remote Deploy To Tomcat 7 Using Cargo&url=https://callistaenterprise.se/blogg/teknik/2012/03/12/remote-deploy-to-tomcat-7-using-cargo/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Remote Deploy To Tomcat 7 Using Cargo&u=https://callistaenterprise.se/blogg/teknik/2012/03/12/remote-deploy-to-tomcat-7-using-cargo/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Remote Deploy To Tomcat 7 Using Cargo&url=https://callistaenterprise.se/blogg/teknik/2012/03/12/remote-deploy-to-tomcat-7-using-cargo/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

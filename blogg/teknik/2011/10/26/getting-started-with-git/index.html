@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Getting started with git | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Jan Västernäs" src="../../../../../../assets/medarbetare/janvasternas_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Getting started with git</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-10-26T00:00:00+00:00">
+            26 October 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/janvasternas/index.html">Jan Västernäs</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Having used Subversion for a long time I wanted to learn how to use a distributed versioning system. The selling points for these products are very interesting.</p>
+
+<p>For instance the possibility to separate commit from delivery seems like a nice option. If you work on something that takes a couple of days to do, you want to commit often even when only parts of the work is ready without disturbing your colleagues. You want to commit even if all tests are not green. You want to be able to experiment and throw some stuff away by going back to previous committed versions. With a DVCS (Distributed Versioning Control System) you do all of this in your local repository and only when you are finished you deliver to the project repository where other people then can use it.</p>
+
+<p></p>
+
+<p>Which product should you use ? Git and Mercurial seems to be the popular choices. Based on the post <a href="http://importantshock.wordpress.com/2008/08/07/git-vs-mercurial">Git is McGywer and Mercurial is James Bond</a> I choose Git, although I’m not a command-line wizard.</p>
+
+<p>Installation on OS-X is very easy as expected. I used <a href="http://git-scm.com/download">http://git-scm.com/download</a>. In windows it is a bit more complicated because you have to choose between 2 different setups. I choose the option without Cygwin and running bash in command windows. I wonder who has the balls to choose the third option in this question?</p>
+
+<p><a href="https://callistaenterprise.se/assets/blogg/git-install.png"><img src="../../../../../../assets/blogg/getting-started-with-git/git-install.png" alt="" /></a></p>
+
+<p>Anyway creating a repository and checking files in is very easy</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir repo
+$ cd repo
+$ git init
+Initialized empty Git repository in /Users/jan/repo/.git/
+
+$ touch file1
+$ git add .
+$ git commit -m "Added empty file1"
+[master (root-commit) a08c807] Added empty file1
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file1
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">init</code> command will create the repository. The only bit of magic is the <code class="language-plaintext highlighter-rouge">git add</code> command. It will add one or many files to something called the index. Only changes added to the index will we affected by the next <code class="language-plaintext highlighter-rouge">git commit</code>.</p>
+
+<p>Now you can start playing around with creating branches, make changes and merging branches. Working with branches is much less expensive than you thing and a recommended way of using git.</p>
+
+<p>But having only a single repository probably is not want you want to do. Collaboration between different team members is of course the next thing to try out. In order to understand how that work I did like this.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ..
+$ git clone repo clone1
+Cloning into clone1...
+done.
+
+$ git clone repo clone2
+Cloning into clone2...
+done.
+</code></pre></div></div>
+
+<p>Now you have three complete repositories. You can imagine that <code class="language-plaintext highlighter-rouge">clone1</code> and <code class="language-plaintext highlighter-rouge">clone2</code> are local repositories at different users and that repo the a project common repository. I used three different command windows, one for each repo. Then it was easy to change something in <code class="language-plaintext highlighter-rouge">clone1</code>, push it to repo an pull the changes to <code class="language-plaintext highlighter-rouge">clone2</code>. Also simulating conflicts and how to resolve them is very easy since you have full control of all three repos.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd clone1
+$ touch file2
+$ git add .
+$ git commit -m "added file2"
+[master bacb66b] added file2
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file2
+
+$ git push
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing object: 100% (2/2), done.
+Writing objects: 100% (2/2), done.
+Total 2 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (2/2), done.
+To /Users/jan/repo
+   a08c807..bacb66b  master -&gt; master
+
+$  cd ../clone2
+$ ls -l
+total 0
+-rw-r--r--  1 jan  staff  0 Oct 26 08:07 file1
+
+$ git pull
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (2/2), done.
+From /Users/jan/repo
+   a08c807..bacb66b  master     -&gt; origin/master
+Updating a08c807..bacb66b
+Fast-forward
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file2
+
+$ ls -l
+-rw-r--r--  1 jan  staff  0 Oct 26 08:07 file1
+-rw-r--r--  1 jan  staff  0 Oct 26 08:17 file2
+</code></pre></div></div>
+
+<p>In conclusion getting started with Git is easy. Mastering all (or much) of the Git functionality and different distributed repository topologies will probably take much longer.</p>
+
+<p>Martin Fowler makes an interesting comparison between different products</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-git/vcs-plane.png" alt="" /></p>
+
+<p>From this you can see that Git and Mercurial are useful but more complex to learn.</p>
+
+<p>When it comes to topologies I think that <a href="http://github.com/schacon">Scott Chacon</a> has some nice pictures, how about this one :</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-git/workflow-c.png" alt="" /></p>
+
+<h2 id="some-useful-resources">Some useful resources</h2>
+<ul>
+  <li><a href="http://help.github.com/git-cheat-sheets/">http://help.github.com/git-cheat-sheets/</a></li>
+  <li><a href="http://book.git-scm.com/index.html">http://book.git-scm.com/index.html</a></li>
+  <li><a href="http://ndpsoftware.com/git-cheatsheet.html#loc=remote_repo;">http://ndpsoftware.com/git-cheatsheet.html#loc=remote_repo;</a></li>
+  <li><a href="http://whygitisbetterthanx.com/#">http://whygitisbetterthanx.com/#</a></li>
+  <li><a href="http://martinfowler.com/bliki/VersionControlTools.html">http://martinfowler.com/bliki/VersionControlTools.html</a></li>
+</ul>
+
+<p>And .. this video is a must</p>
+
+<div class="ce-video">
+  <iframe src="http://www.youtube.com/embed/CDeG4S-mJts?feature=oembed" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Getting Started With Git&url=https://callistaenterprise.se/blogg/teknik/2011/10/26/getting-started-with-git/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Getting Started With Git&u=https://callistaenterprise.se/blogg/teknik/2011/10/26/getting-started-with-git/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Getting Started With Git&url=https://callistaenterprise.se/blogg/teknik/2011/10/26/getting-started-with-git/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

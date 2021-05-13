@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Modelling a REST API with UML and keeping it agile | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Oskar Thunman" src="../../../../../../assets/medarbetare/oskarthunman_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Modelling a REST API with UML and keeping it agile</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2014-08-05T00:00:00+00:00">
+            05 August 2014
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Oskar Thunman
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In the world of information architecture, UML still has a strong foothold. Therefore class diagrams are still desired, even when designing RESTful APIs. I have therefore sought a way to represent the pieces that make up an API as UML and found that although this is somewhat intuitive, there is not one set way of doing this.
+This post describes our way of using UML to create a hybrid web service model/information model.</p>
+
+<p></p>
+
+<h3 id="background">Background</h3>
+<p>For our project we on the one hand had a need for a web service model capturing resources and sub-resources and the relations or paths between them, and on the other hand we needed a information model to aid in designing the web services and underlying database by capturing the datamodel and the attributes, datatypes and subcomponents that made up each resource or sub-resource. For this we extended the UML-notatin so that we were able to capture all of this in one class diagram.</p>
+
+<h2 id="addressing-the-web-service-model-needs">Addressing the web service model needs</h2>
+<p>Inspired by the <a href="http://www.ibm.com/developerworks/rational/library/design-implement-restful-web-services">guide to designing RESTful web services</a> provided by IBM, using ratonal rose (although we we used a different modeling tool) we started of with making a basic web service model of the solution.</p>
+
+<h3 id="identifying-resources-and-sub-resources">Identifying resources and sub-resources</h3>
+<p>Step one was to make classes identifiable as resources. This was done by writing “Resource” after the class name:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML1.jpg" alt="UML1.jpg" /></p>
+
+<p>Perhaps a better way to do this would have been to create a stereotype called Resource, because then you get the nice <code class="language-plaintext highlighter-rouge">&lt;&lt;…&gt;&gt;</code>.  So here we go:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML2.jpg" alt="UML2.jpg" /></p>
+
+<p>Then we needed to capture the relation between two or more resources. To do this we used a simple association, and gave it a name in the direction which indicated the path used to reach it:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML3.jpg" alt="UML3.jpg" /></p>
+
+<p>Again, perhaps a steteotype would have been expected, and then using a one way arrow helps to show the direction of the relation. The way to do this would be like this:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML4.jpg" alt="UML4.jpg" /></p>
+
+<p>But here we felt we lost something by leaving out the cardinality of the relation. This might be of little interest for a consumer of the API, but it helps the developer of the underlying database to make the right assumptions about the composition of classes.</p>
+
+<h3 id="two-way-relations-and-foreign-keys">Two way relations and foreign keys</h3>
+<p>We initially played around with the idea of making some relations go in both directions making both resources each others sub-resources. In the final design instead modeled our api like a database having a relation from class A to B and adding the unique identifier of A to B, much like a foreign key. More about this in the section “Addressing the information model needs”.</p>
+
+<h3 id="all-resources-as-top-level-resources">All resources as top level resources</h3>
+<p>As we relied on a convention of making all resources available as both top level resources of their own even if they primarily served as sub-resources we skipped linking them to a top level application. We later introduced this in a separate web service model for clarity, but during the development phase it served no need.</p>
+
+<p>We would have ended up with a lot of lines if all classes had to connect to a top level class representing the application like this:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML5.jpg" alt="UML5.jpg" /></p>
+
+<h3 id="all-classes-in-singular-all-relations-in-plural">All classes in singular, all relations in plural</h3>
+<p>As we relied on the convention of  naming all resources in plural names the relations between resources and sub-resources were given plural names.
+Also we used the convention of retrieving a list of all objects by the url <code class="language-plaintext highlighter-rouge">myApplication/healthcareProviders/</code> and retrieving one object by it’s identity <code class="language-plaintext highlighter-rouge">myApplication/healthcareProviders/{healthcareProviderId}/</code>.</p>
+
+<p>This allowed us to skip having one class representing the whole collection and one class representing one entity.
+This is great for when you finish up ypur project and want to document the final web service model:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML6.jpg" alt="UML6.jpg" /></p>
+
+<p>But during the development phase of our project we kept it simple like this:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML7.jpg" alt="UML7.jpg" /></p>
+
+<h3 id="no-operations-no-methods">No operations, no methods</h3>
+<p>As all resources were “read only” and only supported GET we simply left out specifying the method. Also we relied on the convention to make all attributes in the response searchable we also didn’t have to specify specific query-attributes per resource:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML8.jpg" alt="UML8.jpg" /></p>
+
+<p>It doesn’t hurt to add methods, but they make things less agile as things might move around in the model. Here the methods are included:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML9.jpg" alt="UML9.jpg" /></p>
+
+<h2 id="addressing-the-information-model-needs">Addressing the information model needs</h2>
+<p>Here is where we step away from the traditional UML representation of an API by exposing the attributes that make up each resource in the same model. The “proper” place for this would be as output from the get-method of each resource, but this made datatype, identifyers, cardinality and sub-components invisible in the model, so why not incorporate some of the conventions of representing xml-schemas in UML into the diagram to capture more in a single view?</p>
+
+<h3 id="identifiers">Identifiers</h3>
+<p>In this example the output of a get method of one healthcareProvider returns a healthcareProviderId, we can then specify that it’s an int and we let the “unique” flag convey that it’s the identifier of this resource:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML10.jpg" alt="UML10.jpg" /></p>
+
+<p>The foreign key convention governing this design leads us to <code class="language-plaintext highlighter-rouge">myApplication/healthcareProviders/</code> having a sub-resource reached through <code class="language-plaintext highlighter-rouge">myapplication/healthcareProviders/{healthcareProviderId}/qualityMeasurments/</code></p>
+
+<p>The sub-resource qualityMeasurments then has an attribute named like the resource and with a modifier showing it is the healthcareProviderId that is returned. In the final xml this is just a simple
+<code class="language-plaintext highlighter-rouge">&lt;healthcareProvider&gt;{healthcareProviderId}&lt;/healthcareProvider&gt;</code>.</p>
+
+<h3 id="complex-structures-in-the-output">Complex structures in the output.</h3>
+<p>The output of a resource isn’t just a straight list of attributed, so we needed to find a way to represent more complex structures. We had the example of needing to embed the author in the output instead of making it a resource of it’s own. For this we used compositon-associations in a manner similar to that used when modeling XML-schemas in UML:</p>
+
+<p><img src="../../../../../../assets/blogg/modelling-a-rest-api-with-uml-and-keeping-it-agile/UML11.jpg" alt="UML11.jpg" /></p>
+
+<h2 id="conclusions">Conclusions</h2>
+<p>Using this approach made it really easy to get an overview of the entire domain in one view. This enabled us to make changes in the design and still ensuring that
+    - Attributes were not forgotten when merging or splitting resources
+    - Naming conventions of attibutes were followed.
+    - All relations were working in the directions intended</p>
+
+<p>It also made it easy to alter between having something embedded in the output and having it a resource of it’s own, we simply just changed the relation.</p>
+
+<p>Though primarily serving as a model for aiding in the design of the underlying datamodel and for developing the web services, this model also made it quite easy to create the required documentation for the domain.
+    - It made it easy to construct a web service model as all the information was already captured in this model.
+    - It made it easy to specify the output of each resource as we just did a cut and paste of the resource together with it’s compositions.</p>
+
+<p>However some things were not addressed as it was out of scope for our domain, such as aliases for quick searches, redirects and having to incorporate external systems into our design.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Modelling A Rest Api With Uml And Keeping It Agile&url=https://callistaenterprise.se/blogg/teknik/2014/08/05/modelling-a-rest-api-with-uml-and-keeping-it-agile/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Modelling A Rest Api With Uml And Keeping It Agile&u=https://callistaenterprise.se/blogg/teknik/2014/08/05/modelling-a-rest-api-with-uml-and-keeping-it-agile/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Modelling A Rest Api With Uml And Keeping It Agile&url=https://callistaenterprise.se/blogg/teknik/2014/08/05/modelling-a-rest-api-with-uml-and-keeping-it-agile/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

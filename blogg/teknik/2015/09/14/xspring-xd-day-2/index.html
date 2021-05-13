@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Spring XD tutorial, summarized | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Spring XD tutorial, summarized</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-09-14T00:00:00+00:00">
+            14 September 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In yesterday’s blog post, I summarized my experience from the first day of the Spring XD tutorial. In this blog post I’ll try to wrap things up regarding the tutorial and the subject at hand.</p>
+
+<p></p>
+<h2 id="hadoop-jobs-and-wasting-time">Hadoop, Jobs and wasting time</h2>
+<p>Spring XD jobs, <a href="https://hadoop.apache.org/">Hadoop</a> integration and distributed execution was the topics for today and as a bonus we also had time to take a peek at the <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#counters-and-gauges">runtime analytics</a> functionality.</p>
+
+<p>First off, the <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#jobs">batch jobs</a> presentation offered some insight into how streams and jobs can be used to orchestrate data flows. Spring XD jobs are just <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#batch">Spring Batch</a> under the hood and one lab exercise was to develop a custom Spring Batch job and deploy it as a module into Spring XD. Regrettably, it wasn’t really development - it was plain copy/paste from examples and I guess most students finished within 5-10 of the allotted 30 minutes. An all-too common case during these two days.</p>
+
+<p>The most time-consuming action of the day was definitely setting up Hadoop on our local machines. Suddenly we were installing ssh daemons, fiddling with keys and modifying configuration files in a number of places. However, the actual lab was just as trivial as before - a 4-line .csv file was read by a <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#csv-hdfs">filepollhdfs</a> job and copied into the hadoop filesystem. The actual “lab” part took about 30 seconds to implement and test, getting hadoop set up probably took another 30 minutes. Some students still hadn’t gotten hadoop running when the tutorial concluded a few hours later.</p>
+
+<h2 id="this-is-cool">“This is cool”</h2>
+<p>Another somewhat time-consuming action was getting Spring XD running in its fully <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#xd-distributed-runtime">distributed</a> mode of operation. That required standalone installations of <a href="http://redis.io/">Redis</a>, <a href="https://zookeeper.apache.org/">ZooKeeper</a> and HSQLDB, some configuration changes to the <a href="https://github.com/spring-projects/spring-xd/blob/master/config/servers.yml">servers.yml</a> file and finally starting one XD admin process and an arbitrary number of XD container instances. However, this task proved worth one’s while since it gave me the very first genuine “this is cool!” sensation of the tutorial.</p>
+
+<p><img src="../../../../../../assets/blogg/spring-xd/streamandtap.png" alt="streamandtap.png" /></p>
+
+<p>In the screenshot, we see how my three running XD containers have automatically load-balanced the “httpStream” and its four participating modules (http,filter,transform,file) onto the three different containers. Ignore that ‘httpTap’ for now, it’s just a stream that taps the httpStream and redirects its output to a file sink itself.</p>
+
+<h2 id="dsl-example">DSL example</h2>
+<p>To make a bit more sense of the stream above, let’s go through the basic <a href="http://docs.spring.io/spring-xd/docs/current-SNAPSHOT/reference/html/#dsl-guide">DSL</a> for setting up that ‘httpStream’ present in the screenshot:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stream create --name httpStream --definition "http --port=9003 | 
+filter --expression=payload.contains('1') | 
+transform --expression=payload.toUpperCase() | file" --deploy
+</code></pre></div></div>
+
+<p>The important thing is the <em>–definition</em> which enclosed inside the quotation marks defines a stream consisting of four modules, using the unix-style pipe character to denote ‘piping’ the result over to the next module:</p>
+
+<ol>
+  <li>A ‘http’ input source - listening on port 9003</li>
+  <li>A ‘filter’ processor - in this case all messages not containing a ‘1’ character in the textual payload will be discared</li>
+  <li>A ‘transform’ processor - using an inline groovy statement</li>
+  <li>A ‘file’ sink, e.g. the output from the transform module will be written to a file, by convention named httpStream.out and placed in /tmp/xd on the file system.</li>
+</ol>
+
+<p>So, if we do an http POST to localhost 9003 with the Stream above deployed containing a body such as ‘Spring 1 XD’ the file sink will result in the line SPRING 1 XD being written to the httpStream.out file. Banal, but comprehensible.</p>
+
+<h2 id="failover-in-distributed-mode">Failover in distributed mode</h2>
+<p>Anyway, besides from that really awesome automatic load balancing, the failover mechanism is quite sweet too:</p>
+
+<p><img src="../../../../../../assets/blogg/spring-xd/onenodedown.png" alt="onenodedown.png" /></p>
+
+<p>After killing one of the nodes by doing Ctrl+C old-school style in the console window, the second screenshot shows how the XD cluster automatically rebalanced itself on the two remaining XD containers. That happened in a split second thanks to the beautiful job done behind the scenes by ZooKeeper. Well - there were spots on this brightly shining example though - when bringing up the third XD container again, it sat empty and unused until I forcibly redeployed the httpStream. Spring XD doesn’t currently seem to be able to rebalance across XD containers as they become available, only doing so when containers go offline or when deploying streams or jobs.</p>
+
+<h2 id="what-about-devops">What about devops?</h2>
+<p>This distributed scenario described above is definitely where Spring XD really shines. But there doesn’t seem to be any best practices in place on how to actually provision new hosts running XD containers and the required ZooKeeper, RDMBS and Redis/RabbitMQ/Kafka as each participating host must install all of these. That’s likely rather easy to accomplish through virtualization images, chef, puppet, ansible or whatever but a topic not mentioned at all in the tutorial. Also, there were no mentioning at all about how one should manage one’s streams, jobs and taps expressed in the XD DSL or how to manage your custom jobs and processors which are packaged as jar files and uploaded as modules into the XD runtime. Another topic is logging - an enterprise may run scores of Streams and Jobs on an XD cluster, how would one differentiate streams from one another in logs? Are there mechanisms to track a given message in a stream across different XD containers?</p>
+
+<p>From a DevOps point of view, I guess most of these things can be handled but this topic should have been brought up in the 300+ slide presentation.</p>
+
+<h2 id="labs-and-excerises-done-right">Labs and excerises done right?</h2>
+<p>I’ve previously complained about the trivial nature of the labs of the tutorial. An example lab scenario I would have liked is an incremental development of a complete data ingestion solution over the two days where the full ecosystem leveraging Spring XD eventually would come into play. I’m not talking about sinking some strings to a file, I’m referring to actually performing data ingestion from multiple sources where XD would have to transform, aggregate and sink data to various targets facilitating it for use in related products such as Apache PIG for analysis or perhaps Hive on top of Hadoop. Data simulation can be provided by a pre-made component (for example a Gatling script) capable of simulating huge amounts of diverse data on the fly.</p>
+
+<p>While the scope mentioned above sounds enormous for a 2-day tutorial, having the full stack of required software pre-packaged and configured into a virtualization image greatly reduces time spent on software installs. The actual lab tasks can still be limited in scope but made much more interesting by being more akin to real-life scenarios.</p>
+
+<h2 id="wrapup">Wrapup</h2>
+<p>I think these two days spent in the Spring XD tutorial hosted by the Pivotal team was time well spent, though I think there is room for some improvement regarding compacting the presentation material and making the lab scenarios more geared towards how to use Spring XD to solve common real-life uses cases on the architectural level. Spring XD will certainly find traction among many enterprises dealing with Big Data in some way or another given its first-class support for hadoop and scaling abilities. For other applications not dealing with huge amounts of data at high throughput rates, Spring XD might just not be the best tool for the job.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Xspring Xd Day 2&url=https://callistaenterprise.se/blogg/teknik/2015/09/14/xspring-xd-day-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Xspring Xd Day 2&u=https://callistaenterprise.se/blogg/teknik/2015/09/14/xspring-xd-day-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Xspring Xd Day 2&url=https://callistaenterprise.se/blogg/teknik/2015/09/14/xspring-xd-day-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

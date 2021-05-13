@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Getting started with Soi-toolkit | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Jan Västernäs" src="../../../../../../assets/medarbetare/janvasternas_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Getting started with Soi-toolkit</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-01-23T00:00:00+00:00">
+            23 January 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/janvasternas/index.html">Jan Västernäs</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="http://code.google.com/p/soi-toolkit/">Soi-toolkit</a> adds value to the leading open source <a href="http://www.mulesoft.org/">Mule ESB</a>. Its makes it very easy to start building integrations and services. You get projects setup including tests all based on <a href="http://maven.apache.org/">Maven</a>. You also get support for logging, property handling, WSDL and XML Schema creation and much more.</p>
+
+<p></p>
+
+<p>So how do you get started? The Soi-toolkit website contains extensive help here and I have used the <a href="http://code.google.com/p/soi-toolkit/wiki/InstallationGuide">installation guide</a> provided.</p>
+
+<p>Since I’m on Mac OS I already have the recommended version of Java and Maven installed. Eclipse was already setup as well.</p>
+
+<p>I’m used to running maven in a terminal window so I skipped the recommended Maven Eclipse plugin installation. Since I was only going to do some local work at this time, I skipped the Subversive Eclipse plugin. So the only thing I had left to do was to install the Soi-toolkit Eclipse plugin.</p>
+
+<p>At the <strong>Install new Software</strong> menu option I entered the Soi-toolkit update site <a href="http://soi-toolkit.googlecode.com/svn/eclipse-update-site">http://soi-toolkit.googlecode.com/svn/eclipse-update-site</a> and got the confirmation that I was on the right track.</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-soi-toolkit/soi-toolkit-update-site.png" alt="" /></p>
+
+<p>I also skipped the optional installations for now.</p>
+
+<p>The configuration of the toolkit was no big deal after finding where maven was installed. I used the <strong>eclipse:eclipse</strong> options.</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-soi-toolkit/soi-toolkit-preferences.png" alt="" /></p>
+
+<p>Next step is to create a component for my integrations. Using the wizard <strong>Create a new component</strong> and specify something like this:</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-soi-toolkit/soi-toolkit-component.png" alt="" /></p>
+
+<p>Remember to select Mule 2.2.1 which is the public available version.</p>
+
+<p>The first time eclipse:eclipse command is executed a lot of dependencies area downloaded, you must be patient. The <code class="language-plaintext highlighter-rouge">M2_REPO</code> variable has to be set to where your maven repository is, <code class="language-plaintext highlighter-rouge">/Users/jan/.m2/repository</code> in my case.</p>
+
+<p>Three eclipse projects are created, the service project is where the integration is going to be.</p>
+
+<p>Now it is time to create an integration using the wizard <strong>Create new service</strong>. I picked a simple file transfer scenario to start with.</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-soi-toolkit/soi-toolkit-service.png" alt="" /></p>
+
+<p>The main configuration file that was generated look like this</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;model name="my-file-transfer-model"&gt;
+  &lt;service name="my-file-transfer-sender-service"&gt;
+
+    &lt;inbound&gt;
+      &lt;file:inbound-endpoint
+          path="${MY-FILE-TRANSFER_INBOUND_FOLDER}"
+          pollingFrequency="${MY-FILE-TRANSFER_INBOUND_POLLING_MS}"
+          fileAge="${MY-FILE-TRANSFER_INBOUND_FILE_AGE_MS}"
+          moveToDirectory="${MY-FILE-TRANSFER_ARCHIVE_FOLDER}"
+          moveToPattern="#[ORIGINALNAME]"
+          transformer-refs="objToStr logMsgIn"&gt;
+        &lt;file:filename-wildcard-filter pattern="*.*"/&gt;
+      &lt;/file:inbound-endpoint&gt;
+    &lt;/inbound&gt;
+
+    &lt;outbound&gt;
+      &lt;pass-through-router&gt;
+        &lt;file:outbound-endpoint
+          path="${MY-FILE-TRANSFER_OUTBOUND_FOLDER}"
+          outputPattern="#[ORIGINALNAME]"
+          transformer-refs="myfiletransferTransformer logMsgOut"/&gt;
+      &lt;/pass-through-router&gt;
+    &lt;/outbound&gt;
+  &lt;/service&gt;
+&lt;/model&gt;
+</code></pre>
+
+<p>Also some test were generated and they show green when you execute them.</p>
+
+<p><img src="../../../../../../assets/blogg/getting-started-with-soi-toolkit/soi-toolkit-tests.png" alt="" /></p>
+
+<p>So we have a complete project setup including test, property handling, logging and build support. From then you can add transformers and other features to your integration. Obviously that need more knowledge on how Mule works, but using Soi-toolkit you know that you will be starting with best practise Mule usage.</p>
+
+<p>Working with services and integrations in an open source environment has never been easier and Soi-toolkit takes Mule usage to the next level.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Getting Started With Soi Toolkit&url=https://callistaenterprise.se/blogg/teknik/2011/01/23/getting-started-with-soi-toolkit/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Getting Started With Soi Toolkit&u=https://callistaenterprise.se/blogg/teknik/2011/01/23/getting-started-with-soi-toolkit/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Getting Started With Soi Toolkit&url=https://callistaenterprise.se/blogg/teknik/2011/01/23/getting-started-with-soi-toolkit/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

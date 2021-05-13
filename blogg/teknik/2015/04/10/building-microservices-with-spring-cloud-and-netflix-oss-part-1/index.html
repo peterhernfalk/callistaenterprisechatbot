@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building microservices with Spring Cloud and Netflix OSS, part 1 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building microservices with Spring Cloud and Netflix OSS, part 1</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-04-10T00:00:00+00:00">
+            10 April 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In the <a href="../../../03/25/an-operations-model-for-microservices/index.html">previous blog post</a> we defined an operations model for usage of microservices. In this blog post we will start to look at how we can implement the model using <a href="http://projects.spring.io/spring-cloud/">Spring Cloud</a> and <a href="http://netflix.github.io">Netflix OSS</a>. From the operations model we will cover the core parts: <em>service discovery</em>, <em>dynamic routing</em>, <em>load balancing</em> and to some extend an <em>edge server</em>, leaving the other parts to upcoming blog posts.</p>
+
+<p></p>
+
+<p>We will use some core components from Spring Cloud and Netflix OSS to allow separately deployed microservices to communicate with each other with no manual administration required, e.g. keeping track of what ports each microservice use or manual configuration of routing rules. To avoid problems with port conflicts, our microservices will dynamically allocate free ports from a port range at startup. To allow simple access to the microservices we will use an edge server that provides a well known entry point to the microservice landscape.</p>
+
+<p>After a quick introduction of the Spring Cloud and Netflix OSS components we will present a system landscape that we will use throughout the blog series. We will go through how to access the source code and build it. We will also make a brief walkthrough of the source code pointing out the most important parts. Finally we wrap up by running through some test cases on how to access the services and also demonstrate how simple it is to bring up a new instance of a microservice and get the load balancer to start to use it, again without any manual configuration required.</p>
+
+<h2 id="1-spring-cloud-and-netflix-oss">1. Spring Cloud and Netflix OSS</h2>
+
+<p>Spring Cloud is a <a href="https://spring.io/blog/2015/03/04/spring-cloud-1-0-0-available-now">new project</a> in the <a href="http://spring.io/projects">spring.io family</a> with a set of components that can be used to implement our operations model. To a large extent Spring Cloud 1.0 is based on components from <a href="http://netflix.github.io">Netflix OSS</a>. Spring Cloud integrates the Netflix components in the Spring environment in a very nice way using auto configuration and convention over configuration similar to how <a href="../../../../2014/04/15/a-first-look-at-spring-boot/index.html">Spring Boot</a> works.</p>
+
+<p>The table below maps the generic components in the <a href="https://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/(/blogg/teknik/2015/03/25/an-operations-model-for-microservices/)">operations model</a> to the actual components that we will use throughout this blog series:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/mapping-table.png" width="500" /></p>
+
+<p>In this blog post we will cover <em>Eureka</em>, <em>Ribbon</em> and to some extent <em>Zuul</em>:</p>
+
+<ul>
+  <li>
+    <p><strong>Netflix Eureka</strong> - Service Discovery Server
+Netflix Eureka allows microservices to register themselves at runtime as they appear in the system landscape.</p>
+  </li>
+  <li>
+    <p><strong>Netflix Ribbon</strong> - Dynamic Routing and Load Balancer
+Netflix Ribbon can be used by service consumers to lookup services at runtime. Ribbon uses the information available in Eureka to locate appropriate service instances. If more than one instance is found, Ribbon will apply load balancing to spread the requests over the available instances. Ribbon does not run as a separate service but instead as an embedded component in each service consumer.</p>
+  </li>
+  <li>
+    <p><strong>Netflix Zuul</strong> - Edge Server
+Zuul is (of course) our <a href="http://ghostbusters.wikia.com/wiki/Zuul">gatekeeper</a> to the outside world, not allowing any unauthorized external requests pass through. Zulu also provides a well known entry point to the microservices in the system landscape. Using dynamically allocated ports is convenient to avoid port conflicts and to minimize administration but it makes it of course harder for any given service consumer. Zuul uses Ribbon to lookup available services and routes the external request to an appropriate service instance. In this blog post we will only use Zuul to provide a well known entry point, leaving the security aspects for coming blog posts.</p>
+  </li>
+</ul>
+
+<p><strong>Note:</strong> The microservices that are allowed to be accessed externally through the edge server can be seen as an <a href="http://www.programmableweb.com/apis/directory">API</a> to the system landscape.</p>
+
+<h2 id="2-a-system-landscape">2. A system landscape</h2>
+
+<p>To be able to test the components we need a system landscape to play with. For the scope of this blog post we have developed a landscape that looks like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/system-landscape.png" alt="system-landscape" /></p>
+
+<p>It contains four business services (<em>green boxes</em>):</p>
+
+<ul>
+  <li>Three core services responsible for handling information regarding <strong>products</strong>, <strong>recommendations</strong> and <strong>reviews</strong>.</li>
+  <li>One composite service, <strong>product-composite</strong>, that can aggregate information from the three core services and compose a view of product information together with reviews and recommendations of a product.</li>
+</ul>
+
+<p>To support the business services we use the following infrastructure services and components (<em>blue boxes</em>):</p>
+
+<ul>
+  <li>
+    <p><strong>Service Discovery Server</strong> (Netflix Eureka)</p>
+  </li>
+  <li>
+    <p><strong>Dynamic Routing and Load Balancer</strong> (Netflix Ribbon)</p>
+  </li>
+  <li>
+    <p><strong>Edge Server</strong> (Netflix Zuul)</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>To emphasize the differences between microservices and monolithic applications we will run each service in a separate microservice, i.e. in separate processes. In a large scale system landscape it will most probably be inconvenient with this type of fine grained microservices. Instead, a number of related services will probably be grouped in one and the same microservice to keep the number of microservices at a manageable level. But still without falling back into huge monolithic applications…</p>
+</blockquote>
+
+<h2 id="3-build-from-source">3. Build from source</h2>
+
+<p>If you want to check out the source code and test it on your own you need to have Java SE 8 and Git installed. Then perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-microservices.git
+$ cd blog-microservices
+$ git checkout -b B1 M1.1
+</code></pre></div></div>
+
+<p>This will result in the following structure of components:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/source-code.png" alt="source-code" /></p>
+
+<p>Each component is built separately (remember that we no longer are building monolithic applications :-) so each component have their own build file. We use <a href="../../../../2014/04/14/a-first-look-at-gradle/index.html">Gradle</a> as the build system, if you don’t have Gradle installed the build file will download it for you. To simplify the process we have a small shell script that you can use to build the components:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./build-all.sh
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you are on <strong>Windows</strong> you can execute the corresponding bat-file <code class="language-plaintext highlighter-rouge">build-all.bat</code>!</p>
+</blockquote>
+
+<p>It should result in six log messages that all says:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BUILD SUCCESSFUL
+</code></pre></div></div>
+
+<h2 id="4-source-code-walkthrough">4. Source code walkthrough</h2>
+
+<p>Let’s take a quick look at some key source code construct. Each microservice is developed as standalone <a href="../../../../2014/04/15/a-first-look-at-spring-boot/index.html">Spring Boot</a> application and uses <a href="http://undertow.io">Undertow</a>, a lightweight Servlet 3.1 container, as its web server. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a> is used to implement the REST based services and <a href="https://spring.io/blog/2009/03/27/rest-in-spring-3-resttemplate">Spring RestTemplate</a> is used to perform outgoing calls. If you want to know more about these core technologies you can for example take a look at the following <a href="../../../../2014/04/22/c10k-developing-non-blocking-rest-services-with-spring-mvc/index.html">blog post</a>.</p>
+
+<p>Instead let us focus on how to use the functionality in Spring Cloud and Netflix OSS!</p>
+
+<p><strong>Note:</strong> We have intentionally made the implementation as simple as possible to make the source code easy to grasp and understand.</p>
+
+<h3 id="41-gradle-dependencies">4.1 Gradle dependencies</h3>
+
+<p>In the spirit of Spring Boot, Spring Cloud has defined a set of starter dependencies making it very easy to bring in the dependencies you need for a specific feature. To use Eureka and Ribbon in a microservice to register and/or call other services simply add the following to the build file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    compile("org.springframework.cloud:spring-cloud-starter-eureka:1.0.0.RELEASE")
+</code></pre></div></div>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/core/product-service/build.gradle">product-service/build.gradle</a>.</p>
+
+<p>To be able to setup an Eureka server add the following dependency:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    compile('org.springframework.cloud:spring-cloud-starter-eureka-server:1.0.0.RELEASE')
+</code></pre></div></div>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/support/discovery-server/build.gradle">discovery-server/build.gradle</a>.</p>
+
+<h3 id="42-infrastructure-servers">4.2. Infrastructure servers</h3>
+
+<p>Setting up an infrastructure server based on Spring Cloud and Netflix OSS is really easy. E.g. for a Eureka server add the annotation <code class="language-plaintext highlighter-rouge">@EnableEurekaServer</code> to a standard Spring Boot application:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableEurekaServer</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EurekaApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">EurekaApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/support/discovery-server/src/main/java/se/callista/microservises/support/discovery/EurekaApplication.java">EurekaApplication.java</a>.</p>
+
+<p>To bring up a Zuul server you add a <code class="language-plaintext highlighter-rouge">@EnableZuulProxy</code> - annotation instead. For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/support/edge-server/src/main/java/se/callista/microservises/support/edge/ZuulApplication.java">ZuulApplication.java</a>.</p>
+
+<p>With these simple annotations you get a default server configurations that gets yo started. When needed, the default configurations can be overridden with specific settings. One example of overriding the default configuration is where we have limited what services that the edge server is allowed to route calls to. By default Zuul set up a route to every service it can find in Eureka. With the following configuration in the <code class="language-plaintext highlighter-rouge">application.yml</code> - file we have limited the routes to only allow calls to the composite product service:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">zuul</span><span class="pi">:</span>
+  <span class="na">ignoredServices</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*"</span>
+  <span class="na">routes</span><span class="pi">:</span>
+    <span class="na">productcomposite</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/productcomposite/**</span>
+</code></pre></div></div>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/support/edge-server/src/main/resources/application.yml">edge-server/application.yml</a>.</p>
+
+<h3 id="43-business-services">4.3 Business services</h3>
+
+<p>To auto register microservices with Eureka, add a <code class="language-plaintext highlighter-rouge">@EnableDiscoveryClient</code> - annotation to the Spring Boot application.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableDiscoveryClient</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProductServiceApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">ProductServiceApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/core/product-service/src/main/java/se/callista/microservises/core/product/ProductServiceApplication.java">ProductServiceApplication.java</a>.</p>
+
+<p>To lookup and call an instance of a microservice, use Ribbon and for example a Spring RestTemplate like:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">LoadBalancerClient</span> <span class="n">loadBalancer</span><span class="o">;</span>
+    <span class="o">...</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Recommendation</span><span class="o">&gt;&gt;</span> <span class="nf">getReviews</span><span class="o">(</span><span class="kt">int</span> <span class="n">productId</span><span class="o">)</span> <span class="o">{</span>
+    
+            <span class="nc">ServiceInstance</span> <span class="n">instance</span> <span class="o">=</span> <span class="n">loadBalancer</span><span class="o">.</span><span class="na">choose</span><span class="o">(</span><span class="s">"review"</span><span class="o">);</span>
+            <span class="no">URI</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="na">getUri</span><span class="o">();</span>
+		<span class="o">...</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">restTemplate</span><span class="o">.</span><span class="na">getForEntity</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>The service consumer only need to know about the name of the service (<code class="language-plaintext highlighter-rouge">review</code> in the example above), Ribbon (i.e. the <code class="language-plaintext highlighter-rouge">LoadBalancerClient</code> class) will find a service instance and return its URI to the service consumer.</p>
+
+<p>For a complete example see <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/composite/product-composite-service/src/main/java/se/callista/microservices/composite/product/service/Util.java">Util.java</a> and <a href="https://github.com/callistaenterprise/blog-microservices/blob/B1/microservices/composite/product-composite-service/src/main/java/se/callista/microservices/composite/product/service/ProductCompositeIntegration.java">ProductCompositeIntegration.java</a>.</p>
+
+<h2 id="5-start-up-the-system-landscape">5. Start up the system landscape</h2>
+
+<blockquote>
+  <p>In this blog post we will start the microservices as java processes in our local development environment. In followup blog posts we will describe how to deploy microservices to both cloud infrastructures and Docker containers!</p>
+</blockquote>
+
+<p>To be able to run some of the commands used below you need to have the tools <a href="http://curl.haxx.se">cURL</a> and <a href="http://stedolan.github.io/jq/">jq</a> installed.</p>
+
+<p>Each microservice is started using the command <code class="language-plaintext highlighter-rouge">./gradlew bootRun</code>.</p>
+
+<p>First start the infrastructure microservices, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd .../blog-microservices/microservices
+
+$ cd support/discovery-server;  ./gradlew bootRun
+$ cd support/edge-server;       ./gradlew bootRun
+</code></pre></div></div>
+
+<p>Once they are started up, launch the business microservices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd core/product-service;                ./gradlew bootRun
+$ cd core/recommendation-service;         ./gradlew bootRun
+$ cd core/review-service;                 ./gradlew bootRun
+$ cd composite/product-composite-service; ./gradlew bootRun 
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you are on <strong>Windows</strong> you can execute the corresponding bat-file <code class="language-plaintext highlighter-rouge">start-all.bat</code>!</p>
+</blockquote>
+
+<p>Once the microservices are started up and registered with the service discovery server they should write the following in the log:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DiscoveryClient ... - registration status: 204
+</code></pre></div></div>
+
+<p>In the service discovery web app we should now be able to see our four business services and the edge server (<a href="http://localhost:8761">http://localhost:8761</a>):</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/eureka.png" alt="Eureka" /></p>
+
+<p>To find out more details about our services, e.g. what ip addresses and ports they use, we can use the Eureka REST API, e.g.:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">s</span> <span class="o">-</span><span class="nx">H</span> <span class="dl">"</span><span class="s2">Accept: application/json</span><span class="dl">"</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8761/eureka/apps | jq '.applications.application[] | {service: .name, ip: .instance.ipAddr, port: .instance.port."$"}'</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">PRODUCT</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">ip</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">192.168.0.116</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">port</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">59745</span><span class="dl">"</span>
+<span class="p">}</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REVIEW</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">ip</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">192.168.0.116</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">port</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">59178</span><span class="dl">"</span>
+<span class="p">}</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">RECOMMENDATION</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">ip</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">192.168.0.116</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">port</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">48014</span><span class="dl">"</span>
+<span class="p">}</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">PRODUCTCOMPOSITE</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">ip</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">192.168.0.116</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">port</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">51658</span><span class="dl">"</span>
+<span class="p">}</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">EDGESERVER</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">ip</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">192.168.0.116</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">port</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">8765</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We are now ready to try some test cases, first some happy days tests to verify that we can reach our services and then we will se how we can bring up a new instance of a microservice and get Ribbon to load balance requests over multiple instances of that service.</p>
+
+<p><strong>Note:</strong> In coming blog posts we will also try failure scenarios to demonstrate how a circuit breaker works.</p>
+
+<h3 id="51-happy-days">5.1 Happy days</h3>
+
+<p>Start to call the composite service through the edge server, The edge server is found on the port 8765 (see its application.yml file) and as we have seen above we can use the path <code class="language-plaintext highlighter-rouge">/productcomposite/**</code> to reach the product-composite service through our edge server. The should return a composite response (shortened for brevity) like:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">s</span> <span class="nx">localhost</span><span class="p">:</span><span class="mi">8765</span><span class="o">/</span><span class="nx">productcomposite</span><span class="o">/</span><span class="nx">product</span><span class="o">/</span><span class="mi">1</span> <span class="o">|</span> <span class="nx">jq</span> <span class="p">.</span>
+<span class="p">{</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">productId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">recommendations</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">author</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Author 1</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">rate</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">recommendationId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="p">...</span>
+    <span class="p">],</span>
+    <span class="dl">"</span><span class="s2">reviews</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">author</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Author 1</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">reviewId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">subject</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Subject 1</span><span class="dl">"</span>
+        <span class="p">},</span>
+        <span class="p">...</span>
+    <span class="p">],</span>
+    <span class="dl">"</span><span class="s2">weight</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>…if we are on the inside of the microservice landscape we can actually call the services directly without going through the edge server. The problem is of course that we don’t know on what ports the services runs on since they are allocated dynamically. But if we look at the output from the call to the eureka rest api we can find out what ports they listen to. To call the composite service and then the three core services we should be able to use the following commands (given the port information in the response from the call to the eureka rest api above)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s localhost:51658/product/1 | jq .
+$ curl -s localhost:59745/product/1 | jq .
+$ curl -s localhost:59178/review?productId=1 | jq .
+$ curl -s localhost:48014/recommendation?productId=1 | jq .
+</code></pre></div></div>
+
+<p>Try it out in your own environment!</p>
+
+<h3 id="52-dynamic-load-balancing">5.2 Dynamic load balancing</h3>
+
+<p>To avoid service outage due to a failing service or temporary network problems it is very common to have more than one service instance of the same type running and using a load balancer to spread the incoming calls over the instances. Since we are using dynamic allocated ports and a service discovery server it is very easy to add a new instance. For example simply start a new review service and it will allocate a new port dynamically and register itself to the service discovery server.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd .../blog-microservices/microservices/core/review-service
+$ ./gradlew bootRun
+</code></pre></div></div>
+
+<p>After a short while you can see the second instance in the service discovery web app (<a href="http://localhost:8761">http://localhost:8761</a>):</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/eureka-2-review-instances.png" alt="eureka" /></p>
+
+<p>If you run the previous curl command (<code class="language-plaintext highlighter-rouge">curl -s localhost:8765/productcomposite/product/1 | jq .</code>) a couple of times and look into the logs of the two review instances you will see how the load balancer automatically spread in calls over the two instances without any manual configuration required:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-1/log-from-2-review.instances.png" alt="Hystrix" /></p>
+
+<h2 id="6-summary">6. Summary</h2>
+
+<p>We have seen how Spring Cloud and Netflix OSS components can be used to simplify making separately deployed microservices to work together with no manual administration in terms of keeping track of what ports each microservice use or manual configuration of routing rules. When new instances are started they are automatically detected by the load balancer through the service discovery server and can start to receive requests. Using the edge server we can control what microservices that are exposed externally, establishing av API for the system landscape.</p>
+
+<h2 id="7-next-step">7. Next step</h2>
+
+<p>Ok, so happy days scenarios looks great!</p>
+
+<p>But a lot of questions remains unanswered, e.g.:</p>
+
+<ul>
+  <li>What about something goes wrong, like a failing microservice?</li>
+  <li>How do we prevent unauthorized access to our API ()through the edge server)?</li>
+  <li>How do we get a good consolidated picture of what is going on in the microservice landscape, e.g. why isn’t order #123456 delivered yet?</li>
+</ul>
+
+<p>In upcoming blog posts in the <a href="../../../05/20/blog-series-building-microservices.html">Blog Series - Building Microservices</a> we will look at how to increase resilience using a circuit breaker, use OAuth 2 to restrict external access. We will also look into how we can user the ELK stack to collect and present log entries from all the microservices in a centralized and consolidated way and more.</p>
+
+<p>Stay tuned!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices With Spring Cloud And Netflix Oss Part 1&url=https://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices With Spring Cloud And Netflix Oss Part 1&u=https://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices With Spring Cloud And Netflix Oss Part 1&url=https://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

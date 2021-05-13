@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>A first look at Gradle, is it time to leave Maven and Ant behind? | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">A first look at Gradle, is it time to leave Maven and Ant behind?</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2014-04-14T00:00:00+00:00">
+            14 April 2014
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="http://www.gradle.org/">Gradle</a> is a build tool that tries to combine the best of Maven and Ant and at the same time replace the verbose XML syntax in these tools with a compact and easy to understand Groovy based DSL. Gradle supports Mavens default project structure, dependency management mechanism and repository infrastructure making a replacement fairly straight forward, please read the excellent <a href="http://www.gradle.org/docs/current/userguide/userguide.html">documentation</a> for more information.</p>
+
+<p></p>
+
+<p>Some large open source projects already have migrated to Gradle: the <a href="http://spring.io/blog/2011/12/15/web-development-evolved-grails-2-0-released">Grails</a> project replaced Ant back in 2010, last year <a href="https://developers.google.com/events/io/sessions/325236644">Google</a> decided to replace their existing build system for the Android SDK, Netflix seems to use Gradle for its massive <a href="http://netflix.github.io/#repo">open source portfolio</a> and now (since the Spring 4.0 release) all <a href="https://spring.io/guides">guides on spring.io</a> contains both build scripts for Maven and Gradle. Seems like there is a momentum building up for Gradle…</p>
+
+<p>Recently I was involved in a project where one of the deliverables was a small Android demo app and we decided to give Gradle a try to replace the Maven scripts we usually struggle with. The result looked very promising (even though not covering every aspect of a large enterprise project requirements on a build system).  This blog is based on the experiences from this project and describes how you can develop a minimal Android app and use Gradle as a build system not only for building the deployable apk-file but also deploy it on an Android device. The blog also briefly demonstrates the tight integration between Gradle and the new upcoming IntelliJ based Android Studio IDE.</p>
+
+<h2 id="get-the-source-code">Get the source code</h2>
+<p>If you want to check out the code sample and deploy it to your own Android device you need to have Java SE 7 and Git installed (an Android device, mobile or tablet, is also useful if you want to try out the result in the end). Then perform:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git@github.com:callistaenterprise/blog-a-first-look-at-gradle.git
+$ cd blog-a-first-look-at-gradle/android-gradle-one
+$ tree
+</code></pre></div></div>
+
+<p>This should result in a tree structure containing nine files, five related to Gradle and four related to the Android app itself:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── src
+    └── main
+    ├── AndroidManifest.xml
+    ├── java
+    │   └── se
+    │       └── callista
+    │           └── datecalculator
+    │               └── DateCalculatorActivity.java
+    └── res
+        ├── layout
+        │   └── date_calculator_layout.xml
+        └── values
+        └── strings.xml
+</code></pre></div></div>
+
+<h2 id="the-android-app">The Android app</h2>
+<p>For this blog I have developed the simplest possible Android app I could think of that is one level above a “<em>Hello world!</em>” example.</p>
+
+<p>I decided to try out the brand new <a href="https://jcp.org/en/jsr/detail?id=310">Date and Time API</a> in Java SE 8 by calculating the date of a given number of days from today. According to the spec this should now be able to be calculated as simply as:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">plusDays</span><span class="o">(</span><span class="n">days</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>One problem with this is of course that the Android SDK is based on Java SE 7 :-(.
+But since the new Date and Time API is based on an already existing open source project, <a href="http://www.joda.org/joda-time/">Joda-Time</a>, this can easily be solved by adding a dependency to Joda-Time in my build file.</p>
+
+<p>The user interface is based on a layout with an input field for the number of days, a button for performing the calculation and an output field for the result. Something like:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-date-calculator-layout.png" alt="" /></p>
+
+<h2 id="the-source-code">The Source Code</h2>
+<p>The source code for this Android app is very simple:</p>
+
+<h3 id="srcmainandroidmanifestxml">src/main/AndroidManifest.xml</h3>
+<p>This is a standardized manifest file that declares to the Android OS how the app works. For this minimal app it declares:</p>
+
+<ol>
+  <li>Defines a unique identifier for the application (<code class="language-plaintext highlighter-rouge">package="se.callista.datecalculator"</code>)</li>
+  <li>What versions of Android that the apps runs on (<code class="language-plaintext highlighter-rouge">minSdkVersion="8"</code>)</li>
+  <li>Tells Android how to start the app (<code class="language-plaintext highlighter-rouge">&lt;activity android:name=".DateCalculatorActivity"</code>)</li>
+</ol>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="se.callista.datecalculator"
+    android:versionCode="1"
+    android:versionName="1.0.0" &gt;
+
+  &lt;uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" /&gt;
+
+  &lt;application android:label="@string/app_name"&gt;
+    &lt;activity android:name=".DateCalculatorActivity"
+        android:label="@string/app_name" &gt;
+      &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN" /&gt;
+        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+      &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+  &lt;/application&gt;
+&lt;/manifest&gt;
+</code></pre>
+
+<h3 id="srcmainjavasecallistadatecalculatordatecalculatoractivityjava">src/main/java/se/callista/datecalculator/DateCalculatorActivity.java</h3>
+<p>This is the core part of the app:</p>
+
+<ol>
+  <li>Displays the view (see below) when the app is created</li>
+  <li>Listen for clicks on the Calculate - button</li>
+  <li>When clicked it grabs the input from the input-field, calculates that result and displays in the output-field.</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">se.callista.datecalculator</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.app.Activity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.util.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Button</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.EditText</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.joda.time.LocalDate</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DateCalculatorActivity</span> <span class="kd">extends</span> <span class="nc">Activity</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">TAG</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+    <span class="n">setContentView</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">date_calculator_layout</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="nc">EditText</span> <span class="n">inputField</span>  <span class="o">=</span> <span class="o">(</span><span class="nc">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">editText</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="nc">EditText</span> <span class="n">resultField</span> <span class="o">=</span> <span class="o">(</span><span class="nc">EditText</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">editResult</span><span class="o">);</span>
+
+    <span class="nc">Button</span> <span class="n">button</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">buttonCalculate</span><span class="o">);</span>
+    <span class="n">button</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="nc">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="nc">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">daysString</span> <span class="o">=</span> <span class="n">inputField</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Days as string: "</span> <span class="o">+</span> <span class="n">daysString</span><span class="o">);</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="kt">int</span> <span class="n">days</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">daysString</span><span class="o">);</span>
+          <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Days: "</span> <span class="o">+</span> <span class="n">days</span><span class="o">);</span>
+
+          <span class="nc">LocalDate</span> <span class="n">now</span> <span class="o">=</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+          <span class="nc">String</span> <span class="n">newDate</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="na">plusDays</span><span class="o">(</span><span class="n">days</span><span class="o">).</span><span class="na">toString</span><span class="o">(</span><span class="s">"yyyy-MM-dd"</span><span class="o">);</span>
+          <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"New Date: "</span> <span class="o">+</span> <span class="n">newDate</span><span class="o">);</span>
+
+          <span class="n">resultField</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">newDate</span> <span class="o">+</span> <span class="s">"\n("</span> <span class="o">+</span> <span class="n">days</span> <span class="o">+</span> <span class="s">" days added to today's date, "</span> <span class="o">+</span> <span class="n">now</span> <span class="o">+</span> <span class="s">")"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">NumberFormatException</span> <span class="n">nfe</span><span class="o">)</span> <span class="o">{</span>
+          <span class="nc">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Error parsing: "</span> <span class="o">+</span> <span class="n">daysString</span><span class="o">,</span> <span class="n">nfe</span><span class="o">);</span>
+          <span class="n">resultField</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">"\""</span> <span class="o">+</span> <span class="n">daysString</span> <span class="o">+</span> <span class="s">"\" is not an integer, try again!"</span><span class="o">);</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="srcmainreslayoutdate_calculator_layoutxml">src/main/res/layout/date_calculator_layout.xml</h3>
+<p>Holds a static layout of the user interface:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"&gt;
+
+  &lt;LinearLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"&gt;
+
+    &lt;TextView
+        android:id="@+id/textInputLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter days from today: "
+        android:layout_weight="0.1" /&gt;
+
+    &lt;EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_weight="1" /&gt;
+  &lt;/LinearLayout&gt;
+
+  &lt;Button
+      android:id="@+id/buttonCalculate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Calculate" /&gt;
+
+  &lt;LinearLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"&gt;
+
+    &lt;TextView
+        android:id="@+id/textResultLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: "
+        android:layout_weight="0.1" /&gt;
+
+    &lt;EditText
+        android:id="@+id/editResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:editable="true"
+        android:enabled="true" /&gt;
+
+  &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+
+<h3 id="srcmainresstringsxml">src/main/res/strings.xml</h3>
+<p>Finally a XML based file for string values when required:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+  &lt;string name="app_name"&gt;Date calculator&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<h2 id="gradle">Gradle</h2>
+<p>Ok, so now we have an Android app, but how do we build it and deploy it?</p>
+
+<p>Time for Gradle…</p>
+
+<p>The Gradle build file, <code class="language-plaintext highlighter-rouge">build.gradle</code>, looks like:</p>
+
+<pre class=" line-numbers"><code class="language-markup">buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.7.+'
+  }
+}
+
+apply plugin: 'android'
+
+android {
+  buildToolsVersion "19.0.3"
+  compileSdkVersion 17
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile("joda-time:joda-time:2.3")
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.9'
+}
+</code></pre>
+
+<ol>
+  <li>The first thing we see is a <code class="language-plaintext highlighter-rouge">buildscript</code> directive. Gradle use this to find dependencies for the build script it self, e.g. plugins. In our case Gradle tooling for Android.</li>
+  <li>Next we can see how the Android tooling is applied using the <code class="language-plaintext highlighter-rouge">apply</code> directive.</li>
+  <li>Thirdly are some Android tooling specific <code class="language-plaintext highlighter-rouge">android</code> properties that relates how the Android plugin should compile and build the apk-file.</li>
+  <li>After that we can recognize the Gradle version of how to specify <code class="language-plaintext highlighter-rouge">repositories</code> and <code class="language-plaintext highlighter-rouge">dependencies</code> for our own source code. Here we can see that our code depends on joda-time v2.3 and that is should be downloaded from Maven Central Repository.</li>
+  <li>Finally we see a <code class="language-plaintext highlighter-rouge">task wrapper</code>construct we are not used to in the Maven world. This is used to define what version of Gradle that should be used to execute the build script and also directs a Gradle wrapper (gradlew + a gradle - folder) that comes with the source code to automatically download the specified version of Gradle (if not already downloaded) before running the build script. This means that you don’t have to pre-install Gradle!</li>
+</ol>
+
+<p>This is something else then Maven’s bloated XML syntax, right?</p>
+
+<p>If you still are in doubt then take some time to study the examples available at <a href="https://spring.io/guides">the guides on spring.io</a>. There you can find both Gradle and Maven files for the same project, i.e. solving the same problems. Meaning that you can compare them head to head :-)</p>
+
+<h2 id="a-test-run">A test run</h2>
+<p>Ok, let’s take it out for a spin, shall we?</p>
+
+<p>First warm up by asking what tasks it can process:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./gradlew tasks
+</code></pre></div></div>
+
+<p>That’s useful information if you are new to Gradle, right?</p>
+
+<p>Now let’s build the deployable apk-file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./gradlew build
+</code></pre></div></div>
+
+<p>You can now find the file in the <code class="language-plaintext highlighter-rouge">build/apk</code> - folder.</p>
+
+<p>To deploy it to a Android test device simply attach it to your computer with a USB cable and give the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./gradlew installDebug
+</code></pre></div></div>
+
+<p>The execution should end with something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:installDebug
+3524 KB/s (395189 bytes in 0.109s)
+ pkg: /data/local/tmp/android-gradle-one-debug-unaligned.apk
+Success
+
+BUILD SUCCESSFUL
+</code></pre></div></div>
+
+<p><strong>Note:</strong> You Android device has to be in <a href="http://www.theandroidsoul.com/android-4-2-developer-mode-is-a-tricky-thing-heres-how-its-done/">developer mode</a> to accept installation of an app this way.</p>
+
+<p>Head over to you Android device and look for the app. You should find it like:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-date-calculator-installed.png" alt="" /></p>
+
+<p>Start it and you should see something similar to:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-date-calculator-started.png" alt="" /></p>
+
+<p>Fill in some number and hit the Calculate button:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-date-calculator-working.png" alt="" /></p>
+
+<p>It works, Gradle successfully built and deployed the Android app!</p>
+
+<h2 id="gradle-integration-with-ides">Gradle integration with IDE’s</h2>
+<p>Let’s wrap up this introduction with a few words on IDE integration. Gradle comes (of course) with plugins for integration with popular IDE’s such as <a href="http://www.gradle.org/docs/current/userguide/eclipse_plugin.html">Eclipse</a> and <a href="http://www.gradle.org/docs/current/userguide/idea_plugin.html">IntelliJ</a>. Google provides prepackaged IDE’s for Android development. The current, <a href="http://developer.android.com/sdk/index.html">Android SDK</a>, is based Eclipse but a new IntelliJ based IDE, <a href="http://developer.android.com/sdk/installing/studio.html">Android Studio</a>, is under development. Android Studio supports Gradle natively out of the box. Just start its “import command” and point out your <code class="language-plaintext highlighter-rouge">build.gradle</code> file:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-studio-import.png" alt="" /></p>
+
+<p>Wait a few seconds and then you have everything setup as specified in the <code class="language-plaintext highlighter-rouge">build.gradle</code> file and you can start working, e.g. refining the layout with the drag and drop tooling that comes with Android Studio:</p>
+
+<p><img src="../../../../../../assets/blogg/a-first-look-at-gradle/android-studio-at-work.png" alt="" /></p>
+
+<h2 id="summary">Summary</h2>
+<p>This looks very promising indeed! There are some aspects still to be investigated, such as handling of multi module projects and release handling, but we have decided to step up and use Gradle in a full scale project. If that succeeds I guess it’s time to leave Maven behind. I’ll be back with a follow up on that. Meanwhile I would like to encourage all Maven and Ant users out there to carefully look into Gradle, hopefully you will upgrade as well!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=A First Look At Gradle&url=https://callistaenterprise.se/blogg/teknik/2014/04/14/a-first-look-at-gradle/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=A First Look At Gradle&u=https://callistaenterprise.se/blogg/teknik/2014/04/14/a-first-look-at-gradle/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=A First Look At Gradle&url=https://callistaenterprise.se/blogg/teknik/2014/04/14/a-first-look-at-gradle/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

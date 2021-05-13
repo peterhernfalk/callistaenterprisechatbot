@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>CRaSH for Mule, a ssh/telnet based management tool for Mule ESB | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">CRaSH for Mule, a ssh/telnet based management tool for Mule ESB</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2013-06-12T00:00:00+00:00">
+            12 June 2013
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Earlier this year David Dossot announced the availability of <a href="http://blog.dossot.net/2013/02/crash-for-mule-introduction.html">CRaSH for Mule</a>, an open source based command line management tool for Mule ESB based on remote access using either plain telnet or ssh. It relies on the management functionality exposed by Mule ESB via JMX but makes it so much easier to use compared to direct JMX usage with JConsole et al. On the other hand, as David clearly points out, CRaSH for Mule is far less capable then the very powerful Mule Management Console that comes with Mule ESB EE. Read Davids <a href="http://blog.dossot.net/2013/02/crash-for-mule-introduction.html">blog</a> for more background info.</p>
+
+<p>Let’s try it out!</p>
+
+<p></p>
+
+<h2 id="installation">Installation</h2>
+<p>First we need to install it :-)</p>
+
+<p>That’s really a no-brainer, just download, extract and deploy as a Mule App!</p>
+
+<ol>
+  <li>Download <a href="https://code.google.com/p/crsh/downloads/detail?name=crash-1.2.6-mule-app.tar.gz">crash-1.2.6-mule-app.tar.gz</a>.</li>
+  <li>Extract its content</li>
+  <li>Locate the app, <code class="language-plaintext highlighter-rouge">crash-mule-app.zip</code>, in the extracted content and copy it to your running Mule instance apps-folder and it will auto-deploy (as usual)</li>
+</ol>
+
+<h2 id="start-the-tool-and-get-a-list-of-commands">Start the tool and get a list of commands</h2>
+<p>Since I prefer ssh over telnet I’ll go with that (use password <code class="language-plaintext highlighter-rouge">mule</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ssh -p 4022 -l root 33.33.33.33
+root@33.33.33.33's password:
+ ______
+ .~      ~. |`````````,       .'.                   ..'''' |         |
+|           |'''|'''''      .''```.              .''       |_________|
+|           |    `.       .'       `.         ..'          |         |
+ `.______.' |      `.   .'           `. ....''             |         | 1.2.6
+
+Follow and support the project on http://www.crashub.org
+Welcome to singleserver.local + !
+It is Wed Jun 12 08:41:04 UTC 2013 now
+
+%
+</code></pre></div></div>
+
+<p>To see the available commands simply submit the command “mule”:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule
+usage: mule COMMAND [ARGS]
+
+The most commonly used mule commands are:
+ app              control an application
+ connector        control a connector
+ endpoint         control an endpoint
+ connectors       list all the connectors of an application
+ endpoints        list all the endpoints of an application
+ stats            print the statistics for an application or a flow within an application
+ broker           control the broker
+ flows            list all the flows of an application
+ apps             list the names of all deployed applications
+ info             print information about the broker
+
+%
+</code></pre></div></div>
+
+<h2 id="get-info-regarding-mule-applications-flows-and-endpoints">Get info regarding mule, applications, flows and endpoints</h2>
+<p>Get info about the Mule ESB instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule info
+name                value                                                                                                                                                         
+--------------------------------------------------------------                                                                                                                    
+Mule Version        3.3.1                                                                                                                                                         
+Build Number        25116                                                                                                                                                         
+Build Date          2012-Dec-10 12:56:47                                                                                                                                          
+Host IP             127.0.0.1                                                                                                                                                     
+Hostname            singleserver.local                                                                                                                                            
+OS                  Linux (2.6.32-279.19.1.el6.x86_64, amd64)                                                                                                                     
+JDK                 1.7.0 (mixed mode)                                                                                                                                            
+Launched As Service true                                                                                                                                                          
+Debug Enabled       false                                                                                                                                                         
+Java PID            14012                                                                                                                                                         
+JVM Id              1                                                                                                                                                             
+
+%
+</code></pre></div></div>
+
+<p>List available applications in the Mule ESB instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule apps
+name              start time                   initialized stopped                                                                                                               	 
+-------------------------------------------------------------------                                                                                                               
+crash-mule-app    Tue Jun 11 19:24:54 UTC 2013 true        false                                                                                                                  
+default           Tue Jun 11 19:24:54 UTC 2013 true        false                                                                                                                  
+vp-services-2.1.0 Tue Jun 11 19:39:54 UTC 2013 true        false                                                                                                                  
+
+%
+</code></pre></div></div>
+
+<p>List what flows does the <code class="language-plaintext highlighter-rouge">vp-services-2.1.0 app</code> have:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule flows -a vp-services-2.1.0
+name                                                                   type                                                                                                       
+----------------------------------------------------------------------------
+
+GetSupportedServiceContracts-flow                                      Flow                                                                                                       
+PingForConfiguration-rivtabp20-flow                                    Flow                                                                                                       
+PingForConfiguration-rivtabp21-flow                                    Flow                                                                                                       
+PingService-flow                                                       Flow                                                                                                       
+ServiceGroups-flow                                                     Flow                                                                                                       
+crm-scheduling-GetSubjectOfCareScheduleInteraction-virtualisering-flow Flow                                                                                                       
+htmlDashboardService-flow                                              Flow                                                                                                       
+itinfra-tp-ping-virtualisering-1.2-SNAPSHOT-flow                       Flow                                                                                                       
+log-error-receiver-flow                                                Flow                                                                                                       
+log-info-receiver-flow                                                 Flow                                                                                                       
+log-publisher-flow                                                     Flow                                                                                                       
+log-store-receiver-flow                                                Flow                                                                                                       
+resetHsaCache-flow                                                     Flow                                                                                                       
+resetVagvalCache-flow                                                  Flow                                                                                                       
+vagval-dynamic-routing-flow                                            Flow                                                                                                       
+
+%
+</code></pre></div></div>
+
+<p>…and maybe even more interesting its endpoints and their addresses’s:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule endpoints -a vp-services-2.1.0
+name                                                                                                              address                                                         
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+endpoint.http.localhost.10000.test.Ping.Service                                                                   http://localhost:10000/test/Ping_Service                        
+endpoint.http.localhost.21000.monitor.ping                                                                        http://localhost:21000/monitor/ping                             
+endpoint.http.localhost.22000.monitor.dashboard                                                                   http://localhost:22000/monitor/dashboard                        
+endpoint.http.localhost.23000.resetcache                                                                          http://localhost:23000/resetcache                               
+endpoint.http.localhost.24000.resethsacache                                                                       http://localhost:24000/resethsacache                            
+endpoint.http.localhost.8070.vp.GetSubjectOfCareSchedule.1.rivtabp21                                              http://localhost:8070/vp/GetSubjectOfCareSchedule/1/rivtabp21   
+endpoint.https.localhost.20000.monitoring.service.groups                                                          https://localhost:20000/monitoring/service-groups               
+endpoint.https.localhost.20000.vp.GetSubjectOfCareSchedule.1.rivtabp21                                            https://localhost:20000/vp/GetSubjectOfCareSchedule/1/rivtabp21
+endpoint.https.localhost.20000.vp.Ping.1.rivtabp20                                                                https://localhost:20000/vp/Ping/1/rivtabp20                     
+endpoint.https.localhost.23001.vp.GetLogicalAddresseesByServiceContract.1.rivtabp21.connector.VPProducerConnector https://localhost:23001/vp/GetLogicalAddresseesByServiceContract/1/rivtabp21?connector=VPProducerConnector                     
+endpoint.https.localhost.23001.vp.GetSupportedServiceContracts.1.rivtabp21                                        https://localhost:23001/vp/GetSupportedServiceContracts/1/rivtabp21                                                            
+endpoint.https.localhost.23001.vp.PingForConfiguration.1.rivtabp20                                                https://localhost:23001/vp/PingForConfiguration/1/rivtabp20     
+endpoint.https.localhost.23001.vp.PingForConfiguration.1.rivtabp21                                                https://localhost:23001/vp/PingForConfiguration/1/rivtabp21     
+endpoint.jms.SOITOOLKIT.LOG.ERROR                                                                                 SOITOOLKIT.LOG.ERROR                                            
+endpoint.jms.SOITOOLKIT.LOG.INFO                                                                                  SOITOOLKIT.LOG.INFO                                             
+endpoint.jms.SOITOOLKIT.LOG.STORE                                                                                 SOITOOLKIT.LOG.STORE                                            
+
+%
+</code></pre></div></div>
+
+<p>Some runtime statistics from a specific flow:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule stats -a vp-services-2.1.0 -f crm-scheduling-GetSubjectOfCareScheduleInteraction-virtualisering-flow
+name                  value                                                                                                                                                         
+----------------------------                                                                                                                                                        
+SyncEventsReceived    20                                                                                                                                                           	 
+AsyncEventsReceived   0                                                                                                                                                             
+TotalEventsReceived   20                                                                                                                                                            
+ExecutionErrors       0                                                                                                                                                             
+FatalErrors           0                                                                                                                                                             
+ProcessedEvents       20                                                                                                                                                            
+MinProcessingTime     198                                                                                                                                                           
+MaxProcessingTime     3467                                                                                                                                                          
+AverageProcessingTime 486                                                                                                                                                           
+TotalProcessingTime   9729                                                                                                                                                          
+%
+</code></pre></div></div>
+
+<h2 id="start-and-stop-applications-and-the-mule-esb-instance">Start and stop applications and the Mule ESB instance</h2>
+<p>Stop an application by:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule app -a vp-services-2.1.0 stop
+Action stop successfully run. Application intialized: true, stopped: true
+
+%
+</code></pre></div></div>
+
+<p>Ensure it is stopped (stopped flag is now set to true):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule apps
+name              start time                    initialized  stopped                                                                                                                   
+-------------------------------------------------------------------
+	                  
+crash-mule-app    Tue Jun 11 19:24:54 UTC 2013 true         false                                                                                                                     
+default           Tue Jun 11 19:24:54 UTC 2013 true         false                                                                                                                     
+vp-services-2.1.0 null                         true         true                                                                                                                      
+
+%
+</code></pre></div></div>
+
+<p>Start the application again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule app -a vp-services-2.1.0 start
+Action start successfully run. Application intialized: true, stopped: false
+
+%
+</code></pre></div></div>
+
+<p>Ensure it is back on-line (stopped flag is now back to false):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule apps                          
+name               start time                   initialized  stopped                                                                                                                   
+-------------------------------------------------------------------
+
+crash-mule-app    Tue Jun 11 19:24:54 UTC 2013 true         false                                                                                                                     
+default           Tue Jun 11 19:24:54 UTC 2013 true         false                                                                                                                     
+vp-services-2.1.0 Wed Jun 12 09:11:54 UTC 2013 true         false                                                                                                                     
+
+%
+</code></pre></div></div>
+
+<p>Even the Mule ESB instance itself can be restarted if required:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% mule broker restart
+Action restart successfully run.
+
+%
+
+% mule appsConnection to 33.33.33.33 closed.                                                                  
+</code></pre></div></div>
+
+<p>For very natural reasons you will be disconnected during the restart but after a while you can connect again and see all apps upp and running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ssh -p 4022 -l root 33.33.33.33
+root@33.33.33.33's password:
+ ______
+ .~      ~. |`````````,       .'.                   ..'''' |         |
+|           |'''|'''''      .''```.              .''       |_________|
+|           |    `.       .'       `.         ..'          |         |
+ `.______.' |      `.   .'           `. ....''             |         | 1.2.6
+
+Follow and support the project on http://www.crashub.org
+Welcome to singleserver.local + !
+It is Wed Jun 12 09:19:32 UTC 2013 now
+
+% mule apps
+name              start time                   initialized stopped                                                                                                                  
+-------------------------------------------------------------------
+	                    
+crash-mule-app    Wed Jun 12 09:18:45 UTC 2013 true        false                                                                                                                    
+default           Wed Jun 12 09:18:46 UTC 2013 true        false                                                                                                                    
+vp-services-2.1.0 Wed Jun 12 09:18:59 UTC 2013 true        false                                                                                                                    
+
+%
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+<p>We have just seen some of the most common functions in the tool in action but I guess that you already agree with me that in environments where you don’t have access to the Mule Management Console this is really a useful management tool, specially if you have multiple Mule ESB instances spread over a number of servers!</p>
+
+<p>Give it a try your self!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Crash For Mule A Sshtelnet Based Management Tool For Mule Esb&url=https://callistaenterprise.se/blogg/teknik/2013/06/12/crash-for-mule-a-sshtelnet-based-management-tool-for-mule-esb/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Crash For Mule A Sshtelnet Based Management Tool For Mule Esb&u=https://callistaenterprise.se/blogg/teknik/2013/06/12/crash-for-mule-a-sshtelnet-based-management-tool-for-mule-esb/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Crash For Mule A Sshtelnet Based Management Tool For Mule Esb&url=https://callistaenterprise.se/blogg/teknik/2013/06/12/crash-for-mule-a-sshtelnet-based-management-tool-for-mule-esb/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

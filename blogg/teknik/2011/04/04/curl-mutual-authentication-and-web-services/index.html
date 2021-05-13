@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Curl, Mutual Authentication and Web Services | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Marcus Krantz" src="../../../../../../assets/medarbetare/marcuskrantz_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Curl, Mutual Authentication and Web Services</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2011-04-04T00:00:00+00:00">
+            04 April 2011
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Marcus Krantz
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In a recent project, I was assigned to setup monitoring of a set of web services. The idea was to call the web services every 5th minute and check whether they operated normally or not, i.e a valid SOAP response was returned. The web services used SSL Mutual Authentication to authenticate the calling client. Since I just wanted to make an easy setup; without invoking a “real” web service client (a Java web service client for instance), I decided to use <a href="http://curl.haxx.se/">Curl</a> because of its completeness, available on most platforms, and the ability to easily connect it with <a href="http://www.nagios.org/">Nagios</a> that would perform scheduled checks of the web services. This article can be of use when you simply want to call a web service from the command line or when you are in a headless environment.</p>
+
+<p></p>
+
+<p>When I started I had a pkcs12 file (which contained a certificate, a private key, and CA certificate) for authentication, the endpoint address of the web service, and an xml file that should be used as input data to the web service.</p>
+
+<h2 id="keys-and-certificates">Keys and certificates</h2>
+<p><a href="http://curl.haxx.se/docs/manpage.html">Curl’s man page</a> provides great documentation for setting up an http(s) call and I will later describe which parameters that I had to set. Before I could continue I needed to do something about my PKCS12 file. Curl does not support a combined file with keys and certificates so I had to extract and convert this data to pem format which is a format that works with curl. To extract the keys and certificates I used <a href="http://www.openssl.org/">OpenSSL</a> and executed following commands in my terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl pkcs12 -in my.p12 -out ca.pem -cacerts –nokeys
+</code></pre></div></div>
+
+<p>(Outputs CA certificates from <code class="language-plaintext highlighter-rouge">my.p12</code> file into <code class="language-plaintext highlighter-rouge">ca.pem</code>)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl pkcs12 -in my.p12 -out client.pem -clcerts -nokeys
+</code></pre></div></div>
+
+<p>(Outputs client certificates from <code class="language-plaintext highlighter-rouge">my.p12</code> file into <code class="language-plaintext highlighter-rouge">client.pem</code>)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl pkcs12 -in my.p12 -out key.pem -nocerts
+</code></pre></div></div>
+
+<p>(Outputs private keys from <code class="language-plaintext highlighter-rouge">my.p12</code> into <code class="language-plaintext highlighter-rouge">key.pem</code>)</p>
+
+<p>For more information about the commands above check the <a href="http://www.openssl.org/docs/apps/pkcs12.html">pkcs12 man page</a>. When I had my key and certificates in place (in pem format) I could start building my command to call the web services.</p>
+
+<h2 id="building-the-web-service-client-call">Building the Web Service client call</h2>
+<p>I had my three pem files for authentication, then endpoint of the web service, and I had my request xml file to post to the web service. To pass data to Curl I simply used the <code class="language-plaintext highlighter-rouge">–-data</code> parameter and since I had a file with my data I prepended @ to the file name. But using this option makes Curl to set the <code class="language-plaintext highlighter-rouge">Content-Type</code> http header to <code class="language-plaintext highlighter-rouge">application/x-www-form-urlencoded</code>. I wanted to pass a soap xml file, and according to the standard it requires that when a soap message is placed in a http body the <code class="language-plaintext highlighter-rouge">Content-Type</code> header must be set to <code class="language-plaintext highlighter-rouge">application/soap+xml</code> (<a href="http://www.w3.org/TR/soap12-part0/#Ref47748839611">click here</a> for further information). I formed my initial Curl command like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl –-data @my-request.xml -H "Content-Type:text/xml;Charset='UTF-8'" https://localhost:8080/ws/MyService
+</code></pre></div></div>
+
+<p>I tried to execute the command just for fun but to no surprise it did not work. Curl complained that it tried to verify the server certificate using a default bundle of ca certificates. This was not what I wanted because I trusted the server certificate. To tell curl to not perform this verification I included the <code class="language-plaintext highlighter-rouge">–k</code> or <code class="language-plaintext highlighter-rouge">-–insecure</code> parameter in my call. Of course, once again, Curl complained about bad certificate. Since I had my client certificate and the private key I combined the <code class="language-plaintext highlighter-rouge">–-cert</code> and <code class="language-plaintext highlighter-rouge">-–key </code>parameters that formed the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl –k –-cert client.pem:&lt;password&gt; --key key.pem –-data @my-request.xml -H "Content-Type:text/xml;Charset='UTF-8'" https://localhost:8080/ws/MyService
+</code></pre></div></div>
+
+<p>The call above gave me a SOAP response. However, it contained a SOAP fault:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;faultcode&gt;soap:ActionNotSupported&lt;/faultcode&gt;
+</code></pre>
+
+<p>After some research, I discovered that I had missed to add the <code class="language-plaintext highlighter-rouge">SOAPAction</code> http header as required (<a href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383528">click here</a> for further information). I added the header and formed my final command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl –k –-cert client.pem:&lt;password&gt; --key key.pem –-data @my-request.xml -H "Content-Type:text/xml;Charset='UTF-8'" –H SOAPAction:”MyOperation” https://localhost:8080/ws/MyService
+</code></pre></div></div>
+
+<p>Finally, success!</p>
+
+<p>As you may have noticed I haven’t used the <code class="language-plaintext highlighter-rouge">cacert.pem</code> file, which I created earlier. This is because the <code class="language-plaintext highlighter-rouge">–k</code> parameter simply ignores the verification of the CA certificate. If I want to verify the server certificate using Curl, I simply removed the <code class="language-plaintext highlighter-rouge">–k</code> flag and added the <code class="language-plaintext highlighter-rouge">–-cacert &lt;cacert&gt;</code> parameter. The final command now looked like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl –-cert client.pem:&lt;password&gt; --key key.pem –-cacert ca.pem –-data @my-request.xml -H "Content-Type:text/xml;Charset='UTF-8'" –H SOAPAction:”MyOperation” https://localhost:8080/ws/MyService
+</code></pre></div></div>
+
+<p>Now, when we have a proper Curl call to a web service, we can easily use it together with Nagios for scheduled monitoring. How to configure Nagios is however out of scope of this article.</p>
+
+<p>This article has shown that it can useful to use Curl to call web services under some circumstances. Especially in a closed, headless environment where there is no access to graphical tools. It is a quick way to just test if the authentication works and that it is possible to get result from a web service. The last thing I would like to mention about Curl, that is very useful, is the <code class="language-plaintext highlighter-rouge">–-trace-ascii &lt;outfile&gt;</code> parameter. Setting this, all incoming and outgoing data in your call is dumped to a file. I found it especially useful for debugging SSL/TLS handshakes.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Curl Mutual Authentication And Web Services&url=https://callistaenterprise.se/blogg/teknik/2011/04/04/curl-mutual-authentication-and-web-services/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Curl Mutual Authentication And Web Services&u=https://callistaenterprise.se/blogg/teknik/2011/04/04/curl-mutual-authentication-and-web-services/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Curl Mutual Authentication And Web Services&url=https://callistaenterprise.se/blogg/teknik/2011/04/04/curl-mutual-authentication-and-web-services/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

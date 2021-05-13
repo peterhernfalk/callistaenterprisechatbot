@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Dawn of the thread | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Torbjörn Claesson" src="../../../../../../assets/medarbetare/torbjornclaesson_mini.png">
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Dawn of the thread</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2015-09-07T00:00:00+00:00">
+            07 September 2015
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Torbjörn Claesson
+        
+
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<h3 id="quasar">Quasar</h3>
+<p>Create highly concurrent software that is very easy to write and reason about.
+</p>
+
+<h3 id="tldr">TL;DR</h3>
+
+<p>I have spent some time using Google’s Go language, so I was thrilled when I stumbled upon Parallel Universe’s <a href="http://www.paralleluniverse.co/quasar/">Quasar</a> framework. If you have been using Go then you are quite familiar with its Channels and go-routines.</p>
+
+<p>Well, now it’s seems like we can use the same way of writing our software on the JVM with Quasar fibers and channels.</p>
+
+<p>To make things somewhat more clear an explanation might be in order.
+Depending on what language background you have this is most likely nothing new to you, but you might be used to other names for these features. As mentioned earlier Go has named these features Channels and Go-rutines. In Erlang you spawn processes, I could continue listing other implementations since it’s seems like every language has their own implementation, heck there is even a couple of other implementations for Java then Quasar Fibers.
+I guess I have to mention Haskell threads and sparks not to get my inbox filled with angry Haskellers emails.</p>
+
+<p>So what is a Fiber or any other implementation of the same functionality?
+Well if you were old enough to us Java 1.1 then you have already seen them on the JVM under the name Green threads, but was later removed due to various reasons.
+A Fiber or lightweight-thread (throwing in another name, for the sake of confusion) is a M:N (hybrid threading) thread mapping, meaning that its maps a M number of application threads onto N number of threads in the operating system.
+While Java today uses 1:1 mapping meaning that an application-level thread maps to one os thread. And that’s one of the reasons we see non-blocking programing becoming yet again more and more popular since in todays Java, blocking a thread on application-level actual means blocking resources on os level which is quite resource consuming.</p>
+
+<p>I thought about writing something on how the Quasar Framework achieves these lightweight-threads. But if you are anything like me you will just scroll past all this text in search for a block of code. If you should be interested in how they do the short answer is that they implement continuations using bytecode instrumentation and using a separate stack to hold state. The long answer you can get from <a href="http://www.paralleluniverse.co/quasar/">Ron Presslers presentation at JVMLS</a>.</p>
+
+<p>So now we got some idea what a Fiber is, but what problem do they solve?</p>
+
+<h4 id="concurrency">Concurrency!</h4>
+
+<p>Using the multithreaded approach that’s been the de facto standard for some years now have some problems when it comes to handling concurrency. To be clear I’m talking about Java, so Node folks no need to flame.
+It’s not uncommon that we see thread-pool starvation and high memory consumption due to “one-request-one-thread” mapping.<br />
+One way of solving these issues is using non-blocking techniques like callbacks and monads. The problem with these techniques is not that they don’t work, but they can be quite hard to understand and debug if you as most of us are used to the old way of understanding what will happen when by just looking at the code.
+Quasar fibers gives you a programming model that you already are familiar with but does not hog all your os resources.</p>
+
+<p>If you are more interested in reading about non-blocking techniques and reactive frameworks I truly recommend my colleges great <a href="../../../../../presentationer/2015/01/28/reactive/index.html">presentation</a> and <a href="../../../../2014/04/22/c10k-developing-non-blocking-rest-services-with-spring-mvc/index.html">blog post</a>.</p>
+
+<h3 id="api-gateway">API-Gateway</h3>
+
+<p>To demonstrate how we can use fibers in a real life situation we are going to build ourselves a simple API-Gateway, a well now pattern for fronting for example <a href="../../../05/20/blog-series-building-microservices.html">microservices</a>.
+The idea is that one request leads to multiple internal API calls and we have a gateway facing the user to be able to customize the outer API to fit the need.
+For example we might want to keep down the amount of API calls for mobile users to lower the round trips by mashing multiple internal responses to one external. It also gives us the possibility to provide a more fine-grained API to lower the cost of bandwidth.</p>
+
+<p><img src="../../../../../../assets/blogg/apigateway.png" alt="API-Gateway" /></p>
+
+<p>We will deploy our gateway on Tomcat 8.</p>
+
+<p>First of we need to modify which class loader Tomcat should use for loading our webapp.<br />
+Easiest way to do that is to download <strong>comsat-tomcat-loader.jar</strong> and drop it into you shared lib folder. Then update your <strong>META-INF/context.xml</strong> like.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Loader</span> <span class="na">loaderClass=</span><span class="s">"co.paralleluniverse.comsat.tomcat.QuasarWebAppClassLoader"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>To get started here is the content of my build.gradle file.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">'</span><span class="n">java</span><span class="err">'</span>
+<span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">'</span><span class="n">war</span><span class="err">'</span>
+
+<span class="n">repositories</span> <span class="o">{</span>
+    <span class="n">mavenCentral</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">compile</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">:</span><span class="n">slf4j</span><span class="o">-</span><span class="nl">api:</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">5</span><span class="err">'</span>
+
+    <span class="n">compile</span> <span class="err">'</span><span class="n">co</span><span class="o">.</span><span class="na">paralleluniverse</span><span class="o">:</span><span class="n">quasar</span><span class="o">-</span><span class="nl">core:</span><span class="mf">0.7</span><span class="o">.</span><span class="mi">2</span><span class="o">:</span><span class="n">jdk8</span><span class="err">'</span>
+    <span class="n">compile</span> <span class="err">'</span><span class="n">co</span><span class="o">.</span><span class="na">paralleluniverse</span><span class="o">:</span><span class="n">comsat</span><span class="o">-</span><span class="nl">httpclient:</span><span class="mf">0.4</span><span class="o">.</span><span class="mi">0</span><span class="err">'</span>
+    <span class="n">compile</span> <span class="err">'</span><span class="n">co</span><span class="o">.</span><span class="na">paralleluniverse</span><span class="o">:</span><span class="n">comsat</span><span class="o">-</span><span class="n">jersey</span><span class="o">-</span><span class="nl">server:</span><span class="mf">0.4</span><span class="o">.</span><span class="mi">0</span><span class="err">'</span>
+
+    <span class="n">compile</span> <span class="err">'</span><span class="n">javax</span><span class="o">.</span><span class="na">ws</span><span class="o">.</span><span class="na">rs</span><span class="o">:</span><span class="n">javax</span><span class="o">.</span><span class="na">ws</span><span class="o">.</span><span class="na">rs</span><span class="o">-</span><span class="nl">api:</span><span class="mf">2.0</span><span class="o">.</span><span class="mi">1</span><span class="err">'</span>
+
+    <span class="n">compile</span> <span class="err">'</span><span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">jr</span><span class="o">:</span><span class="n">jackson</span><span class="o">-</span><span class="n">jr</span><span class="o">-</span><span class="nl">objects:</span><span class="mf">2.6</span><span class="o">.</span><span class="mi">1</span><span class="err">'</span>
+
+    <span class="n">providedCompile</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">tomcat</span><span class="o">:</span><span class="n">tomcat</span><span class="o">-</span><span class="n">servlet</span><span class="o">-</span><span class="nl">api:</span><span class="mf">8.0</span><span class="o">.</span><span class="mi">23</span><span class="err">'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As you see there is something called comsat that keeps showing up, Comsat is an open-source set of libraries that integrates with Quasar. The reason for using these are because if we would do an actual thread blocking operation inside a fiber it would actually block the underlying os thread, thus it would be pointless to run it in a fiber instead of an actual thread.</p>
+
+<p>We will be using Jersey to define our REST-Services and for that we will use the comsat-jersey-server to make our services fiber aware.<br />
+<strong>WEB-INF/web.xml</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">"http://xmlns.jcp.org/xml/ns/javaee"</span>
+         <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+         <span class="na">xsi:schemaLocation=</span><span class="s">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd"</span>
+         <span class="na">version=</span><span class="s">"3.0"</span>
+         <span class="na">metadata-complete=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;display-name&gt;</span>Dawn of the thread<span class="nt">&lt;/display-name&gt;</span>
+    <span class="nt">&lt;servlet&gt;</span>
+        <span class="nt">&lt;display-name&gt;</span>fiber<span class="nt">&lt;/display-name&gt;</span>
+        <span class="nt">&lt;servlet-name&gt;</span>fiber<span class="nt">&lt;/servlet-name&gt;</span>
+        <span class="nt">&lt;servlet-class&gt;</span>co.paralleluniverse.fibers.jersey.ServletContainer<span class="nt">&lt;/servlet-class&gt;</span>
+        <span class="nt">&lt;async-supported&gt;</span>true<span class="nt">&lt;/async-supported&gt;</span>
+        <span class="nt">&lt;init-param&gt;</span>
+            <span class="nt">&lt;param-name&gt;</span>javax.ws.rs.Application<span class="nt">&lt;/param-name&gt;</span>
+            <span class="nt">&lt;param-value&gt;</span>se.callistaenterprise.RestApplication<span class="nt">&lt;/param-value&gt;</span>
+        <span class="nt">&lt;/init-param&gt;</span>
+        <span class="nt">&lt;init-param&gt;</span>
+            <span class="nt">&lt;param-name&gt;</span>jersey.config.server.provider.packages<span class="nt">&lt;/param-name&gt;</span>
+            <span class="nt">&lt;param-value&gt;</span>se.callistaenterprise.c<span class="nt">&lt;/param-value&gt;</span>
+        <span class="nt">&lt;/init-param&gt;</span>
+        <span class="nt">&lt;load-on-startup&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+    <span class="nt">&lt;/servlet&gt;</span>
+    <span class="nt">&lt;servlet-mapping&gt;</span>
+        <span class="nt">&lt;servlet-name&gt;</span>fiber<span class="nt">&lt;/servlet-name&gt;</span>
+        <span class="nt">&lt;url-pattern&gt;</span>/api/*<span class="nt">&lt;/url-pattern&gt;</span>
+    <span class="nt">&lt;/servlet-mapping&gt;</span>
+<span class="nt">&lt;/web-app&gt;</span>
+</code></pre></div></div>
+
+<p>So now everything is setup and it’s time for us to write our first REST service.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Path</span><span class="o">(</span><span class="s">"mobile"</span><span class="o">)</span>
+<span class="nd">@Singleton</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MobileServicesImpl</span> <span class="o">{</span>
+
+   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MAX_ROUTE</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">;</span>
+   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MAX_CONN</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">;</span>
+
+   <span class="kd">private</span> <span class="kd">final</span> <span class="nc">HttpClient</span> <span class="n">client</span> <span class="o">=</span>
+           <span class="nc">FiberHttpClientBuilder</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+                   <span class="o">.</span><span class="na">setMaxConnPerRoute</span><span class="o">(</span><span class="no">MAX_ROUTE</span><span class="o">).</span><span class="na">setMaxConnTotal</span><span class="o">(</span><span class="no">MAX_CONN</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+   <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Endpoints</span><span class="o">&gt;</span> <span class="n">endpoints</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+   <span class="nd">@PostConstruct</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+      <span class="c1">// Long list of internal endpoints</span>
+      <span class="n">endpoints</span><span class="o">.</span><span class="na">add</span><span class="o">(..)</span>
+   <span class="o">}</span>
+
+   <span class="nd">@GET</span>
+   <span class="nd">@Path</span><span class="o">(</span><span class="s">"frontpage"</span><span class="o">)</span>
+   <span class="nd">@Produces</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+   <span class="nd">@Suspendable</span>
+   <span class="kd">public</span> <span class="nc">JsonElement</span> <span class="nf">getFrontpage</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">InterruptedException</span><span class="o">,</span> <span class="nc">SuspendExecution</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="nc">JsonObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JsonObject</span><span class="o">();</span>
+      <span class="n">endpoints</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="o">{</span>
+          <span class="k">try</span> <span class="o">{</span>
+              <span class="kd">final</span> <span class="nc">String</span> <span class="n">resp</span> <span class="o">=</span> <span class="nc">EntityUtils</span><span class="o">.</span>
+                <span class="nf">toString</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">HttpGet</span><span class="o">(</span><span class="n">e</span><span class="o">)).</span><span class="na">getEntity</span><span class="o">());</span>
+                <span class="c1">//Apply logic and add to response object</span>
+          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">err</span><span class="o">)</span> <span class="o">{</span>
+              <span class="c1">//Handle error</span>
+          <span class="o">}</span>
+      <span class="o">});</span>
+      <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+   <span class="o">}</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This might be the naïve first approach to creating a gateway.
+We have a list of some endpoints that we iterate over and sum up the response that’s then returned.
+If we were to run this service in a default servlet container each user of this service would hold one os thread for as long as it took to get the response from all the endpoints in our list.
+But we have configured to use the comsat servlet container. Which instead of fetching a thread from the pool for each user, spawns a new fiber. I have annotated get function with <code class="language-plaintext highlighter-rouge">@Suspendable</code> which is one way of telling Quasar what method to instrument.</p>
+
+<p>If you have a keen eye you would see that I initiate the Apache HttpClient with the <strong>FiberHttpClientBuilder</strong> provided by the comsat Apache HttpClient library. This is because as I mentioned earlier that if we were to do a blocking IO operation as <strong>HttpClient.execute</strong> does we would block the underlying os thread. What <strong>FiberHttpClientBuilder</strong> does is to wrap Apache <strong>HttpAsyncClient</strong> and letting us operate on it as if it were a blocking operation.</p>
+
+<p>To speed this method up we are now going to spawn new Fibers for each Http request and use Quasar Channels to safely communicate between fibers to collect and build the response.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GET</span>
+<span class="nd">@Path</span><span class="o">(</span><span class="s">"frontpage"</span><span class="o">)</span>
+<span class="nd">@Produces</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+<span class="nd">@Suspendable</span>
+<span class="kd">public</span> <span class="nc">JsonElement</span> <span class="nf">getFrontpage</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">InterruptedException</span><span class="o">,</span> <span class="nc">SuspendExecution</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="nc">Channel</span><span class="o">&lt;</span><span class="nc">JsonElement</span><span class="o">&gt;</span> <span class="n">ch</span> <span class="o">=</span> <span class="nc">Channels</span><span class="o">.</span><span class="na">newChannel</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="no">BLOCK</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+      <span class="n">endpoints</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="o">{</span>
+          <span class="k">new</span> <span class="nc">Fiber</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+              <span class="k">try</span> <span class="o">{</span>
+                  <span class="kd">final</span> <span class="nc">String</span> <span class="n">resp</span> <span class="o">=</span> <span class="nc">EntityUtils</span><span class="o">.</span>
+                    <span class="nf">toString</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">HttpGet</span><span class="o">(</span><span class="n">e</span><span class="o">)).</span><span class="na">getEntity</span><span class="o">());</span>
+                  <span class="c1">//Apply logic and transform to JsonElement then send to Channel  </span>
+                  <span class="n">ch</span><span class="o">.</span><span class="na">send</span><span class="o">(..)</span>
+              <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">err</span><span class="o">)</span> <span class="o">{</span>
+                  <span class="n">ch</span><span class="o">.</span><span class="na">send</span><span class="o">(..)</span> <span class="c1">//send error element</span>
+              <span class="o">}</span>
+          <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+      <span class="o">});</span>
+
+      <span class="c1">//Read from channel same amount of times as size of endpoints</span>
+      <span class="c1">//ch.recive is a fiber blocking operation thus make preemption possible</span>
+      <span class="kd">final</span> <span class="nc">JsonObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JsonObject</span><span class="o">();</span>
+      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">endpoints</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+          <span class="n">obj</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ch</span><span class="o">.</span><span class="na">receive</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">));</span> <span class="c1">//10 sec timeout</span>
+      <span class="o">}</span>
+      <span class="n">ch</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+      <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>So with not much effort and easy to read code, we are able to handle a higher number of concurrency without having to resort to complex asynchronous API’s. Quasar hides that for us and gives us the possibility to work with a programming model we are quite familiar with.</p>
+
+<h3 id="conclusions-if-any">Conclusions, if any.</h3>
+<p>Quasar is a fairly new framework, as of now version 0.7 is out, but it is gaining some traction.
+I think it’s really interesting and it’s worth keeping an eye on.
+The biggest concern I have is that you have to make 3d-party libraries work in a Fiber context trough wrapping its aync-api. Parallel Universe provides good documentation and support classes to do so, but I would still write my software asynchronous from top to bottom, and it’s not that hard to do given that you have the right tools to do so.</p>
+
+<p>I would recommend everyone to give it a go, since it shows a lot of potential and lets you write easy to read and write code in a programming model that might fit you.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Quasar Blog&url=https://callistaenterprise.se/blogg/teknik/2015/09/07/quasar-blog/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Quasar Blog&u=https://callistaenterprise.se/blogg/teknik/2015/09/07/quasar-blog/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Quasar Blog&url=https://callistaenterprise.se/blogg/teknik/2015/09/07/quasar-blog/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
