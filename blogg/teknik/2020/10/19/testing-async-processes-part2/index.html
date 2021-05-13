@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Testing A Kafka Event Producer With Spring Boot And JUnit 5 Part 2 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Martin Holt" src="../../../../../../assets/medarbetare/martinholt_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Testing A Kafka Event Producer With Spring Boot And JUnit 5 Part 2</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-19T00:00:00+00:00">
+            19 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/martinholt/index.html">Martin Holt</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In <a href="../../15/testing-async-processes-part1/index.html">part 1</a> of this two part blog I introduced a pattern for integration testing a Spring Boot application that publishes events via <a href="https://kafka.apache.org/">Kafka</a>.</p>
+
+<p>In part 2 I will discuss what happens when the test suite grows, look in depth at the <a href="https://kafka.apache.org/26/javadoc/index.html?org/apache/kafka/clients/consumer/Consumer.html">Kafka Consumer</a>, and offer one solution for how to reduce long execution times.</p>
+
+<p>The <a href="https://github.com/callistaenterprise/blog-test-aync-processes">source code for the example application</a> can be found by following the link.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#state-of-play" id="markdown-toc-state-of-play">State of play</a></li>
+  <li><a href="index.html#consuming-events" id="markdown-toc-consuming-events">Consuming Events</a></li>
+  <li><a href="index.html#parallel-test-execution" id="markdown-toc-parallel-test-execution">Parallel Test Execution</a></li>
+  <li><a href="index.html#the-kafka-consumer" id="markdown-toc-the-kafka-consumer">The Kafka Consumer</a></li>
+  <li><a href="index.html#kafka-consumer-groups" id="markdown-toc-kafka-consumer-groups">Kafka Consumer Groups</a></li>
+  <li><a href="index.html#the-consumerrecordstore" id="markdown-toc-the-consumerrecordstore">The ConsumerRecordStore</a></li>
+  <li><a href="index.html#the-eventstore" id="markdown-toc-the-eventstore">The EventStore</a></li>
+  <li><a href="index.html#add-the-eventstore-to-the-test" id="markdown-toc-add-the-eventstore-to-the-test">Add The EventStore To The Test</a></li>
+  <li><a href="index.html#running-the-tests" id="markdown-toc-running-the-tests">Running the tests</a></li>
+  <li><a href="index.html#are-we-there-yet" id="markdown-toc-are-we-there-yet">Are we there yet?</a></li>
+  <li><a href="index.html#disposing-of-events" id="markdown-toc-disposing-of-events">Disposing of Events</a></li>
+  <li><a href="index.html#how-about-reliability" id="markdown-toc-how-about-reliability">How about reliability?</a></li>
+  <li><a href="index.html#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ul>
+
+<h1 id="state-of-play">State of play</h1>
+<p><a href="../../15/testing-async-processes-part1/index.html">Part 1</a> left us with a single working test that verified that a call to a RESTful endpoint resulted in 5 events being published to a Kafka topic. Running this test on my machine takes between 15 and 20 seconds.</p>
+
+<p>Monitoring the JVM of the Gradle worker that executes the integration test with help from <a href="https://visualvm.github.io/">VisualVM</a> shows minimal CPU usage and a single thread that spends most of its time sleeping. Using <code class="language-plaintext highlighter-rouge">docker stats</code> to monitor the container running the Spring Boot application shows a similar picture of inactivity. What’s going on?</p>
+
+<h1 id="consuming-events">Consuming Events</h1>
+<p>The test uses a Kafka <a href="https://kafka.apache.org/26/javadoc/index.html?org/apache/kafka/clients/consumer/Consumer.html">Consumer</a> to consume events. The producer is working asynchronously and the test needs to poll for events for a reasonable amount of time to be certain that it has fetched all relevant events. In this example the <code class="language-plaintext highlighter-rouge">Consumer</code> will poll the Kafka broker for 10 seconds:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">;</span>
+  <span class="kt">var</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="nc">ChronoUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>Reasonable is a judgement call - choose too short a time period and the tests will fail or be flakey, choose too long a time and the test suite will run for what feels like an eternity. For this case 10 seconds of polling is judged to be reasonable. Note though that the test cannot execute for less than 10 seconds.</p>
+
+<p>A single “happy path” test is unlikely to be sufficient for a comprehensive test. Adding error scenarios, new endpoints or complex behavioural tests will quickly grow the test suite. Even a relatively small application may have hundreds of tests and execution time will increase linearly.</p>
+
+<p>To simulate this let’s run this test 100 times using the <code class="language-plaintext highlighter-rouge">@RepeatedTest</code> annotation on the test method. What happens? On my machine the entire suite always completes successfully but takes about 15 minutes to do so. This is probably reaching a pain point for developer - they will need to start the tests, get a cup of coffee, and hope things are done when they get back (and probably curse a little if the tests fail).</p>
+
+<p>How can we make things run a little faster?</p>
+
+<h1 id="parallel-test-execution">Parallel Test Execution</h1>
+<p>As the <a href="https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution">JUnit 5 user guide</a> describes…</p>
+
+<blockquote>
+  <p>“By default, JUnit Jupiter tests are run sequentially in a single thread. Running tests in parallel — for example, to speed up execution — is available as an opt-in feature since version 5.3.”</p>
+</blockquote>
+
+<p>This sounds like a way forward for faster testing! Let’s extend our Gradle task to enable parallel testing…</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span><span class="p">&lt;</span><span class="nc">Test</span><span class="p">&gt;(</span><span class="s">"integrationTest"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+  <span class="c1">// Enable parallel testing in JUnit5 with a fixed thread pool</span>
+  <span class="nf">systemProperty</span><span class="p">(</span><span class="s">"junit.jupiter.execution.parallel.enabled"</span><span class="p">,</span> <span class="s">"true"</span><span class="p">)</span>
+  <span class="nf">systemProperty</span><span class="p">(</span><span class="s">"junit.jupiter.execution.parallel.mode.default"</span><span class="p">,</span> <span class="s">"concurrent"</span><span class="p">)</span>
+  <span class="nf">systemProperty</span><span class="p">(</span><span class="s">"junit.jupiter.execution.parallel.config.strategy"</span><span class="p">,</span> <span class="s">"fixed"</span><span class="p">)</span>
+  <span class="nf">systemProperty</span><span class="p">(</span><span class="s">"junit.jupiter.execution.parallel.config.fixed.parallelism"</span><span class="p">,</span> <span class="s">"4"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This configuration will execute all test classes and all test methods in parallel. The <code class="language-plaintext highlighter-rouge">fixed</code> strategy has been chosen with a <code class="language-plaintext highlighter-rouge">parallelism</code> of 4 implying that up to 4 tests will be executed in parallel.</p>
+
+<p>The next step is to enable our test class to be run in parallel:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="o">({</span><span class="nc">CheckAvailabilityExtension</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="nd">@Execution</span><span class="o">(</span><span class="no">CONCURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DoSomethingEndpointTest</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Starting the test suite will cause 4 tests to start in parallel but each test fails. Why?</p>
+
+<h1 id="the-kafka-consumer">The Kafka Consumer</h1>
+
+<p>A quick check of the test output shows the problem:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">KafkaConsumer</span> <span class="n">is</span> <span class="n">not</span> <span class="n">safe</span> <span class="k">for</span> <span class="n">multi</span><span class="o">-</span><span class="n">threaded</span> <span class="n">access</span>
+<span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">ConcurrentModificationException</span><span class="o">:</span> <span class="nc">KafkaConsumer</span> <span class="n">is</span> <span class="n">not</span> <span class="n">safe</span> <span class="k">for</span> <span class="n">multi</span><span class="o">-</span><span class="n">threaded</span> <span class="n">access</span>
+	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">kafka</span><span class="o">.</span><span class="na">clients</span><span class="o">.</span><span class="na">consumer</span><span class="o">.</span><span class="na">KafkaConsumer</span><span class="o">.</span><span class="na">acquire</span><span class="o">(</span><span class="nc">KafkaConsumer</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">2422</span><span class="o">)</span>
+	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">kafka</span><span class="o">.</span><span class="na">clients</span><span class="o">.</span><span class="na">consumer</span><span class="o">.</span><span class="na">KafkaConsumer</span><span class="o">.</span><span class="na">acquireAndEnsureOpen</span><span class="o">(</span><span class="nc">KafkaConsumer</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">2406</span><span class="o">)</span>
+	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">kafka</span><span class="o">.</span><span class="na">clients</span><span class="o">.</span><span class="na">consumer</span><span class="o">.</span><span class="na">KafkaConsumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="nc">KafkaConsumer</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">1223</span><span class="o">)</span>
+	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">kafka</span><span class="o">.</span><span class="na">clients</span><span class="o">.</span><span class="na">consumer</span><span class="o">.</span><span class="na">KafkaConsumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="nc">KafkaConsumer</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">1216</span><span class="o">)</span>
+  <span class="o">...</span>
+</code></pre></div></div>
+
+<p>Up until now all tests have been running sequentially and in the same thread. The test uses a Kafka <code class="language-plaintext highlighter-rouge">Consumer</code> to consume events. Configuring the <code class="language-plaintext highlighter-rouge">Consumer</code> is quite verbose and to avoid soiling the test code the <code class="language-plaintext highlighter-rouge">Consumer</code> is encapsulated in an <code class="language-plaintext highlighter-rouge">EventsourceConsumer</code> class. Setting up a <code class="language-plaintext highlighter-rouge">Consumer</code> is relatively expensive so the encapsulating class is implemented as a singleton to ensure that the <code class="language-plaintext highlighter-rouge">Consumer</code> is only instantiated once per test suite execution:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventsourceConsumer</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">EventsourceConsumer</span> <span class="n">eventsourceConsumer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">EventsourceConsumer</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">eventsourceConsumer</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">eventsourceConsumer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EventsourceConsumer</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">eventsourceConsumer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">EventsourceConsumer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Properties</span><span class="o">();</span>
+        <span class="o">...</span>
+        <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">GROUP_ID_CONFIG</span><span class="o">,</span> <span class="no">CONSUMER_GROUP_ID</span><span class="o">);</span>
+        <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">AUTO_OFFSET_RESET_CONFIG</span><span class="o">,</span> <span class="s">"earliest"</span><span class="o">);</span>
+        <span class="o">...</span>
+        <span class="c1">// Create the consumer using props.</span>
+        <span class="n">consumer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">KafkaConsumer</span><span class="o">&lt;&gt;(</span><span class="n">props</span><span class="o">);</span>
+
+        <span class="c1">// Subscribe to the topic.</span>
+        <span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="no">TOPIC</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Polls the topic until the max expiry time. Long blocking operation.
+     */</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ConsumerRecord</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">pollUntilExpires</span><span class="o">()</span> <span class="o">{</span>
+        <span class="o">...</span>
+        <span class="kt">var</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="no">MAX_POLLING_TIMEOUT</span><span class="o">);</span>
+        <span class="n">consumer</span><span class="o">.</span><span class="na">commitAsync</span><span class="o">();</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>How can we then deal with the restriction that the <code class="language-plaintext highlighter-rouge">Consumer</code> can only be accessed by a single thread?</p>
+
+<h1 id="kafka-consumer-groups">Kafka Consumer Groups</h1>
+
+<p>It is tempting to solve this by ensuring that each test instantiates its own <code class="language-plaintext highlighter-rouge">Consumer</code>. This will remove the concurrency problem but the tests will still fail. Why?</p>
+
+<p>Above we have configured our Kafka <code class="language-plaintext highlighter-rouge">Consumer</code> to join a single <a href="https://docs.confluent.io/current/clients/consumer.html">consumer group</a>. A <a href="https://docs.confluent.io/current/clients/consumer.html">consumer group</a> is defined as such:</p>
+
+<blockquote>
+  <p>A consumer group is a set of consumers which cooperate to consume data from some topics. The partitions of all the topics are divided among the consumers in the group. As new group members arrive and old members leave, the partitions are re-assigned so that each member receives a proportional share of the partitions.</p>
+</blockquote>
+
+<p>The intention here is to split up the workload but also to ensure no two <code class="language-plaintext highlighter-rouge">Consumer</code>s are working on the same partition at the same time.</p>
+
+<p>In our single threaded scenario there is a single <code class="language-plaintext highlighter-rouge">Consumer</code> consuming from all partitions. Adding more <code class="language-plaintext highlighter-rouge">Consumer</code>s to the group will result in each <code class="language-plaintext highlighter-rouge">Consumer</code> working on a subset of the available partitions, or, if no unassigned partitions are available, no partition at all. As shown in part 1 our events are now distributed to a random partition on the topic. This means that a test with it’s own consumer may or may not be consuming from the partition where the event has been published - it is effectively up to chance whether our test will consume related events or not.</p>
+
+<p>A consumer group maintains a register of the offset of the next record to consume allowing the group to maintain a position on the topic partitions - i.e. what has been consumed and what has not. When a read is committed (<code class="language-plaintext highlighter-rouge">consumer.commitAsync</code>) the broker moves on the offset so that the next <code class="language-plaintext highlighter-rouge">Consumer</code> to read from that partition will read the next record.</p>
+
+<p>When a consumer group is created it needs to know where on the topic to start to consume and this can be configured with the <code class="language-plaintext highlighter-rouge">auto.offset.reset</code> parameter. In the example application the <code class="language-plaintext highlighter-rouge">earliest</code> value is chosen to instruct the group to start reading from the earliest offset (i.e. the beginning) of the topic. This was a deliberate choice to avoid timing issues and ensures the consumer group will consume events published prior to the group creation (which would have been skipped with the <code class="language-plaintext highlighter-rouge">latest</code> setting).</p>
+
+<p>The example application deliberately creates a new consumer group with a unique name to avoid collisions between test suite executions which could result in events from previous executions being available to the current execution:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ConsumerRecordStore</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">String</span> <span class="no">CONSUMER_GROUP_ID</span> <span class="o">=</span> <span class="s">"eventsource_integrationtest_"</span> <span class="o">+</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>In theory it would be possible for each test to instantiate it’s own <code class="language-plaintext highlighter-rouge">Consumer</code> which is the sole member of a unique consumer group - this has not been investigated here. Using the <code class="language-plaintext highlighter-rouge">earliest</code> offset strategy above would require each test to filter all events ever published to the topic which may (or may not) place a significant overhead on the test.</p>
+
+<h1 id="the-consumerrecordstore">The ConsumerRecordStore</h1>
+<p>Let’s try to seperate the delivery of events to the test from the consumption of events from the Kafka topic.</p>
+
+<p>Let’s assume that a single Kafka <code class="language-plaintext highlighter-rouge">Consumer</code> is sufficient for a single test suite execution and that the <code class="language-plaintext highlighter-rouge">Consumer</code> is the sole member of a unique consumer group. That <code class="language-plaintext highlighter-rouge">Consumer</code> could happily consume from all partitions from the earliest offset and store all records in memory during the execution of the test suite. This is what the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> is intended to do:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ConsumerRecordStore</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">store</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ReadWriteLock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ReentrantReadWriteLock</span><span class="o">();</span>
+
+  <span class="nc">ConsumerRecordStore</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="no">TOPIC</span><span class="o">));</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kt">var</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="no">MAX_POLLING_TIMEOUT</span><span class="o">);</span>
+      <span class="n">consumer</span><span class="o">.</span><span class="na">commitAsync</span><span class="o">();</span>
+
+      <span class="n">lock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">().</span><span class="na">lock</span><span class="o">();</span>
+
+      <span class="n">records</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="n">store</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">key</span><span class="o">(),</span> <span class="n">r</span><span class="o">.</span><span class="na">value</span><span class="o">()));</span>
+
+      <span class="n">lock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">().</span><span class="na">unlock</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getRecords</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">lock</span><span class="o">.</span><span class="na">readLock</span><span class="o">().</span><span class="na">lock</span><span class="o">();</span>
+
+    <span class="kt">var</span> <span class="n">records</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">values</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">value</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+
+    <span class="n">lock</span><span class="o">.</span><span class="na">readLock</span><span class="o">().</span><span class="na">unlock</span><span class="o">();</span>
+    
+    <span class="k">return</span> <span class="n">records</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note that this class is package private and has been intentionally added to a different package to the test class. This class is not intended for direct use by any test.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> implements the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a> interface. Thus the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> can be executed in its own thread and ensure the <code class="language-plaintext highlighter-rouge">Consumer</code> is not accessed by multiple threads.</p>
+
+<p>As the <code class="language-plaintext highlighter-rouge">Consumer</code> has no direct relation to the test anymore it is free to poll the broker more frequently - polling has been set to 1 second (a blocking operation). Any events retrieved during the polling phase will be added to the <code class="language-plaintext highlighter-rouge">store</code> field.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">store</code> field is a HashMap stored in memory. The <code class="language-plaintext highlighter-rouge">store</code> is private and cannot be accessed or manipulated by other classes. To ensure thread safety a <code class="language-plaintext highlighter-rouge">ReadWriteLock</code> is used; multiple reader threads can acquire a read lock except when a thread has acquired an exclusive write lock in which case they will be blocked until the write lock is released. Both read and write locks are acquired and released for the shortest period possible - i.e. when accessing or manipulating the <code class="language-plaintext highlighter-rouge">store</code>.</p>
+
+<p>The next step is to make the stored events available to the tests.</p>
+
+<h1 id="the-eventstore">The EventStore</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">EventStore</code> class is intended to expose filtered events to the tests and to hide the implementation details of the Kafka <code class="language-plaintext highlighter-rouge">Consumer</code>. This class is public and provides a single public method:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventStore</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ConsumerRecordStore</span> <span class="n">store</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">EventStore</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConsumerRecordStore</span><span class="o">();</span>
+    <span class="nc">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">().</span><span class="na">submit</span><span class="o">(</span><span class="n">store</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getEvents</span><span class="o">(</span><span class="nc">String</span> <span class="n">traceId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="no">MAX_WAIT_TIME</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// do nothing</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">store</span><span class="o">.</span><span class="na">getRecords</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="n">traceId</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">s</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['metadata']['traceId']"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In our previous single-threaded example the test waited 10 seconds for consumption of all events during the <code class="language-plaintext highlighter-rouge">poll</code> operation. In the <code class="language-plaintext highlighter-rouge">EventStore</code> this behaviour is replicated by forcing the thread to sleep for 10 seconds on a call to <code class="language-plaintext highlighter-rouge">getEvents</code>. Once the operation is resumed records can be fetched from the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> and filtered by <code class="language-plaintext highlighter-rouge">trace id</code>.</p>
+
+<p>It is important to note that the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> will return all events that it has consumed since the start of the test suite.</p>
+
+<h1 id="add-the-eventstore-to-the-test">Add The EventStore To The Test</h1>
+<p>The last step is to make the <code class="language-plaintext highlighter-rouge">EventStore</code> available to the test. This can easily be done using a <a href="https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution">JUnit5 ParameterResolver</a> extension to pass the <code class="language-plaintext highlighter-rouge">EventStore</code> instance to the constructor.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventStoreResolver</span> <span class="kd">implements</span> <span class="nc">ParameterResolver</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">EventStore</span> <span class="no">EVENT_STORE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EventStore</span><span class="o">();</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="nc">ParameterContext</span> <span class="n">parameterContext</span><span class="o">,</span> <span class="nc">ExtensionContext</span> <span class="n">extensionContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ParameterResolutionException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">resolveParameter</span><span class="o">(</span><span class="nc">ParameterContext</span> <span class="n">parameterContext</span><span class="o">,</span> <span class="nc">ExtensionContext</span> <span class="n">extensionContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ParameterResolutionException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="no">EVENT_STORE</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note that the intention here is to ensure instantiation of the EventSource once and only once. If the <code class="language-plaintext highlighter-rouge">EventStore</code> is instantiated multiple times then there will be multiple <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> instances. This could be a problem if there is collision on  consumer group id (a real possibility when the group name uses the system timestamp as in this example) or lead to multiple in-memory copies of events.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">EventStore</code> instance can then be passed to the test in the constructor by activating the <code class="language-plaintext highlighter-rouge">EventStoreResolver</code> extension:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="o">({</span><span class="nc">CheckAvailabilityExtension</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">EventStoreResolver</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="nd">@Execution</span><span class="o">(</span><span class="no">CONCURRENT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DoSomethingEndpointTest</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">EventStore</span> <span class="n">eventStore</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">DoSomethingEndpointTest</span><span class="o">(</span><span class="nc">EventStore</span> <span class="n">eventStore</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">eventStore</span> <span class="o">=</span> <span class="n">eventStore</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>…and the events are now available to the tests.</p>
+
+<h1 id="running-the-tests">Running the tests</h1>
+<p>Now we are able to consume events in parallel tests yet the tests will still fail. Why? It turns out to be a timing issue…</p>
+
+<p>As noted before the test suite can start before the Spring Boot application is fully initialised. The <code class="language-plaintext highlighter-rouge">CheckAvailability</code> extension is used to hold the tests in the <code class="language-plaintext highlighter-rouge">BeforeAll</code> lifecycle phase until the application is ready. In this case we are passing the <code class="language-plaintext highlighter-rouge">EventStore</code> in the constructor - before the <code class="language-plaintext highlighter-rouge">BeforeAll</code> lifecycle phase and possibly prior to the application being ready. As the application itself creates the topic the <code class="language-plaintext highlighter-rouge">Consumer</code> may be too eager and may not be assigned any partitions. No partitions mean no consumption and all tests fail.</p>
+
+<p>To solve this we will use lazy initialisation in the <code class="language-plaintext highlighter-rouge">EventStore</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventStore</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="nc">ConsumerRecordStore</span> <span class="n">store</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getEvents</span><span class="o">(</span><span class="nc">String</span> <span class="n">traceId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">store</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">store</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConsumerRecordStore</span><span class="o">();</span>
+          <span class="nc">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">().</span><span class="na">submit</span><span class="o">(</span><span class="n">store</span><span class="o">);</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="no">MAX_WAIT_TIME</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// do nothing</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">store</span><span class="o">.</span><span class="na">getRecords</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="n">traceId</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">s</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['metadata']['traceId']"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note the use of <code class="language-plaintext highlighter-rouge">synchronized</code> to guarantee that eager threads do not unintentionally instantiate multiple <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> instances.</p>
+
+<h1 id="are-we-there-yet">Are we there yet?</h1>
+<p>Once this change is in place the tests suite starts to consistently return a successful result! By altering the number of threads in the thread pool we can start to see the promised performance improvements. The following numbers are a snapshot taken from my machine when running 100 tests:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Single threaded: 15 mins 28s
+Fixed pool size 4 threads = 6m 7s
+Fixed pool size 10 threads = 3m 1s
+Fixed pool size 100 threads = 1m 5s
+Fixed pool size 1000 threads = 1m 8s
+</code></pre></div></div>
+
+<p>From over 15 minute to close to 1 minute is a pretty good improvement and now the test suite is executing at a pace that a developer would find reasonable.</p>
+
+<p>Below is a snapshot of activity with 100 threads case with help from <a href="https://visualvm.github.io/">VisualVM</a>. It is possible to see the worker threads sleeping for 10 seconds followed by a short intensive burst of activity.</p>
+
+<p><img src="../../../../../../assets/blogg/testing-async-process/worker_threads_fixed_pool_100.png" alt="" /></p>
+
+<p>However there is one problem that lurks - the dreaded <code class="language-plaintext highlighter-rouge">java.lang.OutOfMemoryError</code>.</p>
+
+<h1 id="disposing-of-events">Disposing of Events</h1>
+<p>These example use an event that is not particularly large - as close to the default Kafka message limit of 1Mb as possible. Holding all events created by the test suite in memory is not a problem for a JVM with a max heap size of 512Mb.</p>
+
+<p>Our Kafka <code class="language-plaintext highlighter-rouge">Consumer</code> will be consuming events for the lifespan of the test suite and will start consuming from the beginning of the topic. To simulate this growing mass of in-memory events I restricted the JVM to max 256Mb in the Gradle task:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span><span class="p">&lt;</span><span class="nc">Test</span><span class="p">&gt;(</span><span class="s">"integrationTest"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">minHeapSize</span> <span class="p">=</span> <span class="s">"128m"</span>
+    <span class="n">maxHeapSize</span> <span class="p">=</span> <span class="s">"256m"</span>
+</code></pre></div></div>
+
+<p>The illustration below shows how the available memory slowly drops off during test execution until there is a final catastrophic failure in the form of a <code class="language-plaintext highlighter-rouge">java.lang.OutOfMemoryError</code>.</p>
+
+<p><img src="../../../../../../assets/blogg/testing-async-process/out_of_memory.png" alt="" /></p>
+
+<p>Storing all events in memory seems unreasonable when a test only need access to events for little over the 10 seconds that the test is executing. Why not dispose of events after a reasonable time period? To do this I extended the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> to perform a cleanup of messages more than 30 seconds old.</p>
+
+<p>The first step is to define an <code class="language-plaintext highlighter-rouge">ExpirableString</code> class that contains both the value of the Kafka record and a time after which the record is no longer of interest. After every poll the <code class="language-plaintext highlighter-rouge">ConsumerRecordStore</code> will check to see if a cleanup is needed:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">cleanUp</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="kt">long</span> <span class="n">now</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">now</span> <span class="o">&lt;=</span> <span class="n">nextCleanup</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="n">lock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">().</span><span class="na">lock</span><span class="o">();</span>
+ 
+  <span class="n">nextCleanup</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">30000</span><span class="n">l</span><span class="o">;</span>
+  <span class="kt">var</span> <span class="n">newStore</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">expireTime</span> <span class="o">&gt;</span> <span class="n">now</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">()));</span>
+  <span class="n">store</span> <span class="o">=</span> <span class="n">newStore</span><span class="o">;</span>
+
+  <span class="n">lock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">().</span><span class="na">unlock</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Once again a write lock will be acquired to ensure that readers will not have access to the <code class="language-plaintext highlighter-rouge">store</code> during the clean up. After this no more memory problems occurred, even with 256Mb of available memory.</p>
+
+<h1 id="how-about-reliability">How about reliability?</h1>
+<p>As I stated at the start of this blog it is essential that tests are reliable and reliability trumps speed. Long running tests will cause frustration, but unreliable tests can bring the most hardened developer to tears.</p>
+
+<p>How can we check reliability in our new improved test suite? In this case I have spun up a Jenkins container and asked it to run the integration test task every 3 minutes. After several hours of continuous running things look stable!</p>
+
+<p><img src="../../../../../../assets/blogg/testing-async-process/jenkins-build-history.png" alt="" /></p>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>In <a href="../../15/testing-async-processes-part1/index.html">part 1</a> I introduced a pattern for integration testing a Spring Boot application that publishes events using Kafka. As demonstrated above testing using a single threaded model results in linear scaling of test suite execution time which can quickly become an irritant or worse. By seperating the consumption of events from the test itself using a <a href="https://junit.org/junit5/docs/current/user-guide/#extensions">JUnit5</a> extension it is possible to move to a <a href="https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution">parallel execution</a> model which will provide a significant performance improvement without jeopardising reliability.</p>
+
+<p>The <a href="https://github.com/callistaenterprise/blog-test-aync-processes">source code for the example application</a> can be found by following the link.</p>
+
+<p>I hope this blog post has been of interest. Good luck with your testing!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Testing Async Processes Part2&url=https://callistaenterprise.se/blogg/teknik/2020/10/19/testing-async-processes-part2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Testing Async Processes Part2&u=https://callistaenterprise.se/blogg/teknik/2020/10/19/testing-async-processes-part2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Testing Async Processes Part2&url=https://callistaenterprise.se/blogg/teknik/2020/10/19/testing-async-processes-part2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

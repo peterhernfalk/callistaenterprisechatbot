@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Serialization, Schema Compositionality and Apache Avro | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Serialization, Schema Compositionality and Apache Avro</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2019-09-24T00:00:00+00:00">
+            24 September 2019
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Apache Avro, a Serialization framework originating from Hadoop, is rapidly becoming a popular choice for general Java Object Serialization in Apache Kafka based solutions, due to its compact binary payloads and stringent schema support. In its simplest form, it however lacks an important feature of a good Schema formalism: The ability to decompose a schema into smaller, reusable schema components. It can be accomplished, but requires some additional work or using an alternative Schema syntax.
+</p>
+
+<h4 id="serialization--schema-formalisms">Serialization &amp; Schema Formalisms</h4>
+
+<p>Data <a href="https://en.wikipedia.org/wiki/Serialization">Serialization</a> plays a central role in any distributed computing system, be it message-oriented or RPC-based. Ideally, the involved parties should be able to exchange data in a way that is both efficient and robust, and which can evolve over time. I’ve seen many data serialization techniques come and go during the last 20 years, shifting with the current technical trends: Fixed-position binary formats, tag-based binary formats, separator-based formats, XML, Json, etc. Early frameworks were usually backed by supporting tools (yes, I’m old enough to remember when Data Dictionaries were state of the art …), whereas more recent serialization frameworks usually provides a formal Schema language to enforce data correctness and enable contracts to evolve in a controlled way. The Schema formalism usually also provides a <a href="https://en.wikipedia.org/wiki/Data_binding">Data Binding</a> mechanism to allow for easy usage in various programming languages.</p>
+
+<p>In order to support non-trivial domain/information models, the Schema language should provide support for <a href="https://en.wikipedia.org/wiki/Object_composition">Composition</a>, where a complex Schema may be composed from smaller, resuable Schemas. This is usually achieved by some kind of <em>Include</em> mechanism in the the Schema formalism, and optionally additional build time configuration for any code generation Data Binding support.</p>
+
+<h4 id="apache-kafka-and-serialization">Apache Kafka and Serialization</h4>
+
+<p><a href="https://martinfowler.com/articles/201701-event-driven.html">Event Driven Architectures</a> are becoming increasingly more popular, partly due to the challenges with tightly coupled micro services. When streaming events at scale, a highly scalable messaging backbone is a critical enabler. <a href="Https://kafka.apache.org/">Apache Kafka</a> is widely used, due to its distributed nature and thus extreme scalability. In order for Kafka to really deliver, individual messages needs to be fairly small (see e.g. <a href="https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines">Kafka Benchmark</a>). Hence verbose data serialization formats like XML or JSON might not be appropriate for event sourcing.</p>
+
+<p><img src="http://avro.apache.org/images/avro-logo.png" alt="Apache Avro" /></p>
+
+<p>While there are several serialization protocols offering compact binary payloads (among them, <a href="https://developers.google.com/protocol-buffers/">Google Protobuf</a> stands out a modern and elegant framework), <a href="https://avro.apache.org/">Apache Avro</a> is frequently used together with Kafka. While not necessarily the most elegant serialization framework, the <a href="https://www.confluent.io/">Confluent</a> Kafka packaging provides a <a href="https://docs.confluent.io/current/schema-registry/docs/index.html">Schema Registry</a>, which allows a structured way to manage message schemas and schema versions, and the Schema Registry is based on Avro schemas.</p>
+
+<p>Suprisingly, while the formal support for managing Schema versioning (and automatically detecting schema changes which are not backwards compatible) is really powerful, Vanilla Avro lacks a decent <em>include</em> mechanism to enable Compositional Schemas that adheres to the <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY principle</a>. The standard JSON-based syntax for Avro Schemas allows for a composite type to refer to other fully-qualified types, but the composition is not enforced by the schema itself. Consider the following schema definitions, where the composite UserCarRelation is composed from the simpler User and Car schemas:</p>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/user/User.avsc">{"namespace": "se.callista.blog.avro.user",
+ "type": "record",
+ "name": "User",
+ "fields": [
+     {"name": "userId", "type": "string"},
+ ]
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/car/Car.avsc">{"namespace": "se.callista.blog.avro.car",
+ "type": "record",
+ "name": "Car",
+ "fields": [
+     {"name": "vehicleIdentificationNumber", "type": "string"},
+ ]
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/userCarRelation/UserCarRelation.avsc">{"namespace": "se.callista.blog.avro.userCarRelation",
+ "type": "record",
+ "name": "UserCarRelation",
+ "fields": [
+     {"name": "user", "type": "se.callista.blog.avro.user.User"},
+     {"name": "car", "type": "se.callista.blog.avro.car.Car"},
+ ]
+}
+</code></pre>
+
+<p>In order for the Avro Compiler to interpret and properly generate code for the UserCarRelation schema, it needs to be aware of the inclusions (in the correct order). The Avro maven plugin provides explicit support for this missing inlusion mechanism:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;plugin&gt;
+    &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;
+    &lt;artifactId&gt;avro-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${avro.version}&lt;/version&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;phase&gt;generate-sources&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;schema&lt;/goal&gt;
+        &lt;/goals&gt;
+        &lt;configuration&gt;
+          &lt;sourceDirectory&gt;${project.basedir}/src/main/resources/avro/userCarRelation&lt;/sourceDirectory&gt;
+          &lt;imports&gt;
+            &lt;import&gt;${project.basedir}/src/main/resources/avro/user/User.avsc&lt;/import&gt;
+            &lt;import&gt;${project.basedir}/src/main/resources/avro/car/Car.avsc&lt;/import&gt;
+          &lt;/imports&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+</code></pre></div></div>
+
+<p>As seen, this inclusion is only handled by the Data Binding toolchain and not explicitly present in the Schema itself.
+Hence it won’t work with e.g. the Kafka Schema Registry.</p>
+
+<h4 id="avro-idl">Avro IDL</h4>
+
+<p>In more recent versions of Avro, there is however an alternative syntax for describing Schemas.
+<em>Avro IDL</em> is a custom DSL for describing datatypes and RPC operations. The toplevel concept in an Avro IDL definition file is a <em>Protocol</em>,
+a collection of operations and their associated datatypes. While the syntax at first look seems to be geared toward RPC, the RPC operations can
+be omitted, and hence a Protocol may be used to only define datatypes. Interestingly enough, Avro IDL do contain a standard <em>include</em> mechanism,
+where other IDL files as well as JSON-defined Avro Schemas may be properly included. Avro IDL originated as an experimental feature in Avro,
+but is now a supported alternative syntax.</p>
+
+<p>Below is the same example as above, in Avro IDL:</p>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/user/User.avdl">@namespace("se.callista.blog.avro.user")
+protocol UserProtocol {
+
+  record User {
+    string userId;
+  }
+
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/car/Car.avdl">@namespace("se.callista.blog.avro.car")
+protocol CarProtocol {
+
+  record Car {
+    string vehicleIdentificationNumber;
+  }
+
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/userCarRelation/UserCarRelation.avdl">@namespace("se.callista.blog.avro.userCarRelation")
+protocol UserCarRelationProtocol {
+
+  import idl "../user/User.avdl";
+  import idl "../car/Car.avdl";
+
+  record UserCarRelation {
+    se.callista.blog.avro.user.User user;
+    se.callista.blog.avro.car.Car car;
+  }
+
+}
+</code></pre>
+
+<p>Now the build system configuration can be correspondingly simplified:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;plugin&gt;
+    &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;
+    &lt;artifactId&gt;avro-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${avro.version}&lt;/version&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;phase&gt;generate-sources&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;idl-protocol&lt;/goal&gt;
+        &lt;/goals&gt;
+        &lt;configuration&gt;
+          &lt;sourceDirectory&gt;${project.basedir}/src/main/resources/avro/userCarRelation&lt;/sourceDirectory&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+</code></pre></div></div>
+
+<h4 id="summing-up">Summing Up</h4>
+
+<p>Compositionality is an important aspect of a well-designed information or message model, in order to highlight
+important structural relationships and to eliminate redundancy. If Apache Avro is used as your Serialization framework,
+I believe Avro IDL should be the preferred way to express the Schema contracts.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Avro Schemas And Compositionality&url=https://callistaenterprise.se/blogg/teknik/2019/09/24/avro-schemas-and-compositionality/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Avro Schemas And Compositionality&u=https://callistaenterprise.se/blogg/teknik/2019/09/24/avro-schemas-and-compositionality/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Avro Schemas And Compositionality&url=https://callistaenterprise.se/blogg/teknik/2019/09/24/avro-schemas-and-compositionality/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

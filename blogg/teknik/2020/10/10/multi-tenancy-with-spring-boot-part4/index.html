@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 4: Implement the Schema-per-tenant pattern using Hibernate | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 4: Implement the Schema-per-tenant pattern using Hibernate</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-10T00:00:00+00:00">
+            10 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In the <a href="../../03/multi-tenancy-with-spring-boot-part3/index.html">last part</a>, we implemented the Database-per-tenant pattern, and observed that it has limited scalability. In this part, we will tweak the solution and  implement the Schema-per-tenant pattern in much the same way.</p>
+
+<p></p>
+
+<h3 id="blog-series-parts">Blog Series Parts</h3>
+<ul>
+  <li><a href="../../../09/19/multi-tenancy-with-spring-boot-part1/index.html">Part 1: What is Multi Tenancy</a></li>
+  <li><a href="../../../09/20/multi-tenancy-with-spring-boot-part2/index.html">Part 2: Outlining an Implementation Strategy for Multi Tenant Data Access</a></li>
+  <li><a href="../../03/multi-tenancy-with-spring-boot-part3/index.html">Part 3: Implementing the Database per Tenant pattern</a></li>
+  <li>Part 4: Implementing the Schema per Tenant pattern (this part)</li>
+  <li><a href="../../17/multi-tenancy-with-spring-boot-part5/index.html">Part 5: Implementing the Shared database with Discriminator Column pattern using Hibernate Filters</a></li>
+  <li><a href="../../24/multi-tenancy-with-spring-boot-part6/index.html">Part 6: Implementing the Shared database with Discriminator Column pattern using Postgres Row Level Security</a></li>
+  <li>Part 7: Summing up (forthcoming)</li>
+</ul>
+
+<p>A fully working, minimalistic example for this part can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/schema">schema branch</a>.</p>
+
+<h2 id="datasource-management">DataSource Management</h2>
+
+<p>The major scalability problem with the Database-per-tenant implementation from last week is the fact that it forces us to use a separare DataSource per tenant. A Schema-per-tenant implementation can overcome this limitation by using one single DataSource and instead decorate each connection borrowed from the pool with the correct Schema for the specific tenant.</p>
+
+<p><img src="../../../../../../assets/blogg/multi-tenancy-with-spring-boot/SeparateSchemaMultiTenancy.png" alt="Schema" /></p>
+
+<p>So let’s tweak the implementation from last episode into Schema-per-tenant!</p>
+
+<h3 id="implementing-currenttenantidentifierresolver">Implementing CurrentTenantIdentifierResolver</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">CurrentTenantIdentifierResolver</code> implementation remains unchanged:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CurrentTenantIdentifierResolverImpl</span> <span class="kd">implements</span> <span class="nc">CurrentTenantIdentifierResolver</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">resolveCurrentTenantIdentifier</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">tenantId</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">tenantId</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// Allow bootstrapping the EntityManagerFactory, in which case no tenant is needed</span>
+            <span class="k">return</span> <span class="s">"BOOTSTRAP"</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validateExistingCurrentSessions</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="implementing-multitenantconnectionprovider">Implementing MultiTenantConnectionProvider</h3>
+
+<p>We will now only need a single dataSource, we no longer have to override the Spring Boot default DataSource. We will use a ‘master’ schema for the <em>master repository</em> with information about each tenant and its corresponding schema.</p>
+
+<p>The JPA entity to represent meta data about a Tenant will just map a tenantId to a database schema:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tenant</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenant_id"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"schema"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The Spring Data Repository remains unchanged:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TenantRepository</span> <span class="kd">extends</span> <span class="nc">JpaRepository</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nd">@Query</span><span class="o">(</span><span class="s">"select t from Tenant t where t.tenantId = :tenantId"</span><span class="o">)</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">&gt;</span> <span class="nf">findByTenantId</span><span class="o">(</span><span class="nd">@Param</span><span class="o">(</span><span class="s">"tenantId"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can now simplify the implementation of the <code class="language-plaintext highlighter-rouge">MultiTenantConnectionProvider</code> interface (we keep the LoadingCache to just keep the mapping between tenantId and schema). We use the single datasource to provide the connections, but decorate them with the correct schema to use before handling the connection to Hibernate. Likewise, we remove the schema information when the connection is returned.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SchemaBasedMultiTenantConnectionProvider</span> <span class="kd">implements</span> <span class="nc">MultiTenantConnectionProvider</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">transient</span> <span class="nc">DataSource</span> <span class="n">datasource</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">transient</span> <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Long</span> <span class="n">maximumSize</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Integer</span> <span class="n">expireAfterAccess</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">transient</span> <span class="nc">LoadingCache</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">tenantSchemas</span><span class="o">;</span>
+
+    <span class="nd">@PostConstruct</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">createCache</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">tenantSchemas</span> <span class="o">=</span> <span class="nc">CacheBuilder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">maximumSize</span><span class="o">(</span><span class="n">maximumSize</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">expireAfterAccess</span><span class="o">(</span><span class="n">expireAfterAccess</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">MINUTES</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="k">new</span> <span class="nc">CacheLoader</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+                    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">load</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">=</span> <span class="n">tenantRepository</span><span class="o">.</span><span class="na">findByTenantId</span><span class="o">(</span><span class="n">key</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">orElseThrow</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"No such tenant: "</span> <span class="o">+</span> <span class="n">key</span><span class="o">));</span>
+                        <span class="k">return</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+                    <span class="o">}</span>
+                <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">SchemaBasedMultiTenantConnectionProvider</span><span class="o">(</span>
+            <span class="nc">DataSource</span> <span class="n">datasource</span><span class="o">,</span>
+            <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">,</span>
+            <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.schema-cache.maximumSize:1000}"</span><span class="o">)</span>
+            <span class="nc">Long</span> <span class="n">maximumSize</span><span class="o">,</span>
+            <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.schema-cache.expireAfterAccess:10}"</span><span class="o">)</span>
+            <span class="nc">Integer</span> <span class="n">expireAfterAccess</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">datasource</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantRepository</span> <span class="o">=</span> <span class="n">tenantRepository</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">maximumSize</span> <span class="o">=</span> <span class="n">maximumSize</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">expireAfterAccess</span> <span class="o">=</span> <span class="n">expireAfterAccess</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getAnyConnection</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">datasource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">releaseAnyConnection</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="n">connection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getConnection</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantIdentifier</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Get connection for tenant {}"</span><span class="o">,</span> <span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">tenantSchema</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">tenantSchema</span> <span class="o">=</span> <span class="n">tenantSchemas</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"No such tenant: "</span> <span class="o">+</span> <span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">final</span> <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">getAnyConnection</span><span class="o">();</span>
+        <span class="n">connection</span><span class="o">.</span><span class="na">setSchema</span><span class="o">(</span><span class="n">tenantSchema</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">connection</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">releaseConnection</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantIdentifier</span><span class="o">,</span> <span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Release connection for tenant {}"</span><span class="o">,</span> <span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="n">connection</span><span class="o">.</span><span class="na">setSchema</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="n">releaseAnyConnection</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsAggressiveRelease</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isUnwrappableAs</span><span class="o">(</span><span class="nc">Class</span> <span class="n">unwrapType</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">MultiTenantConnectionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">unwrapType</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">unwrap</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">unwrapType</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="nc">MultiTenantConnectionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">unwrapType</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="k">this</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnknownUnwrapTypeException</span><span class="o">(</span> <span class="n">unwrapType</span> <span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="configuring-hibernate-entitymanagers">Configuring Hibernate EntityManagers</h3>
+
+<p>We still need to configure two entityManagers: One master entityManager to host the tenant repository, and a separate entityManager to serve the tenant-specific databases. The entityManagers need their own transaction managers as well.</p>
+
+<p>The configuration for the master entityManager remains almost the same as in the previous part:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableJpaRepositories</span><span class="o">(</span>
+        <span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"${multitenancy.master.repository.packages}"</span> <span class="o">},</span>
+        <span class="n">entityManagerFactoryRef</span> <span class="o">=</span> <span class="s">"masterEntityManagerFactory"</span><span class="o">,</span>
+        <span class="n">transactionManagerRef</span> <span class="o">=</span> <span class="s">"masterTransactionManager"</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MasterPersistenceConfig</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">MasterPersistenceConfig</span><span class="o">(</span><span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">,</span>
+                                   <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">,</span>
+                                   <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.master.entityManager.packages}"</span><span class="o">)</span>
+                                   <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span> <span class="o">=</span> <span class="n">jpaProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">entityPackages</span> <span class="o">=</span> <span class="n">entityPackages</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="nf">masterEntityManagerFactory</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="n">em</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span><span class="o">();</span>
+
+        <span class="n">em</span><span class="o">.</span><span class="na">setPersistenceUnitName</span><span class="o">(</span><span class="s">"master-persistence-unit"</span><span class="o">);</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setPackagesToScan</span><span class="o">(</span><span class="n">entityPackages</span><span class="o">);</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+
+        <span class="nc">JpaVendorAdapter</span> <span class="n">vendorAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HibernateJpaVendorAdapter</span><span class="o">();</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setJpaVendorAdapter</span><span class="o">(</span><span class="n">vendorAdapter</span><span class="o">);</span>
+
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span><span class="o">.</span><span class="na">getProperties</span><span class="o">());</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">PHYSICAL_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">IMPLICIT_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">BEAN_CONTAINER</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SpringBeanContainer</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">));</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setJpaPropertyMap</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">em</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">JpaTransactionManager</span> <span class="nf">masterTransactionManager</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"masterEntityManagerFactory"</span><span class="o">)</span> <span class="nc">EntityManagerFactory</span> <span class="n">emf</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">JpaTransactionManager</span> <span class="n">transactionManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JpaTransactionManager</span><span class="o">();</span>
+        <span class="n">transactionManager</span><span class="o">.</span><span class="na">setEntityManagerFactory</span><span class="o">(</span><span class="n">emf</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">transactionManager</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Again, this configuration is very similar to the Spring Boot auto-configuration, but since we need dual entityManagers, we still have to configure them explicitly.</p>
+
+<p>We do the same for the tenant entityManager, but this time we set the <code class="language-plaintext highlighter-rouge">MultiTenancyStrategy</code> to <code class="language-plaintext highlighter-rouge">SCHEMA</code>. We also explicitly remove any <code class="language-plaintext highlighter-rouge">DEFAULT_SCHEMA</code>configuration, since it will always be set explictly.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableJpaRepositories</span><span class="o">(</span>
+        <span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"${multitenancy.tenant.repository.packages}"</span> <span class="o">},</span>
+        <span class="n">entityManagerFactoryRef</span> <span class="o">=</span> <span class="s">"tenantEntityManagerFactory"</span><span class="o">,</span> 
+        <span class="n">transactionManagerRef</span> <span class="o">=</span> <span class="s">"tenantTransactionManager"</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantPersistenceConfig</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">TenantPersistenceConfig</span><span class="o">(</span>
+            <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">,</span>
+            <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">,</span>
+            <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.tenant.entityManager.packages}"</span><span class="o">)</span>
+                    <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span> <span class="o">=</span> <span class="n">jpaProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">entityPackages</span> <span class="o">=</span> <span class="n">entityPackages</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Primary</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="nf">tenantEntityManagerFactory</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"schemaBasedMultiTenantConnectionProvider"</span><span class="o">)</span> <span class="nc">MultiTenantConnectionProvider</span> <span class="n">connectionProvider</span><span class="o">,</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"currentTenantIdentifierResolver"</span><span class="o">)</span> <span class="nc">CurrentTenantIdentifierResolver</span> <span class="n">tenantResolver</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="n">emfBean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span><span class="o">();</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setPersistenceUnitName</span><span class="o">(</span><span class="s">"tenant-persistence-unit"</span><span class="o">);</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setPackagesToScan</span><span class="o">(</span><span class="n">entityPackages</span><span class="o">);</span>
+
+        <span class="nc">JpaVendorAdapter</span> <span class="n">vendorAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HibernateJpaVendorAdapter</span><span class="o">();</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setJpaVendorAdapter</span><span class="o">(</span><span class="n">vendorAdapter</span><span class="o">);</span>
+
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span><span class="o">.</span><span class="na">getProperties</span><span class="o">());</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">PHYSICAL_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">IMPLICIT_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">BEAN_CONTAINER</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SpringBeanContainer</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">));</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">DEFAULT_SCHEMA</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT</span><span class="o">,</span> <span class="nc">MultiTenancyStrategy</span><span class="o">.</span><span class="na">SCHEMA</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_CONNECTION_PROVIDER</span><span class="o">,</span> <span class="n">connectionProvider</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_IDENTIFIER_RESOLVER</span><span class="o">,</span> <span class="n">tenantResolver</span><span class="o">);</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setJpaPropertyMap</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">emfBean</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Primary</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">JpaTransactionManager</span> <span class="nf">tenantTransactionManager</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantEntityManagerFactory"</span><span class="o">)</span> <span class="nc">EntityManagerFactory</span> <span class="n">emf</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">JpaTransactionManager</span> <span class="n">tenantTransactionManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JpaTransactionManager</span><span class="o">();</span>
+        <span class="n">tenantTransactionManager</span><span class="o">.</span><span class="na">setEntityManagerFactory</span><span class="o">(</span><span class="n">emf</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">tenantTransactionManager</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As last time, since we mark the tenantEntityManagerFactory and tenantTransactionManager as <code class="language-plaintext highlighter-rouge">@Primary</code>, they will be used by default in any component that autowires a PersistentContext or EntityManager.</p>
+
+<p>The externalized properties in application.yml are similar to the previous part. Most notably, we can now use the default configuration for DataSources:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+<span class="na">spring</span><span class="pi">:</span>
+  <span class="na">datasource</span><span class="pi">:</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">jdbc:postgresql://localhost:5432/blog</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">postgres</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">secret</span>
+<span class="nn">...</span>
+<span class="na">multitenancy</span><span class="pi">:</span>
+  <span class="na">schema-cache</span><span class="pi">:</span>
+    <span class="na">maximumSize</span><span class="pi">:</span> <span class="m">100</span>
+    <span class="na">expireAfterAccess</span><span class="pi">:</span> <span class="m">10</span>
+  <span class="na">master</span><span class="pi">:</span>
+    <span class="na">repository</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.multi_tenancy.repository</span>
+    <span class="na">entityManager</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.multi_tenancy.domain</span>
+<span class="nn">...</span>
+  <span class="na">tenant</span><span class="pi">:</span>
+    <span class="na">repository</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.repository</span>
+    <span class="na">entityManager</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.domain</span>
+<span class="nn">...</span>
+</code></pre></div></div>
+
+<h3 id="onboarding-new-tenants">Onboarding new Tenants</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">TenantManagementService</code> which we use to onboard new Tenants becomes sligthly simplified. It still uses raw SQL to create the schema. Since the SQL is potentially vendor specific (we use PostgreSQL in the example), you may need to tweek it to work with another database:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantManagementServiceImpl</span> <span class="kd">implements</span> <span class="nc">TenantManagementService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">TenantManagementServiceImpl</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span>
+                                       <span class="nc">JdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">,</span>
+                                       <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantLiquibaseProperties"</span><span class="o">)</span>
+                                       <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">,</span>
+                                       <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">,</span>
+                                       <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span> <span class="o">=</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">liquibaseProperties</span> <span class="o">=</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">resourceLoader</span> <span class="o">=</span> <span class="n">resourceLoader</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantRepository</span> <span class="o">=</span> <span class="n">tenantRepository</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">VALID_SCHEMA_NAME_REGEXP</span> <span class="o">=</span> <span class="s">"[A-Za-z0-9_]*"</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createTenant</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">,</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// Verify schema string to prevent SQL injection</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">schema</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="no">VALID_SCHEMA_NAME_REGEXP</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Invalid schema name: "</span> <span class="o">+</span> <span class="n">schema</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">createSchema</span><span class="o">(</span><span class="n">schema</span><span class="o">);</span>
+            <span class="n">runLiquibase</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">schema</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">DataAccessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Error when creating schema: "</span> <span class="o">+</span> <span class="n">schema</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">LiquibaseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Error when populating schema: "</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">=</span> <span class="nc">Tenant</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">tenantId</span><span class="o">(</span><span class="n">tenantId</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">schema</span><span class="o">(</span><span class="n">schema</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">tenantRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">tenant</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">createSchema</span><span class="o">(</span><span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span> <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"CREATE SCHEMA "</span> <span class="o">+</span> <span class="n">schema</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">runLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">LiquibaseException</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="n">getSpringLiquibase</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">schema</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">SpringLiquibase</span> <span class="nf">getSpringLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="n">resourceLoader</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDefaultSchema</span><span class="o">(</span><span class="n">schema</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">...</span>        
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The simple, administrative REST endpoint to create new tenants is almost similar:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantsApiController</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TenantManagementService</span> <span class="n">tenantManagementService</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/tenants"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="nf">createTenant</span><span class="o">(</span><span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">,</span> <span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantManagementService</span><span class="o">.</span><span class="na">createTenant</span><span class="o">(</span><span class="n">tenantId</span><span class="o">,</span> <span class="n">schema</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;&gt;(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="database-migrations">Database Migrations</h3>
+
+<p>The Liquibase config also remains almost similar. We still need to run Liqubase all liquibase migrations on the Master repository as well as for all tenants.
+We’ll start with the master liquibase configuration:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"multitenancy.master.liquibase.enabled"</span><span class="o">,</span> <span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">,</span> <span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LiquibaseConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.liquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">LiquibaseProperties</span> <span class="nf">masterLiquibaseProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LiquibaseProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.tenant.liquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">LiquibaseProperties</span> <span class="nf">tenantLiquibaseProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LiquibaseProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">SpringLiquibase</span> <span class="nf">liquibase</span><span class="o">(</span><span class="nc">ObjectProvider</span><span class="o">&lt;</span><span class="nc">DataSource</span><span class="o">&gt;</span> <span class="n">liquibaseDataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span> <span class="o">=</span> <span class="n">masterLiquibaseProperties</span><span class="o">();</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">liquibaseDataSource</span><span class="o">.</span><span class="na">getIfAvailable</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">...</span>        
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is again more or less identical to to the Spring Boot auto-configuration, but since we need one config for the master database and a separate config for the tenant databases, we need to configure it explicitly.</p>
+
+<p>Let’s continue with the tenant database migrations. Just as before, ee’ll need to query the TenantRepository for all tenants, and run a migration on each of them, using the correct schema.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DynamicSchemaBasedMultiTenantSpringLiquibase</span> <span class="kd">implements</span> <span class="nc">InitializingBean</span><span class="o">,</span> <span class="nc">ResourceLoaderAware</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TenantRepository</span> <span class="n">masterTenantRepository</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantLiquibaseProperties"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Schema based multitenancy enabled"</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">runOnAllSchemas</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">masterTenantRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">runOnAllSchemas</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">&gt;</span> <span class="n">tenants</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">LiquibaseException</span> <span class="o">{</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">:</span> <span class="n">tenants</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Initializing Liquibase for tenant "</span> <span class="o">+</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">());</span>
+            <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getSpringLiquibase</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getSchema</span><span class="o">());</span>
+            <span class="n">liquibase</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Liquibase ran for tenant "</span> <span class="o">+</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">SpringLiquibase</span> <span class="nf">getSpringLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span> <span class="nc">String</span> <span class="n">schema</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="n">getResourceLoader</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDefaultSchema</span><span class="o">(</span><span class="n">schema</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">....</span>
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And the config:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"multitenancy.tenant.liquibase.enabled"</span><span class="o">,</span> <span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">,</span> <span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantLiquibaseConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.tenant.liquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">LiquibaseProperties</span> <span class="nf">tenantLiquibaseProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LiquibaseProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicSchemaBasedMultiTenantSpringLiquibase</span> <span class="nf">tenantLiquibase</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicSchemaBasedMultiTenantSpringLiquibase</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The liquibase configuration is externalized into application.yml as before:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+<span class="na">multitenancy</span><span class="pi">:</span>
+  <span class="na">master</span><span class="pi">:</span>
+<span class="nn">...</span>
+    <span class="na">liquibase</span><span class="pi">:</span>
+      <span class="na">changeLog</span><span class="pi">:</span> <span class="s">classpath:db/changelog/db.changelog-master.yaml</span>
+  <span class="na">tenant</span><span class="pi">:</span>
+<span class="nn">...</span>
+    <span class="na">liquibase</span><span class="pi">:</span>
+      <span class="na">changeLog</span><span class="pi">:</span> <span class="s">classpath:db/changelog/db.changelog-tenant.yaml</span>
+</code></pre></div></div>
+
+<h3 id="what-have-we-achieved">What have we achieved?</h3>
+
+<p>We now have a dynamic implementation of the Schema-per-tenant Multi Tenancy pattern! Since we now use one single DataSource, we can expect the scalability to be much better in that respect.</p>
+
+<p>A fully working, minimalistic example can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/schema">schema branch</a>.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>The Schema-per-tenant pattern provides a reasonably strong data separation between tenants. Most databases supports a large number of achemas, so we should likely have no problem in scaling this solution to thousands of tenants.</p>
+
+<p>A scalability concern may however arise with the database migrations: Since we duplicate all tables for each tenant using Liquibase, running migrations for all tenants may take a substantial time. In our current implementation, we run any required migrations on application start (which is the default behavior for Liquibase with Spring Boot). This may lead to a very long startup time. Even when there are no new migrations to apply, Liquibase will still do a negotiation with the database to find that out.</p>
+
+<p>Hence for a large number of tenants, we would most likely need to rethink when database migrations are carried out (for instance by applying them on beforehand, while the application is still running on the previous verions and before restarting). But that’s a story of its own.</p>
+
+<p>In the <a href="../../17/multi-tenancy-with-spring-boot-part5/index.html">next part</a>
+, we’ll instead implement the Shared database with Discriminator Column pattern, using Hibernate Filters and some AspectJ magic. Stay tuned!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Multi Tenancy With Spring Boot Part4&url=https://callistaenterprise.se/blogg/teknik/2020/10/10/multi-tenancy-with-spring-boot-part4/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Multi Tenancy With Spring Boot Part4&u=https://callistaenterprise.se/blogg/teknik/2020/10/10/multi-tenancy-with-spring-boot-part4/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Multi Tenancy With Spring Boot Part4&url=https://callistaenterprise.se/blogg/teknik/2020/10/10/multi-tenancy-with-spring-boot-part4/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

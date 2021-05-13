@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Framework Agnostic WebComponents with stencilJS - Part 1 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Marcus Cedergren" src="../../../../../../assets/medarbetare/marcuscedergren_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Framework Agnostic WebComponents with stencilJS - Part 1</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-11-16T00:00:00+00:00">
+            16 November 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/marcuscedergren/index.html">Marcus Cedergren</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>The initial W3C Web Components specification draft was introduced way back in 2011. Every now and then over the years I’ve read articles and blog posts about the progress, but it’s only recently that v1 of the spec has been adopted by the major browser vendors. In the meantime, popular frontend libraries and frameworks like React, Vue, and Angular have created their own separate ways of creating components. For me, this raises a few questions:</p>
+
+<ul>
+  <li>Are Web Components still relevant?</li>
+  <li>How do you create them?</li>
+  <li>What’s their place in today’s ecosystem?</li>
+</ul>
+
+<p>In this two part blog series I will try to answer these questions by creating sample components using different techniques and subsequently integrating them in some popular frameworks.
+First we will go through a quick rundown of some basic concepts before moving on to explore stencil.js in the second part of the series.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#web-components---a-high-level-view" id="markdown-toc-web-components---a-high-level-view">Web Components - A High Level View</a>    <ul>
+      <li><a href="index.html#html-templates" id="markdown-toc-html-templates">HTML Templates</a></li>
+      <li><a href="index.html#shadow-dom" id="markdown-toc-shadow-dom">Shadow DOM</a></li>
+      <li><a href="index.html#custom-elements" id="markdown-toc-custom-elements">Custom Elements</a></li>
+      <li><a href="index.html#an-autonomous-custom-element-example" id="markdown-toc-an-autonomous-custom-element-example">An Autonomous Custom Element Example</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="web-components---a-high-level-view">Web Components - A High Level View</h1>
+
+<p>Web Components are a set of new native platform features that lets you create your own HTML elements like <code class="language-plaintext highlighter-rouge">&lt;my-action-button&gt;</code> or <code class="language-plaintext highlighter-rouge">&lt;user-avatar&gt;</code>. Like standard HTML elements they can have attributes, properties and methods, fire and respond to events, and even have encapsulated styles and DOM trees to bring along their own look and feel. Let’s have a quick overview of the key parts before we continue.</p>
+
+<h2 id="html-templates">HTML Templates</h2>
+<p>The new element <code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>  enables you to write markup templates that are not displayed in the rendered page. Although it can be used for other purposes, its primary use would be to define the basis of a custom element’s content and associated styles.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template</span> <span class="na">id=</span><span class="s">"hello-world-template"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nt">section</span> <span class="p">{</span>
+      <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+    <span class="p">}</span>     
+  <span class="nt">&lt;/style&gt;</span>
+  
+  <span class="nt">&lt;header&gt;</span>Hello World!<span class="nt">&lt;/header&gt;</span>
+  <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"msg"</span><span class="nt">&gt;&lt;/section&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</code></pre></div></div>
+
+<p>Within templates we also have the new <code class="language-plaintext highlighter-rouge">&lt;slot&gt;</code> element that enables you to control where any children of the element are rendered within the template.
+You can even have multiple slots in a template, each targeted by a name.
+A simple example could look like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"title"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;slot</span> <span class="na">name=</span><span class="s">"titleslot"</span><span class="nt">&gt;&lt;/slot&gt;</span>   <span class="c">&lt;!-- named slot --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+    ...more markup
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;slot&gt;&lt;/slot&gt;</span>                    <span class="c">&lt;!-- default anonymous slot --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</code></pre></div></div>
+
+<p>A custom component, e.g. <code class="language-plaintext highlighter-rouge">&lt;my-details&gt;</code> using that template would “pass through” arbitrary content to each of the slots when used in a page:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-details</span> <span class="na">some-attribute=</span><span class="s">"attribute-value"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;span</span> <span class="na">slot=</span><span class="s">"titleslot"</span><span class="nt">&gt;&lt;h1&gt;</span>Look, I'm in the title slot!<span class="nt">&lt;/h1&gt;&lt;/span&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    This div will be rendered in the default slot of the component
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/details&gt;</span>
+</code></pre></div></div>
+<p>This can be a powerful feature when you want to compose or wrap other components!</p>
+
+<h2 id="shadow-dom">Shadow DOM</h2>
+<p>This part consists of a set of javascript APIs for attaching an encapsulated <em>shadow</em> DOM tree to an element. A shadow DOM tree is rendered <em>separately</em> from the regular document DOM (referred to as the <em>light DOM</em> in documentation). This allows you to keep its features private, so they can be scripted and styled without the fear of colliding with other parts of the document.</p>
+
+<p>This isolation means that you can safely use simple and descriptive id attributes, class names and css styles <em>within</em> your component - without worrying about clashes or leakage from the document DOM (and vice versa). 
+If you inspect the DOM structure a custom component in dev tools you will see the shadow DOM boundary:</p>
+
+<p><img src="../../../../../../assets/blogg/building-framework-agnostic-webcomponents-with-stenciljs/shadow-dom-dev-tools.png" alt="shadow-dom" /></p>
+
+<h2 id="custom-elements">Custom Elements</h2>
+<p>Cloning and appending template snippets could be useful on its own to compose parts of a layout, but for interactivity we need javascript. The Custom Component spec includes native APIs that allows you to implement and register a new class that extends an <code class="language-plaintext highlighter-rouge">HTMLElement</code> using standard ES6 syntax.</p>
+
+<p>After registration it can be used in page exactly like any standard element. The API is relatively simple and gives a component class some lifecycle callbacks.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Is Invoked when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>constructor()</td>
+      <td>An instance of the element is created or upgraded. Useful for initializing state, settings up event listeners, or creating Shadow DOM. See the spec for restrictions on what you can do in the constructor.</td>
+    </tr>
+    <tr>
+      <td>connectedCallback()</td>
+      <td>The element is inserted into the DOM. Useful for running setup code, such as fetching resources or rendering UI. Generally, you should try to delay work until this time</td>
+    </tr>
+    <tr>
+      <td>attributeChangedCallback()</td>
+      <td>Each time one of the custom element’s attributes is added, removed, or changed. The actual effect of an attribute change is entirely up to you.</td>
+    </tr>
+    <tr>
+      <td>disconnectedCallback()</td>
+      <td>The element is removed from the DOM. Useful for running clean-up code.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Components are divided into two types, with slightly different purposes:</p>
+
+<h3 id="autonomous-custom-elements">Autonomous Custom Elements</h3>
+
+<p>These are new standalone elements that extends the base <code class="language-plaintext highlighter-rouge">HTMLElement</code> and could be something like:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;my-greeter first-name="John" last-name="Doe"&gt;&lt;/my-greeter&gt;
+</code></pre>
+
+<p>A new element must have a “-“ in the name and can not be self-closing. The name requirement is there to guarantee that it will not clash with any existing or future W3C standard tags. The base <code class="language-plaintext highlighter-rouge">HTMLElement</code> is indeed very basic, so you’re really starting with an empty shell in an autonomous component.</p>
+
+<h3 id="customized-built-in-elements">Customized built-in Elements</h3>
+
+<p>This variant is used when you want to extend <em>existing</em> HTML elements, such as a button, p or input. By using the “is” attribute on the original tag element you instruct the browser to replace the standard element with your custom implementation, like this:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;button is="my-custom-button"&gt;
+</code></pre>
+
+<p>An important feature of extending a standard element like a <code class="language-plaintext highlighter-rouge">button</code> is that you keep all existing attributes, styles and behaviour of the original, native <code class="language-plaintext highlighter-rouge">button</code> as its implementation will extend <code class="language-plaintext highlighter-rouge">HTMLButtonElement</code>.</p>
+
+<p>Which type of element you choose of course depends on your use case, but if you are developing a component that semantically differs from any existing element, an autonomous component would probably be a better choice.</p>
+
+<h2 id="an-autonomous-custom-element-example">An Autonomous Custom Element Example</h2>
+<p>Let’s say we have a site or app where we need to display accordion-type info (e.g. Q&amp;A section) with a header and some content that is displayed when you click the header. It would be nice to be able to use some simple markup for this, maybe something like:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;card-accordion header-text="Where can I get help with X?"&gt;
+  If you have problems with....(more html)
+&lt;/card-accordion&gt;
+</code></pre>
+
+<p>Let’s create this component using just plain js, html and css. We start by defining a template in an html page:</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;template id="card-accordion-template"&gt;
+  &lt;style&gt;
+    header {
+      position: relative;
+      cursor: pointer;
+    }
+    /*  more css... */
+  &lt;/style&gt;
+  
+  &lt;host&gt;
+    &lt;header&gt;&lt;/header&gt;
+    &lt;section&gt;
+      &lt;slot&gt;&lt;/slot&gt;
+    &lt;/section&gt;
+  &lt;/host&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>NOTE: You don’t <em>have</em> to use a template to define the contents of a component. You could create the content entirely within your class using native APIs like <code class="language-plaintext highlighter-rouge">createElement</code>, <code class="language-plaintext highlighter-rouge">appendChild</code> or <code class="language-plaintext highlighter-rouge">innerHTML</code> etc.</p>
+
+<p>Just a template is not enough since we want some expand/collapse behaviour. Let’s define our component implementation (inside a script tag):</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">CardAccordion</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+  <span class="c1">// Define which attributes to get attributeChangedCallback's for</span>
+  <span class="kd">static</span> <span class="kd">get</span> <span class="nx">observedAttributes</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="dl">'</span><span class="s1">header-text</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">();</span>
+
+    <span class="c1">// State of accordion</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_open</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="c1">// Create a shadow root</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_shadow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">attachShadow</span><span class="p">({</span><span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">});</span>
+
+    <span class="c1">// Get the template we want to use</span>
+    <span class="kd">const</span> <span class="nx">template</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#card-accordion-template</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">// Attach a clone of the template to the shadow DOM root</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_shadow</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">template</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">cloneNode</span><span class="p">(</span><span class="kc">true</span><span class="p">));</span>
+
+    <span class="c1">// Keep a reference to the header element</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_header</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_shadow</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">header</span><span class="dl">"</span><span class="p">);</span>
+
+    <span class="c1">// Bind eventhandler to this instance</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">toggleOpen</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">toggleOpen</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">toggleOpen</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_open</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_open</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_open</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="dl">"</span><span class="s2">open</span><span class="dl">"</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="dl">"</span><span class="s2">open</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">// Invoked each time the custom element is appended into a document-connected element</span>
+  <span class="nx">connectedCallback</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">toggleOpen</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Invoked when the custom element is disconnected from the document's DOM.</span>
+  <span class="nx">disconnectedCallback</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">toggleOpen</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Invoked when one of the custom element's attributes is added, removed, or changed.</span>
+  <span class="c1">// observedAttributes defines which attributes we will get the callback for.</span>
+  <span class="nx">attributeChangedCallback</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">oldVal</span><span class="p">,</span> <span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">oldVal</span> <span class="o">===</span> <span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// If statement not strictly necessary since we only have 1 attribute in this case...</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">header-text</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_header</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">newVal</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Almost there, now we just need to register the component with a tag-name (e.g. “acme-accordion”) so that the browser knows what to do when it encounters it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>window.customElements.define('acme-accordion', CardAccordion);
+</code></pre></div></div>
+
+<p>Now our new element is ready be used in the body of the page and we have our first component!</p>
+
+<pre class=" line-numbers"><code class="language-markup">&lt;acme-accordion header-text="Where can I get help with X?"&gt;
+  If you have problems with device X, please contact...
+&lt;/acme-accordion&gt;
+</code></pre>
+
+<p><img src="../../../../../../assets/blogg/building-framework-agnostic-webcomponents-with-stenciljs/screenshot-accordion-expanded.png" alt="Screenshot of accordion" title="Accordion screenshot" /></p>
+
+<p>That’s a <strong>lot</strong> of boilerplate code for something as simple as a toggle accordion widget! 
+But remember that we’re working with pure, native low-level DOM APIs here. No frameworks, libraries or external dependencies - just native javascript, html and css and it works out of the box in all major browsers.</p>
+
+<p>It’s somewhat refreshing to be able to build something that just runs in the browser - without having to install a few GBs worth of node dependencies and depending on a very complicated buildchain…</p>
+
+<p>But at the same time it’s hardly the best developer experience and arguably not a viable approach in a larger real-world use case.  If we’re building components for production use, we would surely want support for:</p>
+<ul>
+  <li>More efficient abstractions to write less and more concise code</li>
+  <li>Test environments</li>
+  <li>Packaging and distribution</li>
+  <li>Polyfills for legacy browser support (e.g. IE11)</li>
+</ul>
+
+<p>Fortunately for us there are several frameworks and tools to help us with that. One such tool is stencil.js that we’ll explore in <a href="../../30/building-framework-agnostic-webcomponents-with-stenciljs-part2/index.html">part 2</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Framework Agnostic Webcomponents With Stenciljs&url=https://callistaenterprise.se/blogg/teknik/2020/11/16/building-framework-agnostic-webcomponents-with-stenciljs/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Framework Agnostic Webcomponents With Stenciljs&u=https://callistaenterprise.se/blogg/teknik/2020/11/16/building-framework-agnostic-webcomponents-with-stenciljs/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Framework Agnostic Webcomponents With Stenciljs&url=https://callistaenterprise.se/blogg/teknik/2020/11/16/building-framework-agnostic-webcomponents-with-stenciljs/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

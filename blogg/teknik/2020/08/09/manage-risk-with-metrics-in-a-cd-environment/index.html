@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Using Metrics To Manage Risk in a CD Environment | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Martin Holt" src="../../../../../../assets/medarbetare/martinholt_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Using Metrics To Manage Risk in a CD Environment</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-08-09T00:00:00+00:00">
+            09 August 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/martinholt/index.html">Martin Holt</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Working in a continuous delivery environment can feel a little daunting - any changes you make will be rapidly delivered 
+to your production environment. Although the intention is to provide immediate benefit for your customer, without proper 
+risk management there is a real risk of exposing bugs and triggering outages. In this blog post I will look at one strategy 
+that uses metrics to reduce those risks.</p>
+
+<h1 id="scenario">Scenario</h1>
+<p>The scenario starts with a familiar email:</p>
+
+<blockquote>
+  <p>“Hi team. According to us you are consumers of V1 of our service. We have just released V2 which includes a wealth of 
+great new features. We have deprecated V1 and would appreciate your help to remove this as soon as possible”.</p>
+</blockquote>
+
+<p>Our application used V1 to fetch data to provide a rich customer experience. In certain cases the data was not available 
+and to handle this we applied a fallback. This feature was not mission critical but as we were proud of our customer 
+experience we much preferred the rich data over the somewhat ugly fallback.</p>
+
+<h1 id="risks">Risks</h1>
+<p>As we had a little time to spare we decided to prioritise the migration to V2. This meant that we would be the first users 
+of V2 in a customer facing environment. Being early adopters carried with it the risk that we would be exposed to any 
+unfound bugs in the new service.</p>
+
+<p>The API itself had been restructured - fields had been renamed, moved and extended. After some discussions with the service 
+providers and after a few manual experiments we made some assumptions about the behaviour of V2. These assumptions were 
+difficult to test in our staging environment and could only first be proven when running at scale in production. If our 
+assumptions were incorrect then the customer would be the first to know.</p>
+
+<h1 id="migration-strategy">Migration Strategy</h1>
+<p>With these risks now identified we decided that switching from V1 to V2 in a single step was not an option. We decided 
+to split the migration into a number of small steps where any negative consequences of the migration could be hidden from 
+the customer until we were happy we had gotten it right. Each step was considered complete when the content of that step 
+had been delivered to the production environment. As a side note this strategy allowed the team to re-prioritise as other 
+needs arose without blocking the delivery pipeline and without the need for complex merges in a migration branch.</p>
+
+<p>The first step was to add an endpoint to our application where internal users (not customers) could make a call that in 
+turn only called V2. This step allowed us to test our client code and configuration - here we picked up, for example, that the 
+credentials used by V2 had been deployed incorrectly which would have caused an outage had we been running at scale.</p>
+
+<h1 id="adding-metrics-to-the-mix">Adding Metrics To The Mix</h1>
+<p>We were now ready to run V2 at scale however we were still worried about whether the service would behave as we had 
+assumed. To deal with this we decided to call both V1 and V2, to expose the result of V1 to the customer and to throw 
+away the V2 result. We added a metric - in this case a <a href="https://micrometer.io/docs/concepts#_counters">Counter</a> - 
+to distinguish whether our V2 call managed to fetch rich data or was forced to choose the ugly fallback response. 
+This <a href="https://micrometer.io/docs/concepts#_counters">Counter</a> was then transformed into a 
+<a href="https://en.wikipedia.org/wiki/Hit_rate">Hit Rate</a> (over a given time interval):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hit Rate = sum of rich responses / (sum of rich responses + sum of fallbacks)
+</code></pre></div></div>
+
+<p>The Hit Rate was added to one of our dashboards and displayed prominently on a monitor for the entire team to monitor.</p>
+
+<p>We now realised that we had never determined a lower boundary for an acceptable Hit Rate, or gone as far as to formalise this 
+metric as a service level indicator (for more on SLIs see the 
+<a href="https://landing.google.com/sre/sre-book/chapters/service-level-objectives">Google Site Reliability</a> book). 
+Instead we guessed - a Hit Rate of 95% would be acceptable to us. Imagine our shock when the Hit Rate for V2 
+fluctuated as low as 60%!</p>
+
+<p>Obviously something was not behaving as expected, but was the result for V2 better or worse than V1? After a quick 
+retrofit to add metrics to V1 we found a Hit Rate of around 80% - still significantly less than our lower boundary of 95% 
+but notably better than V2. With the help of some targeted logging we could then locate a number of bugs in the V2 service 
+and identify some incorrect assumptions in our application. We even located a bug in V1 that had crept into V2. 
+After these fixes the hit rate of V2 was consistently above 95%.</p>
+
+<p>Before exposing our customers to V2 we monitored the Hit Rate for a period of time 
+to see how our application behaved during the peaks and troughs of our business cycle. This involved no effort other 
+than casting an occasional glance at our dashboard. A few requests were timing out at peak traffic but this was easily 
+resolved by adding a number of retries and did not significantly impact the Hit Rate.</p>
+
+<h1 id="moving-to-v2">Moving to V2</h1>
+<p>Now we felt confident that we could expose the customer to V2 and to remove V1. The switch was made and we continued 
+to monitor the Hit Rate of V2. Migration had been a success and the customer actually ended up with a richer experience than 
+they had before without being exposed to any bugs or outages on the way!</p>
+
+<h1 id="cleaning-up">Cleaning up</h1>
+<p>The final step was to perform some clean up. We removed our V1 client and informed the service providers that 
+they could safely revoke our credentials and mark us as migrated.</p>
+
+<p>We also removed the metrics associated with the Hit Rate for V2. This feature was not considered mission critical. 
+The effort required to maintain and monitor the Hit Rate was not justifiable - there was always the risk that by 
+keeping the metric on the dashboard any visible degradation would trigger effort that may be better applied to more 
+mission critical activities.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>By using metrics we were able to confidently make potentially risky changes, at each step gauging the impact quickly and 
+visibly in a production environment yet without harming the customer experience. These metrics allowed us to learn about 
+the behaviour of the new service. These learnings were used both to plan our next step and to provide feedback to the service provider allowing them in turn to improve quality for all consumers. Although this process contained significantly 
+more steps than a <a href="https://en.wikipedia.org/wiki/Big_bang_adoption">big-bang adoption</a> the effort involved was not 
+significantly different (monitoring dashboards is not considered as effort) and avoided the uncertainties and stress 
+associated with a rollback had things gone wrong.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Manage Risk With Metrics In A Cd Environment&url=https://callistaenterprise.se/blogg/teknik/2020/08/09/manage-risk-with-metrics-in-a-cd-environment/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Manage Risk With Metrics In A Cd Environment&u=https://callistaenterprise.se/blogg/teknik/2020/08/09/manage-risk-with-metrics-in-a-cd-environment/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Manage Risk With Metrics In A Cd Environment&url=https://callistaenterprise.se/blogg/teknik/2020/08/09/manage-risk-with-metrics-in-a-cd-environment/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 6: Implementing the Shared Database with Discriminator Column pattern using Postgres Row Level Security | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 6: Implementing the Shared Database with Discriminator Column pattern using Postgres Row Level Security</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-24T00:00:00+00:00">
+            24 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In the <a href="../../17/multi-tenancy-with-spring-boot-part5/index.html">last part</a>, we implemented the Shared Database with Discriminator Column pattern usign Hibernate Filters. We observed that it will scale well, but the data isolation guarantee is troublesome due to shortcomings in the Hibernate Filter mechanism.</p>
+
+<p>In this part, we will tweak the solution and redo the critical Filtering part using an advanced database mechanism: Row Level Security.</p>
+
+<p></p>
+
+<h3 id="blog-series-parts">Blog Series Parts</h3>
+<ul>
+  <li><a href="../../../09/19/multi-tenancy-with-spring-boot-part1/index.html">Part 1: What is Multi Tenancy</a></li>
+  <li><a href="../../../09/20/multi-tenancy-with-spring-boot-part2/index.html">Part 2: Outlining an Implementation Strategy for Multi Tenant Data Access</a></li>
+  <li><a href="../../03/multi-tenancy-with-spring-boot-part3/index.html">Part 3: Implementing the Database per Tenant pattern</a></li>
+  <li><a href="../../10/multi-tenancy-with-spring-boot-part4/index.html">Part 4: Implementing the Schema per Tenant pattern</a></li>
+  <li><a href="../../17/multi-tenancy-with-spring-boot-part5/index.html">Part 5: Implementing the Shared database with Discriminator Column pattern using Hibernate Filters</a></li>
+  <li>Part 6: Implementing the Shared database with Discriminator Column pattern using Postgres Row Level Security (this part)</li>
+  <li>Part 7: Summing up (forthcoming)</li>
+</ul>
+
+<h3 id="data-isolation">Data Isolation</h3>
+
+<p>In order to achieve proper data isolation between different tenants, we need to include an extra <code class="language-plaintext highlighter-rouge">where</code> condition on the tenantId for all data access. Doing so in application code can be troublesome and error-prone, as we saw. The burden of proof lies on us that the mechanism is properly implemented and applied. Clearly, it would be better to get that guarantee from the Database instead.</p>
+
+<p><img src="../../../../../../assets/blogg/multi-tenancy-with-spring-boot/Lock.png" alt="Lock" /></p>
+
+<p>Modern databases like Postgres or SQLServer provides a <a href="https://www.postgresql.org/docs/9.5/ddl-rowsecurity.html">Row Level Security</a> mechanism, where access to individual rows can be declaratively and transparently restricted to specific users based on various criteria. It can thus be used to implement the data isolation between tenants.</p>
+
+<h4 id="defining-row-level-policies">Defining Row Level Policies</h4>
+
+<p>In Postgres, this means, for each table</p>
+
+<ol>
+  <li>enabling Row Level Security for the table, and</li>
+  <li>define a Policy for the table, referencing the <code class="language-plaintext highlighter-rouge">tenant_id</code> discriminator column.</li>
+</ol>
+
+<p>In the Postgres documentaion examples on defining policies, <code class="language-plaintext highlighter-rouge">current_user</code> is used to define the policies. That won’t work in this case, since we don’t have separate database users per tenant. Instead, we can utilize a custom <em>session parameter</em> e.g. <code class="language-plaintext highlighter-rouge">app.tenant_id</code> to associate current tenant with a database session (i.e. a database connection). Setting a session parameter is done using a Postgres-specific SQL statement:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">"SET app.tenant_id TO '"</span> <span class="o">+</span> <span class="n">tenantId</span> <span class="o">+</span> <span class="nv">"'"</span>
+</code></pre></div></div>
+
+<p>The session parameter can be referenced in the policy definition. Wrapped as a Liquibase changeset, it could look like this:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">changeSet</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">product_row_level_security</span>
+    <span class="na">author</span><span class="pi">:</span> <span class="s">bjobes</span>
+    <span class="na">changes</span><span class="pi">:</span>
+    <span class="pi">-</span>  <span class="na">sql</span><span class="pi">:</span>
+        <span class="na">dbms</span><span class="pi">:</span> <span class="s1">'</span><span class="s">postgresql'</span>
+        <span class="na">sql</span><span class="pi">:</span> <span class="pi">&gt;-</span>
+            <span class="s">ALTER TABLE product ENABLE ROW LEVEL SECURITY;</span>
+            <span class="s">DROP POLICY IF EXISTS product_tenant_isolation_policy ON product;</span>
+            <span class="s">CREATE POLICY product_tenant_isolation_policy ON product</span>
+                <span class="s">USING (tenant_id = current_setting('app.tenant_id')::VARCHAR);</span>
+
+</code></pre></div></div>
+
+<h4 id="table-owner-user-and-app-user">Table Owner user and App User</h4>
+
+<p>Row Level Security policies are by default <strong>not</strong> applied for the table owner (which makes sense, since the table owner must be able to access all rows for administrative purposes, such as backups). Hence we must make sure that we use a different database user for the application to access the database (which is a best practice to do anyway). Let’s add the creation of an application user to our Liquibase migration (where the username, password, schema and database name are passed in as parameters) :</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">changeSet</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">app_user</span>
+    <span class="na">author</span><span class="pi">:</span> <span class="s">bjobes</span>
+    <span class="na">changes</span><span class="pi">:</span>
+    <span class="pi">-</span>  <span class="na">sql</span><span class="pi">:</span>
+        <span class="na">dbms</span><span class="pi">:</span> <span class="s1">'</span><span class="s">postgresql'</span>
+        <span class="na">sql</span><span class="pi">:</span> <span class="pi">&gt;-</span>
+            <span class="s">CREATE USER ${username} WITH PASSWORD '${password}';</span>
+            <span class="s">GRANT CONNECT ON DATABASE ${database} TO app_user;</span>
+            <span class="s">ALTER DEFAULT PRIVILEGES IN SCHEMA ${schema} GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES</span>
+                <span class="s">ON TABLES TO ${username};</span>
+            <span class="s">ALTER DEFAULT PRIVILEGES IN SCHEMA ${schema} GRANT USAGE ON SEQUENCES TO ${username};</span>
+            <span class="s">ALTER DEFAULT PRIVILEGES IN SCHEMA ${schema} GRANT EXECUTE ON FUNCTIONS TO ${username};</span>
+</code></pre></div></div>
+
+<h4 id="associate-tenant-with-database-connection">Associate Tenant with Database Connection</h4>
+
+<p>With the Row Level Security policy in place, we now need to set the current tenantId on each database connection before using it, and remove the tenantId once done with the connection. Hence we need a Tenant-Aware DataSource that transparently manages the decoration of tenantId on connections:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Tenant-Aware Datasource that decorates Connections with
+ * current tenant information.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantAwareDataSource</span> <span class="kd">extends</span> <span class="nc">DelegatingDataSource</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">TenantAwareDataSource</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">targetDataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">targetDataSource</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getConnection</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">getTargetDataSource</span><span class="o">().</span><span class="na">getConnection</span><span class="o">();</span>
+        <span class="n">setTenantId</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">getTenantAwareConnectionProxy</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getConnection</span><span class="o">(</span><span class="nc">String</span> <span class="n">username</span><span class="o">,</span> <span class="nc">String</span> <span class="n">password</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">getTargetDataSource</span><span class="o">().</span><span class="na">getConnection</span><span class="o">(</span><span class="n">username</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+        <span class="n">setTenantId</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">getTenantAwareConnectionProxy</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">setTenantId</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">Statement</span> <span class="n">sql</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createStatement</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+            <span class="n">sql</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"SET app.tenant_id TO '"</span> <span class="o">+</span> <span class="n">tenantId</span> <span class="o">+</span> <span class="s">"'"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">clearTenantId</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">Statement</span> <span class="n">sql</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createStatement</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">sql</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"RESET app.tenant_id"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Connection Proxy that intercepts close() to reset the tenant_id</span>
+    <span class="kd">protected</span> <span class="nc">Connection</span> <span class="nf">getTenantAwareConnectionProxy</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">Connection</span><span class="o">)</span> <span class="nc">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span>
+                <span class="nc">ConnectionProxy</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span>
+                <span class="k">new</span> <span class="nc">Class</span><span class="o">[]</span> <span class="o">{</span><span class="nc">ConnectionProxy</span><span class="o">.</span><span class="na">class</span><span class="o">},</span>
+                <span class="k">new</span> <span class="nc">TenantAwareDataSource</span><span class="o">.</span><span class="na">TenantAwareInvocationHandler</span><span class="o">(</span><span class="n">connection</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Connection Proxy invocation handler that intercepts close() to reset the tenant_id</span>
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">TenantAwareInvocationHandler</span> <span class="kd">implements</span> <span class="nc">InvocationHandler</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Connection</span> <span class="n">target</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">TenantAwareInvocationHandler</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Nullable</span>
+        <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+            <span class="k">switch</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">case</span> <span class="s">"equals"</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="n">proxy</span> <span class="o">==</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                <span class="k">case</span> <span class="s">"hashCode"</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="nc">System</span><span class="o">.</span><span class="na">identityHashCode</span><span class="o">(</span><span class="n">proxy</span><span class="o">);</span>
+                <span class="k">case</span> <span class="s">"toString"</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="s">"Tenant-aware proxy for target Connection ["</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">target</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+                <span class="k">case</span> <span class="s">"unwrap"</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(((</span><span class="nc">Class</span><span class="o">)</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]).</span><span class="na">isInstance</span><span class="o">(</span><span class="n">proxy</span><span class="o">))</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="n">proxy</span><span class="o">;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="k">case</span> <span class="s">"isWrapperFor"</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(((</span><span class="nc">Class</span><span class="o">)</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]).</span><span class="na">isInstance</span><span class="o">(</span><span class="n">proxy</span><span class="o">))</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="k">case</span> <span class="s">"getTargetConnection"</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
+                <span class="k">default</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"close"</span><span class="o">))</span> <span class="o">{</span>
+                        <span class="n">clearTenantId</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>A bit bulky, but a well proven mechanism to decorate a datasource with additional functionality.</p>
+
+<h4 id="configuring-the-datasources">Configuring the DataSources</h4>
+
+<p>We need to configure two DataSources: One master DataSource for Liquibase Database migrations, and one tenant-aware datasource for the application to use.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DataSourceConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.datasource"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSourceProperties</span> <span class="nf">masterDataSourceProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DataSourceProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@LiquibaseDataSource</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.datasource.hikari"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">masterDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">HikariDataSource</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">masterDataSourceProperties</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">initializeDataSourceBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="nc">HikariDataSource</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">dataSource</span><span class="o">.</span><span class="na">setPoolName</span><span class="o">(</span><span class="s">"masterDataSource"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@Primary</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.tenant.datasource"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSourceProperties</span> <span class="nf">tenantDataSourceProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DataSourceProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@Primary</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.tenant.datasource.hikari"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">tenantDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">HikariDataSource</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">tenantDataSourceProperties</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">initializeDataSourceBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="nc">HikariDataSource</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">dataSource</span><span class="o">.</span><span class="na">setPoolName</span><span class="o">(</span><span class="s">"tenantDataSource"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">TenantAwareDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Just as before, since we mark the tenantDataSource as @Primary, it will be used by default in any component that autowires a DataSource.</p>
+
+<h4 id="discriminator-column-and-entitylistener">Discriminator column and EntityListener</h4>
+
+<p>The EntityListener mechanism for setting the tenantId when creating new entities remains the same:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TenantAware</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">setTenantId</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">);</span>
+    
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantListener</span> <span class="o">{</span>
+
+    <span class="nd">@PreUpdate</span>
+    <span class="nd">@PreRemove</span>
+    <span class="nd">@PrePersist</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTenant</span><span class="o">(</span><span class="nc">TenantAware</span> <span class="n">entity</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+        <span class="n">entity</span><span class="o">.</span><span class="na">setTenantId</span><span class="o">(</span><span class="n">tenantId</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@MappedSuperclass</span>
+<span class="nd">@Getter</span>
+<span class="nd">@Setter</span>
+<span class="nd">@NoArgsConstructor</span>
+<span class="nd">@EntityListeners</span><span class="o">(</span><span class="nc">TenantListener</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractBaseEntity</span> <span class="kd">implements</span> <span class="nc">TenantAware</span><span class="o">,</span> <span class="nc">Serializable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenant_id"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AbstractBaseEntity</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantId</span> <span class="o">=</span> <span class="n">tenantId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And just as before, all entities will need to extend <code class="language-plaintext highlighter-rouge">AbstractBaseEntity</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="kd">extends</span> <span class="nc">AbstractBaseEntity</span> <span class="o">{</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And finally the externalized configuration in application.yml:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+<span class="nn">...</span>
+  <span class="na">liquibase</span><span class="pi">:</span>
+    <span class="na">changeLog</span><span class="pi">:</span> <span class="s">classpath:db/changelog/db.changelog-tenant.yaml</span>
+    <span class="na">parameters</span><span class="pi">:</span>
+      <span class="na">database</span><span class="pi">:</span> <span class="s">blog</span>
+      <span class="na">schema</span><span class="pi">:</span> <span class="s">public</span>
+      <span class="na">username</span><span class="pi">:</span> <span class="s">app_user</span>
+      <span class="na">password</span><span class="pi">:</span> <span class="s">secret</span>
+<span class="na">multitenancy</span><span class="pi">:</span>
+  <span class="na">master</span><span class="pi">:</span>
+    <span class="na">datasource</span><span class="pi">:</span>
+      <span class="na">url</span><span class="pi">:</span> <span class="s">jdbc:postgresql://localhost:5432/blog</span>
+      <span class="na">username</span><span class="pi">:</span> <span class="s">postgres</span>
+      <span class="na">password</span><span class="pi">:</span> <span class="s">secret</span>
+      <span class="na">hikari</span><span class="pi">:</span>
+        <span class="na">maximum-pool-size</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">tenant</span><span class="pi">:</span>
+    <span class="na">datasource</span><span class="pi">:</span>
+      <span class="na">url</span><span class="pi">:</span> <span class="s">${multitenancy.master.datasource.url}</span>
+      <span class="na">username</span><span class="pi">:</span> <span class="s">app_user</span>
+      <span class="na">password</span><span class="pi">:</span> <span class="s">secret</span>
+</code></pre></div></div>
+
+<h3 id="what-have-we-achieved">What have we achieved?</h3>
+
+<p>We now have a much simplified implementation of the Shared Database with Discriminator Column pattern. The data isolation guarantee between tenants is provided by the Row Level Security mechanism in Postgres (provided we never allow an application to access the database using the database owner user). This solution should be both robust and highly scalable.</p>
+
+<p>A fully working, minimalistic example can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> for this blog series, in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/shared_database_postgres_rls">shared_database_postgres_rls branch</a>.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>In the next and final part, we’ll recapitulate the pros and cons of the different patterns, and discuss some migration strategies and practices to be able to start with one and but be prepared to migrate to another pattern if necessary.</p>
+
+<h3 id="references">References</h3>
+
+<p>The following links have been very useful inspiration when preparing this material:</p>
+
+<p><a href="https://aws.amazon.com/blogs/database/multi-tenant-data-isolation-with-postgresql-row-level-security/">aws.amazon.com/blogs/database/multi-tenant-data-isolation-with-postgresql-row-level-security</a></p>
+
+<p><a href="https://www.bytefish.de/blog/spring_boot_multitenancy_using_rls.html">www.bytefish.de/blog/spring_boot_multitenancy_using_rls.html</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Multi Tenancy With Spring Boot Part6&url=https://callistaenterprise.se/blogg/teknik/2020/10/24/multi-tenancy-with-spring-boot-part6/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Multi Tenancy With Spring Boot Part6&u=https://callistaenterprise.se/blogg/teknik/2020/10/24/multi-tenancy-with-spring-boot-part6/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Multi Tenancy With Spring Boot Part6&url=https://callistaenterprise.se/blogg/teknik/2020/10/24/multi-tenancy-with-spring-boot-part6/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

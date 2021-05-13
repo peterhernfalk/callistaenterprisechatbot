@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Testing A Kafka Event Producer With Spring Boot And JUnit 5 Part 1 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Martin Holt" src="../../../../../../assets/medarbetare/martinholt_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Testing A Kafka Event Producer With Spring Boot And JUnit 5 Part 1</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-15T00:00:00+00:00">
+            15 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/martinholt/index.html">Martin Holt</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>A successful continuous delivery (CD) pipeline requires a high level of automated testing. It is essential that tests are reliable to ensure that nothing unexpected slips into your production environment. Swift execution is also desirable to provide timely feedback to developers.</p>
+
+<p>Testing asynchronous processes provide a different set of challenges from testing a synchronous request-response scenario. In this 2 part blog post I will investigate how to test an application that publishes events via <a href="https://kafka.apache.org/">Kafka</a>. In part 1 I will demonstrate a method for getting started with integration testing and in <a href="../../19/testing-async-processes-part2/index.html">part 2</a> I will look at how this can be made faster.</p>
+
+<p>The scenario presented in these blog posts is inspired by a real-life case. The following link will take you to the <a href="https://github.com/callistaenterprise/blog-test-aync-processes">source code for the example application</a>.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#scenario" id="markdown-toc-scenario">Scenario</a></li>
+  <li><a href="index.html#integration-testing-with-gradle" id="markdown-toc-integration-testing-with-gradle">Integration testing with Gradle</a></li>
+  <li><a href="index.html#the-first-integration-test" id="markdown-toc-the-first-integration-test">The first integration test</a></li>
+  <li><a href="index.html#timing" id="markdown-toc-timing">Timing</a></li>
+  <li><a href="index.html#what-about-our-assumptions" id="markdown-toc-what-about-our-assumptions">What about our assumptions?</a></li>
+  <li><a href="index.html#unleashing-the-producer" id="markdown-toc-unleashing-the-producer">Unleashing the producer</a></li>
+  <li><a href="index.html#testing-without-sequence" id="markdown-toc-testing-without-sequence">Testing without sequence</a></li>
+  <li><a href="index.html#make-some-noise" id="markdown-toc-make-some-noise">Make some noise</a></li>
+  <li><a href="index.html#linking-tests-with-events-using-spring-cloud-sleuth" id="markdown-toc-linking-tests-with-events-using-spring-cloud-sleuth">Linking tests with events using Spring Cloud Sleuth</a></li>
+  <li><a href="index.html#summary" id="markdown-toc-summary">Summary</a></li>
+</ul>
+
+<h1 id="scenario">Scenario</h1>
+
+<p>The example application uses <a href="https://spring.io/projects/spring-boot">Spring Boot</a> to expose a single RESTful api. A call to the <code class="language-plaintext highlighter-rouge">dosomething</code> endpoint will perform some internal state change, publish some events and finally send a response back to the client.</p>
+
+<p>Events are published in a JSON format that looks something like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"transaction_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"91e03b7d-d348-4eb8-8aa4-509d3a7ec762"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sequence_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"padding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some_large_string...."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this case the <code class="language-plaintext highlighter-rouge">transaction_id</code> is intended to be a unique id related to the request. A single transaction will consist pf 5 events and each event will have a unique <code class="language-plaintext highlighter-rouge">sequence_id</code> value. The <code class="language-plaintext highlighter-rouge">padding</code> field is intended to simulate a large message.</p>
+
+<p>In the real-life scenario that this example is based on the event stream was used by a downstream application to apply each state change to its own representation of a business object. The intended aim was to maintain a consistent state for the object in both applications. This required that the downstream application consumed events in sequential order. The requirement proved difficult to enforce on the consumer so, as a compromise, the publisher guaranteed to publish events in ascending order.</p>
+
+<p>This requirement has been applied to the example application and the publisher looks something like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Transaction</span><span class="o">&gt;</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="c1">// Publish five events</span>
+  <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">transactionId</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+  <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">transactionId</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+  <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">transactionId</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+  <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">transactionId</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+  <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">transactionId</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>A Kafka topic is split into a number of partitions. As we will see in part 2 sequential consumption is difficult if events are spread across multiple partitions. To make life easier for the consumer the publisher guaranteed to publish all events for a transaction to the same partition. For simplicity the example application will publish all events to a single partition:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">publish</span><span class="o">(</span><span class="no">UUID</span> <span class="n">transcationId</span><span class="o">,</span> <span class="nc">Integer</span> <span class="n">sequenceId</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nc">Integer</span> <span class="n">partition</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+  <span class="kt">var</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProducerRecord</span><span class="o">&lt;&gt;(</span><span class="no">TOPIC</span><span class="o">,</span> <span class="n">partition</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">message</span><span class="o">);</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now that the publisher is in place the next step is to test that the guarantee of sequential publishing holds.</p>
+
+<h1 id="integration-testing-with-gradle">Integration testing with Gradle</h1>
+<p>Both the Spring Boot application and a Kafka broker must be available in order to test the publisher. I will use the term “integration test” for testing how the running Spring Boot application behaves with the various integration points. Integration tests will be performed seperately from unit tests (and then only if unit tests have completed successfully).</p>
+
+<p>The <a href="https://gradle.org/">Gradle build tool</a> has been chosen to build and test the application. The Gradle project contains the <code class="language-plaintext highlighter-rouge">Java</code> plugin which performs unit testing as part of the build. I have extended this by adding a custom <code class="language-plaintext highlighter-rouge">integrationTask</code> task to run the integration tests using a seperate source set with path <code class="language-plaintext highlighter-rouge">src/it/java</code>.</p>
+
+<p>Some other tasks that have been added to the Gradle build are:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">buildImage</code> - builds a <a href="https://www.docker.com/">Docker</a> image containing a Java 11 JRE and the Spring Boot application as an executable Jar.</li>
+  <li><code class="language-plaintext highlighter-rouge">startServices</code> - uses <a href="https://docs.docker.com/compose/">Docker Compose</a> to start a Kafka broker and the Spring Boot application</li>
+  <li><code class="language-plaintext highlighter-rouge">stopServices</code> - uses <a href="https://docs.docker.com/compose/">Docker Compose</a> to stop the services (cleans up resources after test execution)</li>
+</ul>
+
+<p>Executing the Gradle <code class="language-plaintext highlighter-rouge">integrationTest</code> task (using <code class="language-plaintext highlighter-rouge">./gradlew integrationTest</code>) will build the application, start the services, and once the tests are complete stop them all.</p>
+
+<h1 id="the-first-integration-test">The first integration test</h1>
+<p>The first test will use <a href="https://junit.org/junit5/">JUnit5</a> and the <a href="https://openjdk.java.net/groups/net/httpclient/intro.html">Java HTTP client</a> to send a request to the <code class="language-plaintext highlighter-rouge">/dosomething</code> endpoint. The test will then verify that the request was accepted successfully and will then check that 5 events have been published and that the events are in sequential order:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testForSequentialIntegrity</span><span class="o">()</span>
+  <span class="c1">// Given: a request is to be sent to the "do something" endpoint</span>
+  <span class="nc">HttpRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// When the request is sent</span>
+  <span class="nc">HttpResponse</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// Then the request is successful</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="n">response</span><span class="o">.</span><span class="na">statusCode</span><span class="o">());</span>
+
+  <span class="c1">// And 5 events have been published</span>
+  <span class="kt">var</span> <span class="n">events</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">events</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+
+  <span class="c1">// Ensure that the sequence of the exents is correct</span>
+  <span class="kt">var</span> <span class="n">sequenceIds</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                          <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">json</span> <span class="o">-&gt;</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['sequenceId']"</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">))</span>
+                          <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="n">sequenceIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">2</span><span class="o">),</span> <span class="n">sequenceIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">3</span><span class="o">),</span> <span class="n">sequenceIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">));</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">4</span><span class="o">),</span> <span class="n">sequenceIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">));</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">5</span><span class="o">),</span> <span class="n">sequenceIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">4</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>Running this test with Gradle (using <code class="language-plaintext highlighter-rouge">./gradlew integrationTest</code>) will more than likely fail. Why?</p>
+
+<h1 id="timing">Timing</h1>
+<p>The tasks above use the Gradle <code class="language-plaintext highlighter-rouge">Exec</code> task to execute a command line instruction - in this case starting the application in a Docker container. Although the application container starts quickly the Spring Boot application itself takes a few seconds to start up. Gradle is unaware of the state of the application and eagerly starts to run the integration tests which then fails. The integration test needs some way to check the readiness of the application under test.</p>
+
+<p>In this example I will use the <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html">Spring Boot Actuator</a> to pause test execution until the application is healthy. A <a href="https://junit.org/junit5/docs/current/user-guide/#extensions">JUnit5</a> extension is introduced that extends the behaviour of the <code class="language-plaintext highlighter-rouge">BeforeAll</code> lifecycle phase. Test execution is paused whilst the extension polls the actuator’s <code class="language-plaintext highlighter-rouge">healthcheck</code> endpoint. If the <code class="language-plaintext highlighter-rouge">healthcheck</code> endpoint is not healthy after a reasonable amount of time, one minute say, then the tests will be aborted:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CheckAvailabilityExtension</span> <span class="kd">implements</span> <span class="nc">BeforeAllCallback</span> <span class="o">{</span>
+ 
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">beforeAll</span><span class="o">(</span><span class="nc">ExtensionContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="nc">Instant</span> <span class="n">stopTime</span> <span class="o">=</span> <span class="nc">Instant</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">plusSeconds</span><span class="o">(</span><span class="mi">60</span><span class="o">);</span>
+
+    <span class="kt">boolean</span> <span class="n">isAvailable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(!</span><span class="n">isAvailable</span> <span class="o">&amp;&amp;</span> <span class="n">stopTime</span><span class="o">.</span><span class="na">isAfter</span><span class="o">(</span><span class="nc">Instant</span><span class="o">.</span><span class="na">now</span><span class="o">()))</span> <span class="o">{</span>
+      <span class="c1">// call the healthcheck endpoint and check for "UP"</span>
+      <span class="c1">// if not sleep for 1s</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">isAvailable</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">PreconditionViolationException</span><span class="o">(</span><span class="s">"Unable to get healthy indicator from application healthcheck."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This example contains only contains one test class so the simplest way to add the extension is to annotate the test class:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="o">({</span><span class="nc">CheckAvailabilityExtension</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DoSomethingEndpointTest</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>Now the integration test can be certain that the Spring Boot application is ready when tests are executed. Another benefit of this approach is that this acts as an indirect test that the healthcheck endpoint is working as expected.</p>
+
+<p>Running this test will give a successful result!</p>
+
+<h1 id="what-about-our-assumptions">What about our assumptions?</h1>
+<p>This test make two assumptions:</p>
+<ul>
+  <li>events will be published sequentially to ensure sequential consumption</li>
+  <li>all events consumed during test execution are related to the test case</li>
+</ul>
+
+<p>What happens when we challenge these assumptions?</p>
+
+<h1 id="unleashing-the-producer">Unleashing the producer</h1>
+<p>As stated before there is a requirement that consumption must be performed sequentially. This is not actually a requirement on the producer - the producer is just being helpful. Being helpful does have consequences - in the real-life case the response was sent to the client once all events had been published adding between 100ms to 200ms to the elapsed time of the request, which was quite significant.</p>
+
+<p>Let’s speed up the example application by publishing events asynchronously. First enable asynchronous processing:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableAsync</span>
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventsourceApplication</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And make publication asynchronous by using the <code class="language-plaintext highlighter-rouge">@Async</code> annotation. Let’s also make things more complicated by allowing the publisher to choose any of the 10 partitions on the topic:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Async</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">publish</span><span class="o">(</span><span class="no">UUID</span> <span class="n">transcationId</span><span class="o">,</span> <span class="nc">Integer</span> <span class="n">sequenceId</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nc">Integer</span> <span class="n">partition</span> <span class="o">=</span> <span class="nc">ThreadLocalRandom</span><span class="o">.</span><span class="na">current</span><span class="o">().</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+  <span class="kt">var</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProducerRecord</span><span class="o">&lt;&gt;(</span><span class="no">TOPIC</span><span class="o">,</span> <span class="n">partition</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">message</span><span class="o">);</span>
+  <span class="o">...</span>
+
+</code></pre></div></div>
+
+<p><em>Note: this is a naive example where failure to publish a message has no consequences for the request as a whole. Publishing an event becomes a “best effort” task.</em></p>
+
+<p>If we look in the application logs we can see that events are no longer being published sequentially:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2020-10-11 13:00:36.275  INFO [8f97a0801992901f] task-8: Publishing transaction x and sequence 1
+2020-10-11 13:00:36.285  INFO [8f97a0801992901f] task-3: Publishing transaction x and sequence 3
+2020-10-11 13:00:36.291  INFO [8f97a0801992901f] task-1: Publishing transaction x and sequence 4
+2020-10-11 13:00:36.292  INFO [8f97a0801992901f] task-4: Publishing transaction x and sequence 5
+2020-10-11 13:00:36.416  INFO [8f97a0801992901f] task-2: Publishing transaction x and sequence 2
+</code></pre></div></div>
+
+<p>Running the test now will result in a consistent failure.</p>
+
+<h1 id="testing-without-sequence">Testing without sequence</h1>
+<p>Sequential publication is no longer a requirement so the test can be altered to verify that in the 5 published events there are 5 unique sequence ids from 1 to 5 (inclusive):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testThatAllEventsArePublished</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="c1">// Given: a request is to be sent to the "do something" endpoint</span>
+  <span class="nc">HttpRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// When the request is sent</span>
+  <span class="nc">HttpResponse</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// Then the request is successful</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="n">response</span><span class="o">.</span><span class="na">statusCode</span><span class="o">());</span>
+
+  <span class="c1">// And 5 events have been published</span>
+  <span class="kt">var</span> <span class="n">events</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">events</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+
+  <span class="c1">// And the events had sequence ids from 1 to 5 (inclusive)</span>
+  <span class="kt">var</span> <span class="n">sequenceIds</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                          <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">json</span> <span class="o">-&gt;</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['sequenceId']"</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">))</span>
+                          <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+  <span class="nc">IntStream</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">6</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">assertTrue</span><span class="o">(</span><span class="n">sequenceIds</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And the test succeeds again.</p>
+
+<h1 id="make-some-noise">Make some noise</h1>
+<p>Let’s now challenge the assumption that all published events are related to the test. This is an unlikely assumption in a complicated application and certainly not true in a production environment.</p>
+
+<p>To simulate this we will introduce the <code class="language-plaintext highlighter-rouge">NoiseMaker</code> that will publish a random event every 3 seconds:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NoiseMaker</span> <span class="o">{</span>
+
+    <span class="nd">@Scheduled</span><span class="o">(</span><span class="n">fixedRate</span> <span class="o">=</span> <span class="mi">3000</span><span class="n">l</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">makeSomeNoise</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">publisher</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">(),</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now tests become flakey - sometimes, but not always, a 6th or 7th event is consumed during the 10 seconds of polling. What is needed is a way to seperate events that are related to the test from those that can be ignored.</p>
+
+<h1 id="linking-tests-with-events-using-spring-cloud-sleuth">Linking tests with events using Spring Cloud Sleuth</h1>
+<p>There are many ways to approach linking tests with events. It is not considered good practice to engineer an application to meet the needs of the test harness (but sometimes it is necessary). I have chosen to use <a href="https://spring.io/projects/spring-cloud-sleuth">Spring Cloud Sleuth</a> to provide a relatively unobtrusive method of linking using distributed tracing. In this case I will argue that a distributed tracing feature can be considered of value to the application.</p>
+
+<p>Spring Cloud Sleuth has been added to the Gradle project:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dependencies</span> <span class="p">{</span>
+  <span class="o">..</span><span class="p">.</span>
+  <span class="nf">implementation</span><span class="p">(</span><span class="s">"org.springframework.cloud:spring-cloud-starter-sleuth:2.2.5.RELEASE"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Every incoming request will start a new <a href="https://docs.spring.io/spring-cloud-sleuth/docs/2.2.5.RELEASE/reference/html/#terminology">Span</a> which effectively assigns each incoming request a unique trace id. In the example logs above you can see that <code class="language-plaintext highlighter-rouge">8f97a0801992901f</code> is a <code class="language-plaintext highlighter-rouge">trace id</code>. The next step is to make the test aware of the of the <code class="language-plaintext highlighter-rouge">trace id</code>.</p>
+
+<p>First the event schema is extended to add some metadata that contains the <code class="language-plaintext highlighter-rouge">trace id</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"trace_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8f97a0801992901f"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"transaction_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"91e03b7d-d348-4eb8-8aa4-509d3a7ec762"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sequence_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"padding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some_large_string...."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Next a <code class="language-plaintext highlighter-rouge">TraceFilter</code> filter adds the <code class="language-plaintext highlighter-rouge">trace id</code> to an Http header on the response called <code class="language-plaintext highlighter-rouge">x-b3-traceid</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@WebFilter</span><span class="o">(</span><span class="s">"/*"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TraceFilter</span> <span class="kd">implements</span> <span class="nc">Filter</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">TRACE_ID_HEADER</span> <span class="o">=</span> <span class="s">"x-b3-traceid"</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="nc">Tracer</span> <span class="n">tracer</span><span class="o">;</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span><span class="nc">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">ServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">FilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">ServletException</span> <span class="o">{</span>
+
+    <span class="kt">var</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="o">(</span><span class="nc">HttpServletResponse</span><span class="o">)</span> <span class="n">response</span><span class="o">;</span>
+    <span class="kt">var</span> <span class="n">traceId</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="na">currentSpan</span><span class="o">().</span><span class="na">context</span><span class="o">().</span><span class="na">traceIdString</span><span class="o">();</span>
+    <span class="n">httpResponse</span><span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="no">TRACE_ID_HEADER</span><span class="o">,</span> <span class="n">traceId</span><span class="o">);</span>
+    <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now our test can match the <code class="language-plaintext highlighter-rouge">trace id</code> in the response to that in the metadata of the event. This allows us to simply filter and ignore any events that are not relevant to our test during execution time!</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testThatAllEventsArePublished</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="c1">// Given: a request is to be sent to the "do something" endpoint</span>
+  <span class="nc">HttpRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// When the request is sent</span>
+  <span class="nc">HttpResponse</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="c1">// Then the request is successful</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="n">response</span><span class="o">.</span><span class="na">statusCode</span><span class="o">());</span>
+
+    <span class="c1">// And the response contains a trace id</span>
+    <span class="kt">var</span> <span class="n">traceIdHeader</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">firstValue</span><span class="o">(</span><span class="no">TRACE_ID_HEADER</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="n">traceIdHeader</span><span class="o">.</span><span class="na">isPresent</span><span class="o">());</span>
+    <span class="kt">var</span> <span class="n">traceId</span> <span class="o">=</span> <span class="n">traceIdHeader</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+  <span class="c1">// And 5 events have been published</span>
+  <span class="kt">var</span> <span class="n">events</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">events</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+
+  <span class="c1">// And the events had sequence ids from 1 to 5 (inclusive)</span>
+  <span class="kt">var</span> <span class="n">sequenceIds</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                          <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">json</span> <span class="o">-&gt;</span> <span class="n">traceId</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['metadata']['traceId']"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">)))</span>
+                          <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">json</span> <span class="o">-&gt;</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['sequenceId']"</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">))</span>
+                          <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+  <span class="nc">IntStream</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">6</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">assertTrue</span><span class="o">(</span><span class="n">sequenceIds</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>And the test succeeds again!</p>
+
+<h1 id="summary">Summary</h1>
+<p>This blog post introduces a pattern using <a href="https://junit.org/junit5/">JUnit5</a> for integration testing applications that publish events via <a href="https://kafka.apache.org/">Kafka</a>. This pattern can be extended and repeated to provide a rich and full test suite as the application evolves.</p>
+
+<p>In <a href="../../19/testing-async-processes-part2/index.html">part 2</a> I will discuss what happens when the test suite grows, look in depth at the <a href="https://kafka.apache.org/26/javadoc/index.html?org/apache/kafka/clients/consumer/Consumer.html">Kafka Consumer</a>, and offer one solution for how to reduce long execution times.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Testing Async Processes Part1&url=https://callistaenterprise.se/blogg/teknik/2020/10/15/testing-async-processes-part1/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Testing Async Processes Part1&u=https://callistaenterprise.se/blogg/teknik/2020/10/15/testing-async-processes-part1/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Testing Async Processes Part1&url=https://callistaenterprise.se/blogg/teknik/2020/10/15/testing-async-processes-part1/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

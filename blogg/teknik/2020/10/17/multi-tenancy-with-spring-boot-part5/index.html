@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 5: Implementing the Shared Database with Discriminator Column pattern using Hibernate Filters | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 5: Implementing the Shared Database with Discriminator Column pattern using Hibernate Filters</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-17T00:00:00+00:00">
+            17 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In the <a href="../../10/multi-tenancy-with-spring-boot-part4/index.html">last part</a>, we implemented the Schema-per-tenant pattern, and observed that it will scale better than the Database-per-tenant implementation. There will still most likely be an upper limit on the number of tenants it supports, caused by the Database Migrations that has to be applied to each tenant.</p>
+
+<p>In this part, we will redo the solution and implement the Shared database with Discriminator Column pattern using Hibernate Filters and some AspectJ magic.</p>
+
+<p></p>
+
+<h3 id="blog-series-parts">Blog Series Parts</h3>
+<ul>
+  <li><a href="../../../09/19/multi-tenancy-with-spring-boot-part1/index.html">Part 1: What is Multi Tenancy</a></li>
+  <li><a href="../../../09/20/multi-tenancy-with-spring-boot-part2/index.html">Part 2: Outlining an Implementation Strategy for Multi Tenant Data Access</a></li>
+  <li><a href="../../03/multi-tenancy-with-spring-boot-part3/index.html">Part 3: Implementing the Database per Tenant pattern</a></li>
+  <li><a href="../../10/multi-tenancy-with-spring-boot-part4/index.html">Part 4: Implementing the Schema per Tenant pattern</a></li>
+  <li>Part 5: Implementing the Shared database with Discriminator Column pattern using Hibernate Filters (this part)</li>
+  <li><a href="../../24/multi-tenancy-with-spring-boot-part6/index.html">Part 6: Implementing the Shared database with Discriminator Column pattern using Postgres Row Level Security</a></li>
+  <li>Part 7: Summing up (forthcoming)</li>
+</ul>
+
+<h3 id="schema-duplication">Schema Duplication</h3>
+
+<p>The Database per Tenant and Schema per Tenant patterns provide a clean separation of data between tenants, but at the price of duplicating the database table definitions for each tenant. As we observed in the last part, this may cause scalability problems, since every Database Migration needed must be applied for every tenant. If Database Migrations are applied automatically on application startup (the default setting for Liquibase migrations with Spring Boot), a large number of tenants will lead to long startup time.</p>
+
+<p>In the Shared database with Discriminator Column pattern, this problem no longer exists. Placing the data for all tenants in one single database, we only have one single set of database to manage.</p>
+
+<p><img src="../../../../../../assets/blogg/multi-tenancy-with-spring-boot/SingleDatabaseMultiTenancy.png" alt="SingleDatabase" /></p>
+
+<p>In order to separate data between different tenants, we use a <em>Discriminator Column</em> in every table to hold the tenant information for each row in the table. We would hence need to populate the discriminator column with correct tenant information every time we store data, and we need to include the discriminator column as an extra <code class="language-plaintext highlighter-rouge">where</code>condition every time we query for data. That is clearly a <a href="https://en.wikipedia.org/wiki/Cross-cutting_concern">Cross Cutting Concern</a> that we would like to capture in one single place. The data isolation guarantee between tenants (which our customers most likely will require from us) relies on us being able to prove that the discriminator column is properly used for all database access!</p>
+
+<p>So let’s implement the Shared Database with Discriminator Column pattern using Hibernate Filters!</p>
+
+<h3 id="hibernates-lacking-support-for-shared-database-with-discriminator-column">Hibernate’s lacking support for Shared Database with Discriminator Column</h3>
+
+<p>Although Hibernate’s <code class="language-plaintext highlighter-rouge">MultiTenancyStrategy</code> enumeration contains a <code class="language-plaintext highlighter-rouge">MultiTenancyStrategy.DISCRIMINATOR</code> entry, this pattern is not yet supported in Hibernate as of version 5.4.x. It was scheduled for version 5, but never made it. There is an open <a href="https://hibernate.atlassian.net/browse/HHH-6054">JIRA issue for discriminator-based multi-tenancy</a>, but with no real progress since 2017. The JIRA issue however identifies the existing Hibernate mechanisms available roll our own implementation.</p>
+
+<p>As we observed above, there are two capabilities needed:</p>
+
+<ul>
+  <li>Population of the discriminator column of all entities with the correct tenant information when saving entities, and</li>
+  <li>Adding a <code class="language-plaintext highlighter-rouge">where</code> condition on all queries for entities</li>
+</ul>
+
+<p>Luckily, there are existing mechanisms available for both these capabilities: Standard JPA <code class="language-plaintext highlighter-rouge">EntityListener</code> and Hibernate specific <code class="language-plaintext highlighter-rouge">Filter</code>.</p>
+
+<h4 id="jpa-entity-listener">JPA Entity Listener</h4>
+
+<p>The standard JPA EntityListener mechanism allows a listener to be attached to the lifecycle of a JPA entity. It allows us to to populate the Discriminator column with the current tenant. Given an interface <code class="language-plaintext highlighter-rouge">TenantAware</code> that all entities implement, the following Listener will do the trick:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TenantAware</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">setTenantId</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">);</span>
+    
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantListener</span> <span class="o">{</span>
+
+    <span class="nd">@PreUpdate</span>
+    <span class="nd">@PreRemove</span>
+    <span class="nd">@PrePersist</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTenant</span><span class="o">(</span><span class="nc">TenantAware</span> <span class="n">entity</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+        <span class="n">entity</span><span class="o">.</span><span class="na">setTenantId</span><span class="o">(</span><span class="n">tenantId</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="hibernate-filter">Hibernate Filter</h4>
+
+<p>The standard Hibernate <code class="language-plaintext highlighter-rouge">Filter</code> mechanism allows us to define a Filter containing a <code class="language-plaintext highlighter-rouge">where</code>clause that can be applied to all queries for entities upon which the Filter is attached:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FilterDef</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantFilter"</span><span class="o">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@ParamDef</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantId"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">"string"</span><span class="o">)})</span>
+<span class="nd">@Filter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantFilter"</span><span class="o">,</span> <span class="n">condition</span> <span class="o">=</span> <span class="s">"tenant_id = :tenantId"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="encapsulating-the-discriminator-column-entitylistener-and-filter">Encapsulating the Discriminator column, EntityListener and Filter</h4>
+
+<p>We are now prepared to encapsulate the usage of a discriminator column, an EntityListener and a Filter as an abstract base class for our Entities:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@MappedSuperclass</span>
+<span class="nd">@Getter</span>
+<span class="nd">@Setter</span>
+<span class="nd">@NoArgsConstructor</span>
+<span class="nd">@FilterDef</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantFilter"</span><span class="o">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@ParamDef</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantId"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">"string"</span><span class="o">)})</span>
+<span class="nd">@Filter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenantFilter"</span><span class="o">,</span> <span class="n">condition</span> <span class="o">=</span> <span class="s">"tenant_id = :tenantId"</span><span class="o">)</span>
+<span class="nd">@EntityListeners</span><span class="o">(</span><span class="nc">TenantListener</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractBaseEntity</span> <span class="kd">implements</span> <span class="nc">TenantAware</span><span class="o">,</span> <span class="nc">Serializable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">1L</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenant_id"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AbstractBaseEntity</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantId</span> <span class="o">=</span> <span class="n">tenantId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>All entities will need to extend <code class="language-plaintext highlighter-rouge">AbstractBaseEntity</code> in order to have the multitenancy support applied, as for example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="kd">extends</span> <span class="nc">AbstractBaseEntity</span> <span class="o">{</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="applying-the-filter-at-runtime">Applying the Filter at runtime</h3>
+
+<p>That was a neat and self-contained mechanism! However, there is still one piece missing: Unfortunately, a Filter defined on an entity doesn’t get automatically applied, it is only available to be applied. When a query is issued, the underlying Hibernate Session needs to be explicitly configured to use the filter. Since the Session object is created dynamically at runtime (typically once for each transaction), we cannot apply the Filter once and for all at application startup. Instead we need an additional mechanism: an <a href="https://en.wikipedia.org/wiki/Aspect-oriented_software_development">Aspect</a>.</p>
+
+<h4 id="aspectj-to-the-rescue">AspectJ to the rescue</h4>
+
+<p><a href="https://www.eclipse.org/aspectj/">AspectJ</a> provides a mechanism to defined fine-grained <em>execution points</em> and intercept the execution at those points to inject additional behaviour. This is exactly what we need: A way to intercept the creation of a Hibernate Session, to make sure that our Filter is properly applied to every created Session. Note that we cannot to that with the light-weight built in Aspect functionality in Spring, since that mechanism can only be used for Spring-managed beans. The Hibernate Session object is not managed by Spring, and hence we need the full-fledged AspectJ support.</p>
+
+<p>In order to do its magic (intercepting arbitrary code and injecting functionality at runtime), AspectJ needs to <em>weave</em> the defined aspects into the classes that should be affected. The weaving can be done at compile-time (using the AspectJ compiler as a step in the build chain, after Java compilation has completed), or at load-time using <em>load-time weaving</em>. The latter approach is less intrusive, and hence to be preferred in our case.</p>
+
+<p>Configuring the AspectJ Load-Time Weaver is done using an <code class="language-plaintext highlighter-rouge">META-INF/aop.xml</code> file in the classpath:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;aspectj&gt;</span>
+
+    <span class="nt">&lt;weaver</span> <span class="na">options=</span><span class="s">"-Xreweavable -verbose -showWeaveInfo"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;include</span> <span class="na">within=</span><span class="s">"se.callista.blog.service.multi_tenancy.aspect.TenantFilterAspect"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;include</span> <span class="na">within=</span><span class="s">"org.hibernate.internal.SessionFactoryImpl.SessionBuilderImpl"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/weaver&gt;</span>
+
+    <span class="nt">&lt;aspects&gt;</span>
+        <span class="nt">&lt;aspect</span> <span class="na">name=</span><span class="s">"se.callista.blog.service.multi_tenancy.aspect.TenantFilterAspect"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/aspects&gt;</span>
+
+<span class="nt">&lt;/aspectj&gt;</span>
+</code></pre></div></div>
+
+<p>This configuration defines an aspect <code class="language-plaintext highlighter-rouge">TenantFilterAspect</code> and the classes to which it should apply (in this case <code class="language-plaintext highlighter-rouge">org.hibernate.internal.SessionFactoryImpl.SessionBuilderImpl</code>). Note that the Aspect class itself must be part of the weaver classes, for technical reasons.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">TenantFilterAspect</code> is reasonably straight-forward:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Aspect</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantFilterAspect</span> <span class="o">{</span>
+
+    <span class="nd">@Pointcut</span><span class="o">(</span><span class="s">"execution (* org.hibernate.internal.SessionFactoryImpl.SessionBuilderImpl.openSession(..))"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">openSession</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="nd">@AfterReturning</span><span class="o">(</span><span class="n">pointcut</span> <span class="o">=</span> <span class="s">"openSession()"</span><span class="o">,</span> <span class="n">returning</span> <span class="o">=</span> <span class="s">"session"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterOpenSession</span><span class="o">(</span><span class="nc">Object</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">session</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nc">Session</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isInstance</span><span class="o">(</span><span class="n">session</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">tenantId</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">org</span><span class="o">.</span><span class="na">hibernate</span><span class="o">.</span><span class="na">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="o">((</span><span class="nc">Session</span><span class="o">)</span> <span class="n">session</span><span class="o">).</span><span class="na">enableFilter</span><span class="o">(</span><span class="s">"tenantFilter"</span><span class="o">);</span>
+                <span class="n">filter</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"tenantId"</span><span class="o">,</span> <span class="n">tenantId</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It defines an execution point (using the <code class="language-plaintext highlighter-rouge">@Pointcut</code> annotation) for when a new Hibernate session is opened. In this execution point (using the <code class="language-plaintext highlighter-rouge">@AfterReturning</code> annotation), it injects the required setup to apply the Hibernate Filter.</p>
+
+<h3 id="wiring-things-together">Wiring things together</h3>
+
+<p>Getting AspectJ load-time weaving to work in Spring Boot can be a bit complex, since the documentation is slightly misleading. First thing, we need the AspectJ weaver and Spring Boot aspect support in the classpath which is done easiest using a Spring Boot starter dependency:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-aop<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>Next step is to enable the AspectJ load time weaver, using the <code class="language-plaintext highlighter-rouge">@EnableLoadTimeWeaving</code> annotation:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableLoadTimeWeaving</span><span class="o">(</span><span class="n">aspectjWeaving</span> <span class="o">=</span> <span class="nc">EnableLoadTimeWeaving</span><span class="o">.</span><span class="na">AspectJWeaving</span><span class="o">.</span><span class="na">ENABLED</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MultiTenantServiceApplication</span> <span class="kd">extends</span> <span class="nc">SpringBootServletInitializer</span> <span class="o">{</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Finally, we need to use both Spring’s instrumentation agent and AspectJ’s aspectjweaver agent to be passed as -javaagent JVM arguments. The configuration of java agents will differ depending on deployment scenario. Using the Maven spring-boot plugin, the following configuration will to the work:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>spring-boot-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;configuration&gt;</span>
+                    <span class="nt">&lt;agents&gt;</span>
+                        <span class="nt">&lt;agent&gt;</span>${project.build.directory}/spring-instrument-${spring-framework.version}.jar<span class="nt">&lt;/agent&gt;</span>
+                        <span class="nt">&lt;agent&gt;</span>${project.build.directory}/aspectjweaver-${aspectj.version}.jar<span class="nt">&lt;/agent&gt;</span>
+                    <span class="nt">&lt;/agents&gt;</span>
+                <span class="nt">&lt;/configuration&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>while running the application on the command line would look like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-javaagent</span>:spring-instrument.jar <span class="nt">-javaagent</span>:aspectjweaver.jar <span class="nt">-jar</span> app.jar
+</code></pre></div></div>
+
+<h4 id="when-abstractions-leaks-hibernate-filter-gotcha">When abstractions leaks: Hibernate Filter Gotcha</h4>
+
+<p>The above implementation is simple and self-contained. The systematic usage of EntityListeners and Hibernate Filters applied via an Aspect seems fairly robust. It will guarantee that each tenant’s data is totally isolated from other tenants (even though the data lives in the same database), won’t it?</p>
+
+<p>Unfortunately, there is one subtle leak: Hibernate’s Filter mechanism is designed to apply to all Hibernate <em>queries</em>, but not to <em>direct fetching</em> via the Session object (using <code class="language-plaintext highlighter-rouge">session.find(&lt;id&gt;)</code>). The implementation of <code class="language-plaintext highlighter-rouge">findById()</code> in Spring Data’s SimpleJpaRepository indeed by default uses <code class="language-plaintext highlighter-rouge">em.find(...)</code> under the hood, and therefore will not be affected by the filter. Hence will allow fetching entities that belong to other tenants!</p>
+
+<p>Fixing this problem is indeed easy, just override the findById() with a proper JPQL query:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ProductRepository</span> <span class="kd">extends</span> <span class="nc">CrudRepository</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="nd">@Query</span><span class="o">(</span><span class="s">"SELECT p from Product p WHERE p.id = :id"</span><span class="o">)</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="nf">findById</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">);</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Simple, yes, but the problem is you have to know it must be done for each and every Repository used!</p>
+
+<h3 id="what-have-we-achieved">What have we achieved?</h3>
+
+<p>We now have a straight-forward implementation of the Shared Database with Discriminator Column pattern. Since we now use one single Database, the need for specific on-boarding logic and Migrations for tenants disappeared, as did most of the configuration. The use of AspectJ and load-time weaving is however a thing that not everyone may feel comfortable with.</p>
+
+<p>A fully working, minimalistic example can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> for this blog series, in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/shared_database_hibernate">shared_database_hibernate branch</a>.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>The Shared Database with Discriminator Column pattern implementation overcomes the scalability issues we identified with the previous implementations. Hence we can assume this implementation will no practical limitation on the number of tenants (rather the scalability of the database itself will likely be the bottleneck).</p>
+
+<p>The data separation guarantee between tenants however now becomes a challenge. The implementation is based on several cooperating mechanisms which may have leaks of their own or in combination with the other mechanisms. The burden of proof lies on us that there are no leaks.</p>
+
+<p>In the <a href="../../24/multi-tenancy-with-spring-boot-part6/index.html">next part</a>, we’ll instead implement the critical Filter part of the solution using an advanced database mechanism: Row Level Security. Stay tuned!</p>
+
+<h3 id="references">References</h3>
+
+<p>The following links have been very useful inspiration when preparing this material:</p>
+
+<p><a href="https://medium.com/@vivareddy/muti-tenant-with-discriminator-column-hibernate-implementation-a363f03b1d10">medium.com/@vivareddy/muti-tenant-with-discriminator-column-hibernate-implementation-a363f03b1d10</a></p>
+
+<p><a href="https://github.com/ramsrib/multi-tenant-app-demo">github.com/ramsrib/multi-tenant-app-demo</a></p>
+
+<p><a href="https://www.credera.com/insights/aspect-oriented-programming-in-spring-boot-part-3-setting-up-aspectj-load-time-weaving/">www.credera.com/insights/aspect-oriented-programming-in-spring-boot-part-3-setting-up-aspectj-load-time-weaving/</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Multi Tenancy With Spring Boot Part5&url=https://callistaenterprise.se/blogg/teknik/2020/10/17/multi-tenancy-with-spring-boot-part5/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Multi Tenancy With Spring Boot Part5&u=https://callistaenterprise.se/blogg/teknik/2020/10/17/multi-tenancy-with-spring-boot-part5/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Multi Tenancy With Spring Boot Part5&url=https://callistaenterprise.se/blogg/teknik/2020/10/17/multi-tenancy-with-spring-boot-part5/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

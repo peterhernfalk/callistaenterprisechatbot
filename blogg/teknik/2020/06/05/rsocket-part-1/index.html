@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>An introduction to RSocket | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Pär Wenåker" src="../../../../../../assets/medarbetare/parwenaker_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">An introduction to RSocket</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-06-05T00:00:00+00:00">
+            05 June 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/parwenaker/index.html">Pär Wenåker</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="https://rsocket.io/">RSocket</a> is a new communication protocol that promises to solve the issues we have with HTTP, and together with that, it might also simplify the way we design and build distributed systems and microservices. I will come back to that last statement in a later blog post.</p>
+
+<p></p>
+
+<p><img src="../../../../../../assets/blogg/rsocket-part-1/rsocket-logo.svg" height="60px" /></p>
+
+<h2 id="intro">Intro</h2>
+<p>This blog is the first in a series that covers RSocket, a new reactive communication protocol. I first read about RSocket in late 2019, and my first thought was that this protocol could revolutionize the way we build distributed systems and microservices. Since the Spring team at Pivotal has embraced it, I am sure that it is here to stay. The specification has not yet reached 1.0, but the Spring Framework includes the Java implementation since version 5.2. I recommend the <a href="../../../05/24/blog-series-reactive-programming/index.html">blogs</a> my colleague Anna has written on the subject if you are new to reactive programming.</p>
+
+<h2 id="background">Background</h2>
+<p>When building modern distributed applications (call it microservices if you will), we are faced with several challenges. One of them is how our services communicate and exchange information over the network. HTTP is probably the most widely used protocol both between services inside our data centers and to the outside. It has become a de-facto standard due to its superior interoperability.</p>
+
+<p>The use of HTTP presents some problems, though.</p>
+<ul>
+  <li>It only supports the request/response interaction model.</li>
+  <li>It’s inefficient.</li>
+  <li>It’s not reactive</li>
+</ul>
+
+<p>A modern application architecture often needs to support other communication patterns, like streaming and fire-and-forget. When that need arises, we often bring in a message broker to support those use-cases, even if we don’t need the durability of messages.</p>
+
+<p>HTTP is a text-based protocol whose primary usage is fetching documents over the Internet. Using this protocol in a data center is inefficient, especially the earlier versions 1.0 and 1.1. Why is performance relevant? Because inefficiency in memory, CPU, and network utilization are in today’s systems often directly translated into Cloud costs.</p>
+
+<p>And last but not least, HTTP is not reactive! There is no problem with using HTTP in a reactive context, but the protocol itself has no concepts of reactiveness.</p>
+
+<h2 id="rsocket">RSocket</h2>
+<p><a href="https://rsocket.io/">RSocket</a> is an open-source, binary encoded protocol designed by people that used to be at Netflix, helping develop <a href="http://www.reactive-streams.org/">Reactive Streams</a> together with <a href="https://tanzu.vmware.com/pivotal">Pivotal</a>, <a href="https://www.lightbend.com/">Lightbend</a> and others. Companies that are currently actively supporting the protocol includes <a href="https://www.netifi.com/">Netifi</a>, <a href="https://tanzu.vmware.com/pivotal">Pivotal</a>, Facebook, and Alibaba, among others. Implementations exist in many different programming languages. RSocket is message-based and requires some lower-level transport protocol to carry the messages. The requirements put on the transport protocol are that it should be reliable, connection-oriented, and byte stream-based, so protocols like TCP, Websockets, and Aeron can be used. If the transport protocol does not have framing (like TCP doesn’t), then RSocket provides it.</p>
+
+<p>Contrary to HTTP, RSocket is symmetric and operates on a single stateful and persistent <em>connection</em> between two communicating peers. The peers can assume either the <em>client</em> or the <em>server</em> role, but that distinction is only relevant during connection establishment. The <em>client</em> connects to the <em>server</em>, but both can act as <em>requester</em> or <em>responder</em> in further interactions. The requester is the party initiating a communication interaction, called <em>stream</em> in the <a href="https://rsocket.io/docs/Protocol.html">RSocket specification</a>. For example, this means that the server can act requester and send requests to the client, where the client might be a Javascript application on a web page, and the server might be a back-end Java server.</p>
+
+<p>RSocket defines four types of interaction models or streams.</p>
+
+<ol>
+  <li>Request / Response</li>
+  <li>Fire And Forget</li>
+  <li>Request / Stream</li>
+  <li>Channel</li>
+</ol>
+
+<p>The specification defines the connection as “an instance of a transport session”, and the protocol supports <em>session</em> resumption. Session resumption allows for the recovery of long-lived streams across different connections and transport protocols. It is typically useful for mobile communication where network connections can be dropped and reconnected on another transport. Each stream exists for a finite period, and a Stream ID identifies it. The Stream ID is bound either by the lifetime of the connection or, if session resumption is in use, by the lifetime of the Session (which can span multiple transport connections). Messages relating to the connection uses a Stream ID of 0.</p>
+
+<p>Let’s have a closer look at how RSocket maps the reactive streams concepts on the wire. To follow along in detail in every bit and byte, I recommend that you follow along with the <a href="https://rsocket.io/docs/Protocol.html">RSocket specification</a> open.</p>
+
+<h3 id="frame-header">Frame Header</h3>
+
+<p>All frames start with a <a href="http://rsocket.io/docs/Protocol.html#frame-header-format">frame header</a>, which includes Stream ID, Frame Type, and flags. Two flags (I)gnore and (M)etadata are always present, but the others depend on the frame type.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0|                         Stream ID                           |
++-----------+-+-+---------------+-------------------------------+
+|Frame Type |I|M|     Flags     |     Depends on Frame Type    ...
++-------------------------------+
+</code></pre></div></div>
+
+<h3 id="connection-setup">Connection Setup</h3>
+
+<p>The client has to connect to the server to set up a connection, and as soon as the connection is established, it sends a SETUP frame. Let’s assume that the transport protocol is TCP, then the <a href="https://rsocket.io/docs/Protocol.html#setup-frame-0x01">SETUP frame</a> looks like this if resumption is not in use:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 28 00 00 00 00 04 00 00 01 00 00 00 00 4e |..(............N|
+|00000010| 20 00 01 5f 90 0a 74 65 78 74 2f 70 6c 61 69 6e | .._..text/plain|
+|00000020| 0a 74 65 78 74 2f 70 6c 61 69 6e                |.text/plain     |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>TCP has no framing, so the first 24 bits (3 bytes) indicate the frame length (in this case 0x28 or 40 bytes), then there are 32 bits of stream ID, 0x00000000 since the frame is associated with the connection. Next, we have 6 bits of frame type and 10 bits of flags. The frame type is 0x01 (SETUP), followed by the flags, which are all 0, giving the next two bytes the value 0x0400. After the flags come, the protocol major and minor version (0x0001 and 0x0000). Two numbers follow the version. The first one is the number of milliseconds between KEEPALIVE frames (0x00004e20, 20,000 milliseconds). The second one is the max lifetime that the client allows the server not to reply on keep-alive frames until it considers the server dead (0x00015f90, 90,000 milliseconds). Finally, we have metadata and data encoding mime-types, which are text/plain for both in this example.</p>
+
+<h3 id="request--response">Request / Response</h3>
+<p><img src="../../../../../../assets/blogg/rsocket-part-1/request-response.jpg" alt="request response" /><br />
+Request/response is probably still the most common interaction model, but in RSocket as well as in <a href="http://www.reactive-streams.org/">Reactive Streams</a> semantics, this interaction model is just a special case of request/stream where the response stream only has one element or frame. The requester sends one request frame, and the responder replies with a stream of one frame.</p>
+
+<p>The request frame carries the Stream ID and frame type (in this case, REQUEST_RESPONSE). If the client initiates the stream ID, it is odd and starts with 1 for the first stream. The server uses even stream IDs beginning with 2. Here below is an example of a request/response interaction with an echo service using TCP. The client is the requester and sends a “Hello World!” message to the server that is the responder and echoes the message back.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 01 10 00 48 65 6c 6c 6f 20 57 |.........Hello W|
+|00000010| 6f 72 6c 64 21                                  |orld!           |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>Similar to the SETUP frame above, framing is used, and the frame is 18 bytes (0x12) long. The Stream ID is one (0x00000001), the frame type is 0x04 for <a href="https://rsocket.io/docs/Protocol.html#request_response-frame-0x04">REQUEST_RESPONSE frame</a>, and all flags are 0. You can see the response from the echo service below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 01 28 60 48 65 6c 6c 6f 20 57 |.......(`Hello W|
+|00000010| 6f 72 6c 64 21                                  |orld!           |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>The response frame is of the same length, but the type is now <a href="https://rsocket.io/docs/Protocol.html#payload-frame-0x0a">PAYLOAD frame</a> with an identifier of 0x0A. Two flags, the (N)ext, and the (C)omplete flag are both set to 1, indicating the availability of payload data in the frame and the completion of the steam. These flags trigger the invocation of reactive callbacks <em>onNext(payload)</em> and <em>onComplete()</em>  on the subscriber on the requester side.</p>
+
+<p>Notice that the connection does not terminate after the response message. The two peers are still connected and able to initiate new interactions or streams, possibly switching requester and responder roles.</p>
+
+<h3 id="fire-and-forget">Fire And Forget</h3>
+<p><img src="../../../../../../assets/blogg/rsocket-part-1/fire-and-forget.jpg" alt="fire and forget" /><br />
+Fire and Forget is an optimized stream where the requester is not expecting any response. This type of interaction cannot be achieved by HTTP since HTTP, by default, has a response, and even if the requester ignores the response, it is sent and processed by both peers. One useful scenario for Fire and Forget streams could be logging.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 03 14 00 48 65 6c 6c 6f 20 57 |.........Hello W|
+|00000010| 6f 72 6c 64 21                                  |orld!           |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>The frame type is now 0x05 <a href="https://rsocket.io/docs/Protocol.html#request_fnf-fire-n-forget-frame-0x05">REQUEST_FNF frame</a>. The Stream ID is 0x00000003 since this is the second stream initiated by the client. Again all flags are set to 0.</p>
+
+<h3 id="request--stream">Request / Stream</h3>
+<p><img src="../../../../../../assets/blogg/rsocket-part-1/request-stream.jpg" alt="request stream" /><br />
+In a Request/Stream interaction, the requester sends one request, and the responder responds with a Stream of items. The stream can potentially be infinitely long. In the example here, the requester sends a “Hello World!” message and the responder echoes back the same message twice in a stream of two items.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 16 00 00 00 05 18 00 7f ff ff ff 48 65 6c |.............Hel|
+|00000010| 6c 6f 20 57 6f 72 6c 64 21                      |lo World!       |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>As can be seen, the stream ID is once again incremented by two to 0x00000005. The frame type is now 0x06 <a href="https://rsocket.io/docs/Protocol.html#request_stream-frame-0x06">REQUEST_STREAM frame</a>, and all flags are 0. The frame also has a field for <em>demand</em> or “Initial Request N” that signals how many items the requester can handle. A peer uses demand signaling to enable backpressure. In this particular case, the responder signals that it can receive (0x7fffffff) items, which is the maximal amount, so in effect, no backpressure is applied.</p>
+
+<p>The requester receives the response in three frames.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 05 28 20 48 65 6c 6c 6f 20 57 |.......( Hello W|
+|00000010| 6f 72 6c 64 21                                  |orld!           |
++--------+-------------------------------------------------+----------------+
+         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 05 28 20 48 65 6c 6c 6f 20 57 |.......( Hello W|
+|00000010| 6f 72 6c 64 21 00 00 06 00 00 00 05 28 40       |orld!.......(@  |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>The response frames are of sizes 0x12, 0x12, and 0x06, and they all have a stream ID of 0x00000005. All three framed are of <a href="https://rsocket.io/docs/Protocol.html#payload-frame-0x0a">PAYLOAD frame</a>s (0x0A), and the first two have (N)ext flag set, resulting in the invocation for the <em>onNext(payload)</em> method on the requester’s subscriber. The final frame has the (C)omplete flag set, resulting in the invocation of the <em>onComplete()</em> method (observe that the first block of data contains the first frame and the second block of data includes the last two).</p>
+
+<h3 id="channel">Channel</h3>
+<p><img src="../../../../../../assets/blogg/rsocket-part-1/channel.jpg" alt="channel" /><br />
+The final interaction pattern is the Channel stream. This interaction opens a bi-directional channel with two potentially infinite streams between the requester and the responder. The request frame from the responder is more or less identical to the initial frame sent in the Request/Stream case except for the frame type which is now 0x07 <a href="https://rsocket.io/docs/Protocol.html#request_channel-frame-0x07">REQUEST_CHANNEL frame</a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 16 00 00 00 07 1c 00 7f ff ff ff 48 65 6c |.............Hel|
+|00000010| 6c 6f 20 57 6f 72 6c 64 21                      |lo World!       |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>Stream ID is 0x00000007, all the flags are set to 0, so frame type and flags become 0x1c00, and demand has the max value of 0x7fffffff, so in effect, no backpressure is applied.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 0a 00 00 00 07 20 00 7f ff ff ff 00 00 12 |....... ........|
+|00000010| 00 00 00 07 28 20 48 65 6c 6c 6f 20 57 6f 72 6c |....( Hello Worl|
+|00000020| 64 21 00 00 12 00 00 00 07 28 20 48 65 6c 6c 6f |d!.......( Hello|
+|00000030| 20 57 6f 72 6c 64 21                            | World!         |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>The responder sends back three frames with sizes 0x0a, 0x12, and 0x12. The last two are <a href="https://rsocket.io/docs/Protocol.html#payload-frame-0x0a">PAYLOAD frame</a>s (0x0A) identical to the ones sent in the Request/Stream case, but the first one is a <a href="https://rsocket.io/docs/Protocol.html#request_n-frame-0x08">REQUEST_N frame</a> (0x08) that signals demand from the responder. Max demand (0x7fffffff) is signaled from the responder as well. So in the Channel stream, both sides can signal demand and thereby enable backpressure. The requester continues the stream with a second “Hello World!” message and then it terminates the stream.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 07 28 20 48 65 6c 6c 6f 20 57 |.......( Hello W|
+|00000010| 6f 72 6c 64 21                                  |orld!           |
++--------+-------------------------------------------------+----------------+
+         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 06 00 00 00 07 28 40                      |.......(@       |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>The requester sends another payload frame with the (N)ext flag set (0x2820), and then it terminates the stream with an empty payload frame with the (C)omplete flag set (0x2840).</p>
+
+<p>The responder echoes this message twice.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         +-------------------------------------------------+
+         |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |
++--------+-------------------------------------------------+----------------+
+|00000000| 00 00 12 00 00 00 07 28 20 48 65 6c 6c 6f 20 57 |.......( Hello W|
+|00000010| 6f 72 6c 64 21 00 00 12 00 00 00 07 28 20 48 65 |orld!.......( He|
+|00000020| 6c 6c 6f 20 57 6f 72 6c 64 21 00 00 06 00 00 00 |llo World!......|
+|00000030| 07 28 40                                        |.(@             |
++--------+-------------------------------------------------+----------------+
+</code></pre></div></div>
+<p>It sends two payload frames with “Hello World!” and (N)ext flag set (0x2820) and finishes with an empty payload frame with (C)omplete flag set (0x2840), which terminates the stream from the responder.</p>
+
+<h3 id="conclusions">Conclusions</h3>
+<p>In this post, I have shown how the reactive concept maps into the RSocket protocol. The callbacks <em>onNext</em> and <em>onComplete</em> of the Subscriber interface translates from the flags in the payload frame. I didn’t show it, but there is also an <a href="https://rsocket.io/docs/Protocol.html#error-frame-0x0b">ERROR frame</a> (0x0B), that translates to an <em>onError</em> call in the subscriber. I have also shown how demand signaling between the peers results in backpressure. In the next blog post, I will show how you can use RSocket, with code examples in Java.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Rsocket Part 1&url=https://callistaenterprise.se/blogg/teknik/2020/06/05/rsocket-part-1/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Rsocket Part 1&u=https://callistaenterprise.se/blogg/teknik/2020/06/05/rsocket-part-1/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Rsocket Part 1&url=https://callistaenterprise.se/blogg/teknik/2020/06/05/rsocket-part-1/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

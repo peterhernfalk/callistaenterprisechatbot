@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Optimizing a simple ray-tracer written in Go, part 1 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Optimizing a simple ray-tracer written in Go, part 1</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-07-04T00:00:00+00:00">
+            04 July 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this 2-part blog we’ll take a look at how I used the go profiling and built-in benchmarking tools to optimize a naive ray-tracer written in Go.</p>
+
+<p><a href="../../11/a-go-ray-tracer-part-2/index.html">Click here for Part 2</a>.</p>
+<h1 id="contents">Contents</h1>
+
+<ol>
+  <li>Introduction</li>
+  <li>Why Go?</li>
+  <li>Multi-threading</li>
+  <li>Using pprof to identify bottlenecks</li>
+  <li>Reducing allocations &amp; Caching</li>
+  <li>Conclusion of part 1</li>
+</ol>
+
+<p><em>(Note: Most of this blog post is based on using Go 1.13)</em></p>
+
+<h3 id="source-code">Source code</h3>
+<p>The full source code for my little ray-tracer can be found here: <a href="https://github.com/eriklupander/rt">https://github.com/eriklupander/rt</a></p>
+
+<h1 id="1-introduction">1. Introduction</h1>
+<p>Sometime late 2019 I stumbled upon a book - <a href="https://pragprog.com/titles/jbtracer/">“The Ray Tracer Challenge”</a>:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/raytracerchallenge.jpg" alt="book" /></p>
+
+<p>What is ray-tracing? Let’s quote wikipedia:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In computer graphics, ray tracing is a rendering technique for generating 
+an image by tracing the path of light as pixels in an image plane and 
+simulating the effects of its encounters with virtual objects. 
+</code></pre></div></div>
+<p><em>Source: https://en.wikipedia.org/wiki/Ray_tracing</em>(graphics)_</p>
+
+<p>Professional ray-tracing can produce quite photo-realistic results:
+<img src="../../../../../../assets/blogg/raytracer/Glasses_800_edit.png" alt="glasses" />
+<em>Source: https://en.wikipedia.org/wiki/Ray_tracing</em>(graphics)#/media/File:Glasses_800<em>edit.png</em></p>
+
+<p>While ray-tracing has approximately 0% relation to my daily work, I’ve been interested in computer graphics ever since the mid-late 80’s when I wrote my first GW BASIC graphics code and played any computer game on the family 286 I could lay my hands upon.</p>
+
+<p>Ray tracing has always been something of my personal holy grail of computer graphics. I’ve toyed around with rasterization in the past, doing some OpenGL and shader stuff just for fun, but given the mathematical nature of ray tracing, I’ve never really even tried to wrap my head around it. You can never guess what happened next when I discovered the book above…</p>
+
+<h3 id="11-the-ray-tracer-challenge">1.1 The Ray Tracer Challenge</h3>
+<p>A few words on the book that launched me onto the path of writing my very own ray-tracer. The book in question takes a fully language-agnostic approach to building your very own ray-tracer from scratch. The book does a really good job expaining the physics and mathematics involved without drowning the reader in mathematical formulas or equations. While a number of key algorithms are explained both using plain text and imperative psuedo-code, the heart of the book is its test-driven approach where concepts are first explain in text, and then defined as cucumber-like Given - When - Then test cases. Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        test: normal on a child object
+		Given g1 ← group()
+		And set_transform(g1, rotation_y(π/2))
+		And g2 ← group()
+		And set_transform(g2, scaling(1, 2, 3))
+		And add_child(g1, g2)
+		And s ← sphere()
+		And set_transform(s, translation(5, 0, 0))
+		And add_child(g2, s)
+		When n ← normal_at(s, point(1.7321, 1.1547, -5.5774))
+		Then n = vector(0.2857, 0.4286, -0.8571)
+</code></pre></div></div>
+
+<p>Everything from intersection math, rotations, linear algebra, shading to lighting calculations has these test cases to keep you as the reader of the book on the correct path. Which is enormously important, best stated in the book in regard to getting the basics wrong early on:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"... it will cause you a never-ending series of headaches"
+</code></pre></div></div>
+
+<p><em>- Jamis Buck, The Ray Tracer Challenge</em></p>
+
+<p>Indeed - if you’d get some fundamental piece of the core math or intersection algorithms wrong, later use of those functions (such as checking intersections of a ray) will be off and very difficult to troubleshoot.</p>
+
+<p>So, the book takes you step by step from building your core math library, rendering your first pixels and grasping the core concepts - to actually rendering various shapes including lighting, reflections, refraction, shadows etc. By the end of the book, your renderer is capable of creating images such as the one below:
+<img src="../../../../../../assets/blogg/raytracer/gopher.png" alt="alt" /> 
+<em>Gopher model by <a href="https://twitter.com/tenntenn">Takuya Ueda</a></em></p>
+
+<p>That said - the purpose of this blog post is <em>not</em> teaching you how to create a ray-tracer - buy the book instead. This blog post is about Golang and my journey after finishing the book making my renderer perform better. As it turned out, my performance optimizations cut the time for a single render by several orders of magnitude!</p>
+
+<h3 id="12-the-reference-image">1.2 The “reference” image</h3>
+
+<p><img src="../../../../../../assets/blogg/raytracer/hires-sample-image.png" alt="alt" />
+While not very impressive given 2020 graphical standards, this “reference image” of mine showcases a number of different object primitives, shadows, reflections, refraction, lighting, patterns and transparency. This is a high-res render, while the resolution used for all performance comparisons were 640x480.</p>
+
+<h1 id="2-why-go">2. Why Go?</h1>
+<p>Why not? Ok - after doing Java for 15+ years, I’ve been working full-time with Go projects for the last year or so. And I simply love the simplicity of the language, the fast and efficient tooling and how the language manages to make our team able to efficiently write stable, performant and correct services without having the language or its abstractions getting in our way very often.</p>
+
+<p>I’ll also admit - if I had wanted to write the most performant ray-tracer from the very beginning, I probably should have done this in C, C++ or Rust. However, given that <em>my</em> challenge was learning how to do simple ray-tracing, I’d rather not have to deal with (re)learning a programming language I’m not comfortable with. This point is actually rather significant, as it turned out I’ve probably spent more time on my ray-tracer <em>after</em> finishing the book doing the performance optimizations this blog post is about than I spent with the book. Nevertheless, it’s quite probable I’d run into many or most of the issues in whatever language I’d picked.</p>
+
+<p>The <em>cucumber</em>-like tests from the book was implemented as standard Go unit tests. My implementation using Go 1.13 used no 3rd party libraries at the time I completed the book.</p>
+
+<h3 id="21-other-optimizations">2.1 Other optimizations</h3>
+<p>This blog post is about improving the Go-related code of the renderer. However, I must clarify that a huge part of creating a performant ray-tracer is actually about making it “do less work” through optimization of the actual logic of the renderer. Ray-tracing is mainly about casting rays and checking if they intersect something. If you can decrease the number of rays to cast without sacrificing image quality, that is probably the greatest improvement you can do.</p>
+
+<p>An example of such an improvement is using something called <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">Bounding Boxes</a>, where a complex object is encapsulated inside a “cheap” primitive, which can speed up rendering of complex meshes by several orders of magnitude:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/BoundingBox.jpg" alt="alt" /></p>
+
+<p><em>(Source Wikimedia: https://commons.wikimedia.org/wiki/File:BoundingBox.jpg)</em></p>
+
+<p>A complex mesh such as the head in the image above may consist of hundreds of thousands of triangles. Without optimizations, a naive ray tracer would need to do an intersection test for every single triangle for for every ray cast in the scene, including shadow and reflection rays. That would make rendering of complex scenes quite infeasible on commodity hardware, where a single render could probably stretch into days or weeks to finish.
+Instead, by putting the complex head mesh inside a virtual “box”, a simple ray-box intersection test for each ray cast will tell us whether we need to test all the triangles of the head or not. I.e. - if the ray doesn’t intersect the box, it won’t intersect any of the thousands of triangles either so we can skip them.</p>
+
+<p>Further, we can subdivide the head into many smaller boxes in a tree-like structure we can traverse and only do intersection tests for the triangles bounded by the leaf “box”. This is known as <a href="https://en.wikipedia.org/wiki/Bounding_volume_hierarchy">bounding volume hierarchies</a>.</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/bvh.png" alt="bvh" />
+<em>Source: Wikimedia: https://commons.wikimedia.org/wiki/File:Example_of_bounding_volume_hierarchy.svg)</em></p>
+
+<p>As said above - these optimizations are tremendously important for complex scenes with many and/or complex objects. While I’ve implemented Bounding Boxes and BVHs in my renderer based on one of the online <a href="https://forum.raytracerchallenge.com/thread/33/bonus-chapter-bounding-boxes-hierarchies">bonus chapters</a> of the book, for the simple “reference image” used for benchmarking in this blog post, the BVH is ineffectual since the reference scene does not contain any grouped primitives.</p>
+
+<h1 id="3-multi-threading">3. Multi-threading</h1>
+<p>Once I was done with the book, I could render simple scenes such as the “reference image” on my MacBook Pro 2014 (4 core / 8 thread) in 640x480 resolution in about 3 minutes and 15 seconds. This made further experimentations with multi-sampling, textures or soft shadows a very slow process, leading to me embarking upon my journey of optimizations.</p>
+
+<p>At a glance, ray-tracing is more or less about casting a ray through each would-be pixel through the image plane, and then applying the exact same algorithms for determining the output color of that given pixel. In theory, this sounds like an <a href="https://en.wikipedia.org/wiki/Embarrassingly_parallel">embarrassingly parallell problem</a>.</p>
+
+<p>Therefore, my first optimization was to move from a purely single-threaded rendering process to something that would utilize all available CPU threads.</p>
+
+<h3 id="31-distributing-the-work">3.1 Distributing the work</h3>
+<p>So, this is where the Go fun starts. I decided to apply the simple <a href="../../../../2019/10/05/go-worker-cancellation/index.html">worker pool pattern</a> that I’ve touched on before on this blog.</p>
+
+<p>In terms of Go code, the renderer treats each horizontal line of pixels as a unit of work that one of the workers can consume from a channel. The number of workers is set to GOMAXPROCS, matching the number of virtual CPU cores, 4/8 in my case.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Use a wait-group to wait until all lines have been rendered, adding HEIGHT (such as 480) to the waitGroup.</span>
+<span class="n">wg</span> <span class="o">:=</span> <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span><span class="p">{}</span>
+<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">H</span><span class="p">)</span>
+
+<span class="c">// Create the render contexts, one per worker. A render context is a struct with the requisite methods and scene info to render pixels.</span>
+<span class="n">renderContexts</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="n">Context</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">Cfg</span><span class="o">.</span><span class="n">Threads</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">Cfg</span><span class="o">.</span><span class="n">Threads</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+    <span class="n">renderContexts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">NewContext</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">worlds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="p">,</span> <span class="n">canvas</span><span class="p">,</span> <span class="n">jobs</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">wg</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// start workers</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">Cfg</span><span class="o">.</span><span class="n">Threads</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+    <span class="k">go</span> <span class="n">renderContexts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">workerFuncPerLine</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="c">// start passing work to the workers over the "jobs" channel, one line at a time</span>
+<span class="k">for</span> <span class="n">row</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">c</span><span class="o">.</span><span class="n">Height</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">{</span>
+    <span class="n">jobs</span> <span class="o">&lt;-</span> <span class="o">&amp;</span><span class="n">job</span><span class="p">{</span><span class="n">row</span><span class="o">:</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="o">:</span> <span class="m">0</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+</code></pre></div></div>
+<p>The actual rendering code (e.g. <code class="language-plaintext highlighter-rouge">workerFuncPerLine()</code>) just picks one “job” at a time from the channel and passes it to our <code class="language-plaintext highlighter-rouge">renderPixelPinhole</code> method:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">rc</span> <span class="o">*</span><span class="n">Context</span><span class="p">)</span> <span class="n">workerFuncPerLine</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="n">job</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">rc</span><span class="o">.</span><span class="n">jobs</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rc</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">Width</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+			<span class="n">job</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">i</span>
+			<span class="n">rc</span><span class="o">.</span><span class="n">renderPixelPinhole</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="n">rc</span><span class="o">.</span><span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="32-unit-of-work---congestion-issues">3.2 Unit of work - congestion issues?</h3>
+<p>Why use one line as the unit of work? Well, actually, I started passing one pixel at a time. However, if you’re rendering a 1920x1080 image, that’s approx 2 million “jobs” to pass over that channel. I noticed in a CPU <a href="https://blog.golang.org/pprof">profile run</a> that a large portion of time was being spent in this <code class="language-plaintext highlighter-rouge">runtime.usleep</code> method:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/usleep.png" alt="alt" />
+<em>(Partial profile, pass one pixel per job)</em></p>
+
+<p>I couldn’t quite make sense of this, other than the profiling tools seemed to think a ridiculous amount of time was being spent waiting for something. A block profile shed some additional light on the issue:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/usleep2.png" alt="alt" />
+<em>(Block profile, pass one pixel per job)</em></p>
+
+<p>Seems the <code class="language-plaintext highlighter-rouge">workerFuncPerLine()</code> method spent a whole lot of time being blocked. By performing the tiny change of passing a line at a time instead of a single pixel as the unit of work, things started looking much better:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/usleep4.png" alt="alt" />
+<em>(Block profile, pass one line per job)</em></p>
+
+<p>In this particular example, the block in <code class="language-plaintext highlighter-rouge">chanrcv2</code> went from 34.3 seconds down to 0.6, while the <code class="language-plaintext highlighter-rouge">chansend1</code> actually increased from 4 to 8 seconds, clearly indicating the we improved things a lot while simultaneously moving the bottleneck to the sender side. The CPU profile also looked much better now:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/usleep3.png" alt="alt" />
+<em>(Profile, pass one line per job)</em></p>
+
+<p>Overall - one should notice that this change didn’t cut the total render time in half, it yielded an overall improvement of perhaps 5-7% - but it’s a good example on how an issue could be identified using the Golang profiling tools not directly related to mathematics or ray-tracing algorithms, rather a problem with the internal app architecture and how “jobs” were distributed to the “workers”.</p>
+
+<h3 id="33-sharing-memory">3.3 Sharing memory</h3>
+<p>As I quite quickly noticed, moving the codebase from strict single-threaded operation to using a worker pool introduced a whole new slew of problems to solve. State and shared object structures was definitely one of the more challenging ones.</p>
+
+<p>What does the code that renders a single pixel need to do its job? Well, it needs to access all geometry and light sources in the scene, as well as knowing where the “camera” is. All that stuff was implemented as plain Go structs, including quite a bit of state that at times was being mutated by the renderer in order to avoid allocating memory for intermediate calculations.</p>
+
+<p>This was actually a bit harder nut to crack than I initially thought. Since I didn’t fancy rewriting everything from scratch, and using mutexes everywhere would both be error-prone and probably wouldn’t scale all that well - I decided to let each “render thread” get a full copy of the entire scene to work with. As long as the scene doesn’t contain a lot of really complex 3D models, in this day of 16GB laptops keeping N number of “copies” of some structs in-memory isn’t a big issue.</p>
+
+<p>The final declaration of a “Render Context” is implemented as a Go struct and looks like this:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Context</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">world</span>  <span class="n">mat</span><span class="o">.</span><span class="n">World</span>           <span class="c">// All objects and lights in the scene</span>
+	<span class="n">camera</span> <span class="n">mat</span><span class="o">.</span><span class="n">Camera</span>          <span class="c">// The camera representation</span>
+	<span class="n">canvas</span> <span class="o">*</span><span class="n">mat</span><span class="o">.</span><span class="n">Canvas</span>         <span class="c">// The output canvas where the final color of each pixel is written</span>
+	<span class="n">jobs</span>   <span class="k">chan</span> <span class="o">*</span><span class="n">job</span>           <span class="c">// Channel that the "jobs" are passed over</span>
+	<span class="n">wg</span>     <span class="o">*</span><span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>     <span class="c">// Synchronizing so we know when all workers are done</span>
+	<span class="n">depth</span>  <span class="kt">int</span>                 <span class="c">// Keeping track of recursion depth</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The renderer instantiates GOMAXPROCS number of these “render contexts” that can autonomously render any pixel in the scene. Perhaps not the most elegant of solutions, but it provided safety and did definitely solve some of the rather strange render errors and other problems I did get before moving away from “shared memory”.</p>
+
+<p>Whenever a pixel had been completed, it was directly written to the <code class="language-plaintext highlighter-rouge">*mat.Canvas</code> through a mutex-protected method. This mutex did not become any kind of bottleneck.</p>
+
+<h3 id="34-running-multi-threaded">3.4 Running multi-threaded</h3>
+<p>So, how did going from 1 to 8 “workers” affect performance? While I didn’t expect my renders to become 8 times faster, I was kind of expecting maybe a 5-7x speedup.</p>
+
+<p>I got about <strong>2.5x</strong>.</p>
+
+<p>The reference image was down to about <strong>1m30s</strong> from <strong>3m15s</strong>. This was a huge disappointment! But on the flip side, it really got me intrigued about what was holding the CPU back. I’ll revisit this in the final section of the second blog post of this mini-series.</p>
+
+<h1 id="4-pprof-and-reducing-allocations">4. pprof and reducing allocations</h1>
+<p>What do you do when your code doesn’t perform like you expect? You profile it! So, I added the requisite boilerplate to enable profiling:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">(</span>
+	<span class="o">...</span>
+	<span class="n">_</span> <span class="s">"net/http/pprof"</span>
+	<span class="o">...</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c">// ... other code ...</span>
+	<span class="n">runtime</span><span class="o">.</span><span class="n">SetBlockProfileRate</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="n">runtime</span><span class="o">.</span><span class="n">SetMutexProfileFraction</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="c">// Enable PPROF web server</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">"localhost:6060"</span><span class="p">,</span> <span class="no">nil</span><span class="p">))</span>
+	<span class="p">}()</span>
+</code></pre></div></div>
+
+<p>I guess the finer details of <a href="https://github.com/google/pprof">pprof</a> is better explained elsewhere, so let’s jump directly to what the CPU profile showed after enabling multi-threading:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/memory1.png" alt="alt" /></p>
+
+<p>These profile PNGs are awesome for seeing not only where the most time is being spent (hint - bigger is NOT better) but also the call hierarchies. Seems about 25% of the CPU time was being spent on <code class="language-plaintext highlighter-rouge">runtime.mallocgc</code>, which in plain english means “stuff the Garbage Collector is doing”. While my naive ray-tracer definitely wasn’t written with memory re-use in mind, this did seem a bit excessive.</p>
+
+<p>Luckily, the profiling tools also provides heap profiling capable of both tracking the <em>amount</em> of memory being allocated down to LoC level, as well as showing <em>the number</em> of allocations occurring in any given function or LoC.</p>
+
+<p>Time for a big image:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/memory2.png" alt="alt" /></p>
+
+<p>Yes, look at that <code class="language-plaintext highlighter-rouge">Inverse()</code> function. Over 95% of all memory allocations are happening in it’s descendants! A closer look:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/memory3.png" alt="alt" /></p>
+
+<p>Yup - someone down that call hierarchy is performing about 3.7 billion(!) allocations for rendering a 640x480 image!! That’s more than 12000 allocations per pixel being rendered. Something was definitely rotten in my own little kingdom of ray-tracing.</p>
+
+<h3 id="41-caching-the-inverse-transformation-matrix">4.1 Caching the inverse transformation matrix</h3>
+<p>While “inverse the transformation matrix” sounds like something Picard could say in Star Trek, it’s one of those fundamental pieces of math that our ray-tracer needs to happen when moving from “world space” to “object space” when performing a ray intersection test on an object. Since we’re testing all objects in the scene on every ray being cast, including reflections and shadows, this adds up to an enormous amount of matrix math that needs to happen.</p>
+
+<p><em>(The transformation matrix is a 4x4 matrix that keeps track of the translation (position in 3D space), rotation and scaling of our primitives in relation to the “world” cartesian coordinate system.)</em></p>
+
+<p>The good news is that we actually needed to calculate the inverse transformation matrix for our scene objects exactly <strong>once</strong>. So once we know where in world space our camera and scene objects are, we can calculate their inverse transformation matrices once and store the result in their structs:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Sphere</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Transform</span>        <span class="n">Mat4x4</span>  <span class="c">// Store Transformation matrix here</span>
+	<span class="n">Inverse</span>          <span class="n">Mat4x4</span>  <span class="c">// Store the Inverse of the above here</span>
+<span class="p">}</span>
+<span class="c">// SetTransform multiplies the current transformation matrix with the passed transform and stores the result.</span>
+<span class="c">// The new inverse is also calculated and stored.</span>
+<span class="c">// Should only be called during scene setup.</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">Sphere</span><span class="p">)</span> <span class="n">SetTransform</span><span class="p">(</span><span class="n">translation</span> <span class="n">Mat4x4</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">Transform</span> <span class="o">=</span> <span class="n">Multiply</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Transform</span><span class="p">,</span> <span class="n">translation</span><span class="p">)</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">Inverse</span> <span class="o">=</span> <span class="n">Inverse</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Transform</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">Sphere</span><span class="p">)</span> <span class="n">GetTransform</span><span class="p">()</span> <span class="n">Mat4x4</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">Transform</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">Sphere</span><span class="p">)</span> <span class="n">GetInverse</span><span class="p">()</span> <span class="n">Mat4x4</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">Inverse</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In practice, <code class="language-plaintext highlighter-rouge">SetTransform(translation Mat4x4)</code> above is only called once when we’re setting up the scene.</p>
+
+<p>This was a trivial optimization to code, but it made a <em>huge</em> difference: The time needed to render the reference image went from <strong>1m30</strong> to about <strong>4.5</strong> seconds!! A single threaded render went from <strong>3m15s</strong> to about <strong>10s</strong>.</p>
+
+<p>Looking at allocations, we went from 3.8 billion allocations to “just” 180 million and the total amount of memory allocated went from 154 GB to 5.9 GB. While we certainly saved a significant number of CPU cycles for the actual math of calculating the inverse, the big part of this optimization definitely was easing the pressure on the memory subsystem and the garbage collector since calculating the inverse required allocating memory on each invocation. The <code class="language-plaintext highlighter-rouge">Inverse()</code> function is now used so sparingly it doesn’t even show up when doing a heap profile.</p>
+
+<h1 id="5-reducing-allocations--caching">5. Reducing allocations &amp; Caching</h1>
+<p>3.7 billion down, 180 million to go? If I had the time and will (which I don’t) I’d probably rewrite everything from scratch with a “zero-allocation” goal in mind. Keep things on the stack, pre-allocate every piece of memory needed to hold results, check inlining etc.</p>
+
+<p>I should perhaps mention that when I begun implementing things based on the book, I used a “everything should be immutable” architecture. While that did really help with correctness and avoiding nasty bugs due to (accidental) mutation, allocating new slices or structs on every single computation turned out to be a quite horrible idea from a performance point of view.</p>
+
+<p>Since I didn’t want to start over (and have to refactor at least a hundred implementations of those cucumber tests implemented in plain Go), I took an approach of trying to identify one big “allocator” at a time in order to see if I could make it re-use memory or keep its allocations on the stack. Heap profiler to the rescue!</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/allocations1.png" alt="alt" /></p>
+
+<p>Looking at this new heap profile, the biggest culprit seems to be this <code class="language-plaintext highlighter-rouge">MultiplyByTuple</code> function responsible for almost 50% of the remaining allocations. It’s a quite central part of the ray-object intersection code so it’s being called often. What does it do?</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">MultiplyByTuple</span><span class="p">(</span><span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">t</span> <span class="n">Tuple4</span><span class="p">)</span> <span class="n">Tuple4</span> <span class="p">{</span>
+	<span class="n">t1</span> <span class="o">:=</span> <span class="n">NewTuple</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="m">4</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">a</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+		<span class="n">b</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">1</span><span class="p">]</span>
+		<span class="n">c</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">2</span><span class="p">]</span>
+		<span class="n">d</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">3</span><span class="p">]</span>
+		<span class="n">t1</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">t1</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Yes, it’s just a simple function that multiplies a 4x4 matrix with a 1x4 tuple and returns the resulting tuple. The problem is the <code class="language-plaintext highlighter-rouge">NewTuple</code>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Tuple4</span> <span class="p">[]</span><span class="kt">float64</span>
+
+<span class="k">func</span> <span class="n">NewTuple</span><span class="p">()</span> <span class="n">Tuple4</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">{</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Oops. It’s creating a new slice on <em>every</em> invocation. That’s not always desirable in a performance-critical context. (In a later part I’ll return to the question of “slices vs arrays”.)</p>
+
+<p>What we would like to do is to have the calling code pass a pointer to a struct in which we can store the result, and hopefully the calling code can reuse the allocated memory or keep it on the stack.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">MultiplyByTuplePtr</span><span class="p">(</span><span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">t</span> <span class="n">Tuple4</span><span class="p">,</span> <span class="n">out</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="m">4</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">{</span>
+	<span class="n">out</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">0</span><span class="p">])</span> <span class="o">+</span>
+		<span class="p">(</span><span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="o">+</span>
+		<span class="p">(</span><span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">2</span><span class="p">])</span> <span class="o">+</span>
+		<span class="p">(</span><span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="m">3</span><span class="p">])</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Easy peasy - a new third parameter passes a pointer to a <code class="language-plaintext highlighter-rouge">Tuple4</code> and we’re down to zero allocations. However, there’s a bit more to it. The most typical usage is in this code:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">TransformRay</span><span class="p">(</span><span class="n">r</span> <span class="n">Ray</span><span class="p">,</span> <span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">)</span> <span class="n">Ray</span> <span class="p">{</span>
+	<span class="n">origin</span> <span class="o">:=</span> <span class="n">MultiplyByTuple</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">Origin</span><span class="p">)</span>
+	<span class="n">direction</span> <span class="o">:=</span> <span class="n">MultiplyByTuple</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">Direction</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">NewRay</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>In this snippet, we’re creating a new transformed Ray (a ray is a point in 3D space and a vector holding its direction) from a matrix and another ray. The results are then put into the new Ray. Moving the <code class="language-plaintext highlighter-rouge">NewTuple()</code> call here won’t help us at all. No, this requires a bit more refactoring so the whole call chain uses the C-style pattern of passing the result as a pointer.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">TransformRayPtr</span><span class="p">(</span><span class="n">r</span> <span class="n">Ray</span><span class="p">,</span> <span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">out</span> <span class="o">*</span><span class="n">Ray</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">MultiplyByTuplePtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span><span class="o">.</span><span class="n">Origin</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="o">.</span><span class="n">Origin</span><span class="p">)</span>
+	<span class="n">MultiplyByTuplePtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span><span class="o">.</span><span class="n">Direction</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="o">.</span><span class="n">Direction</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This implementation passes pointers to the underlying <code class="language-plaintext highlighter-rouge">Tuple4</code> directly to the <code class="language-plaintext highlighter-rouge">MultiplyByTuplePtr</code>, which stores the results directly in the passed <code class="language-plaintext highlighter-rouge">Ray</code> pointer. As long as the code calling <code class="language-plaintext highlighter-rouge">TransformRayPtr</code> has allocated <code class="language-plaintext highlighter-rouge">out *Ray</code> in a sensible way, we’ve probably been able to cut down the number of allocations in a really significant way. The Ray in this case is something that can be safely allocated once <em>per render context recursion</em> and can be pre-allocated.</p>
+
+<p>I won’t go into the exact details on how pre-allocating memory for that <code class="language-plaintext highlighter-rouge">Ray</code> works, but on a high level each render goroutine has this “render context” mentioned before, and each render context only deals with a single pixel at a time. The final color of a single pixel depends on many things, in particular the number of extra raycasts that needs to happen to follow reflections, refractions and testing if the point in space is being illuminated. Luckily, we can treat each new “bounce” as a new ray so as long as we have allocated enough “rays” in the context to support our maximum recursion depth, we’re fine with this approach.</p>
+
+<p>We can also use Go’s built-in support for microbenchmarking. Consider these two benchmarks:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Old way</span>
+<span class="k">func</span> <span class="n">BenchmarkTransformRay</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">r</span> <span class="o">:=</span> <span class="n">NewRay</span><span class="p">(</span><span class="n">NewPoint</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> <span class="n">NewVector</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+	<span class="n">m1</span> <span class="o">:=</span> <span class="n">Translate</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">r2</span> <span class="n">Ray</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">r2</span> <span class="o">=</span> <span class="n">TransformRay</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">m1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// New way</span>
+<span class="k">func</span> <span class="n">BenchmarkTransformRayPtr</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">r</span> <span class="o">:=</span> <span class="n">NewRay</span><span class="p">(</span><span class="n">NewPoint</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> <span class="n">NewVector</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+	<span class="n">m1</span> <span class="o">:=</span> <span class="n">Translate</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">r2</span> <span class="n">Ray</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">TransformRayPtr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r2</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Output:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BenchmarkTransformRay-8 
+21970136	        52.3 ns/op
+
+BenchmarkTransformRayPtr-8
+54195826	        22.1 ns/op
+</code></pre></div></div>
+
+<p>In this microbenchmark, the latter is more than twice as fast. <em>(Go tip: remember that we should do something with the result, otherwise the Go compiler may optimize away the function call we’re benchmarking altogether.)</em></p>
+
+<h3 id="51-cache-pre-allocate-cache-pre-allocate">5.1 Cache, pre-allocate, cache, pre-allocate…</h3>
+<p>The results obtained in this section clearly indicated that in order to improve efficiency through reuse of memory, pre-allocating data structures and reusing them and caching things whenever possible was a key component.</p>
+
+<p>A few more examples where pre-allocating memory gave really nice benefits:</p>
+
+<h5 id="511-intersection-lists">5.1.1 Intersection lists</h5>
+<p>There’s a lot of intersection lists to keep track of “hits” when casting rays through a scene. It turned out that the intersection code for each primitive (e.g. sphere, plane, cylinder, box, triangle etc) was creating a new <code class="language-plaintext highlighter-rouge">[]Intersection</code> slice on each invocation:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plane</span><span class="p">)</span> <span class="n">IntersectLocal</span><span class="p">(</span><span class="n">ray</span> <span class="n">Ray</span><span class="p">)</span> <span class="p">[]</span><span class="n">Intersection</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">ray</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">Epsilon</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="p">[]</span><span class="n">Intersection</span><span class="p">{}</span>
+	<span class="p">}</span>
+	<span class="n">t</span> <span class="o">:=</span> <span class="o">-</span><span class="n">ray</span><span class="o">.</span><span class="n">Origin</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ray</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="k">return</span> <span class="p">[]</span><span class="n">Intersection</span><span class="p">{</span> <span class="c">// CREATING NEW SLICE HERE. BAD!</span>
+		<span class="p">{</span><span class="n">T</span><span class="o">:</span> <span class="n">t</span><span class="p">,</span> <span class="n">S</span><span class="o">:</span> <span class="n">p</span><span class="p">},</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This is the intersection code for a <code class="language-plaintext highlighter-rouge">Plane</code>. Note how a fresh slice is created and populated at the end of the method if there were an intersection. This pattern repeats itself for all primitive types.</p>
+
+<p>However, for each render context we also know that once we have “used” the intersection(s) of a given primitive, we can safely re-use the same slice for that primitive for any subsequent ray / primitive intersection test. Therefore, a simple pre-allocated slice of sufficient length on the primitive created a large saving in allocations:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">NewPlane</span><span class="p">()</span> <span class="o">*</span><span class="n">Plane</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="n">Plane</span><span class="p">{</span>
+		<span class="n">Transform</span><span class="o">:</span>        <span class="n">New4x4</span><span class="p">(),</span>
+		<span class="n">Inverse</span><span class="o">:</span>          <span class="n">New4x4</span><span class="p">(),</span>
+		<span class="n">Material</span><span class="o">:</span>         <span class="n">NewDefaultMaterial</span><span class="p">(),</span>
+		<span class="n">savedXs</span><span class="o">:</span>          <span class="nb">make</span><span class="p">([]</span><span class="n">Intersection</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> <span class="c">// PRE-ALLOCATED!</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plane</span><span class="p">)</span> <span class="n">IntersectLocal</span><span class="p">(</span><span class="n">ray</span> <span class="n">Ray</span><span class="p">)</span> <span class="p">[]</span><span class="n">Intersection</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">ray</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">Epsilon</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span>
+	<span class="p">}</span>
+	<span class="n">t</span> <span class="o">:=</span> <span class="o">-</span><span class="n">ray</span><span class="o">.</span><span class="n">Origin</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ray</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">savedXs</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">t</span>   <span class="c">// Note re-use of same slice element.</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">savedXs</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">p</span>   <span class="c">// (a plane have no thickness so it cannot be intersected more than once per ray)</span>
+	<span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">savedXs</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Why a slice of size 1? A <code class="language-plaintext highlighter-rouge">plane</code> can only be intersected exactly once by a ray. Other primitive shapes may have more intersects by a ray. A <code class="language-plaintext highlighter-rouge">sphere</code> may be intersected twice (entry and exit), while <code class="language-plaintext highlighter-rouge">cones</code> are worst with up to 4 possible intersections.</p>
+
+<p>Another nice optimization was to look at the top-level render context - what was being created anew for each new pixel being rendered? A lot, it turned out. In its final form, these were things we could pre-allocate and re-use:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Context</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="c">// ... other stuff omitted ... //</span>
+
+	<span class="c">// pre-allocated structs for various stuff used for first ray cast for a pixel</span>
+	<span class="n">pointInView</span>     <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">pixel</span>           <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">origin</span>          <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">direction</span>       <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">subVec</span>          <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">shadowDirection</span> <span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+	<span class="n">firstRay</span> <span class="n">mat</span><span class="o">.</span><span class="n">Ray</span>
+
+	<span class="c">// each renderContext needs to pre-allocate shade-data for sufficient number of recursions</span>
+	<span class="n">cStack</span> <span class="p">[]</span><span class="n">ShadeData</span>
+
+	<span class="c">// alloc memory for each sample of a given pixel (when multisampling)</span>
+	<span class="n">samples</span> <span class="p">[]</span><span class="n">mat</span><span class="o">.</span><span class="n">Tuple4</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Each <code class="language-plaintext highlighter-rouge">ShadeData</code> contains pre-allocated structs needed for a single recursion.. I won’t go into more implementation details, but as one can see there’s quite a few of these “pre-allocated” structs or slices and the complexity of the solution did indeed become significant once I realized how the recursive nature of the ray-tracer affected things.</p>
+
+<p>There’s more of these, but in order to not make this section even longer, the key take-away is that while immutability is a really nice thing to strive for in general computer programs - for really performance critical software, re-using memory, caching and avoiding allocations might be a good thing…</p>
+
+<h5 id="512-re-use-slice-memory">5.1.2 Re-use slice memory</h5>
+<p>This is a simple one. Many intersection lists were being re-used after a while by explicitly setting them to <code class="language-plaintext highlighter-rouge">nil</code> or even doing <code class="language-plaintext highlighter-rouge">make</code> on them again (which strictly speaking, isn’t reusing anything other than the variable name…).</p>
+
+<p>Instead, slicing a slice to zero length retains the memory previously allocated for its contents, but allows adding items to it from its 0 index again:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">slice</span> <span class="o">=</span> <span class="no">nil</span>       <span class="c">// setting slice to nil basically creates a new empty slice, so the underlying </span>
+                  <span class="c">// memory is released and new memory will be allocated once new items are added.</span>
+
+<span class="n">slice</span> <span class="o">=</span> <span class="n">slice</span><span class="p">[</span><span class="o">:</span><span class="m">0</span><span class="p">]</span> <span class="c">// reslice. From a usage point of view, the slice is now empty, but the previous </span>
+                  <span class="c">// items in it are still in-memory - but inaccessible. They will be overwritten (in memory)</span>
+                  <span class="c">// when new items are added. As long as you don't use the unsafe package, you cannot accidently</span>
+                  <span class="c">// access items from before the re-slice. This also means that the slice won't have to</span>
+                  <span class="c">// grow unless you're adding more items than in its previous incarnation.</span>
+</code></pre></div></div>
+
+<h3 id="52-outcome-of-reducing-allocations--caching">5.2 Outcome of reducing allocations &amp; caching</h3>
+
+<p>The changes described above was just a few examples of many optimizations where allocations in computational functions was replaced by letting the caller pass a pointer to the result, memory was pre-allocated and slice-memory was being reused. In the end, the results was approximately the following:</p>
+
+<ul>
+  <li>Duration dropped from <strong>~4.5</strong> to <strong>~1.9</strong> seconds</li>
+  <li>Allocation count dropped from <strong>180</strong> million to about <strong>33</strong> million</li>
+  <li>Total memory allocated went from <strong>5.9</strong> GB to about <strong>1.3</strong> GB</li>
+</ul>
+
+<h1 id="6-conclusion">6. Conclusion</h1>
+<p>This sums up the <strong>first part</strong> of this 2-part blog series on my adventures optimizing my little ray-tracer. In the <a href="../../11/a-go-ray-tracer-part-2/index.html">next and final part</a>, I’ll continue with more optimizations.</p>
+
+<p>Feel free to share this blog post using your favorite social media platform! There should be a few icons below to get you started.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=A Go Ray Tracer&url=https://callistaenterprise.se/blogg/teknik/2020/07/04/a-go-ray-tracer/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=A Go Ray Tracer&u=https://callistaenterprise.se/blogg/teknik/2020/07/04/a-go-ray-tracer/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=A Go Ray Tracer&url=https://callistaenterprise.se/blogg/teknik/2020/07/04/a-go-ray-tracer/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

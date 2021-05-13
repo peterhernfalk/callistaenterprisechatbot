@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Getting started with Testcontainers | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Peter Merikan" src="../../../../../../assets/medarbetare/petermerikan_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Getting started with Testcontainers</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-08T00:00:00+00:00">
+            08 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/petermerikan/index.html">Peter Merikan</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This is the first part of a two-part series about <a href="https://www.testcontainers.org/">Testcontainers</a>. In this first part I will explain what it is, what problems it tries to solve, how it works and finally how you can use it in your own projects. In the second part we will see if we can reduce startup time for our Testcontainers.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#introduction" id="markdown-toc-introduction">Introduction</a>    <ul>
+      <li><a href="index.html#source-code" id="markdown-toc-source-code">Source code</a></li>
+    </ul>
+  </li>
+  <li><a href="index.html#what-is-testcontainers" id="markdown-toc-what-is-testcontainers">What is Testcontainers</a></li>
+  <li><a href="index.html#what-problem-does-testcontainers-solve" id="markdown-toc-what-problem-does-testcontainers-solve">What problem does Testcontainers solve</a>    <ul>
+      <li><a href="index.html#problems" id="markdown-toc-problems">Problems</a></li>
+      <li><a href="index.html#testcontainers-to-the-rescue" id="markdown-toc-testcontainers-to-the-rescue">Testcontainers to the rescue</a></li>
+    </ul>
+  </li>
+  <li><a href="index.html#more-about-testcontainers" id="markdown-toc-more-about-testcontainers">More about Testcontainers</a>    <ul>
+      <li><a href="index.html#type-of-testcontainer" id="markdown-toc-type-of-testcontainer">Type of Testcontainer</a></li>
+      <li><a href="index.html#how-does-it-work" id="markdown-toc-how-does-it-work">How does it work</a></li>
+      <li><a href="index.html#a-better-way" id="markdown-toc-a-better-way">A better way</a></li>
+    </ul>
+  </li>
+  <li><a href="index.html#spring-boot-and-testcontainers" id="markdown-toc-spring-boot-and-testcontainers">Spring Boot and Testcontainers</a></li>
+  <li><a href="index.html#i-cant-run-my-application-locally-anymore" id="markdown-toc-i-cant-run-my-application-locally-anymore">I can’t run my application locally anymore</a></li>
+  <li><a href="index.html#summary" id="markdown-toc-summary">Summary</a>    <ul>
+      <li><a href="index.html#resources" id="markdown-toc-resources">Resources</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="introduction">Introduction</h1>
+<p>Earlier this spring I held a skills meeting for my colleagues that was about <a href="https://junit.org/junit5">JUnit 5</a> and <a href="https://www.testcontainers.org/">Testcontainers</a>. I should have written a blog post about it but for various reasons it was not done, but now it’s finally time and it is about Testcontainers. This will be a trilogy in two parts, Getting started with Testcontainers and <a href="../../09/speed-up-your-testcontainers-tests/index.html">Speed up your Testcontainers tests</a>.</p>
+
+<h2 id="source-code">Source code</h2>
+<p>The full source code for my example project can be found here: <a href="https://github.com/merikan/testcontainers-demo">https://github.com/merikan/testcontainers-demo)</a> and it has two directories named <code class="language-plaintext highlighter-rouge">origin</code> and <code class="language-plaintext highlighter-rouge">solution</code>.</p>
+
+<h1 id="what-is-testcontainers">What is Testcontainers</h1>
+<p>So let’s start with the obvious question; what is Testcontainers and what are the problems it is trying to solve? Or is it just another cool tool in our development stack?</p>
+
+<p>On Testcontainers’s home page you can read the following;</p>
+<blockquote>
+  <p>Testcontainers is a Java library that supports JUnit tests, providing lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.</p>
+</blockquote>
+
+<p>How cool isn’t that? This means that if the software can run inside a docker container we can use it in our tests.</p>
+
+<p>Testcontainers was started as an open source project for the Java platform (<a href="https://github.com/testcontainers/testcontainers-java">testcontainers-java</a>) but has gradually received support for more languages such as Go (<a href="https://golang.testcontainers.org/">testcontainers-go</a>), Rust (<a href="https://github.com/testcontainers/testcontainers-rs">testcontainers-rust</a>), dotnet (<a href="https://github.com/testcontainers/testcontainers-dotnet">testcontainers-dotnet</a>), node (<a href="https://github.com/testcontainers/testcontainers-node">testcontainers-node</a>) and a few more. These are projects of varying quality  but many of them can be used without problems in your applications.</p>
+
+<p><em>A personal note; After using Testcontainers a couple of years, for both my Java and Go projects, I do think they should restructure the Testcontainers main site and embrace the other projects and let them become first class citizens. Projects not ready for prime time could be incubators.</em></p>
+
+<h1 id="what-problem-does-testcontainers-solve">What problem does Testcontainers solve</h1>
+
+<p>So back to the question that we should ask; What are the problems that Testcontainers could help us solve?</p>
+
+<p>If we first take a look at different test strategies and different layers, usually explained as a <a href="https://martinfowler.com/articles/practical-test-pyramid.html">test-pyramide</a>, that Mike Cohn described in his book <a href="https://www.amazon.com/Succeeding-Agile-Software-Development-Using/dp/0321579364">Succeeding with Agile</a>.</p>
+<p style="text-align: center;"><img src="../../../../../../assets/blogg/getting-started-with-testcontainers/test-pyramide.png" alt="Test Pyramide" /></p>
+
+<p>At the bottom we have unit tests. Must of us can agree on what a <a href="https://www.martinfowler.com/bliki/UnitTest.html">unit test</a> is in a <a href="https://www.martinfowler.com/bliki/TestDrivenDevelopment.html">TDD</a> development workflow. A unit test is <em>“a way of testing a unit, the smallest piece of code that can be logically isolated in a system”</em>. It focuses on a single component and replaces all dependencies this component interacts with. In Java this is usually a Class and all collaborators are replaced with <a href="https://en.wikipedia.org/wiki/Test_double">Test Doubles</a> with the help of libaries like <a href="https://site.mockito.org/">Mockito</a> and <a href="https://easymock.org/">EasyMock</a>.</p>
+
+<p>If we look above the Unit test layer in the test-pyramid we will find some type of integration test which means that we will have more than one component and sometimes we need to integrate with an external resource, a.k.a <a href="https://12factor.net/backing-services">backing service</a>. A backing service is any service that our application or module consumes over the network and it is now Testcontainers shines. Before we look at Testcontainers, let’s first discuss some of the problems we’ve had with external resources.</p>
+
+<h2 id="problems">Problems</h2>
+<p>Over the years we have tried to solve the problem of interacting with external resources in different ways, depending on the type of backing service. To make these resources available it’s a balance between cost (license, hardware, etc.) and the degree of automation and ease of setting them up and maintaining them. Then several issues arise such as; should we use a shared resource on a remote server, or a locally installed process or a embedded in-memory service? Each solution to our first problem has its own problems and challenges, below you can see some of these challenges.</p>
+
+<p><strong>A shared resource on a remote server;</strong></p>
+<ul>
+  <li>is usually expensive as it requires one or more extra servers and the environment must be maintained.</li>
+  <li>it is shared by several people and maybe different projects which requires quite a lot of administration</li>
+  <li>you will probably need to provide the service in several versions which makes it more cumbersome</li>
+</ul>
+
+<p><strong>Locally installed resource;</strong></p>
+<ul>
+  <li>can be cumbersome to install and maintain. Of course, we can use virtual servers locally to facilitate this work.</li>
+  <li>depending on the license, it can be expensive</li>
+</ul>
+
+<p><strong>Embedded and In-Memory;</strong></p>
+<ul>
+  <li>usually more lightweight than other solutions but is only available for a few types</li>
+  <li>not the same codebase as the real resource, it only emulates the real target environment</li>
+  <li>we are not testing with real connections over the wire</li>
+  <li>not configured as target environment, security, cluster etc.</li>
+</ul>
+
+<p>Each strategy has it’s own pros and cons and today, embedded resource is probably the most widely used method. It solves many of the previous problems but unfortunately it introduces some new. Some problems that I have encountered from time to time are: It only <em>emulates</em> the target resource (e.g. H2 emulating MariaDb or Flabdoodle emulating MongoDb), usually with subtle differences, and the security settings are typically different from the target environment. We will of course find these differences in the end, but the earlier in the development process the better.</p>
+
+<h2 id="testcontainers-to-the-rescue">Testcontainers to the rescue</h2>
+
+<p>One great solution to many of these problems is <a href="https://www.testcontainers.org/">Testcontainers</a>. With Testcontainers we can start and stop one or more docker containers with the same resource as we use in our production environment, with a configuration as similar as possible. Later on I will show how easy it is to use Testcontainers in a Spring Boot application with Junit 5, but it can of course be used in any Java application.</p>
+
+<p>Not everyone agrees that you should start up resources locally, but it usually depends on what conditions you have in your project. If your system landscape is based on microservice architecture and perhaps consists of hundreds of microservices where some are needed as a backing service, it is probably not conceivable to try to start these locally. However, most of us are not in that situation with so many microservices that form a system landscape, so for us Testcontainers probably works very well. If you are more interested in this topic, <a href="https://twitter.com/copyconstruct">Cindy Sridharan</a> has written several great blog posts on the topic (see e.g. <a href="https://medium.com/@copyconstruct/testing-microservices-the-sane-way-9bb31d158c16">Testing Microservices, the sane way</a>), and some slightly more controversial blog posts about <a href="https://medium.com/@copyconstruct/testing-in-production-the-safe-way-18ca102d0ef1">testing in production</a>, which I really appreciate and find interesting.</p>
+
+<h1 id="more-about-testcontainers">More about Testcontainers</h1>
+
+<p>Now we now that Testcontainers is a open source project that we can use in our tests to start and stop anything that can run in a docker container. Let’s delve deeper into the subject.</p>
+
+<h2 id="type-of-testcontainer">Type of Testcontainer</h2>
+
+<p style="text-align: center;"><img src="../../../../../../assets/blogg/getting-started-with-testcontainers/modules.png" alt="modules" /></p>
+
+<p>Testontainers can be of two types: <a href="https://www.testcontainers.org/features/creating_container/">GenericContainer</a> and Specialized Containers a.k.a <a href="https://github.com/testcontainers/testcontainers-java/tree/master/modules">Modules</a>. GenericContainer is used as basis to create your own Testcontainer of any docker container. A module is a specialized container that is designed for a specific product such as MariaDb, Kafka etc. and we can see them as specialized Testcontainers with extended convenience methods and functionality. One module that differs from the others is DockerCompose, which allows you to start several containers at the same time and of the type you want.</p>
+
+<h2 id="how-does-it-work">How does it work</h2>
+<p>All we need to do in our tests is to declare that we want to use one or more Testcontainers, of a certain type. The Testcontainers framework will download the image (if it doesn’t already exist locally) and handle its lifecycle during the tests by starting the container, make sure it is ready and then stop the container after all tests have finished. This is done by annotating the test class with <code class="language-plaintext highlighter-rouge">@Testcontainers</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Testcontainers</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TodoServiceImplIT</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>The next step is to add the <code class="language-plaintext highlighter-rouge">@Container</code> annotation to specify which Testcontainer we want to use and to be started by the Testcontainer framework. We have two options here; containers declared as static fields will be shared between test methods and containers declared as instance fields will be started and stopped for every test method. Which strategy you want to use depends on how independent your tests are, you must handle any side effects that are caused between the tests.</p>
+
+<p>To make sure we have reproducible builds we should never rely on <code class="language-plaintext highlighter-rouge">latest</code>, instead we should always declare what version we want to use, such in the example below:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Container</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">MariaDBContainer</span> <span class="n">mariaDB</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MariaDBContainer</span><span class="o">&lt;&gt;(</span><span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"mariadb:10.5.5"</span><span class="o">));</span>
+
+<span class="nd">@Container</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">GenericContainer</span> <span class="n">redis</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">&lt;&gt;(</span><span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"redis:5.0.5"</span><span class="o">))</span>
+                                                <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="mi">6379</span><span class="o">);</span>
+</code></pre></div></div>
+<p>This is one way to start Testcontainers but later on I will show you another and, in my opinion, better way to start them.</p>
+
+<p>Our containers are started with dynamic port numbers and some other default values. You can of course set these and other values yourself when you start a Testcontainer. You can then easily retrieve information about the started container through various methods such as:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@DynamicPropertySource</span>
+<span class="kd">static</span> <span class="kt">void</span> <span class="nf">properties</span><span class="o">(</span><span class="nc">DynamicPropertyRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.url"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getJdbcUrl</span><span class="o">);</span>
+    <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.username"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getUsername</span><span class="o">);</span>
+    <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.password"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getPassword</span><span class="o">);</span>
+    <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.redis.host"</span><span class="o">,</span> <span class="nl">redis:</span><span class="o">:</span><span class="n">getContainerIpAddress</span><span class="o">);</span>
+    <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.redis.port"</span><span class="o">,</span>  <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">redis</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="mi">6379</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When all the tests have finished our little friend, named <a href="https://github.com/testcontainers/moby-ryuk">Ryuk</a>, will make sure that our Testcontainers are taken down. Ryuk is started as a container at the same time as your other Testcontainers are started.</p>
+
+<h2 id="a-better-way">A better way</h2>
+
+<p>Earlier I said that there was a better way to start our Testcontainers instead of using the <code class="language-plaintext highlighter-rouge">@Container</code> annotation.</p>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">@Container</code> annotation is an easy way to add a Testcontainer but the problem is that your Testcontainers will be started and stopped for each test class. A better way is to use the singleton pattern and use an abstract class to start our Testcontainers. The singleton container is started only once when the base class is loaded and the container can then be reused by all inheriting test classes. At the end of the test suite the Ryuk container, that is started by Testcontainers core, will take care of stopping the singleton container.</p>
+
+<p>Keep in mind that you have to deal with any side effects caused by multiple tests using the same resource. For example, by making your tests unaffected by the state of the resource or by setting the resource in the desired state for each test.</p>
+
+<p>This is what the abstract class looks like to be used to start Testcontainers:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractIntegrationTest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">MariaDBContainer</span> <span class="n">mariadb</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">GenericContainer</span> <span class="n">redis</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">mariadb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MariaDBContainer</span><span class="o">&lt;&gt;(</span><span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"mariadb:10.5.5"</span><span class="o">));</span>
+        <span class="n">mariadb</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">redis</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">&lt;&gt;(</span><span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"redis:5.0.5"</span><span class="o">))</span>
+                  <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="mi">6379</span><span class="o">);</span>
+        <span class="n">redis</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@DynamicPropertySource</span>
+    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">properties</span><span class="o">(</span><span class="nc">DynamicPropertyRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.url"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getJdbcUrl</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.username"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getUsername</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.password"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getPassword</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.redis.host"</span><span class="o">,</span> <span class="nl">redis:</span><span class="o">:</span><span class="n">getContainerIpAddress</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.redis.port"</span><span class="o">,</span>  <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">redis</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="mi">6379</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Each integration test class should then inherit from this abstract class to make use of Testcontainers.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TodoServiceImplIT</span> <span class="kd">extends</span> <span class="nc">AbstractIntegrationTest</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TodoService</span> <span class="n">uut</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TodoRepository</span> <span class="n">repository</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">repository</span><span class="o">.</span><span class="na">deleteAll</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>If we now run our tests, we can see that our Testcontainers are only started once, which most likely means that we have shortened the time to run our test suites significantly.</p>
+
+<h1 id="spring-boot-and-testcontainers">Spring Boot and Testcontainers</h1>
+
+<p>In the following example I will be using Spring Boot, Junit 5 and Maven. You can find the source code on Github (https://github.com/merikan/testcontainers-demo). It contains two directories, <a href="https://github.com/merikan/testcontainers-demo/tree/master/origin">origin</a> and <a href="https://github.com/merikan/testcontainers-demo/tree/master/solution">solution</a> which represents before and after our changes.</p>
+
+<p>The first thing we need to do is to turn off any embedded resource started by Spring Boot and instead use Testcontainers.</p>
+
+<p>Remove <code class="language-plaintext highlighter-rouge">h2</code> as an embedded resource so that Spring Boot does not attempt to start it.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--
+&lt;dependency&gt;
+  &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+  &lt;artifactId&gt;h2&lt;/artifactId&gt;
+  &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+--&gt;</span>
+</code></pre></div></div>
+
+<p>and add Testcontainers instead. 
+Our project uses <code class="language-plaintext highlighter-rouge">MariaDb</code> so let’s add MariaDb as a Testcontainer. Since we are using Junit 5 we will also add the <code class="language-plaintext highlighter-rouge">junit-jupiter</code> module for Testcontainers. First we will import Testcontainers BOM and then add our dependencies.</p>
+
+<p><em>Note: We are using version 1.15.0-rc2 of Testcontainers due to issues with Docker for Mac 2.4.0.0 in earlier versions.</em></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+  ....
+  <span class="nt">&lt;testcontainers.version&gt;</span>1.15.0-rc2<span class="nt">&lt;/testcontainers.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+
+<span class="nt">&lt;dependencyManagement&gt;</span>
+  <span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.testcontainers<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>testcontainers-bom<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${testcontainers.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;type&gt;</span>pom<span class="nt">&lt;/type&gt;</span>
+      <span class="nt">&lt;scope&gt;</span>import<span class="nt">&lt;/scope&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/dependencyManagement&gt;</span>
+
+<span class="nt">&lt;dependencies&gt;</span>
+  ....
+  <span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.testcontainers<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>testcontainers<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.testcontainers<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>junit-jupiter<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;dependency&gt;</span>  
+    <span class="nt">&lt;groupId&gt;</span>org.testcontainers<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>mariadb<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+  <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>Next we will create an abstract class to be used by all integration test classes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootTest</span><span class="o">(</span><span class="n">webEnvironment</span> <span class="o">=</span> <span class="no">RANDOM_PORT</span><span class="o">)</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"integrationtest"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractIntegrationTest</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">DockerImageName</span> <span class="no">MARIADB_IMAGE</span> <span class="o">=</span> <span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"mariadb:10.5.5"</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">MariaDBContainer</span> <span class="n">mariadb</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">mariadb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MariaDBContainer</span><span class="o">&lt;&gt;(</span><span class="no">MARIADB_IMAGE</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">withCommand</span><span class="o">(</span><span class="s">"--character-set-server=utf8mb4"</span><span class="o">,</span> <span class="s">"--collation-server=utf8mb4_unicode_ci"</span><span class="o">);</span>
+        <span class="n">mariadb</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@DynamicPropertySource</span>
+    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">properties</span><span class="o">(</span><span class="nc">DynamicPropertyRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.url"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getJdbcUrl</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.username"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getUsername</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"spring.datasource.password"</span><span class="o">,</span> <span class="nl">mariadb:</span><span class="o">:</span><span class="n">getPassword</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now it is time  to make sure our integration test classes inherits from <code class="language-plaintext highlighter-rouge">AbstractIntegrationTest</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TodoServiceImplIT</span> <span class="kd">extends</span> <span class="nc">AbstractIntegrationTest</span> <span class="o">{</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As you can see, we do not need to use the <code class="language-plaintext highlighter-rouge">@SpringBootTest</code> annotation in our test classes as it is already declared in our abstract class. We can of course still use the annotation in our test class as desired to overlay certain functionality.</p>
+
+<p>This is all we have to do to get started with Testcontainers in our Spring Boot projects. As you can see it’s pretty straightforward and very easy to do. If you want to run the tests yourself you can do the following, assuming you have Git and Java already installed.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone https://github.com/merikan/testcontainers-demo.git
+<span class="nv">$ </span><span class="nb">cd </span>testcontainers-demo/solution
+solution <span class="nv">$ </span>./mvnw clean <span class="nb">test </span>verify
+</code></pre></div></div>
+
+<p>If, after running your tests, you are fast and run the <code class="language-plaintext highlighter-rouge">docker ps</code> command you can see that your containers might still be running together with the Ryuk container but after a short while they are all stopped.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>solution <span class="nv">$ </span>./mvnw clean <span class="nb">test </span>verify
+solution <span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+d7407da0ab76        mariadb:10.5.5                      <span class="s2">"docker-entrypoint.s…"</span>   23 seconds ago      Up 22 seconds       0.0.0.0:32854-&gt;3306/tcp   naughty_buck
+688d0f467852        testcontainersofficial/ryuk:0.3.0   <span class="s2">"/app"</span>                   24 seconds ago      Up 22 seconds       0.0.0.0:32853-&gt;8080/tcp   testcontainers-ryuk-590a9893-ce67-4be0-afd4-cb08c0aee4cc
+</code></pre></div></div>
+<h1 id="i-cant-run-my-application-locally-anymore">I can’t run my application locally anymore</h1>
+<p>This is not a Testcontainer problem but rather a side effect of the changes we did. Since we removed the support for embedded H2 database, which was used when we also ran the application locally with Maven, we now want to use a MariaDb instead and start it as a docker container. I have added a <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file we can use to start MariaDb locally. When we then start our application with the <code class="language-plaintext highlighter-rouge">spring-boot-maven-plugin</code>, the spring profile named <code class="language-plaintext highlighter-rouge">development</code> will be activated, see property file <code class="language-plaintext highlighter-rouge">application-development.yml</code>.</p>
+
+<p>These are the steps you have to take; start MariaDB, start the application, ctrl+c to stop the application and then stop the MariaDb container. Don’t forget to give MariaDb some time to get started before running the application.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>solution <span class="nv">$ </span>docker-compose up <span class="nt">-d</span>
+solution <span class="nv">$ </span>./mvnw spring-boot:run
+solution <span class="nv">$ </span>docker-compose stop
+</code></pre></div></div>
+
+<p>If your start a new terminal while the application is running you can curl to the endpoint like this.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>solution <span class="nv">$ </span>curl <span class="nt">--request</span> POST <span class="se">\</span>
+  <span class="nt">--url</span> http://localhost:8080/todos <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{
+	"title": "a bug todo",
+	"note": "is it a bug or a feature"
+}'</span> 
+</code></pre></div></div>
+
+<h1 id="summary">Summary</h1>
+<p>In this blog post, I have explained what the <a href="https://www.testcontainers.org/">Testcontainers</a> framework is and what problems it tries to solve. I have also briefly explained how it works and how you can easily get started using it in your own projects.</p>
+
+<p>In my next blog post, I will show a little more advanced usage of Testcontainers to, among other things, speed up your tests.</p>
+
+<p>And finally;<br />
+I’m just a human being, if you find any ambiguities, typos, errors or possible improvement, please let me know.<br />
+If you like this blog post, please add a comment and feel free to share this blog post using your favorite social media platform! There should be a few icons below to get you started.</p>
+
+<p>Until next time, keep coding and never stop learning new things.</p>
+
+<h2 id="resources">Resources</h2>
+<ul>
+  <li>Testcontainers <a href="https://www.testcontainers.org/">home page</a>  and source code for the <a href="https://github.com/testcontainers/testcontainers-java/">Java project</a></li>
+  <li>The full source code for my example project can be found here: <a href="https://github.com/merikan/testcontainers-demo">https://github.com/merikan/testcontainers-demo)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Getting Started With Testcontainers&url=https://callistaenterprise.se/blogg/teknik/2020/10/08/getting-started-with-testcontainers/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Getting Started With Testcontainers&u=https://callistaenterprise.se/blogg/teknik/2020/10/08/getting-started-with-testcontainers/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Getting Started With Testcontainers&url=https://callistaenterprise.se/blogg/teknik/2020/10/08/getting-started-with-testcontainers/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

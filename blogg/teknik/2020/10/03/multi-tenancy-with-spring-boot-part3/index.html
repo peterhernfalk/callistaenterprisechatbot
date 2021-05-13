@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 3: Implement the Database-per-tenant pattern using Hibernate | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Dynamic Multi Tenancy with Spring Boot, Hibernate and Liquibase Part 3: Implement the Database-per-tenant pattern using Hibernate</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-10-03T00:00:00+00:00">
+            03 October 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part, we’ll implement the Database-per-tenant pattern using Hibernate out-of-the-box support for Multi Tenancy, with Database Migrations using Liquibase and support for dynamically adding new tenants.</p>
+
+<p></p>
+
+<h3 id="blog-series-parts">Blog Series Parts</h3>
+<ul>
+  <li><a href="../../../09/19/multi-tenancy-with-spring-boot-part1/index.html">Part 1: What is Multi Tenancy</a></li>
+  <li><a href="../../../09/20/multi-tenancy-with-spring-boot-part2/index.html">Part 2: Outlining an Implementation Strategy for Multi Tenant Data Access</a></li>
+  <li>Part 3: Implementing the Database per Tenant pattern (this part)</li>
+  <li><a href="../../10/multi-tenancy-with-spring-boot-part4/index.html">Part 4: Implementing the Schema per Tenant pattern</a></li>
+  <li><a href="../../17/multi-tenancy-with-spring-boot-part5/index.html">Part 5: Implementing the Shared database with Discriminator Column pattern using Hibernate Filters</a></li>
+  <li><a href="../../24/multi-tenancy-with-spring-boot-part6/index.html">Part 6: Implementing the Shared database with Discriminator Column pattern using Postgres Row Level Security</a></li>
+  <li>Part 7: Summing up (forthcoming)</li>
+</ul>
+
+<p>A fully working, minimalistic example for this part can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/database">database branch</a>.</p>
+
+<h2 id="hibernate-multi-tenancy-support">Hibernate Multi Tenancy support</h2>
+
+<p><a href="https://hibernate.org/orm/">Hibernate</a> provides out-of-the-box support for the two first multi-tenancy patterns (database-per-tenant and schema-per-tenant), and <a href="https://hibernate.atlassian.net/browse/HHH-6054">experimental support for the shared-database-using-discriminator-column pattern</a>. The built-in support is activated by configuring an Hibernate Entity Manager with the desired <code class="language-plaintext highlighter-rouge">MultiTenancyStrategy</code> and inject suitable implementations of the <code class="language-plaintext highlighter-rouge">CurrentTenantIdentifierResolver</code> and <code class="language-plaintext highlighter-rouge">MultiTenantConnectionProvider</code> interfaces.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT</span><span class="o">,</span> <span class="nc">MultiTenancyStrategy</span><span class="o">.</span><span class="na">DATABASE</span><span class="o">);</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_IDENTIFIER_RESOLVER</span><span class="o">,</span> <span class="n">tenantResolver</span><span class="o">);</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_CONNECTION_PROVIDER</span><span class="o">,</span> <span class="n">connectionProvider</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Since these properties needs to be set when the Entity Manager is created, we need to override the default EntityManger configuration provided by Spring Boot with an explicit configuration.</p>
+
+<h3 id="implementing-currenttenantidentifierresolver">Implementing CurrentTenantIdentifierResolver</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">CurrentTenantIdentifierResolver</code> encapsulates a strategy for resolving which tenant to use for a specific request, whereas the <code class="language-plaintext highlighter-rouge">MultiTenantConnectionProvider </code> encapsulates a strategy for selecting an appropriate database connection for that tenant. From <a href="../../../09/20/multi-tenancy-with-spring-boot-part2/index.html">the last episode</a>,
+ we already have a transparent mechanism for retrieving the Current Tenant. Let’s just package that mechanism up as an Hibernate-specific implementation:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CurrentTenantIdentifierResolverImpl</span> <span class="kd">implements</span> <span class="nc">CurrentTenantIdentifierResolver</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">resolveCurrentTenantIdentifier</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">tenantId</span> <span class="o">=</span> <span class="nc">TenantContext</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">tenantId</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">tenantId</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// Allow bootstrapping the EntityManagerFactory, in which case no tenant is needed</span>
+            <span class="k">return</span> <span class="s">"BOOTSTRAP"</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validateExistingCurrentSessions</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="implementing-multitenantconnectionprovider">Implementing MultiTenantConnectionProvider</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">MultiTenantConnectionProvider</code> responsibility is to provide tenant-aware JDBC connections.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">MultiTenantConnectionProvider</span> <span class="kd">extends</span> <span class="nc">Service</span><span class="o">,</span> <span class="nc">Wrapped</span> <span class="o">{</span>
+	<span class="cm">/**
+	 * Allows access to the database metadata of the underlying database(s) in situations where we do not have a
+	 * tenant id (like startup processing, for example).
+	 */</span>
+	<span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getAnyConnection</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * Release a connection obtained from {@link #getAnyConnection}
+	 */</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">releaseAnyConnection</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * Obtains a connection for Hibernate use according to the underlying strategy of this provider.
+	 *
+	 * @param tenantIdentifier The identifier of the tenant for which to get a connection
+	 */</span>
+	<span class="kd">public</span> <span class="nc">Connection</span> <span class="nf">getConnection</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantIdentifier</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * Release a connection from Hibernate use.
+	 */</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">releaseConnection</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantIdentifier</span><span class="o">,</span> <span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * Does this connection provider support aggressive release of JDBC
+	 * connections and re-acquisition of those connections (if need be) later?
+	 */</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsAggressiveRelease</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As we can see, we need a ‘master’ dataSource for Hibernate to query for database Metadata during startup, and separate ‘tenant’ dataSources for each tenant. Since we must be able to add new tenants dynamically, adding new dataSources for new tenants must be dynamic as well. The general idea is to use a <em>master repository</em> for managing information about each tenant (including database connection details as required).</p>
+
+<p>Let’s start by defining a master datasource:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DataSourceConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.datasource"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSourceProperties</span> <span class="nf">masterDataSourceProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DataSourceProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@LiquibaseDataSource</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.datasource.hikari"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">masterDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">HikariDataSource</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">masterDataSourceProperties</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">initializeDataSourceBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="nc">HikariDataSource</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">dataSource</span><span class="o">.</span><span class="na">setPoolName</span><span class="o">(</span><span class="s">"masterDataSource"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Next, we define a JPA entity to represent meta data about a Tenant:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tenant</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"tenant_id"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"db"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">db</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"password"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">password</span><span class="o">;</span>
+
+    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">256</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"url"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>A Spring Data Repository allows us to query for tenant information, given a tenantId:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TenantRepository</span> <span class="kd">extends</span> <span class="nc">JpaRepository</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="nd">@Query</span><span class="o">(</span><span class="s">"select t from Tenant t where t.tenantId = :tenantId"</span><span class="o">)</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">&gt;</span> <span class="nf">findByTenantId</span><span class="o">(</span><span class="nd">@Param</span><span class="o">(</span><span class="s">"tenantId"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We surely don’t want to store passwords in plain text for tenants, so let’s assume a simple encryption service to at least store encrypted passwords (we’ll provide a simple implementation of it further on).</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">EncryptionService</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="nf">encrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">strToEncrypt</span><span class="o">,</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">,</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="nf">decrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">strToDecrypt</span><span class="o">,</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">,</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We are now ready to implement the <code class="language-plaintext highlighter-rouge">MultiTenantConnectionProvider</code> interface. Since we will need a separate dataSource per tenant, we store the dataSources in a LoadingCache which creates a new dataSource for a tenant on first access and evicts and closes dataSources for tenants which hasn’t been active for a while.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DynamicDataSourceBasedMultiTenantConnectionProvider</span>
+        <span class="kd">extends</span> <span class="nc">AbstractDataSourceBasedMultiTenantConnectionProviderImpl</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">TENANT_POOL_NAME_SUFFIX</span> <span class="o">=</span> <span class="s">"DataSource"</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">EncryptionService</span> <span class="n">encryptionService</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"masterDataSource"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">DataSource</span> <span class="n">masterDataSource</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"masterDataSourceProperties"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">DataSourceProperties</span> <span class="n">dataSourceProperties</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TenantRepository</span> <span class="n">masterTenantRepository</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.datasource-cache.maximumSize:100}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">maximumSize</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.datasource-cache.expireAfterAccess:10}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">expireAfterAccess</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.secret}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.salt}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LoadingCache</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">DataSource</span><span class="o">&gt;</span> <span class="n">tenantDataSources</span><span class="o">;</span>
+
+    <span class="nd">@PostConstruct</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">createCache</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">tenantDataSources</span> <span class="o">=</span> <span class="nc">CacheBuilder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">maximumSize</span><span class="o">(</span><span class="n">maximumSize</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">expireAfterAccess</span><span class="o">(</span><span class="n">expireAfterAccess</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">MINUTES</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">removalListener</span><span class="o">((</span><span class="nc">RemovalListener</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">DataSource</span><span class="o">&gt;)</span> <span class="n">removal</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="nc">HikariDataSource</span> <span class="n">ds</span> <span class="o">=</span> <span class="o">(</span><span class="nc">HikariDataSource</span><span class="o">)</span> <span class="n">removal</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+                    <span class="n">ds</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// tear down properly</span>
+                    <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Closed datasource: {}"</span><span class="o">,</span> <span class="n">ds</span><span class="o">.</span><span class="na">getPoolName</span><span class="o">());</span>
+                <span class="o">})</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="k">new</span> <span class="nc">CacheLoader</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">DataSource</span><span class="o">&gt;()</span> <span class="o">{</span>
+                    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">load</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">=</span> <span class="n">masterTenantRepository</span><span class="o">.</span><span class="na">findByTenantId</span><span class="o">(</span><span class="n">key</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">orElseThrow</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"No such tenant: "</span> <span class="o">+</span> <span class="n">key</span><span class="o">));</span>
+                        <span class="k">return</span> <span class="nf">createAndConfigureDataSource</span><span class="o">(</span><span class="n">tenant</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">DataSource</span> <span class="nf">selectAnyDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">masterDataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">DataSource</span> <span class="nf">selectDataSource</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantIdentifier</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">tenantDataSources</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"Failed to load DataSource for tenant: "</span> <span class="o">+</span> <span class="n">tenantIdentifier</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">DataSource</span> <span class="nf">createAndConfigureDataSource</span><span class="o">(</span><span class="nc">Tenant</span> <span class="n">tenant</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">decryptedPassword</span> <span class="o">=</span> <span class="n">encryptionService</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getPassword</span><span class="o">(),</span> <span class="n">secret</span><span class="o">,</span> <span class="n">salt</span><span class="o">);</span>
+
+        <span class="nc">HikariDataSource</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">dataSourceProperties</span><span class="o">.</span><span class="na">initializeDataSourceBuilder</span><span class="o">().</span><span class="na">type</span><span class="o">(</span><span class="nc">HikariDataSource</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">ds</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getDb</span><span class="o">());</span>
+        <span class="n">ds</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="n">decryptedPassword</span><span class="o">);</span>
+        <span class="n">ds</span><span class="o">.</span><span class="na">setJdbcUrl</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getUrl</span><span class="o">());</span>
+
+        <span class="n">ds</span><span class="o">.</span><span class="na">setPoolName</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">()</span> <span class="o">+</span> <span class="no">TENANT_POOL_NAME_SUFFIX</span><span class="o">);</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Configured datasource: {}"</span><span class="o">,</span> <span class="n">ds</span><span class="o">.</span><span class="na">getPoolName</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">ds</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="configuring-hibernate-entitymanagers">Configuring Hibernate EntityManagers</h3>
+
+<p>We now need to configure two entityManagers: One master entityManager to provide meta data for the tables and to host the tenant repository, and a separate entityManager to serve the tenant-specific databases. The entityManagers need their own transaction managers as well.</p>
+
+<p>We start with the master entityManager:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableJpaRepositories</span><span class="o">(</span>
+        <span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"${multitenancy.master.repository.packages}"</span> <span class="o">},</span>
+        <span class="n">entityManagerFactoryRef</span> <span class="o">=</span> <span class="s">"masterEntityManagerFactory"</span><span class="o">,</span>
+        <span class="n">transactionManagerRef</span> <span class="o">=</span> <span class="s">"masterTransactionManager"</span>
+<span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">({</span><span class="nc">DataSourceProperties</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">JpaProperties</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MasterPersistenceConfig</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">MasterPersistenceConfig</span><span class="o">(</span><span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">,</span>
+                                   <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">,</span>
+                                   <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.master.entityManager.packages}"</span><span class="o">)</span>
+                                   <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span> <span class="o">=</span> <span class="n">jpaProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">entityPackages</span> <span class="o">=</span> <span class="n">entityPackages</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="nf">masterEntityManagerFactory</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"masterDataSource"</span><span class="o">)</span> <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="n">em</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span><span class="o">();</span>
+
+        <span class="n">em</span><span class="o">.</span><span class="na">setPersistenceUnitName</span><span class="o">(</span><span class="s">"master-persistence-unit"</span><span class="o">);</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setPackagesToScan</span><span class="o">(</span><span class="n">entityPackages</span><span class="o">);</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+
+        <span class="nc">JpaVendorAdapter</span> <span class="n">vendorAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HibernateJpaVendorAdapter</span><span class="o">();</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setJpaVendorAdapter</span><span class="o">(</span><span class="n">vendorAdapter</span><span class="o">);</span>
+
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span><span class="o">.</span><span class="na">getProperties</span><span class="o">());</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">PHYSICAL_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">IMPLICIT_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">BEAN_CONTAINER</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SpringBeanContainer</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">));</span>
+        <span class="n">em</span><span class="o">.</span><span class="na">setJpaPropertyMap</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">em</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">JpaTransactionManager</span> <span class="nf">masterTransactionManager</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"masterEntityManagerFactory"</span><span class="o">)</span> <span class="nc">EntityManagerFactory</span> <span class="n">emf</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">JpaTransactionManager</span> <span class="n">transactionManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JpaTransactionManager</span><span class="o">();</span>
+        <span class="n">transactionManager</span><span class="o">.</span><span class="na">setEntityManagerFactory</span><span class="o">(</span><span class="n">emf</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">transactionManager</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This configuration is very similar to the Spring Boot auto-configuration. Since we need dual entityManagers, we still have to configure it explicitly.</p>
+
+<p>We do the same for the tenant entityManager, but this time we configure the Hibernate multi-tenancy properties:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableJpaRepositories</span><span class="o">(</span>
+        <span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"${multitenancy.tenant.repository.packages}"</span> <span class="o">},</span>
+        <span class="n">entityManagerFactoryRef</span> <span class="o">=</span> <span class="s">"tenantEntityManagerFactory"</span><span class="o">,</span> 
+        <span class="n">transactionManagerRef</span> <span class="o">=</span> <span class="s">"tenantTransactionManager"</span>
+<span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">JpaProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantPersistenceConfig</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">TenantPersistenceConfig</span><span class="o">(</span>
+            <span class="nc">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">,</span>
+            <span class="nc">JpaProperties</span> <span class="n">jpaProperties</span><span class="o">,</span>
+            <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.tenant.entityManager.packages}"</span><span class="o">)</span>
+                    <span class="nc">String</span> <span class="n">entityPackages</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span> <span class="o">=</span> <span class="n">jpaProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">entityPackages</span> <span class="o">=</span> <span class="n">entityPackages</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Primary</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="nf">tenantEntityManagerFactory</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"dynamicDataSourceBasedMultiTenantConnectionProvider"</span><span class="o">)</span> <span class="nc">MultiTenantConnectionProvider</span> <span class="n">connectionProvider</span><span class="o">,</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"currentTenantIdentifierResolver"</span><span class="o">)</span> <span class="nc">CurrentTenantIdentifierResolver</span> <span class="n">tenantResolver</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LocalContainerEntityManagerFactoryBean</span> <span class="n">emfBean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocalContainerEntityManagerFactoryBean</span><span class="o">();</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setPersistenceUnitName</span><span class="o">(</span><span class="s">"tenant-persistence-unit"</span><span class="o">);</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setPackagesToScan</span><span class="o">(</span><span class="n">entityPackages</span><span class="o">);</span>
+
+        <span class="nc">JpaVendorAdapter</span> <span class="n">vendorAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HibernateJpaVendorAdapter</span><span class="o">();</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setJpaVendorAdapter</span><span class="o">(</span><span class="n">vendorAdapter</span><span class="o">);</span>
+
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;(</span><span class="k">this</span><span class="o">.</span><span class="na">jpaProperties</span><span class="o">.</span><span class="na">getProperties</span><span class="o">());</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">PHYSICAL_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">IMPLICIT_NAMING_STRATEGY</span><span class="o">,</span> <span class="s">"org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">BEAN_CONTAINER</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SpringBeanContainer</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">));</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT</span><span class="o">,</span> <span class="nc">MultiTenancyStrategy</span><span class="o">.</span><span class="na">DATABASE</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_CONNECTION_PROVIDER</span><span class="o">,</span> <span class="n">connectionProvider</span><span class="o">);</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">AvailableSettings</span><span class="o">.</span><span class="na">MULTI_TENANT_IDENTIFIER_RESOLVER</span><span class="o">,</span> <span class="n">tenantResolver</span><span class="o">);</span>
+        <span class="n">emfBean</span><span class="o">.</span><span class="na">setJpaPropertyMap</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">emfBean</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Primary</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">JpaTransactionManager</span> <span class="nf">tenantTransactionManager</span><span class="o">(</span>
+            <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantEntityManagerFactory"</span><span class="o">)</span> <span class="nc">EntityManagerFactory</span> <span class="n">emf</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">JpaTransactionManager</span> <span class="n">tenantTransactionManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JpaTransactionManager</span><span class="o">();</span>
+        <span class="n">tenantTransactionManager</span><span class="o">.</span><span class="na">setEntityManagerFactory</span><span class="o">(</span><span class="n">emf</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">tenantTransactionManager</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Since we mark the tenantEntityManagerFactory and tenantTransactionManager as <code class="language-plaintext highlighter-rouge">@Primary</code>, they will be used by default in any component that autowires a PersistentContext or EntityManager.</p>
+
+<p>We have externalized most of the configuration into properties, which we define in application.yml:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+<span class="na">multitenancy</span><span class="pi">:</span>   
+  <span class="na">datasource-cache</span><span class="pi">:</span>
+    <span class="na">maximumSize</span><span class="pi">:</span> <span class="m">100</span>
+    <span class="na">expireAfterAccess</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">master</span><span class="pi">:</span>
+    <span class="na">repository</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.multi_tenancy.repository</span>
+    <span class="na">entityManager</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.multi_tenancy.domain</span>
+    <span class="na">datasource</span><span class="pi">:</span>
+      <span class="na">url</span><span class="pi">:</span> <span class="s">jdbc:postgresql://localhost:5432/blog</span>
+      <span class="na">username</span><span class="pi">:</span> <span class="s">postgres</span>
+      <span class="na">password</span><span class="pi">:</span> <span class="s">secret</span>
+<span class="nn">...</span>
+  <span class="na">tenant</span><span class="pi">:</span>
+    <span class="na">repository</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.repository</span>
+    <span class="na">entityManager</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">se.callista.blog.service.domain</span>
+    <span class="na">datasource</span><span class="pi">:</span>
+      <span class="na">url-prefix</span><span class="pi">:</span> <span class="s">jdbc:postgresql://localhost:5432/</span>
+      <span class="na">hikari</span><span class="pi">:</span>
+        <span class="na">maximumPoolSize</span><span class="pi">:</span> <span class="m">2</span>
+        <span class="na">minimumIdle</span><span class="pi">:</span> <span class="m">0</span>
+        <span class="na">idleTimeout</span><span class="pi">:</span> <span class="m">30000</span>
+<span class="nn">...</span>
+<span class="na">encryption</span><span class="pi">:</span>
+  <span class="na">secret</span><span class="pi">:</span> <span class="s">verySecret</span>
+  <span class="na">salt</span><span class="pi">:</span> <span class="s">jozo</span>
+<span class="nn">...</span>
+</code></pre></div></div>
+
+<h3 id="onboarding-new-tenants">Onboarding new Tenants</h3>
+
+<p>Next step is to create a mechanism to onboard new Tenants, by creating the Database and User to use for the new Tenant. We do this using raw SQL which is database vendor specific, since there is no standardized way to do this. The example below contains SQL for PostgreSQL, you may need to tweek it to work with another database:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"CREATE DATABASE "</span> <span class="o">+</span> <span class="n">db</span><span class="o">));</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"CREATE USER "</span> <span class="o">+</span> <span class="n">db</span> <span class="o">+</span> <span class="s">" WITH ENCRYPTED PASSWORD '"</span> <span class="o">+</span> <span class="n">password</span> <span class="o">+</span> <span class="s">"'"</span><span class="o">));</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"GRANT ALL PRIVILEGES ON DATABASE "</span> <span class="o">+</span> <span class="n">db</span> <span class="o">+</span> <span class="s">" TO "</span> <span class="o">+</span> <span class="n">db</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>This will create a new Database and Database User with the same name as the TenantId. We will also need to create the database tables for the newly created tenant, using a Liquibase migration.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">try</span> <span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">db</span><span class="o">,</span> <span class="n">password</span><span class="o">))</span> <span class="o">{</span>
+        <span class="nc">DataSource</span> <span class="n">tenantDataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingleConnectionDataSource</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="n">resourceLoader</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseChangeLog</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseContexts</span><span class="o">);</span>
+<span class="o">...</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="o">|</span> <span class="nc">LiquibaseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Error when populating db: "</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’ll wrap this up in a <code class="language-plaintext highlighter-rouge">TenantManagementService</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">LiquibaseProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantManagementServiceImpl</span> <span class="kd">implements</span> <span class="nc">TenantManagementService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">EncryptionService</span> <span class="n">encryptionService</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">urlPrefix</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">TenantManagementServiceImpl</span><span class="o">(</span><span class="nc">EncryptionService</span> <span class="n">encryptionService</span><span class="o">,</span>
+                                       <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span>
+                                       <span class="nc">JdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">,</span>
+                                       <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantLiquibaseProperties"</span><span class="o">)</span>
+                                       <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">,</span>
+                                       <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">,</span>
+                                       <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">,</span>
+                                       <span class="nd">@Value</span><span class="o">(</span><span class="s">"${multitenancy.tenant.datasource.url-prefix}"</span><span class="o">)</span>
+                                       <span class="nc">String</span> <span class="n">urlPrefix</span><span class="o">,</span>
+                                       <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.secret}"</span><span class="o">)</span>
+                                       <span class="nc">String</span> <span class="n">secret</span><span class="o">,</span>
+                                       <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.salt}"</span><span class="o">)</span>
+                                       <span class="nc">String</span> <span class="n">salt</span>
+    <span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">encryptionService</span> <span class="o">=</span> <span class="n">encryptionService</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span> <span class="o">=</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">liquibaseProperties</span> <span class="o">=</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">resourceLoader</span> <span class="o">=</span> <span class="n">resourceLoader</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tenantRepository</span> <span class="o">=</span> <span class="n">tenantRepository</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">urlPrefix</span> <span class="o">=</span> <span class="n">urlPrefix</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">secret</span> <span class="o">=</span> <span class="n">secret</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">salt</span> <span class="o">=</span> <span class="n">salt</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">VALID_DATABASE_NAME_REGEXP</span> <span class="o">=</span> <span class="s">"[A-Za-z0-9_]*"</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createTenant</span><span class="o">(</span><span class="nc">String</span> <span class="n">tenantId</span><span class="o">,</span> <span class="nc">String</span> <span class="n">db</span><span class="o">,</span> <span class="nc">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// Verify db string to prevent SQL injection</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">db</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="no">VALID_DATABASE_NAME_REGEXP</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Invalid db name: "</span> <span class="o">+</span> <span class="n">db</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="n">urlPrefix</span><span class="o">+</span><span class="n">db</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">encryptedPassword</span> <span class="o">=</span> <span class="n">encryptionService</span><span class="o">.</span><span class="na">encrypt</span><span class="o">(</span><span class="n">password</span><span class="o">,</span> <span class="n">secret</span><span class="o">,</span> <span class="n">salt</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">createDatabase</span><span class="o">(</span><span class="n">db</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">DataAccessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+              <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Error when creating db: "</span> <span class="o">+</span> <span class="n">db</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">db</span><span class="o">,</span> <span class="n">password</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">DataSource</span> <span class="n">tenantDataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingleConnectionDataSource</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+            <span class="n">runLiquibase</span><span class="o">(</span><span class="n">tenantDataSource</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="o">|</span> <span class="nc">LiquibaseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TenantCreationException</span><span class="o">(</span><span class="s">"Error when populating db: "</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">=</span> <span class="nc">Tenant</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">tenantId</span><span class="o">(</span><span class="n">tenantId</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">db</span><span class="o">(</span><span class="n">db</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">url</span><span class="o">(</span><span class="n">url</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="n">encryptedPassword</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">tenantRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">tenant</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">createDatabase</span><span class="o">(</span><span class="nc">String</span> <span class="n">db</span><span class="o">,</span> <span class="nc">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"CREATE DATABASE "</span> <span class="o">+</span> <span class="n">db</span><span class="o">));</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"CREATE USER "</span> <span class="o">+</span> <span class="n">db</span> <span class="o">+</span> <span class="s">" WITH ENCRYPTED PASSWORD '"</span> <span class="o">+</span> <span class="n">password</span> <span class="o">+</span> <span class="s">"'"</span><span class="o">));</span>
+        <span class="n">jdbcTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">((</span><span class="nc">StatementCallback</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;)</span> <span class="n">stmt</span> <span class="o">-&gt;</span>
+            <span class="n">stmt</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">"GRANT ALL PRIVILEGES ON DATABASE "</span> <span class="o">+</span> <span class="n">db</span> <span class="o">+</span> <span class="s">" TO "</span> <span class="o">+</span> <span class="n">db</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">runLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">LiquibaseException</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="n">getSpringLiquibase</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">SpringLiquibase</span> <span class="nf">getSpringLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="n">resourceLoader</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">...</span>
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The process for onboarding new tenants will likely differ from case to case. Since there is an upper limit on the scalability when using a database per tenant, the number of tenants must be reasonably small. Hence there is most likely some administrative procedure in place before onboarding a new tenant. Let’s for simplicity add a simple, administrative REST endpoint to create new tenants.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantsApiController</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TenantManagementService</span> <span class="n">tenantManagementService</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/tenants"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="nf">createTenant</span><span class="o">(</span><span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">tenantId</span><span class="o">,</span> <span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">db</span><span class="o">,</span> <span class="nd">@RequestParam</span> <span class="nc">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">tenantManagementService</span><span class="o">.</span><span class="na">createTenant</span><span class="o">(</span><span class="n">tenantId</span><span class="o">,</span> <span class="n">db</span><span class="o">,</span> <span class="n">password</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;&gt;(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let’s also for completeness add a simplistic encryption implementation, to encrypt the tenant passwords.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Slf4j</span>
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EncryptionServiceImpl</span> <span class="kd">implements</span> <span class="nc">EncryptionService</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">HASH_ALGORITHM</span> <span class="o">=</span> <span class="s">"PBKDF2WithHmacSHA256"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">CIPHER</span> <span class="o">=</span> <span class="s">"AES/CBC/PKCS5Padding"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">KEY_ALGORITHM</span> <span class="o">=</span> <span class="s">"AES"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">ITERATION_COUNT</span> <span class="o">=</span> <span class="mi">65536</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">KEY_LENGTH</span> <span class="o">=</span> <span class="mi">256</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">encrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">strToEncrypt</span><span class="o">,</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">,</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span>
+        <span class="o">{</span>
+            <span class="kt">byte</span><span class="o">[]</span> <span class="n">iv</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span> <span class="o">};</span>
+            <span class="nc">IvParameterSpec</span> <span class="n">ivspec</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">IvParameterSpec</span><span class="o">(</span><span class="n">iv</span><span class="o">);</span>
+
+            <span class="nc">SecretKeyFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="nc">SecretKeyFactory</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="no">HASH_ALGORITHM</span><span class="o">);</span>
+            <span class="nc">KeySpec</span> <span class="n">spec</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PBEKeySpec</span><span class="o">(</span><span class="n">secret</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(),</span> <span class="n">salt</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span> <span class="no">ITERATION_COUNT</span><span class="o">,</span> <span class="no">KEY_LENGTH</span><span class="o">);</span>
+            <span class="nc">SecretKey</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">generateSecret</span><span class="o">(</span><span class="n">spec</span><span class="o">);</span>
+            <span class="nc">SecretKeySpec</span> <span class="n">secretKey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SecretKeySpec</span><span class="o">(</span><span class="n">tmp</span><span class="o">.</span><span class="na">getEncoded</span><span class="o">(),</span> <span class="no">KEY_ALGORITHM</span><span class="o">);</span>
+
+            <span class="nc">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="nc">Cipher</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="no">CIPHER</span><span class="o">);</span>
+            <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="nc">Cipher</span><span class="o">.</span><span class="na">ENCRYPT_MODE</span><span class="o">,</span> <span class="n">secretKey</span><span class="o">,</span> <span class="n">ivspec</span><span class="o">);</span>
+            <span class="k">return</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">getEncoder</span><span class="o">().</span><span class="na">encodeToString</span><span class="o">(</span><span class="n">cipher</span><span class="o">.</span><span class="na">doFinal</span><span class="o">(</span><span class="n">strToEncrypt</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">"UTF-8"</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error while encrypting: "</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">decrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">strToDecrypt</span><span class="o">,</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">,</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span>
+        <span class="o">{</span>
+            <span class="kt">byte</span><span class="o">[]</span> <span class="n">iv</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span> <span class="o">};</span>
+            <span class="nc">IvParameterSpec</span> <span class="n">ivspec</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">IvParameterSpec</span><span class="o">(</span><span class="n">iv</span><span class="o">);</span>
+
+            <span class="nc">SecretKeyFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="nc">SecretKeyFactory</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="no">HASH_ALGORITHM</span><span class="o">);</span>
+            <span class="nc">KeySpec</span> <span class="n">spec</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PBEKeySpec</span><span class="o">(</span><span class="n">secret</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(),</span> <span class="n">salt</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span> <span class="no">ITERATION_COUNT</span><span class="o">,</span> <span class="no">KEY_LENGTH</span><span class="o">);</span>
+            <span class="nc">SecretKey</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">generateSecret</span><span class="o">(</span><span class="n">spec</span><span class="o">);</span>
+            <span class="nc">SecretKeySpec</span> <span class="n">secretKey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SecretKeySpec</span><span class="o">(</span><span class="n">tmp</span><span class="o">.</span><span class="na">getEncoded</span><span class="o">(),</span> <span class="no">KEY_ALGORITHM</span><span class="o">);</span>
+
+            <span class="nc">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="nc">Cipher</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="no">CIPHER</span><span class="o">);</span>
+            <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="nc">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">secretKey</span><span class="o">,</span> <span class="n">ivspec</span><span class="o">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">cipher</span><span class="o">.</span><span class="na">doFinal</span><span class="o">(</span><span class="nc">Base64</span><span class="o">.</span><span class="na">getDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">strToDecrypt</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error while decrypting: "</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="database-migrations">Database Migrations</h3>
+
+<p>The last piece required is a mechanism to extend Liquibase-based Database Migrations to apply the migrations not only to the Master database (where the tables are used to provide metadata to Hibernate but not store any actual data) but to each tenant’s database as well. By default in Spring Boot, if liquibase is enabled, a database migration is executed on application startup, if needed. We extend this to include the tenant databases as well.</p>
+
+<p>We’ll start with the liquibase config for the master database:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"multitenancy.master.liquibase.enabled"</span><span class="o">,</span> <span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">,</span> <span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">LiquibaseProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LiquibaseConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.master.liquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">LiquibaseProperties</span> <span class="nf">masterLiquibaseProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LiquibaseProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">SpringLiquibase</span> <span class="nf">masterLiquibase</span><span class="o">(</span><span class="nd">@LiquibaseDataSource</span> <span class="nc">ObjectProvider</span><span class="o">&lt;</span><span class="nc">DataSource</span><span class="o">&gt;</span> <span class="n">liquibaseDataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span> <span class="o">=</span> <span class="n">masterLiquibaseProperties</span><span class="o">();</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">liquibaseDataSource</span><span class="o">.</span><span class="na">getIfAvailable</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">...</span>        
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is again more or less identical to to the Spring Boot auto-configuration, but since we need one config for the master database and a separate config for the tenant databases, we need to configure it explicitly.</p>
+
+<p>Let’s continue with the ctenant database migrations. We’ll need to query the TenantRepository for all tenants, and run a migration on each of them:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Based on MultiTenantSpringLiquibase, this class provides Liquibase support for
+ * multi-tenancy based on a dynamic collection of DataSources.
+ */</span>
+<span class="nd">@Getter</span>
+<span class="nd">@Setter</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DynamicDataSourceBasedMultiTenantSpringLiquibase</span> <span class="kd">implements</span> <span class="nc">InitializingBean</span><span class="o">,</span> <span class="nc">ResourceLoaderAware</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">EncryptionService</span> <span class="n">encryptionService</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">TenantRepository</span> <span class="n">tenantRepository</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"tenantLiquibaseProperties"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">LiquibaseProperties</span> <span class="n">liquibaseProperties</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.secret}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${encryption.salt}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">salt</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">ResourceLoader</span> <span class="n">resourceLoader</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"DynamicDataSources based multitenancy enabled"</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">runOnAllTenants</span><span class="o">(</span><span class="n">tenantRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">runOnAllTenants</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Tenant</span><span class="o">&gt;</span> <span class="n">tenants</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">LiquibaseException</span> <span class="o">{</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">Tenant</span> <span class="n">tenant</span> <span class="o">:</span> <span class="n">tenants</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Initializing Liquibase for tenant "</span> <span class="o">+</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">());</span>
+            <span class="nc">String</span> <span class="n">decryptedPassword</span> <span class="o">=</span> <span class="n">encryptionService</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getPassword</span><span class="o">(),</span> <span class="n">secret</span><span class="o">,</span> <span class="n">salt</span><span class="o">);</span>
+            <span class="k">try</span> <span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">tenant</span><span class="o">.</span><span class="na">getUrl</span><span class="o">(),</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getDb</span><span class="o">(),</span> <span class="n">decryptedPassword</span><span class="o">))</span> <span class="o">{</span>
+                <span class="nc">DataSource</span> <span class="n">tenantDataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingleConnectionDataSource</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+                <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getSpringLiquibase</span><span class="o">(</span><span class="n">tenantDataSource</span><span class="o">);</span>
+                <span class="n">liquibase</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="o">|</span> <span class="nc">LiquibaseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Failed to run Liquibase for tenant "</span> <span class="o">+</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Liquibase ran for tenant "</span> <span class="o">+</span> <span class="n">tenant</span><span class="o">.</span><span class="na">getTenantId</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">SpringLiquibase</span> <span class="nf">getSpringLiquibase</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SpringLiquibase</span> <span class="n">liquibase</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpringLiquibase</span><span class="o">();</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setResourceLoader</span><span class="o">(</span><span class="n">getResourceLoader</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">dataSource</span><span class="o">);</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setChangeLog</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getChangeLog</span><span class="o">());</span>
+        <span class="n">liquibase</span><span class="o">.</span><span class="na">setContexts</span><span class="o">(</span><span class="n">liquibaseProperties</span><span class="o">.</span><span class="na">getContexts</span><span class="o">());</span>
+<span class="o">....</span>
+        <span class="k">return</span> <span class="n">liquibase</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Finally, we just need to wire up the config:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"multitenancy.tenant.liquibase.enabled"</span><span class="o">,</span> <span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">,</span> <span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">LiquibaseProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TenantLiquibaseConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="s">"multitenancy.tenant.liquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">LiquibaseProperties</span> <span class="nf">tenantLiquibaseProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LiquibaseProperties</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@DependsOn</span><span class="o">(</span><span class="s">"masterLiquibase"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">DynamicDataSourceBasedMultiTenantSpringLiquibase</span> <span class="nf">tenantLiquibase</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicDataSourceBasedMultiTenantSpringLiquibase</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The liquibase configuration is externalized into application.yml:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+<span class="na">multitenancy</span><span class="pi">:</span>
+  <span class="na">master</span><span class="pi">:</span>
+<span class="nn">...</span>
+    <span class="na">liquibase</span><span class="pi">:</span>
+      <span class="na">changeLog</span><span class="pi">:</span> <span class="s">classpath:db/changelog/db.changelog-master.yaml</span>
+  <span class="na">tenant</span><span class="pi">:</span>
+<span class="nn">...</span>
+    <span class="na">liquibase</span><span class="pi">:</span>
+      <span class="na">changeLog</span><span class="pi">:</span> <span class="s">classpath:db/changelog/db.changelog-tenant.yaml</span>
+</code></pre></div></div>
+
+<h3 id="what-have-we-achieved">What have we achieved?</h3>
+
+<p>We now have a dynamic implementation of the Database-per-tenant Multi Tenancy pattern!</p>
+
+<p>A fully working, minimalistic example can be found in the <a href="https://github.com/callistaenterprise/blog-multitenancy">Github repository</a> in the <a href="https://github.com/callistaenterprise/blog-multitenancy/tree/database">database branch</a>.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>The Database-per-tenant pattern provides strong data separation between tenants, but has an obvious upper limit on how many tenants it can cater for: Each tenant requires a separate dataSource and corresponding separate database connections, hence it won’t scale beyond say maybe a hundred tenants.</p>
+
+<p>In the <a href="../../10/multi-tenancy-with-spring-boot-part4/index.html">next part</a>, we’ll tweak the solution to implement the Schema-per-tenant pattern, still using Hibernate’s out-of-the-box support.</p>
+
+<h3 id="references">References</h3>
+
+<p>The following links have been very useful inspiration when preparing this material:</p>
+
+<p><a href="https://www.bytefish.de/blog/spring_boot_multitenancy.html">www.bytefish.de/blog/spring_boot_multitenancy.html</a></p>
+
+<p><a href="https://sunitkatkar.blogspot.com/2018/05/adding-tenants-without-application.html">sunitkatkar.blogspot.com/2018/05/adding-tenants-without-application.html</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Multi Tenancy With Spring Boot Part3&url=https://callistaenterprise.se/blogg/teknik/2020/10/03/multi-tenancy-with-spring-boot-part3/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Multi Tenancy With Spring Boot Part3&u=https://callistaenterprise.se/blogg/teknik/2020/10/03/multi-tenancy-with-spring-boot-part3/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Multi Tenancy With Spring Boot Part3&url=https://callistaenterprise.se/blogg/teknik/2020/10/03/multi-tenancy-with-spring-boot-part3/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

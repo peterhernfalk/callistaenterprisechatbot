@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Certified Kubernetes Application Developer (CKAD) exam preparation tips | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Certified Kubernetes Application Developer (CKAD) exam preparation tips</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-04-30T00:00:00+00:00">
+            30 April 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Last week I passed the <a href="https://www.cncf.io/certification/ckad/">CKAD exam</a> (Certified Kubernetes Application Developer). In this blog post, I will share some preparations I did to be able to solve the tasks in the exam, specifically on how I prepared for the time constraints in the exam.</p>
+
+<p></p>
+
+<h2 id="background">Background</h2>
+
+<p>I have been working with Kubernetes since its inception in 2014, and I decided recently to manifest my experience by taking the CKAD exam.</p>
+
+<p>The CKAD exam in summary:</p>
+
+<ul>
+  <li>The exam certifies that users can design, build, configure, and expose cloud native applications for Kubernetes.</li>
+  <li>The exam is performance-based, it consists of 19 tasks with problems to solve within two hours using the command line in a Linux terminal accessible using Chrome. Your score must exceed 66% to pass the exam.</li>
+  <li>The only allowed help is an extra tab in Chrome, where you are allowed to access information from:
+    <ul>
+      <li><a href="https://kubernetes.io/docs/">https://kubernetes.io/docs/</a>​</li>
+      <li>​<a href="https://github.com/kubernetes/">https://github.com/kubernetes/</a>​</li>
+      <li><a href="https://kubernetes.io/blog/​">https://kubernetes.io/blog/​</a></li>
+    </ul>
+  </li>
+  <li>You can take the exam remotely, e.g. from your home, but the exam is proctored using screen sharing, webcam, and the microphone on your computer.</li>
+</ul>
+
+<p>From reading the exam curriculum, I realized that I was used to most of the concepts but lacked experience from using a few of them. So I browsed through an on-line course to catch up on the missing parts. Being rather self-confident, I started to go through the tests at the end of the course. I then realized that even if I had experiences from using most of the concepts in the exam, I was not fast enough to execute the exercises given the time available. It took me too long time to use <code class="language-plaintext highlighter-rouge">kubectl</code> and <code class="language-plaintext highlighter-rouge">vi</code>, i.e. the main tools used during the exam.</p>
+
+<blockquote>
+  <p>I guess you can use any text editor available in the Linux terminal, but <code class="language-plaintext highlighter-rouge">vi</code> was the one I had some previous experience with.</p>
+</blockquote>
+
+<p>So I had to practice a lot to be fast enough to pass the exam!</p>
+
+<h2 id="solving-tasks-in-the-exam">Solving tasks in the exam</h2>
+
+<p>Many of the exam tasks can be solved by using the following steps:</p>
+
+<ol>
+  <li>
+    <p><strong>Creating a <code class="language-plaintext highlighter-rouge">yaml</code> file containing start material for the task</strong><br />
+ Use <code class="language-plaintext highlighter-rouge">kubectl</code> imperative commands, e.g. <code class="language-plaintext highlighter-rouge">run</code> and <code class="language-plaintext highlighter-rouge">create</code> with the options <code class="language-plaintext highlighter-rouge">--dry-run -o yaml &gt; n.yaml</code> to create the <code class="language-plaintext highlighter-rouge">yaml</code> file (not yet creating the corresponding resource in the Kubernetes cluster).</p>
+  </li>
+  <li>
+    <p><strong>Adding the final parts to the <code class="language-plaintext highlighter-rouge">yaml</code> file using an editor like <code class="language-plaintext highlighter-rouge">vi</code></strong><br />
+The required syntax for the missing pieces can be found in either the links listed above or by using the <code class="language-plaintext highlighter-rouge">kubectl explain</code> command.</p>
+  </li>
+  <li>
+    <p><strong>Create the Kubernetes resources</strong><br />
+Use the <code class="language-plaintext highlighter-rouge">kubectl apply -f n.yaml</code> command to create the resources in the Kubernetes cluster.</p>
+  </li>
+  <li>
+    <p><strong>Verify the expected result</strong><br />
+Use <code class="language-plaintext highlighter-rouge">kubectl</code> commands <code class="language-plaintext highlighter-rouge">get -o yaml</code>, <code class="language-plaintext highlighter-rouge">describe</code>, <code class="language-plaintext highlighter-rouge">exec</code>, and <code class="language-plaintext highlighter-rouge">logs</code> to verify that you got the expected result.</p>
+
+    <p>Sometimes a HTTP endpoint inside the Kubernetes cluster needs to be verified. This can be done using either <code class="language-plaintext highlighter-rouge">kubectl port-forward</code> and a local <code class="language-plaintext highlighter-rouge">curl</code> command in the Linux terminal or by launching a Kubernetes pod that can run the <code class="language-plaintext highlighter-rouge">curl</code> command inside the cluster, e.g.:</p>
+
+    <p>kubectl run –image=curlimages/curl –restart=Never -i –rm curl-pod – curl $service:$port -s -m1</p>
+  </li>
+</ol>
+
+<h2 id="suggested-preparation-steps">Suggested preparation steps</h2>
+
+<p>To be able to solve the tasks in the exam fast enough, I recommend the following preparation steps:</p>
+
+<ol>
+  <li>
+    <p>Take a course to ensure that you learn all parts of Kubernetes required for the exam.<br />
+I suggest the course <a href="https://www.udemy.com/course/certified-kubernetes-application-developer/">Kubernetes Certified Application Developer (CKAD) with Tests</a> provided by KodeKloud at Udemy.</p>
+  </li>
+  <li>
+    <p>Read through all material available at <a href="https://training.linuxfoundation.org/cncf-certification-candidate-resources/">CKAD Certification Exam Candidate Resources</a>, i.e. the Candidate Handbook, Exam Tips, and FAQ</p>
+  </li>
+  <li>
+    <p>Bookmark favorite links to the Kubernetes documentation.<br />
+You are allowed to use bookmarks in Chrome to your favorite pages in the links listed above. Get used to use these bookmarks when looking up information.</p>
+  </li>
+  <li>
+    <p>Setup alias and autocomplete according to <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-autocomplete">kubectl-autocomplete</a>. Use it both when you practice and during the exam!</p>
+
+    <p>Using <code class="language-plaintext highlighter-rouge">k</code> as shorthand alias for <code class="language-plaintext highlighter-rouge">kubectl</code> and enabling autocomplete for <code class="language-plaintext highlighter-rouge">kubectl</code> commands will save you a lot of time!</p>
+
+    <blockquote>
+      <p>Set up a bookmark in Chrome to this link!</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Practice on all options available for the imperative <code class="language-plaintext highlighter-rouge">kubectl</code> commands for creating start material for the <code class="language-plaintext highlighter-rouge">yaml</code> files. Specifically the <code class="language-plaintext highlighter-rouge">kubectl run</code> command contains a lot of useful options for creating a <code class="language-plaintext highlighter-rouge">Pod</code>, e.g. <code class="language-plaintext highlighter-rouge">--labels</code>, <code class="language-plaintext highlighter-rouge">--limits</code>, <code class="language-plaintext highlighter-rouge">--port</code>, <code class="language-plaintext highlighter-rouge">--requests</code>, <code class="language-plaintext highlighter-rouge">--serviceaccount</code>, and <code class="language-plaintext highlighter-rouge">-- [COMMAND] [args...]</code>.</p>
+
+    <p>The CKAD environment has recently been upgraded to Kubernetes v1.18, where deprecated variants of the <code class="language-plaintext highlighter-rouge">kubectl run</code> command have been removed. This means that the <code class="language-plaintext highlighter-rouge">run</code> command only can be used to create <code class="language-plaintext highlighter-rouge">Pods</code> and that the <code class="language-plaintext highlighter-rouge">create</code> command has to be used to create  <code class="language-plaintext highlighter-rouge">Deployments</code>, <code class="language-plaintext highlighter-rouge">Jobs</code>, and <code class="language-plaintext highlighter-rouge">CronJobs</code>.</p>
+
+    <p>If you still want to use all the useful options in the <code class="language-plaintext highlighter-rouge">run</code> command for a <code class="language-plaintext highlighter-rouge">Pod</code> when creating a <code class="language-plaintext highlighter-rouge">Deployment</code>, you have to execute both the <code class="language-plaintext highlighter-rouge">run</code> command and the <code class="language-plaintext highlighter-rouge">create deployment</code> command. Next, you need to paste the result from the <code class="language-plaintext highlighter-rouge">run</code> command into the result of the <code class="language-plaintext highlighter-rouge">create deployment</code> command. The content under the <code class="language-plaintext highlighter-rouge">template:</code> section shall be replace with the <code class="language-plaintext highlighter-rouge">metadata:</code> and <code class="language-plaintext highlighter-rouge">spec:</code> sections from the <code class="language-plaintext highlighter-rouge">run</code> command. Don’t forget to indent the output from the <code class="language-plaintext highlighter-rouge">run</code> command correctly (i.e. using 4 spaces). Practice, practice, practice…</p>
+  </li>
+  <li>Learn other useful <code class="language-plaintext highlighter-rouge">kubectl</code> commands:
+    <ol>
+      <li>The commands <code class="language-plaintext highlighter-rouge">label</code>, <code class="language-plaintext highlighter-rouge">annotate</code>, <code class="language-plaintext highlighter-rouge">expose</code>, and <code class="language-plaintext highlighter-rouge">set</code> can be useful for some tasks</li>
+      <li>Practice rolling out and rolling back upgrades of a deployment using the <code class="language-plaintext highlighter-rouge">kubectl rollout</code> command.</li>
+      <li>To get a good overview of available labels on a set of Kubernetes objects, use the <code class="language-plaintext highlighter-rouge">--show-labels</code> option of the <code class="language-plaintext highlighter-rouge">kubectl get </code> command.</li>
+      <li>If you are requested to update or fix a problem of an existing resource, use the  <code class="language-plaintext highlighter-rouge">kubectl get ... -o yaml &gt; n.yaml</code> command to get started.</li>
+    </ol>
+  </li>
+  <li>
+    <p>Learn how to configure <code class="language-plaintext highlighter-rouge">vi</code> to edit <code class="language-plaintext highlighter-rouge">yaml</code> files efficiently.<br />
+My recommendation is to create a <code class="language-plaintext highlighter-rouge">.vimrc</code> file in the home folder with the command <code class="language-plaintext highlighter-rouge">vi ~/.vimrc</code> and enter:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> set number
+ set tabstop=2 shiftwidth=2 expandtab
+</code></pre></div>    </div>
+
+    <p>Explanations to the configuration:</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">set number</code> makes <code class="language-plaintext highlighter-rouge">vi</code> show line numbers, very handy if <code class="language-plaintext highlighter-rouge">kubectl</code> complains about an error on a specific line in a <code class="language-plaintext highlighter-rouge">yaml</code> file.</li>
+      <li><code class="language-plaintext highlighter-rouge">set tabstop=2 shiftwidth=2 expandtab</code> makes <code class="language-plaintext highlighter-rouge">vi</code> expand TAB characters to two spaces and sets indentation to two characters, perfect when editing <code class="language-plaintext highlighter-rouge">yaml</code> files.</li>
+    </ul>
+  </li>
+  <li>Learn critical <code class="language-plaintext highlighter-rouge">vi</code> keystrokes to manipulate <code class="language-plaintext highlighter-rouge">yaml</code> files, specifically:
+    <ol>
+      <li><a href="https://vim.fandom.com/wiki/Go_to_line">Goto a specific line in the text file</a></li>
+      <li><a href="https://vim.fandom.com/wiki/Cut/copy_and_paste_using_visual_selection">Copy and paste lines of code</a></li>
+      <li><a href="https://vim.fandom.com/wiki/Shifting_blocks_visually">Indent lines of code</a></li>
+    </ol>
+  </li>
+  <li>
+    <p>Once you feel confident with the tests provided by the course you took, I recommend that you sign up for the CKAD Simulator provided by <a href="https://killer.sh">killer.sh</a>.</p>
+
+    <p>It provides you with an environment similar to the exam environment. When you sign up, you are allowed to run the tests in two separates sessions. If you don’t feel confident after the first test session, go back and practice on the tasks in the course or look for additional examples on the Internet. Hopefully, you feel confident after taking the second test in the CKAD simulator and are ready for the real exam!</p>
+  </li>
+</ol>
+
+<h2 id="taking-the-exam">Taking the exam</h2>
+
+<p>During the exam, keep calm and work focused on one task at the time. Always ensure you are on the right cluster and in the right namespace before you start to work on a new task. If you get stuck on a task, you can flag it as unfinished and move on to the next task. If you have time left after going through all tasks, you can go back to unfinished tasks and work on them.</p>
+
+<p>Using these preparations, I was able to be fast enough with <code class="language-plaintext highlighter-rouge">kubectl</code> and <code class="language-plaintext highlighter-rouge">vi</code> to work through all 19 exercises and got a score of 97%, see <a href="https://www.youracclaim.com/badges/65bc0632-b280-4b66-9f7e-876fae03d5ae">my certification badge</a> and:</p>
+
+<p><img src="../../../../../../assets/blogg/CKAD-exam-preparation-tips/CKAD_Certificate_ML.png" alt="CKAD_Certificate_ML" /></p>
+
+<p><strong>Good luck with your preparations and the CKAD exam!</strong></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Ckad Exam Preparation Tips&url=https://callistaenterprise.se/blogg/teknik/2020/04/30/CKAD-exam-preparation-tips/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Ckad Exam Preparation Tips&u=https://callistaenterprise.se/blogg/teknik/2020/04/30/CKAD-exam-preparation-tips/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Ckad Exam Preparation Tips&url=https://callistaenterprise.se/blogg/teknik/2020/04/30/CKAD-exam-preparation-tips/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Optimizing a simple ray-tracer written in Go, part 2 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Optimizing a simple ray-tracer written in Go, part 2</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-07-11T00:00:00+00:00">
+            11 July 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This is the second part of my mini-series on how I used the go profiling and built-in benchmarking tools to optimize a naive ray-tracer written in Go. For part 1, <a href="../../04/a-go-ray-tracer/index.html">click here</a>.</p>
+
+<h1 id="contents">Contents</h1>
+
+<ol>
+  <li>Sorting efficiently</li>
+  <li>Slices vs Arrays</li>
+  <li>Pointers or values?</li>
+  <li>AVX2 using c2goasm</li>
+  <li>A final word on threading</li>
+  <li>Conclusion</li>
+</ol>
+
+<p><em>(Note: Most of this blog post was written based on using Go 1.13)</em></p>
+
+<p>This part takes off directly after <a href="../../04/a-go-ray-tracer/index.html">part 1</a>.</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/texturemapping.png" alt="tm" /></p>
+
+<h3 id="source-code">Source code</h3>
+<p>The full source code for my little ray-tracer can be found here: <a href="https://github.com/eriklupander/rt">https://github.com/eriklupander/rt</a></p>
+
+<h1 id="1-sorting-efficiently">1. Sorting efficiently</h1>
+<p>Once I had gotten past all those pre-allocations in section 5 in <a href="../../04/a-go-ray-tracer/index.html">part 1</a>, I was starting to run out of low-hanging fruit to optimize. A new heap profile to the rescue!</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/sort1.png" alt="alt" /></p>
+
+<p>That <code class="language-plaintext highlighter-rouge">reflectlite.Swapper</code> needed closer examination. The ray-tracing code sometimes must sort things, intersections in particular. Order of intersections can be important for things like refraction (how light changes direction when entering and exiting various materials). Therefore, every time I had found the intersections of a Ray, I sorted them using <code class="language-plaintext highlighter-rouge">sort.Slice</code>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c">// psuedo-code, not actual code from the ray-tracer</span>
+    <span class="n">intersections</span> <span class="o">:=</span> <span class="n">FindIntersections</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">ray</span><span class="p">)</span>
+    <span class="n">slice</span><span class="o">.</span><span class="n">Sort</span><span class="p">(</span><span class="n">intersections</span><span class="p">,</span> <span class="k">func</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">intersections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">&lt;</span> <span class="n">intersections</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+    <span class="p">})</span>
+</code></pre></div></div>
+
+<p>As seen above, at this point, sorting accounted for about 16% of all allocations. The quick-fix was to switch to using <code class="language-plaintext highlighter-rouge">sort.Sort</code> which requires implementation of the <code class="language-plaintext highlighter-rouge">sort.Interface</code> interface:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Interface</span> <span class="k">interface</span> <span class="p">{</span>
+	<span class="n">Len</span><span class="p">()</span> <span class="kt">int</span>
+	<span class="n">Less</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span>
+	<span class="n">Swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="kt">int</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This required creating a new type for []Intersection that implemented this interface:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Intersections</span> <span class="p">[]</span><span class="n">Intersection</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">xs</span> <span class="n">Intersections</span><span class="p">)</span> <span class="n">Len</span><span class="p">()</span> <span class="kt">int</span>           <span class="p">{</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">xs</span> <span class="n">Intersections</span><span class="p">)</span> <span class="n">Less</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span> <span class="k">return</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">&lt;</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="p">}</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">xs</span> <span class="n">Intersections</span><span class="p">)</span> <span class="n">Swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="kt">int</span><span class="p">)</span>      <span class="p">{</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>I then just had to change a few method signatures to take <code class="language-plaintext highlighter-rouge">Intersections</code> instead of <code class="language-plaintext highlighter-rouge">[]Intersection</code> and I could use <code class="language-plaintext highlighter-rouge">sort.Sort</code> which allocated way less memory.</p>
+
+<p>This improvement reduced the duration from <strong>1.9</strong> seconds to <strong>1.6</strong> seconds and decreased the number of allocations by about 3 million.</p>
+
+<h1 id="2-slices-vs-arrays">2. Slices vs Arrays</h1>
+<p>Which one is better for representing 4 64-bit floating point values in a naive ray-tracer?</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="n">vector</span> <span class="o">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+<span class="k">var</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="m">4</span><span class="p">]</span><span class="kt">float64</span>
+</code></pre></div></div>
+<p>I originally implemented my <code class="language-plaintext highlighter-rouge">Tuple4</code> and <code class="language-plaintext highlighter-rouge">Mat4x4</code> structs with slices for the underlying storage. I tried to read up about the performance-related pros- and cons of using slices over arrays, with the verdict often being “a slice is just a pointer to a type, some index and the underlying array” so it’s just as fast.</p>
+
+<p>Well - somewhere in time I decided I needed to test both ways and carefully benchmark both using <code class="language-plaintext highlighter-rouge">go bench</code> but mainly by looking at total render time.</p>
+
+<p>I started by refactoring the entire codebase to use arrays as backing storage for <code class="language-plaintext highlighter-rouge">Tuple4</code> and <code class="language-plaintext highlighter-rouge">Mat4x4</code>:</p>
+
+<p><strong>Old</strong></p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Tuple4</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Elems</span> <span class="p">[]</span><span class="kt">float64</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>New</strong></p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Tuple4</span> <span class="p">[</span><span class="m">4</span><span class="p">]</span><span class="kt">float64</span>
+
+<span class="k">func</span> <span class="n">NewTuple</span><span class="p">()</span> <span class="n">Tuple4</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">[</span><span class="m">4</span><span class="p">]</span><span class="kt">float64</span><span class="p">{</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I think one of the largest benefits was that I now indexed directly into the underlying arrays instead of accessing <code class="language-plaintext highlighter-rouge">Tuple4</code> values through either the <code class="language-plaintext highlighter-rouge">Elems</code> or through a <code class="language-plaintext highlighter-rouge">Get(index int)</code> method in mathematical functions. Here’s a simple example from code that multiplies a row in one matrix by a column in the another:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// OLD</span>
+<span class="k">func</span> <span class="n">multiply4x4</span><span class="p">(</span><span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">m2</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">row</span> <span class="kt">int</span><span class="p">,</span> <span class="n">col</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="n">a0</span> <span class="o">:=</span> <span class="n">m1</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">m2</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+	<span class="n">a1</span> <span class="o">:=</span> <span class="n">m1</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">m2</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+	<span class="n">a2</span> <span class="o">:=</span> <span class="n">m1</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">m2</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+	<span class="n">a3</span> <span class="o">:=</span> <span class="n">m1</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">m2</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span> <span class="o">+</span> <span class="n">a2</span> <span class="o">+</span> <span class="n">a3</span>
+<span class="p">}</span>
+<span class="c">// NEW</span>
+<span class="k">func</span> <span class="n">multiply4x4</span><span class="p">(</span><span class="n">m1</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">m2</span> <span class="n">Mat4x4</span><span class="p">,</span> <span class="n">row</span> <span class="kt">int</span><span class="p">,</span> <span class="n">col</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="n">a0</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">m2</span><span class="p">[</span><span class="m">0</span><span class="o">+</span><span class="n">col</span><span class="p">]</span>
+	<span class="n">a1</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m2</span><span class="p">[</span><span class="m">4</span><span class="o">+</span><span class="n">col</span><span class="p">]</span>
+	<span class="n">a2</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">m2</span><span class="p">[</span><span class="m">8</span><span class="o">+</span><span class="n">col</span><span class="p">]</span>
+	<span class="n">a3</span> <span class="o">:=</span> <span class="n">m1</span><span class="p">[(</span><span class="n">row</span><span class="o">*</span><span class="m">4</span><span class="p">)</span><span class="o">+</span><span class="m">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">m2</span><span class="p">[</span><span class="m">12</span><span class="o">+</span><span class="n">col</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span> <span class="o">+</span> <span class="n">a2</span> <span class="o">+</span> <span class="n">a3</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Honestly, I can’t still say for sure exactly why arrays were faster <strong>for my particular use-case</strong>, but the speed-up turned out to be significant. The thing is, this refactoring affected so much of the code base that microbenchmarking individual functions was not very conclusive.</p>
+
+<p>However - in the end, rendering the reference image went from <strong>1.6</strong> to <strong>1.1</strong> seconds. At this point, getting a ~30% decrease in total render time was very welcome.</p>
+
+<h1 id="3-pointers-or-values-for-parameters">3. Pointers or values for parameters?</h1>
+<p>I also read up a bit on whether one should pass parameters as pointers or values in Go in regard to performance, where the conclusion typically was something akin to “it’s better to pass by value (e.g. copy) up to a certain size of N bytes” - where N seemed to differ a bit but up to a kilobyte should be fine. Well - I had to test this as well.</p>
+
+<p>I started with a really simple microbenchmark for my <code class="language-plaintext highlighter-rouge">Tuple4</code> <code class="language-plaintext highlighter-rouge">Add()</code> function:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">AddPtr</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="n">Tuple4</span><span class="p">,</span> <span class="n">out</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">)</span> <span class="p">{</span> <span class="c">// pass inputs as values</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="m">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">t2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">AddPtr2</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">,</span> <span class="n">out</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">)</span> <span class="p">{</span> <span class="c">// pass inputs as pointers</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="m">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">t2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// BENCHMARKS</span>
+<span class="k">func</span> <span class="n">BenchmarkAddPtr</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">t1</span> <span class="o">:=</span> <span class="n">NewPoint</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="o">-</span><span class="m">2</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="n">t2</span> <span class="o">:=</span> <span class="n">NewVector</span><span class="p">(</span><span class="o">-</span><span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">out</span> <span class="n">Tuple4</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">AddPtr</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">func</span> <span class="n">BenchmarkAddPtr2</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">t1</span> <span class="o">:=</span> <span class="n">NewPoint</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="o">-</span><span class="m">2</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="n">t2</span> <span class="o">:=</span> <span class="n">NewVector</span><span class="p">(</span><span class="o">-</span><span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">out</span> <span class="n">Tuple4</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">AddPtr2</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Results:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BenchmarkAddPtr-8
+192414643	         6.29 ns/op
+
+BenchmarkAddPtr2-8
+204297358	         5.81 ns/op
+</code></pre></div></div>
+<p>Certainly not a huge difference, the “pass by pointer” one is about 8% faster in this microbenchmark. Given that a function such as the <code class="language-plaintext highlighter-rouge">Add</code> one is used extensively - for example when determining a pixel’s color given its material’s ambient, diffuse and specular components - even a pretty small improvement such as this one can help improve overall performance.</p>
+
+<p>Similarly, a benchmark comparing passing a 4x4 matrix and a 1x4 tuple to a multiply function shows an even more significant improvement using pointers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BenchmarkMultiplyByTupleUsingValues-8
+79611511	        13.8 ns/op
+BenchmarkMultiplyByTupleUsingPointers-8
+100000000	        10.7 ns/op
+</code></pre></div></div>
+
+<p>I implemented this change in some critical code paths in the codebase and got a decent speedup.</p>
+
+<p>New duration was <strong>0.8s</strong> compared to <strong>1.1s</strong> before. Allocations did not change.</p>
+
+<h1 id="4-using-c2goasm-and-simdavx2">4 Using C2GOASM and SIMD/AVX2</h1>
+<p>I stumbled upon this <a href="https://medium.com/@c_bata_/optimizing-go-by-avx2-using-auto-vectorization-in-llvm-118f7b366969">excellent article</a> which got me thinking that I perhaps could identify some bottleneck mathematical operation and try to improve its execution speed by taking explicit advantage of the SIMD, AVX and AVX2 CPU extensions available on most modern x86-64 microprocessors. I havn’t been able to determine if the Go compiler itself takes advantage of SIMD/AVX on <code class="language-plaintext highlighter-rouge">GOARCH=amd64</code>, but I don’t think so at least for my purposes.</p>
+
+<p>For details on this optimization, please check the article linked above. Here’s a quick summary on how I went about replacing my <code class="language-plaintext highlighter-rouge">MultiplyByTuple</code> function with a <a href="http://www.mit.edu/afs.new/sipb/project/golang/doc/asm.html">Plan9 assembly</a> implementation taking full advantage of AVX2 that we can call without the overhead of using CGO.</p>
+
+<h3 id="41-intrinsics">4.1 Intrinsics</h3>
+<p>Write C code that uses <a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#techs=AVX2">Intel intrinsics</a> in order to perform our Matrix x Tuple multiplication:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">void</span> <span class="n">MultiplyMatrixByVec64</span><span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span><span class="n">vec4</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">__m256d</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">_mm256_load_pd</span><span class="p">(</span><span class="n">vec4</span><span class="p">);</span> <span class="c">// load vector into register</span>
+    <span class="n">__m256d</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span> <span class="c">// load each row of the matrix into a register,</span>
+    <span class="n">__m256d</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">[</span><span class="m">4</span><span class="p">]);</span> <span class="c">// each register takes 4 64-bit floating point values.</span>
+    <span class="n">__m256d</span> <span class="n">m3</span> <span class="o">=</span> <span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">[</span><span class="m">8</span><span class="p">]);</span>
+    <span class="n">__m256d</span> <span class="n">m4</span> <span class="o">=</span> <span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">[</span><span class="m">12</span><span class="p">]);</span>
+
+    <span class="n">__m256d</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">_mm256_mul_pd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">m1</span><span class="p">);</span> <span class="c">// multiply each row by vector using AVX2</span>
+    <span class="n">__m256d</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">_mm256_mul_pd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">m2</span><span class="p">);</span>
+    <span class="n">__m256d</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">_mm256_mul_pd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">m3</span><span class="p">);</span>
+    <span class="n">__m256d</span> <span class="n">p4</span> <span class="o">=</span> <span class="n">_mm256_mul_pd</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">m4</span><span class="p">);</span>
+
+    <span class="n">double</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">hsum_double_avx</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span> <span class="c">// sum each vector using AVX2</span>
+    <span class="n">double</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">hsum_double_avx</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+    <span class="n">double</span> <span class="n">d3</span> <span class="o">=</span> <span class="n">hsum_double_avx</span><span class="p">(</span><span class="n">p3</span><span class="p">);</span>
+    <span class="n">double</span> <span class="n">d4</span> <span class="o">=</span> <span class="n">hsum_double_avx</span><span class="p">(</span><span class="n">p4</span><span class="p">);</span>
+
+    <span class="n">_mm256_storeu_pd</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">_mm256_set_pd</span><span class="p">(</span> <span class="n">d4</span><span class="p">,</span><span class="n">d3</span><span class="p">,</span><span class="n">d2</span><span class="p">,</span><span class="n">d1</span><span class="p">));</span> <span class="c">// and return a vec4, note opposite order</span>
+<span class="p">}</span>
+
+<span class="c">// summing taken from https://stackoverflow.com/questions/49941645/get-sum-of-values-stored-in-m256d-with-sse-avx</span>
+<span class="n">inline</span>
+<span class="n">double</span> <span class="n">hsum_double_avx</span><span class="p">(</span><span class="n">__m256d</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">__m128d</span> <span class="n">vlow</span>  <span class="o">=</span> <span class="n">_mm256_castpd256_pd128</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+    <span class="n">__m128d</span> <span class="n">vhigh</span> <span class="o">=</span> <span class="n">_mm256_extractf128_pd</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span> <span class="c">// high 128</span>
+            <span class="n">vlow</span>  <span class="o">=</span> <span class="n">_mm_add_pd</span><span class="p">(</span><span class="n">vlow</span><span class="p">,</span> <span class="n">vhigh</span><span class="p">);</span>     <span class="c">// reduce down to 128</span>
+
+    <span class="n">__m128d</span> <span class="n">high64</span> <span class="o">=</span> <span class="n">_mm_unpackhi_pd</span><span class="p">(</span><span class="n">vlow</span><span class="p">,</span> <span class="n">vlow</span><span class="p">);</span>
+    <span class="k">return</span>  <span class="n">_mm_cvtsd_f64</span><span class="p">(</span><span class="n">_mm_add_sd</span><span class="p">(</span><span class="n">vlow</span><span class="p">,</span> <span class="n">high64</span><span class="p">));</span>  <span class="c">// reduce to scalar</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>It’s OK if all that C code doesn’t make sense. Note that <code class="language-plaintext highlighter-rouge">double</code> equals our Go <code class="language-plaintext highlighter-rouge">float64</code> and that we use <code class="language-plaintext highlighter-rouge">_pd</code> intrinsic function variants for double precision. Comments may provide some insight.</p>
+
+<h3 id="42-compile-to-x86-assembly">4.2 Compile to X86 assembly</h3>
+<p>Once we had the C-code above ready - one could imagine we’d use CGO to call it, but that’s one of the neat things about this approach - by generating native Plan9 Go assembly, we can basically eliminate the CGO function call overhead. In order to transform this C code into native Go assembly, we first must compile the code into standard x86-64 assembly code using the <code class="language-plaintext highlighter-rouge">clang</code> compiler:</p>
+
+<p><code class="language-plaintext highlighter-rouge">clang -S -mavx2 -mfma -masm=intel -mno-red-zone -mstackrealign -mllvm -inline-threshold=1000 -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti -c -O3 cfiles/MultiplyMatrixByVec64.c</code></p>
+
+<p>This generates a <code class="language-plaintext highlighter-rouge">MultiplyMatrixByVec64.s</code> x86 assembly file.</p>
+
+<h3 id="43-convert-to-plan9-assembly">4.3 Convert to Plan9 assembly</h3>
+<p>Next, we turn to <a href="https://github.com/minio/c2goasm">c2goasm</a> for generating Go Plan9 assembly callable from a .go file.</p>
+
+<p><code class="language-plaintext highlighter-rouge">c2goasm -a -f cfiles/MultiplyMatrixByVec64.s internal/pkg/mat/MultiplyMatrixByVec64_amd64.s</code></p>
+
+<p>The resulting <code class="language-plaintext highlighter-rouge">MultiplyMatrixByVec64_amd64.s</code> contains our Go Plan9 assembly and looks like this (slightly truncated for brevity):</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEXT</span> <span class="err">·</span><span class="n">__MultiplyMatrixByVec64</span><span class="p">(</span><span class="n">SB</span><span class="p">),</span> <span class="err">$</span><span class="m">0</span><span class="o">-</span><span class="m">24</span>
+
+	<span class="n">MOVQ</span> <span class="n">m</span><span class="o">+</span><span class="m">0</span><span class="p">(</span><span class="n">FP</span><span class="p">),</span> <span class="n">DI</span>
+	<span class="n">MOVQ</span> <span class="n">vec4</span><span class="o">+</span><span class="m">8</span><span class="p">(</span><span class="n">FP</span><span class="p">),</span> <span class="n">SI</span>
+	<span class="n">MOVQ</span> <span class="n">result</span><span class="o">+</span><span class="m">16</span><span class="p">(</span><span class="n">FP</span><span class="p">),</span> <span class="n">DX</span>
+
+	<span class="n">LONG</span> <span class="err">$</span><span class="m">0x0610fdc5</span>               <span class="c">// vmovupd    ymm0, yword [rsi]</span>
+	<span class="n">LONG</span> <span class="err">$</span><span class="m">0x0f59fdc5</span>               <span class="c">// vmulpd    ymm1, ymm0, yword [rdi]</span>
+	<span class="n">LONG</span> <span class="err">$</span><span class="m">0x5759fdc5</span><span class="p">;</span> <span class="n">BYTE</span> <span class="err">$</span><span class="m">0x20</span>   <span class="c">// vmulpd    ymm2, ymm0, yword [rdi + 32]</span>
+	<span class="n">LONG</span> <span class="err">$</span><span class="m">0x5f59fdc5</span><span class="p">;</span> <span class="n">BYTE</span> <span class="err">$</span><span class="m">0x40</span>   <span class="c">// vmulpd    ymm3, ymm0, yword [rdi + 64]</span>
+    <span class="o">...</span> <span class="n">rest</span> <span class="n">omitted</span> <span class="o">...</span>
+</code></pre></div></div>
+
+<h3 id="44-making-it-callable">4.4 Making it callable</h3>
+<p>Finally, we need some hand-written plain Go-code to glue the assembly in <code class="language-plaintext highlighter-rouge">MultiplyMatrixByVec64_amd64.s</code> to our ordinary Go code:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">//+build !noasm</span>
+<span class="c">//+build !appengine</span>
+
+<span class="k">package</span> <span class="n">mat</span>
+
+<span class="k">import</span> <span class="s">"unsafe"</span>
+
+<span class="c">//go:noescape</span>
+<span class="k">func</span> <span class="n">__MultiplyMatrixByVec64</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">vec4</span><span class="p">,</span> <span class="n">result</span> <span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">)</span>  <span class="c">// func header matching .s file</span>
+
+<span class="k">func</span> <span class="n">MultiplyByTuplePtr</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span><span class="n">Mat4x4</span><span class="p">,</span> <span class="n">vec4</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">,</span> <span class="n">result</span> <span class="o">*</span><span class="n">Tuple4</span><span class="p">)</span> <span class="p">{</span> <span class="c">// ordinary go function</span>
+	<span class="n">__MultiplyMatrixByVec64</span><span class="p">(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="n">vec4</span><span class="p">),</span> <span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="n">result</span><span class="p">))</span> <span class="c">// use unsafe.Pointer to pass args</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Once here, we can call <code class="language-plaintext highlighter-rouge">MultiplyByTuplePtr(m *Mat4x4, f2 *Tuple4, _f4 *Tuple4)</code> just like any other Go code.</p>
+
+<h3 id="45-results">4.5 Results</h3>
+<p>So, how much faster is this code compared to our vanilla <code class="language-plaintext highlighter-rouge">MultiplyByTupleUsingPointers</code> we benchmarked previously? A new microbenchmark tells us this:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">BenchmarkMultiplyByTuplePtr</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">m</span> <span class="o">:=</span> <span class="n">NewMat4x4</span><span class="p">([]</span><span class="kt">float64</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5.5</span><span class="p">,</span> <span class="m">6.5</span><span class="p">,</span> <span class="m">7.5</span><span class="p">,</span> <span class="m">8.5</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">11</span><span class="p">,</span> <span class="m">12</span><span class="p">,</span> <span class="m">13.5</span><span class="p">,</span> <span class="m">14.5</span><span class="p">,</span> <span class="m">15.5</span><span class="p">,</span> <span class="m">16.5</span><span class="p">})</span>
+	<span class="n">t</span> <span class="o">:=</span> <span class="n">NewTupleOf</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">9</span><span class="p">,</span><span class="m">6</span><span class="p">)</span>
+	<span class="k">var</span> <span class="n">out</span> <span class="n">Tuple4</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">MultiplyByTuplePtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span> <span class="c">// &lt;-- here we call the plan9 assembly through the glue func</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Result (including the previous benchmarks from section 3):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BenchmarkMultiplyByTupleUsingValues-8
+79611511	        13.8 ns/op
+BenchmarkMultiplyByTupleUsingPointers-8
+100000000	        10.7 ns/op
+BenchmarkMultiplyByTuplePtr-8         NEW ONE USING AVX2!
+232738142	         5.14 ns/op
+</code></pre></div></div>
+<p>More than twice as fast! Given that <code class="language-plaintext highlighter-rouge">MultiplyByTuple</code> is called several times on every ray / shape intersection test, this fix should definitely provide a nice speedup:</p>
+
+<p>Rendering the reference image now took <strong>0.6s</strong> compared to <strong>0.8s</strong> before.</p>
+
+<p>I’ve also played around with implementing the <code class="language-plaintext highlighter-rouge">Dot</code> and <code class="language-plaintext highlighter-rouge">Cross</code> product functions using the same approach. <code class="language-plaintext highlighter-rouge">Dot</code> turned out to be significantly <em>slower</em> when done using intrinsics, while <code class="language-plaintext highlighter-rouge">Cross</code> was interesting. The microbenchmark showed the intrinsics version to be maybe 15% slower than the pure Go one, but a real render of an image was actually a few percent <em>faster</em> when the Plan9 assembly verison <code class="language-plaintext highlighter-rouge">Cross</code> product was used. If anything, it serves as a good reminder that one should be careful drawing conclusions from microbenchmarking isolated functions - the performance of the program as a whole is the most important metric to look at when chasing optimizations.</p>
+
+<h1 id="5-a-final-word-on-threading">5. A final word on threading…</h1>
+
+<p>With the assembler optimizations above done, I was more or less “done” with my optimizations. However, the topic of <em>multi-threading</em> performance in the ray-tracer remained somewhat of a mystery to me. We saw that the initial improvement (before all other improvements) was about <strong>2.5x</strong>. How does multi-threading work out after all other optimizations?</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/threading.png" alt="spreadsheet" /></p>
+
+<p><em>(note that the image rendered for this particular chart isn’t exactly identical to the reference one)</em></p>
+
+<p>About <strong>3.5x</strong> faster using all available 8 thread/workers compared to a single worker. But one must note that there’s very little improvement once we move past 4 threads on my machine.</p>
+
+<p>I havn’t figured this one out exactly, but I believe it boils down to a number of things:</p>
+
+<ol>
+  <li>Having a CPU (my Mac uses a 4870HQ) with 4 cores / 8 hardware threads (using hyperthreading) doesn’t necessarily mean one should expect the raw performance of 8 “real” CPU cores. Some resources (CPU caches etc) are probably shared within a single core.</li>
+  <li>Memory bandwidth? We’re still allocating and de-allocating a substantial amount of memory. Perhaps the memory subsystem is holding the CPU back?</li>
+  <li>I’ve spent next to no effort actually thinking about <em>efficient</em> multi-threading or optimizations on the CPU-level. I.e. things like <a href="https://medium.com/@teivah/go-and-cpu-caches-af5d32cc5592">optimizing for CPU cache size</a>. In other words - my implementation could very well be a bad one as far as efficient multi-threading is concerned.</li>
+</ol>
+
+<p>I’ve also run the ray-tracer on a more modern Intel Core i9 8 core / 16 thread MacBook Pro 2019 and on a desktop computer with an AMD Ryzen 2600X 6 core / 12 thread CPU, seeing similar behaviour where performance improvements are negligible after <code class="language-plaintext highlighter-rouge">worker count</code> &gt; <code class="language-plaintext highlighter-rouge">num of physical cores</code>. However, I do remember running the ray-tracer on my Ryzen 2600X with the memory clocked to 2100 Mhz instead of the normal 3200 Mhz. I did notice that the CPU usage was down to 60-70% per core instead of the &gt;99% I saw with the memory at its normal speed, which could indicate memory bandwidth or latency being a culprit. Perhaps I’ll do a follow up on this particular topic!</p>
+
+<p>I’m sure there’s someone out there who could shed some light on this issue. Feel free to use the comments!</p>
+
+<p>After all these optimizations (+BVHs), rendering a complex scene with tens of thousand of triangles, multi-sampling, soft shadows etc had become possible in reasonable amounts of time. This 1920x1080 render of a dragon took about 20 minutes:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/dragon1080.png" alt="dragon" /></p>
+
+<h1 id="6-conclusion">6. Conclusion</h1>
+<p>First a little reminder that the findings in this blog post are strictly anecdotal and specific to my use case - the naive ray-tracer originally written without performance in mind. Your mileage in other circumstances may vary!</p>
+
+<p>I’m also well aware there’s a lot more one can do such as more comprehensive <a href="https://medium.com/faun/golang-escape-analysis-reduce-pressure-on-gc-6bde1891d625">escape analysis</a> and making sure the compiler <a href="https://medium.com/a-journey-with-go/go-inlining-strategy-limitation-6b6d7fc3b1be">inlines</a> function calls properly. That said, going from 3m15s to 0.6s for the exact same result <em>was</em> very rewarding and I learned a ton of stuff doing it. As a bonus, I probably had just as fun doing these performance optimizations as I originally had creating the ray-tracer based on the mentioned <a href="https://pragprog.com/titles/jbtracer/">“The Ray Tracer Challenge”</a> book.</p>
+
+<p>To give an overview of this optimization journey, the following diagram gives a pretty good view:</p>
+
+<p><img src="../../../../../../assets/blogg/raytracer/reference-durations.png" alt="optimizations" /></p>
+
+<p>Clearly, the single most important fix was caching the Inverse, probably followed by multi-threading and generally avoiding re-allocating structs and slices in the renderer. The performance gains from slices vs arrays, pointers vs values and sorting were not as clear, but together they did indeed provide a substantial gain. The intrinsics and Plan9 assembly was perhaps stretching things a bit, but nonetheless a fun thing to experiment with.</p>
+
+<p>That’s it! Hope you enjoyed reading my ramblings on ray-tracer performance optimizations in Go.</p>
+
+<p>Feel free to share this blog post using your favorite social media platform! There should be a few icons below to get you started.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=A Go Ray Tracer Part 2&url=https://callistaenterprise.se/blogg/teknik/2020/07/11/a-go-ray-tracer-part-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=A Go Ray Tracer Part 2&u=https://callistaenterprise.se/blogg/teknik/2020/07/11/a-go-ray-tracer-part-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=A Go Ray Tracer Part 2&url=https://callistaenterprise.se/blogg/teknik/2020/07/11/a-go-ray-tracer-part-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

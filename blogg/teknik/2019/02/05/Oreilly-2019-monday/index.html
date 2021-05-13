@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>O'Reilly Software Architecture Conference 2019 - Måndagens tutorials | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">O'Reilly Software Architecture Conference 2019 - Måndagens tutorials</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2019-02-05T00:00:00+00:00">
+            05 February 2019
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Callista har startat februari med att skicka en delegation till New York och O’Reilly Software Architecture Conference. Här kommer en personlig rapport från måndagens tutorials.</p>
+
+<p>Måndagen bestod av två 3-timmars “tutorials” där man fick välja mellan fyra olika alternativ per pass. Nedan följer en kort redogörelse för respektive tutorial.</p>
+
+<h1 id="decentralized-systems-the-good-the-bad-and-the-ugly">Decentralized systems: the good, the bad and the ugly</h1>
+
+<p>För egen del inleddes konferensen med en dragning av Brian Sletten. Jag har stött på Brian på tidigare konferenser och han brukar vara underhållande att lyssna på så mina förväntningar var ganska höga. Jag var dock något osäker på ämnet i sig - vad åsyftades egentligen med “decentralized” systems?</p>
+
+<p>Möjligen hade jag förväntat mig en någotsånär teknisk föreläsning om problematiken kring distribuerade system, men istället tog Brian avstamp i problematiken kring hur Internet skapades så “alla” skulle kunna publicera och utbyta information med varandra, men i hur det har landat i att 80% av all information som delas går genom jättarnas (Facebook, Google osv) system. Din data “ägs” ofta av plattformen dit du laddat upp den och om en stark tredje part inte vill att din data skall göras tillgänglig så är Facebook m.fl. benägna att vika sig för stater. Brian tog upp exempel med hur Spaniens regering påverkat Facebook kring att ta bort information kring Kataloniens försök att bryta sig ur landet. Turkiet och Thailand är andra exempel på där de stora plattformarna vikt sig för regeringar som velat tysta exempelvis Wikipedia. Så med “decentralized” landade Brian i byggstenarna kring hur man skall kunna dela information på Internet utan att vara beroende av de stora drakarnas godtycke, vilket landade i:</p>
+
+<ul>
+  <li>Distribuerad men kanonisk identitet (Semantic Web, Linked Data)</li>
+  <li>Distribuerad och säker lagring (ipfs)</li>
+  <li>Distribuerad och säker autentisering/auktorisering (Macaroons)</li>
+  <li>Distribuerad och säker data med förtroende mellan ej relaterade parter (Blockchains)</li>
+  <li>Distribuerad exekvering av exekvering av mjukvara (WebAssemly)</li>
+  <li>Protokoll för säkert informationsutbyte utan mellanhänder (WebRTC)</li>
+</ul>
+
+<p>Brian gick igenom de olika koncepten ovan i varierande grad av detaljnivå - WebRTC och WebAssembly tämligen översiktligt, medan ipfs och framförallt all kryptografi som bygger kedjor av förtroende gicks igenom på en detaljnivå där jag misstänker att fler än jag hade svårt att hänga med.</p>
+
+<p><img src="../../../../../../assets/blogg/oreilly2019/sletten.jpg" alt="sletten" />
+<em>Brian Sletten</em></p>
+
+<p>Helheten - att bygga det 100% decentraliserade systemet - enligt ovan är kanske inte så relevant för oss som arkitekter och utvecklare på kort sikt, men många av byggstenarna (blockchains, WebRTC) är redan etablerade och nya tillämpningar baserade på dessa kommer ständigt fram.</p>
+
+<p>Brian hade också en rejält säljande och något kontroversiell punchline - något orelaterad till ämnet i övrigt:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"WebAssembly will kill the desktop"
+</code></pre></div></div>
+
+<p>Det han syftar på är att när man nu kan skriva sina applikationer i t.ex. C, C++, Go, C# etc och få dessa korskompilerade till Javascript för WebAssembly och exekverade på ett effektivt vis i browsern - inklusive beräkningar, 3D-grafik, native-GUI osv - så kommer det uppkomma helt nya möjligheter att flytta all klientprogramvara in i browsern.</p>
+
+<p>Sammanfattningsvis så var föredraget relativt intressant även om Brian hade lite svårt att hålla ihop någon slags röd tråd även om han i slutändan sydde ihop det hela ganska snyggt.</p>
+
+<h1 id="moving-to-microservices-using-domain-driven-design-to-break-down-the-monolith">Moving to microservices: Using domain-driven design to break down the monolith</h1>
+<p>Maria Gomez från Thoughtworks höll i denna tutorial. DDD är ett intressant område som vi själva tagit upp på tidigare års Cadec. Här utlovades någon slags guide eller metod för att applicera DDD för att bryta ner en monolit i microservices. På pappret en väldigt lovande tutorial som i praktiken blev tämligen intetsägande. Maria började med en teoridel som tyvärr var svår att ta till sig pga en kombination av dåligt ljud, dålig engelska och osammanhängande resonemang.</p>
+
+<p><img src="../../../../../../assets/blogg/oreilly2019/gomez.jpg" alt="gomez" /></p>
+
+<p>Positivt var dock momenten med grupparbeten där vi i mindre grupper fick resonera kring domändriven design och applicera koncept från DDD på ett par olika problemdomäner. Helt klart givande diskussioner och just det praktiska momentet som tvingar en att tänka lite själv uppfattade jag personligen som utvecklande. Första övningen var att identifiera “bounded contexts” och domäner utifrån ett antal user stories relaterade till ett system för att hantera närvaro, skolarbeten, rapportering etc för en skola. Jag såg framför mig hur vi skulle jobba hela vägen från högnivåmodellering enligt DDD till faktisk implementation med detta problem, men tyvärr var grupparbete två ett helt eget område - och när vi fortsatte med att jobba med implementation efter pausen så var det ett helt annat problemområde.</p>
+
+<p>Just andra delen som var praktiskt fokuserad på ett antal programmeringsövningar hade väl vissa kvalitéer på pappret, men var otydligt styrd och Marias bidrag till att låta folk komma igång var plötsligt att refaktorera och kopiera in enhetstester från färdiga mallar. Inget fel i sig, men hade ganska liten bärighet på DDD och problemområdet. Uppdelningen av monoliten till microservices bestod i praktiken av att splitta en model-klass i några extra eniteter samt skapa controllers i olika java-paket. Inte riktigt microservices utan mer en övning i att dela upp kod i domäner och tämligen banal modellering.</p>
+
+<p>Sammanfattningsvis fanns det glimtar av bra innehåll i eftermiddagens pass, tyvärr var det lite för glest mellan de givande momenten i denna tutorial.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Oreilly 2019 Monday&url=https://callistaenterprise.se/blogg/teknik/2019/02/05/Oreilly-2019-monday/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Oreilly 2019 Monday&u=https://callistaenterprise.se/blogg/teknik/2019/02/05/Oreilly-2019-monday/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Oreilly 2019 Monday&url=https://callistaenterprise.se/blogg/teknik/2019/02/05/Oreilly-2019-monday/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

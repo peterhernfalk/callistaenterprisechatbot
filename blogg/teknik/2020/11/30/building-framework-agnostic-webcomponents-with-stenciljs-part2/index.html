@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Framework Agnostic WebComponents with stencilJS - Part 2 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Marcus Cedergren" src="../../../../../../assets/medarbetare/marcuscedergren_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Framework Agnostic WebComponents with stencilJS - Part 2</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-11-30T00:00:00+00:00">
+            30 November 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/marcuscedergren/index.html">Marcus Cedergren</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In <a href="../../16/building-framework-agnostic-webcomponents-with-stenciljs/index.html">part 1</a> of this two part blog, we developed a simple webcomponent using only plain javascript, css and html. In this second part we will explore how the <a href="https://stenciljs.com/">stencil.js</a> toolchain can help us author components and ease integration in some of today’s popular frameworks.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#using-stenciljs-to-build-web-components" id="markdown-toc-using-stenciljs-to-build-web-components">Using stencil.js to build web components</a></li>
+  <li><a href="index.html#integrating-with-other-frameworks" id="markdown-toc-integrating-with-other-frameworks">Integrating with other frameworks</a>    <ul>
+      <li><a href="index.html#vue" id="markdown-toc-vue">Vue</a></li>
+      <li><a href="index.html#angular" id="markdown-toc-angular">Angular</a></li>
+      <li><a href="index.html#react" id="markdown-toc-react">React</a></li>
+    </ul>
+  </li>
+  <li><a href="index.html#conclusions" id="markdown-toc-conclusions">Conclusions</a></li>
+  <li><a href="index.html#resources" id="markdown-toc-resources">Resources</a></li>
+</ul>
+
+<h1 id="using-stenciljs-to-build-web-components">Using stencil.js to build web components</h1>
+
+<p>As we could see in our simple accordion example in <a href="../../16/building-framework-agnostic-webcomponents-with-stenciljs/index.html">part 1</a>, writing components using vanilla js and native DOM APIs is not very efficient. For example, we had to manually register and de-register event handlers and make sure changes to attributes and state are reflected in the components DOM representation. We have none of the things we nowadays take for granted using a framework. I’ve chosen to take a look at stencil.js that originates from the team behind ionic. As they themselves describes it:</p>
+
+<blockquote>
+  <p>Stencil is a toolchain for building reusable, scalable Design Systems. Generate small, blazing fast, and 100% standards based Web Components that run in every browser.</p>
+</blockquote>
+
+<p>By using popular concepts from leading frameworks and libraries they promise a much nicer developer experience with features like Virtual DOM, Reactive data-binding, Typescript, JSX (for the templating part), test support and more. They explicitly target it to be used for building entire <a href="https://medium.com/rangle-io/what-is-a-design-system-7a3d63edfcf7">Design Systems</a>, but you can of course use it to build a smaller scale component library. An important feature is that the output of the stencil compiler is plain javascript with no runtime dependencies and therefore a very small footprint.</p>
+
+<p>Like other popular libraries stencil has a CLI for scaffolding your projects. Simply run:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm init stencil
+</code></pre></div></div>
+
+<p>and choose “component” for a simple starter project type. By default, some files for a sample component “my-component” is generated that shows the basic features. (you create additional components by running <code class="language-plaintext highlighter-rouge">npm run generate</code>)</p>
+
+<p>You will get a number of files generated:</p>
+
+<ul>
+  <li>
+    <p>my-component.css</p>
+
+    <p>Here you define you styles. It’s very easy to add support for scss if you prefer that.</p>
+  </li>
+  <li>
+    <p>my-component.tsx</p>
+
+    <p>The actual component with its JSX and code.</p>
+  </li>
+</ul>
+
+<p>By default you also get unit and e2e test skeletons that you can update as you progress:</p>
+
+<ul>
+  <li>my-component.e2e.ts</li>
+  <li>my-component.spec.ts</li>
+</ul>
+
+<p>For comparison I’ve chosen to implement the acme-accordion component that we developed earlier using vanilla js. Here’s how a corresponding implementation could look like using stencil.js:</p>
+
+<pre class=" line-numbers"><code class="language-script">import {Component, h, Host, Prop, State} from '@stencil/core'
+
+@Component({
+  tag: 'acme-accordion',
+  styleUrl: 'acme-accordion.scss',
+  shadow: true,
+})
+
+export class AcmeAccordion {
+  @Prop() headerText: string
+  @State() open: boolean
+
+  render() {
+    return (
+        &lt;Host&gt;
+          &lt;header class={this.open ? 'open' : ''} onClick={() =&gt; this.open = !this.open}&gt;{this.headerText}&lt;/header&gt;
+          &lt;section&gt;
+            &lt;slot&gt;&lt;/slot&gt;
+          &lt;/section&gt;
+        &lt;/Host&gt;
+    )
+  }
+}
+</code></pre>
+
+<p>That’s a lot less code compared to the native version and in my opinion a lot easier to read!</p>
+
+<p>Like some other frameworks, Stencil uses decorators to abstract boilerplate code and JSX to define the template. If you have some familiarity with modern js frameworks you probably already recognize and understand most of what’s going on here:</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">@Component</code> is used to define some metadata about the component, its tag name, which style file(s) to use and whether it should render using shadow DOM or not.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">AcmeAccordion</code> class also has some helping decorators. <code class="language-plaintext highlighter-rouge">@Prop</code> that tells us this is an attribute that the component depends on for its logic. Any changes to the attribute (from the outside) will cause the component to re-render. It roughly corresponds to the <code class="language-plaintext highlighter-rouge">static observedAttributes()</code> array in the native version.</p>
+
+<p><code class="language-plaintext highlighter-rouge">@State</code> which simply denotes an internal state (inaccessible to the outside) that we want to use in the component - in this example we want to track if the accordion is open or not. As for props, changes to a state variable will trigger re-rendering.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">render()</code> function itself should be very familiar to any react developer as it’s using JSX syntax.</p>
+
+<p>During the build, Stencil’s compiler will transform this into plain js that has no external dependencies.
+The resulting component library module can be published to a repository like NPM and easily added as any other dependency in your app.</p>
+
+<h1 id="integrating-with-other-frameworks">Integrating with other frameworks</h1>
+<p>To evaluate stencil.js I wanted to create a component at bit more fun and complex than the accordion component.</p>
+
+<p>The imagined scenario is that ACME Inc has an shopping site network where different parts of the sites are developed using different tech-stacks (react, vue, angular). To keep things consistent and to avoid having to create and maintain different implementations of a frequently used “product view” component, we will create a custom component for this and then use it across the sites. 
+The data model for an ACME product is something like this:</p>
+
+<ul>
+  <li>pid (Product Id)</li>
+  <li>name</li>
+  <li>desc</li>
+  <li>imageSrc (url to a thumbnail image of the product)</li>
+  <li>price</li>
+  <li>badge (Optional call-to-action like text to indicate “On sale!” or “Just in!” or similar)</li>
+</ul>
+
+<p>Beside presentation, the component should also have a “Add to cart” button. Clicking it should emit a “addToCart” event with the product’s pid as payload. The react/vue/angular components using the product view component can then listen this event to update a shopping cart or similar.</p>
+
+<p>This is what the design team at ACME Inc came up with:</p>
+
+<p><img src="../../../../../../assets/blogg/building-framework-agnostic-webcomponents-with-stenciljs/acme-product-card.png" alt="Screenshot of acme-product-card" title="Acme-product-card component screenshot" /></p>
+
+<p>Using stencil’s <code class="language-plaintext highlighter-rouge">generate</code> command, we add the new “acme-product-card” component and implement it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">Event</span><span class="p">,</span> <span class="nx">EventEmitter</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">Host</span><span class="p">,</span> <span class="nx">Prop</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@stencil/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">tag</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme-product-card</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">styleUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme-product-card.scss</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">shadow</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AcmeProductCard</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">pid</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">desc</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">imageSrc</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">price</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Prop</span><span class="p">()</span> <span class="nx">badge</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Event</span><span class="p">()</span> <span class="nx">addToCart</span><span class="p">:</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="nx">string</span><span class="o">&gt;</span><span class="p">;</span>
+  
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">pid</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">desc</span><span class="p">,</span> <span class="nx">imageSrc</span><span class="p">,</span> <span class="nx">price</span><span class="p">,</span> <span class="nx">badge</span><span class="p">,</span> <span class="nx">addToCart</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">Host</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">card</span><span class="dl">"</span><span class="o">&gt;</span>
+            <span class="p">{</span><span class="nx">badge</span> <span class="o">&amp;&amp;</span> <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">badge</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">badge</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err">}
+</span>            <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">tumb</span><span class="dl">"</span><span class="o">&gt;</span>
+              <span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">imageSrc</span><span class="p">}</span> <span class="nx">alt</span><span class="o">=</span><span class="dl">""</span><span class="o">&gt;&lt;</span><span class="sr">/img</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">details</span><span class="dl">"</span><span class="o">&gt;</span>
+              <span class="o">&lt;</span><span class="nx">h4</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h4</span><span class="err">&gt;
+</span>              <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">desc</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>              <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">bottom-details</span><span class="dl">"</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">price</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">$</span><span class="p">{</span><span class="nx">price</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>                <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">actions</span><span class="dl">"</span><span class="o">&gt;</span>
+                  <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="nx">addToCart</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="nx">pid</span><span class="p">)}</span><span class="o">&gt;</span><span class="nx">Add</span> <span class="nx">to</span> <span class="nx">Cart</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>              <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/Host</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It has properties matching the product data model and also uses another stencil decorator <code class="language-plaintext highlighter-rouge">@Event()</code> which enables us to conveniently emit events from our component.</p>
+
+<h3 id="a-note-about-attributes-vs-properties">A note about attributes vs properties</h3>
+<p>As you can see in the example, we define a separate <code class="language-plaintext highlighter-rouge">@Prop</code> for <em>each attribute</em> we want to use as input. If we had even more input data it might be cleaner to have <em>one</em> custom attribute matching the actual product model, but as HTML attributes only support basic primitive types like strings and numbers, we can’t do that. (You <em>could</em> hack your way around this by serializing a rich object to a JSON string but that’s not recommended for several reasons.)</p>
+
+<p>Instead, you could use getter/setters or the <code class="language-plaintext highlighter-rouge">@Method</code> decorator to allow imperative manipulation of a element’s properties and behaviour, but that somewhat complicates the usage as you would need to invoke methods on the component instance itself:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">some-custom-component</span><span class="dl">'</span><span class="p">).</span><span class="nx">setProductData</span><span class="p">(</span><span class="nx">productData</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Google has listed some <a href="https://developers.google.com/web/fundamentals/web-components/best-practices">best practices</a> on how to deal with these considerations.</p>
+
+<p>Frameworks like Vue and Angular (but currently not react) <em>can</em> set values by their corresponding property instead of its attribute, but for the sake of this example I’m keeping it simple and use standard primitive HTML attributes in the component.</p>
+
+<p>Ok, so now we have a (very) small component library which we now publish to NPM so that we can import it into our sample projects. The following examples have all been created using each framework’s “hello-world” starter instructions and a dependency to the <code class="language-plaintext highlighter-rouge">acme-components-sample</code> lib has been added to package.json.</p>
+
+<h2 id="vue">Vue</h2>
+<p>Some setup is required for our custom component library to work. A suitable place to do this in a Vue app is in <code class="language-plaintext highlighter-rouge">main.js</code>
+First we import the bootstrapping init functions that Stencil has created for us:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">applyPolyfills</span><span class="p">,</span> <span class="nx">defineCustomElements</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">acme-components-sample/loader</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then we need to tell Vue to ignore our custom tags (otherwise we’ll get some <a href="https://vuejs.org/v2/api/#ignoredElements">warnings</a> in the console).</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">ignoredElements</span> <span class="o">=</span> <span class="p">[</span><span class="sr">/acme-</span><span class="se">\w</span><span class="sr">*/</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>and finally, register our components.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">applyPolyfills</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">defineCustomElements</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>The generated <code class="language-plaintext highlighter-rouge">defineCustomElements()</code> function will take care of registration of <em>all</em> included components, so there’s no more setup to to even if the library contained many components. 
+The <code class="language-plaintext highlighter-rouge">applyPolyfills()</code> call can be omitted if you don’t need to support browsers without native support for Web Components features (such as our beloved IE11)</p>
+
+<p>After this, the app can use the custom component like other native elements. 
+To keep things simple, we’ll use some static mocked product data for a couple of products:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[{</span><span class="w">
+  </span><span class="nl">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12333"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"badge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Just in!"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Snazzy bag"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"desc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A very nice handbag for the hipster in you."</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"imageSrc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bag-1.png"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12.99"</span><span class="w">
+</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"93212"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handcrafted leather bag"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"desc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handmade italian designer product, when you really want to show of your unique style!"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"imageSrc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bag-2.png"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"63.50"</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In any Vue component in the app we can now render the products with our component using standard Vue templating and binding syntax:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;h1&gt;</span>Using <span class="ni">&amp;lt;</span>acme-product-card<span class="ni">&amp;gt;</span> web component in Vue (2.6)<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"products"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;acme-product-card</span> <span class="na">v-for=</span><span class="s">"product in products"</span> 
+    <span class="na">:key=</span><span class="s">"product.pid"</span> 
+    <span class="na">:pid=</span><span class="s">"product.pid"</span> 
+    <span class="na">:price=</span><span class="s">"product.price"</span> 
+    <span class="na">:badge=</span><span class="s">"product.badge"</span>
+    <span class="na">:name=</span><span class="s">"product.name"</span> 
+    <span class="na">:desc=</span><span class="s">"product.desc"</span> 
+    <span class="na">:image-src=</span><span class="s">"product.imageSrc"</span> 
+    <span class="na">v-on:addToCart=</span><span class="s">"addedToCart"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/acme-product-card&gt;</span>
+...
+</code></pre></div></div>
+
+<p>To verify that the event handling works as intended - all sample applications stores and renders a message for each <em>addToCart</em> event received.</p>
+
+<p><img src="../../../../../../assets/blogg/building-framework-agnostic-webcomponents-with-stenciljs/vue-acme-product-card-use.png" alt="Screenshot of vue-acme-product-card" title="Vue acme-product-card component screenshot" /></p>
+
+<p><em>Rendered output after clicking each of the “Add to Cart” buttons. <a href="https://github.com/masse/stencil-blog-demo/blob/main/vue/src/components/HelloWorld.vue">View</a> full source.</em></p>
+
+<h2 id="angular">Angular</h2>
+<p>The setup in Angular is very similar, the first requirement is that we need to inform angular that we’re using custom tag names (CUSTOM_ELEMENTS_SCHEMA) in our angular templates in <code class="language-plaintext highlighter-rouge">app.module.ts</code></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="na">declarations</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">AppComponent</span>
+  <span class="p">],</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">BrowserModule</span>
+  <span class="p">],</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="na">bootstrap</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppComponent</span><span class="p">],</span>
+  <span class="na">schemas</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">CUSTOM_ELEMENTS_SCHEMA</span> <span class="c1">// Tells Angular we will have custom tags in our templates</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Then in the apps <code class="language-plaintext highlighter-rouge">main.ts</code> we register the components:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">defineCustomElements</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">acme-components-sample/loader</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="nx">defineCustomElements</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Then we’re free to start using it in our angular component. 
+(app.component.html)</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1&gt;</span>Using <span class="ni">&amp;lt;</span>acme-product-card<span class="ni">&amp;gt;</span> web component in Angular (10.2)<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"product-list"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;acme-product-card</span> <span class="na">*ngFor=</span><span class="s">"let product of products"</span> 
+    <span class="na">[attr.pid]=</span><span class="s">"product.pid"</span> 
+    <span class="na">[attr.badge]=</span><span class="s">"product.badge"</span> 
+    <span class="na">[attr.name]=</span><span class="s">"product.name"</span>
+    <span class="na">[attr.desc]=</span><span class="s">"product.desc"</span> 
+    <span class="na">[attr.image-src]=</span><span class="s">"product.imageSrc"</span> 
+    <span class="na">[attr.price]=</span><span class="s">"product.price"</span>
+    <span class="na">(addToCart)=</span><span class="s">"onAddToCart($event)"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/acme-product-card&gt;</span>
+</code></pre></div></div>
+
+<p>The template binding syntax in angular is not that intuitive in my opinion, and I also had to use the attr-prefix so that protractor locators could find the non-standard attributes when writing tests.</p>
+
+<h2 id="react">React</h2>
+<p>Again, very similar setup as for the other frameworks - we register the custom components in the apps <code class="language-plaintext highlighter-rouge">index.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">applyPolyfills</span><span class="p">,</span> <span class="nx">defineCustomElements</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">acme-components-sample/loader</span><span class="dl">'</span><span class="p">;</span>
+  <span class="p">...</span>
+  <span class="nx">applyPolyfills</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">defineCustomElements</span><span class="p">();</span>
+   <span class="p">});</span>
+
+</code></pre></div></div>
+<p>Because React implements its own synthetic event system, it (currently) cannot listen for DOM events coming from custom elements without the use of a workaround. One such workaround is to manually add/remove an event listener for the custom event:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">PRODUCTS</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./mock-products</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">events</span><span class="p">,</span> <span class="nx">setEvents</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="nx">productCardListRef</span> <span class="o">=</span> <span class="nx">useRef</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+  
+  <span class="c1">//Hook up event handling for the addToCart event dispatched by acme-product-card element</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">onAddToCard</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="nx">setEvents</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">[...</span><span class="nx">e</span><span class="p">,</span> <span class="s2">`Added product </span><span class="p">${</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">}</span><span class="s2">`</span><span class="p">]);</span>
+    
+    <span class="kd">const</span> <span class="nx">targetRef</span> <span class="o">=</span> <span class="nx">productCardListRef</span><span class="p">.</span><span class="nx">current</span><span class="p">;</span>
+    <span class="nx">targetRef</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">addToCart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">onAddToCard</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">targetRef</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">addToCart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">onAddToCard</span><span class="p">)</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+  
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">App</span><span class="dl">"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Using</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">acme</span><span class="o">-</span><span class="nx">product</span><span class="o">-</span><span class="nx">card</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="nx">web</span> <span class="nx">component</span> <span class="k">in</span> <span class="nx">React</span> <span class="p">(</span><span class="mi">17</span><span class="p">).</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">products</span><span class="dl">"</span> <span class="nx">ref</span><span class="o">=</span><span class="p">{</span><span class="nx">productCardListRef</span><span class="p">}</span><span class="o">&gt;</span>
+       <span class="p">{</span><span class="nx">PRODUCTS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">acme</span><span class="o">-</span><span class="nx">product</span><span class="o">-</span><span class="nx">card</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">pid</span><span class="p">}</span>
+                                   <span class="nx">pid</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">pid</span><span class="p">}</span>
+                                   <span class="nx">badge</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">badge</span><span class="p">}</span>
+                                   <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span>
+                                   <span class="nx">desc</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">desc</span><span class="p">}</span>
+                                   <span class="nx">image</span><span class="o">-</span><span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">imageSrc</span><span class="p">}</span>
+                                   <span class="nx">price</span><span class="o">=</span><span class="p">{</span><span class="nx">p</span><span class="p">.</span><span class="nx">price</span><span class="p">}</span>
+                                   <span class="nx">data</span><span class="o">-</span><span class="nx">testid</span><span class="o">=</span><span class="p">{</span><span class="s2">`card-</span><span class="p">${</span><span class="nx">p</span><span class="p">.</span><span class="nx">pid</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&gt;</span>
+                       <span class="o">&lt;</span><span class="sr">/acme-product-card&gt;</span><span class="se">)</span><span class="err">}
+</span>    
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">ul</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">events</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">React</span> <span class="nx">parent</span> <span class="nx">component</span> <span class="na">events</span><span class="p">:</span>
+      <span class="p">{</span><span class="nx">events</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">eventMsg</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">li</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">index</span><span class="p">}</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="err">#</span><span class="nx">x2192</span><span class="p">;</span> <span class="p">{</span><span class="nx">eventMsg</span><span class="p">}</span> <span class="o">&lt;</span><span class="sr">/li&gt;</span><span class="se">)</span><span class="err">}
+</span>    <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h1 id="conclusions">Conclusions</h1>
+<p>If you made it this far you should have a better understanding of what Web Components are, and what you can do with them. To finish off this post, let’s revisit our initial questions.</p>
+
+<h3 id="are-web-components-still-relevant">Are Web Components still relevant?</h3>
+<p>Given today’s fragmented frontend landscape, who would not like to have a standard compliant, future-proof, well tested and dependency free library of custom elements that you can simply reuse when switching between frameworks and projects?</p>
+
+<p>With major browser adoption finally a reality - I would say they are more relevant than ever!</p>
+
+<h3 id="how-do-you-create-them">How do you create them?</h3>
+<p>Hopefully this post has given you some insights into how you can create and use them, either by using native DOM APIs or by leveraging the benefits of a tool like Stencil. There are of course several other alternatives, like Polymer’s <a href="https://github.com/Polymer/lit-html">LitElement</a> and <a href="https://slimjs.com">Slim.js</a>.</p>
+
+<p>Even Vue, Angular and React themselves have plugins that enables you to wrap <em>their</em> own component implementations and expose them as standard web components - kind of the inverse of what we did here. A big drawback with that approach is that you then have a dependency to that framework’s runtime when you use the components in another context.</p>
+
+<h3 id="whats-their-place-in-todays-ecosystem">What’s their place in today’s ecosystem?</h3>
+<p>Web Components won’t <em>replace</em> other frameworks, but rather complement them. As I’ve demonstrated here, the integration into various frameworks still have some quirks but is pretty straight forward. Developing a high-quality component library or perhaps even a full design system (like Material UI) certainly is a complex and expensive task and it’s not for everyone.</p>
+
+<p>Investing in Web Components would likely pay off if you have a heterogeneous tech stack and need an efficient way to achieve more consistency and reuse in your frontend apps. It might be a good idea to start small, implementing some simple, but highly reusable “dumb” components to encapsulate branding, style or layouts to evaluate it before going all in. It’s also highly recommended that you use a tool like Stencil to develop components even though it’s always good to have a grasp of the underlying platform first.</p>
+
+<h1 id="resources">Resources</h1>
+<p>All source code in this post can be found in the <a href="https://github.com/masse/stencil-blog-demo">stencil-blog-demo</a> github repository.</p>
+
+<p>Some recommended resources I found useful when writing this post:</p>
+
+<ul>
+  <li>https://stenciljs.com/</li>
+  <li>https://www.webcomponents.org/</li>
+  <li>https://developer.mozilla.org/en-US/docs/Web/Web_Components</li>
+  <li>https://custom-elements-everywhere.com/</li>
+  <li>https://developers.google.com/web/fundamentals/web-components</li>
+  <li>https://caniuse.com/custom-elementsv1</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Framework Agnostic Webcomponents With Stenciljs Part2&url=https://callistaenterprise.se/blogg/teknik/2020/11/30/building-framework-agnostic-webcomponents-with-stenciljs-part2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Framework Agnostic Webcomponents With Stenciljs Part2&u=https://callistaenterprise.se/blogg/teknik/2020/11/30/building-framework-agnostic-webcomponents-with-stenciljs-part2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Framework Agnostic Webcomponents With Stenciljs Part2&url=https://callistaenterprise.se/blogg/teknik/2020/11/30/building-framework-agnostic-webcomponents-with-stenciljs-part2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

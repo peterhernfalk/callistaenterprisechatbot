@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>An Introduction to Reactive Programming - Reactive Programming with Spring, Part 1. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Anna Eriksson" src="../../../../../../assets/medarbetare/annaeriksson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">An Introduction to Reactive Programming - Reactive Programming with Spring, Part 1.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2020-05-24T00:00:00+00:00">
+            24 May 2020
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/annaeriksson/index.html">Anna Eriksson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This blog post provides an overview of the different concepts behind reactive programming and its history.</p>
+
+<p></p>
+
+<h2 id="1-why-reactive-programming">1. Why reactive programming</h2>
+
+<p>Reactive programming has been around for some time but gained much higher interest during the last couple of years. The reason for this relates to the fact that traditional imperative programming has some limitations when it comes to coping with the demands of today, where applications need to have high availability and provide low response times also during high load.</p>
+
+<h3 id="11-thread-per-request-model">1.1 Thread per request model</h3>
+<p>To understand what reactive programming is and what benefits it brings, let’s first consider the traditional way of developing a web application with Spring - using Spring MVC and deploying it on a servlet container such as Tomcat. The servlet container has a dedicated thread pool to handle the http requests where each incoming request will have a thread assigned and that thread will handle the entire lifecycle of the request (“thread per request model”). This means that the application will only be able to handle a number of concurrent requests that equals the size of the thread pool. It is possible to configure the size of the thread pool, but since each thread reserves some memory (typically 1MB), the higher thread pool size we configure, the higher the memory consumption.</p>
+
+<p>If the application is designed according to a microservice based architecture, we have better possibilities to scale based on load, but a high memory utilization still comes with a cost. So, the thread per request model could become quite costly for applications with a high number of concurrent requests.</p>
+
+<p>An important characteristic of microservice based architectures is that the application is distributed, running as a high number of separate processes, usually across multiple servers. Using traditional imperative programming with synchronous request/response calls for inter-service communication means that threads frequently get blocked waiting for a response from another service - which results in a huge waste of resources.</p>
+
+<h3 id="12-waiting-for-io-operations">1.2 Waiting for I/O operations</h3>
+<p>Same type of waste also occurs while waiting for other types of I/O operations to complete such as a database call or reading from a file. In all these situations the thread making the I/O request will be blocked and waiting idle until the I/O operation has completed, this is called blocking I/O. Such situations where the executing thread gets blocked, just waiting for a response, means a waste of threads and therefore a waste of memory.</p>
+
+<p><img src="../../../../../../assets/blogg/reactive-programming-part-1/threadblocked.jpg" alt="thread blocked" /><br />
+<em>Figure 1 - Thread blocked waiting for response</em></p>
+
+<h3 id="13-response-times">1.3 Response times</h3>
+<p>Another issue with traditional imperative programming is the resulting response times when a service needs to do more than one I/O request. For example, service A might need to call service B and C as well as do a database lookup and then return some aggregated data as a result. This would mean that service A’s response time would besides its own processing time be a sum of:</p>
+<ul>
+  <li>response time of service B (network latency + processing)</li>
+  <li>response time of service C (network latency + processing)</li>
+  <li>response time of database request (network latency + processing)</li>
+</ul>
+
+<p><img src="../../../../../../assets/blogg/reactive-programming-part-1/callsinsequence.jpg" alt="calls in sequence" /><br />
+<em>Figure 2 - Calls executed in sequence</em></p>
+
+<p>If there is no actual logical reason to do these calls in sequence, it would certainly have a very positive effect on service A’s response time if these calls would be executed in parallel. Even though there is support fo doing asynchronous calls in Java using CompletableFutures and registering callbacks, using such an approach extensively in an application would make the code more complex and harder to read and maintain.</p>
+
+<h3 id="14-overwhelming-the-client">1.4 Overwhelming the client</h3>
+<p>Another type of problem that might occur in a microservice landscape is when service A is requesting some information from service B, let’s say for example all the orders placed during last month. If the amount of orders turns out to be huge, it might become a problem for service A to retrieve all this information at once. Service A might be overwhelmed with the high amount of data and it might result in for example an out of memory-error.</p>
+
+<h3 id="15-to-summarize">1.5 To summarize</h3>
+<p>The different issues described above are the issues that reactive programming is intended to solve.
+In short, the advantages that comes with reactive programming is that we:</p>
+<ul>
+  <li>move away from the thread per request model and can handle more requests with a low number of threads</li>
+  <li>prevent threads from blocking while waiting for I/O operations to complete</li>
+  <li>make it easy to do parallel calls</li>
+  <li>support “back pressure”, giving the client a possibility to inform the server on how much load it can handle</li>
+</ul>
+
+<h2 id="2-what-is-reactive-programming">2. What is reactive programming</h2>
+
+<h3 id="21-definition">2.1 Definition</h3>
+<p>A short definition of reactive programming used in the Spring documentation is the following:</p>
+
+<blockquote>
+  <p>“In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale. A key aspect of that definition is the concept of backpressure which is a mechanism to ensure producers don’t overwhelm consumers.”</p>
+</blockquote>
+
+<h3 id="22-explanation">2.2 Explanation</h3>
+<p>So how is all of this achieved?<br />
+In short: by programming with asynchronous data streams. Let’s say service A wants to retrieve some data from service B. With the reactive programming style approach, service A will make a request to service B which returns immediately (being non-blocking and asynchronous). Then the data requested will be made available to service A as a data stream, where service B will publish an onNext-event for each data item one by one. When all the data has been published, this is signalled with an onComplete event. In case of an error, an onError event would be published and no more items would be emitted.</p>
+
+<p><img src="../../../../../../assets/blogg/reactive-programming-part-1/datastream.jpg" alt="data stream" /><br />
+<em>Figure 3 - Reactive event stream</em></p>
+
+<p>Reactive programming uses a functional style approach (similar to the Streams API), which gives the possibility to perform different kinds of transformations on the streams. A stream can be used as an input to another one. Streams can be merged, mapped and filtered.</p>
+
+<h3 id="23-reactive-systems">2.3 Reactive systems</h3>
+<p>Reactive programming is an important implementation technique when developing “reactive systems”, which is a concept described in the “Reactive Manifesto”, highlighting the need for modern applications to be designed to be:</p>
+<ul>
+  <li>Responsive (responding in a timely manner)</li>
+  <li>Resilient (staying responsive also in failure situations)</li>
+  <li>Elastic (staying responsive under varying workload)</li>
+  <li>Message Driven (relying on asynchronous message passing)</li>
+</ul>
+
+<p>Building a reactive system means to deal with questions such as separation of concerns, data consistency, failure management, choice of messaging implementation etc. 
+Reactive programming can be used as an implementation technique to ensure that the individual services use an asynchronous, non-blocking model, but to design the system as a whole to be a reactive system requires a design that takes care of all these other aspects as well.</p>
+
+<h2 id="3-background">3. Background</h2>
+
+<h3 id="31-reactivex">3.1 ReactiveX</h3>
+<p>In 2011, Microsoft released the Reactive Extensions (ReactiveX or Rx) library for .NET, to provide an easy way to create asynchronous, event-driven programs. In a few years time, Reactive Extensions was ported to several languages and platforms including Java, JavaScript, C++, Python and Swift. ReactiveX quickly became a cross-language standard. The development of the Java implementation - RxJava - was driven by Netflix and version 1.0 was released in 2014.</p>
+
+<p>ReactiveX uses a mix of the Iterator pattern and the Observer pattern from Gang of Four. The difference is that a push model is used compared to Iterators normal pull-based behaviour. Along with observing changes, also completion and errors are signalled to the subscriber.</p>
+
+<h3 id="32-reactive-streams-specification">3.2 Reactive Streams Specification</h3>
+<p>As time went on, a standardisation for Java was developed through the Reactive Streams effort. Reactive Streams is a small specification intended to be implemented by the reactive libraries built for the JVM. It specifies the types to implement to achieve interoperability between different implementations. The specification defines the interaction between asynchronous components with back pressure. Reactive Streams was adopted in Java 9, by the <a href="https://docs.oracle.com/javase/9/docs/api/java/util/concurrent/Flow.html">Flow API</a>. The purpose of the Flow API is to act as an interoperation specification and not an end-user API like RxJava.</p>
+
+<p>The specification covers the following interfaces:</p>
+
+<p><strong>Publisher:</strong><br />
+This represents the data producer/data source and has one method which lets the subscriber register to the publisher.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Subscriber:</strong><br />
+This represents the consumer and has the following methods:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Subscription</span> <span class="n">s</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onSubscribe</code> is to be called by the <code class="language-plaintext highlighter-rouge">Publisher</code> before the processing starts and is used to pass a <code class="language-plaintext highlighter-rouge">Subscription</code> object from the <code class="language-plaintext highlighter-rouge">Publisher</code> to the <code class="language-plaintext highlighter-rouge">Subscriber</code></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onNext</code> is used to signal that a new item has been emitted</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onError</code> is used to signal that the <code class="language-plaintext highlighter-rouge">Publisher</code> has encountered a failure and no more items will be emitted</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onComplete</code> is used to signal that all items were emitted sucessfully</p>
+  </li>
+</ul>
+
+<p><strong>Subscription:</strong><br />
+The subscriptions holds methods that enables the client to control the Publisher’s emission of items (i.e. providing backpressure support).</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">request</code> allows the <code class="language-plaintext highlighter-rouge">Subscriber</code> to inform the <code class="language-plaintext highlighter-rouge">Publisher</code> on how many additional elements to be published</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">cancel</code> allows a subscriber to cancel further emission of items by the <code class="language-plaintext highlighter-rouge">Publisher</code></p>
+  </li>
+</ul>
+
+<p><strong>Processor:</strong><br />
+If an entity shall transform incoming items and then pass it further to another <code class="language-plaintext highlighter-rouge">Subscriber</code>, an implementation of the <code class="language-plaintext highlighter-rouge">Processor</code> interface is needed. This acts both as a <code class="language-plaintext highlighter-rouge">Subscriber</code> and as a <code class="language-plaintext highlighter-rouge">Publisher</code>.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="33-project-reactor">3.3 Project Reactor</h3>
+<p>Spring Framework supports reactive programming since version 5. That support is build on top of Project Reactor.</p>
+
+<p>Project Reactor (or just Reactor) is a Reactive library for building non-blocking applications on the JVM and is based on the Reactive Streams Specification.
+It’s the foundation of the reactive stack in the Spring ecosystem. This will be the topic for the second blog post in this series!</p>
+
+<h2 id="references">References</h2>
+<p><a href="https://subscription.packtpub.com/book/application_development/9781787120426/1/01lvl1sec7/a-brief-history-of-reactivex-and-rxjava">A brief history of ReactiveX and RxJava</a></p>
+
+<p><a href="https://www.youtube.com/playlist?list=PLnXn1AViWyL70R5GuXt_nIDZytYBnvBdd">Build Reactive RESTFUL APIs using Spring Boot/WebFlux</a></p>
+
+<p><a href="https://docs.oracle.com/javase/9/docs/api/java/util/concurrent/Flow.html">Java SE Flow API</a></p>
+
+<p><a href="https://projectreactor.io">Project Reactor</a></p>
+
+<p><a href="https://www.reactivemanifesto.org">Reactive Manifesto</a></p>
+
+<p><a href="https://www.reactive-streams.org">Reactive Streams Specification</a></p>
+
+<p><a href="http://reactivex.io">ReactiveX</a></p>
+
+<p><a href="https://docs.spring.io/spring-framework/docs/5.0.0.M1/spring-framework-reference/html/web-reactive.html">Spring Web Reactive Framework</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Blog Series Reactive Programming Part 1&url=https://callistaenterprise.se/blogg/teknik/2020/05/24/blog-series-reactive-programming-part-1/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Blog Series Reactive Programming Part 1&u=https://callistaenterprise.se/blogg/teknik/2020/05/24/blog-series-reactive-programming-part-1/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Blog Series Reactive Programming Part 1&url=https://callistaenterprise.se/blogg/teknik/2020/05/24/blog-series-reactive-programming-part-1/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
