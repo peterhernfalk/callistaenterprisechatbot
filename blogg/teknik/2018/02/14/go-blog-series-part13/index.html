@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices blog series, part 13 - data consistency, gorm and CockroachDB. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="../go-blog-series-part13.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="../go-blog-series-part13.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="../go-blog-series-part13.html">Go Microservices blog series, part 13 - data consistency, gorm and CockroachDB.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-02-14T00:00:00+00:00">
+            14 February 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part of the Go microservices <a href="../../../../2017/02/17/go-blog-series-part1.html">blog series</a>, we’ll take a look at distributed data storage using <a href="https://www.cockroachlabs.com">CockroachDB</a> and the <a href="http://gorm.io/">GORM</a> O/R-mapper.</p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li>Overview</li>
+  <li>The CAP theorem</li>
+  <li>CockroachDB</li>
+  <li>Installing CockroachDB</li>
+  <li>The new “Dataservice” with GORM</li>
+  <li>Running and testing an endpoint</li>
+  <li>Load test and resilience</li>
+  <li>Summary</li>
+</ol>
+
+<h3 id="source-code">Source code</h3>
+
+<p>The finished source can be cloned from github:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/callistaenterprise/goblog.git
+&gt; git checkout P13
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P13">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="1-overview">1. Overview</h1>
+<p>Data consistency vs availability in distributed systems is a very interesting topic. These days, traditional <a href="https://en.wikipedia.org/wiki/ACID">ACID</a> relational databases are often replaced by NoSQL databases operating on the principles of eventual consistency from the <a href="https://en.wikipedia.org/wiki/Eventual_consistency">BASE</a> model. BASE combined with <a href="https://martinfowler.com/bliki/BoundedContext.html">bounded contexts</a> often forms the basis of persistence in distributed microservice architectures.</p>
+
+<p>Bounded contexts and eventual consistency can somewhat simplified be explained as:</p>
+
+<ul>
+  <li>Bounded contexts are a central pattern in Domain-driven design, which is a very useful pattern when designing microservice architectures. For example - if you have an “Accounts” microservice and an “Orders” microservice, they should own their own data (e.g. “accounts” and “orders”) in separate databases <em>without</em> old-school foreign key constraints between them. Each microservice is solely responsible for writing and reading data from its own domain. If the “orders” microservice needs to know about the owning “account” for a given “order”, the “orders” microservice must ask the “account” microservice for account data - the “orders” microservice may <em>not</em> under any circumstance query or write directly to the tables or document stores of the “account” microservice.</li>
+  <li>Eventual consistency can be several things. It’s primarily the concept of a data replication mechanism where a given data write will <em>eventually</em> be replicated across the distributed storage system so any given read will yield the latest version of the data. One can also consider it a requisite of the bounded context pattern, e.g. for a “business transaction” write that appears atomic to an outside viewer, many microservices may be involved in writing data across several bounded contexts without any distributed mechanisms guaranteeing a global ACID transaction. Instead, <em>eventually</em> all involved microservices will have performed their writes, resulting in a consistent state across the distributed system from the perspective of the business transaction. See a good comparison of ACID and BASE <a href="https://www.thoughtco.com/abandoning-acid-in-favor-of-base-1019674">here</a>.</li>
+</ul>
+
+<p>These days, many people turn to the NoSQL database <a href="http://cassandra.apache.org/">Apache Cassandra</a> when they require horizontally scalable data storage with automatic replication and eventual consistency. However, I’m a bit curious how a cutting edge “SQL” database such as CockroachDB works in our microservice context, so that’ll be the focus of this blog post.</p>
+
+<p>First, a few words about the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>.</p>
+
+<h1 id="2-the-cap-theorem">2. The CAP theorem</h1>
+<p>CAP is a three-letter acronymn for database systems that claims that no distributed database may ever fulfill all these three criterias at any one time:</p>
+
+<ul>
+  <li>Consistent: A read is guaranteed to return the <em>most recent</em> write.</li>
+  <li>Available: The choice is always between serving the data you have even though you can’t guarantee that is the most recent version of it (a write may have occured 10 microseconds ago on another cluster member) OR you must deny serving data if you’re not absolutely sure there’s no inconsistent state of the requested data anywhere in the cluster.</li>
+  <li>Partition tolerant: If a database server goes down, the remaining nodes must continue to function and when the failed node recovers, consistent data must still be served.</li>
+</ul>
+
+<p>A distributed database may only choose two of above, making them either “CAP-Available” (AP) or “CAP-Consistent” (CP). The main advantage of an AP database is better latencies since CP databases must coordinate writes and reads across nodes, while an AP system is allowed to possibly return inconsistent or missing data which is faster. In other words - AP databases favor speed while CP databases favors robustness.</p>
+
+<p>Do note that it’s fully possible to run a CAP-capable distributed database as long as there are no network or other problems. The problem is that there’s always going to be network problems at some point, see <a href="http://en.wikipedia.org/wiki/Fallacies_of_Distributed_Computing">the fallacies of distributed computing</a>. This is especially relevant for microservices given that we’re typically leaving the monolithic database of your enterprise behind, instead letting each microservice “own” their own domain of data - sometimes split over many databases, possibly even across multiple data centers.</p>
+
+<p>CockroachDB is a CAP Consistent (CP) database. For a more in-depth explanation, check out this awesome <a href="https://www.cockroachlabs.com/blog/limits-of-the-cap-theorem/">article</a> from cockroachlabs.</p>
+
+<h1 id="3-cockroachdb">3. CockroachDB</h1>
+<p>CockroachDB was created by ex-Google employees that used to work on Google’s <a href="https://cloud.google.com/spanner/">Cloud Spanner</a>. CockroachDB do - as prevoiusly stated - not claim to be a CAP-database, but claims full C and P, and a significant number of 9’s for availability.</p>
+
+<p>At it’s core, CockroachDB is a distributed key-value store written in Go, but differs from its peers by having an ANSI-compliant SQL interface, behaving like a relational database in most, if not all, aspects. The authors are very transparent about CockroachDB still having some issues making it unsuitable for OLAP-like workloads. Essentially, JOIN operations are continuously being optimized but they still have quite a way to go until the JOIN performance is on par with old-school databases.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-1.png" alt="cockroachdb overview" />
+<em>Source: Cockroachlabs</em></p>
+
+<p>A CockroachDB cluster <em>always</em> consists of at least three database nodes, where the database will stay 100% operational if one node goes down. The underlying replication engine always makes sure any entry exists on at least two nodes with auto-replication if a node goes down. We’ll get back to this claimed resilience a bit later where we’ll stress test things while taking down a DB node, should be a fun exercise!</p>
+
+<h1 id="4-install-and-run">4. Install and run</h1>
+<p>Time to get this database installed and up and running in our cluster. We’re going to pull v1.1.3 directly from Docker Hub and start three nodes, each running one instance of CockroachDB on separate ports. Since each node needs it’s own mounted storage we cannot (AFAIK) run three <em>instances</em> of a CockroachDB <em>docker swarm mode service</em>, we need three separate services.</p>
+
+<p>For development purposes, this is actually very easy. I’ve prepared a bash-script to set this up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+# CoachroachDB master, will publish admin GUI at 3030, mapped from 8080
+docker service rm cockroachdb1
+docker service create --name=cockroachdb1 --network=my_network -p 26257:26257 -p 3030:8080 --mount type=volume,source=cockroach-data1,target=/cockroach/cockroach-data cockroachdb/cockroach:v1.1.3 start --insecure
+
+# CoachroachDB
+docker service rm cockroachdb2
+docker service create --name=cockroachdb2 --network=my_network --mount type=volume,source=cockroach-data2,target=/cockroach/cockroach-data cockroachdb/cockroach:v1.1.3 start --insecure --join=cockroachdb1
+
+# CoachroachDB
+docker service rm cockroachdb3
+docker service create --name=cockroachdb3 --network=my_network --mount type=volume,source=cockroach-data3,target=/cockroach/cockroach-data cockroachdb/cockroach:v1.1.3 start --insecure --join=cockroachdb1
+</code></pre></div></div>
+
+<p>Let’s dissect the first <em>docker service create</em> a bit:</p>
+
+<ul>
+  <li>Ports: We’re publishing port 26257 which actually isn’t necessary unless we want to try to connect to the cluster from the outside. We’re also mapping the admin GUI locally at port 8080 to port 3030.</li>
+  <li>Volume mounts. CockroachDB requires some persistent storage, so we’re mounting a local folder as persistent storage using the <em>–mount</em> flag.</li>
+  <li>Start command: <em>start –insecure</em>. We’re supplying a <em>start</em> command and the <em>–insecure</em> argument (it’s a CockroachDB argument, has nothing to do with Docker!) in order to run a local cluster without setting up certificates. Also note the <em>–join=cockroachdb1</em> argument passed to the two “workers” telling them to form a cluster with their leader.</li>
+</ul>
+
+<p>Startup may take a few minutes, after which the green and pleasant admin GUI should be available in your favorite browser at http://192.168.99.100:3030:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroach-gui2.png" alt="Overview" />
+<em>The overview</em></p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroach-gui3.png" alt="Nodes list" />
+<em>List of server nodes</em></p>
+
+<p>Nice! Now we’re ready to create some databases and users. For more details, please check the rich <a href="https://www.cockroachlabs.com/docs/stable/learn-cockroachdb-sql.html">documentation</a>.</p>
+
+<p>We’re going to use the <a href="https://www.cockroachlabs.com/docs/stable/use-the-built-in-sql-client.html">built-in</a> SQL client to create two databases and a two users - one for each of our bounded contexts. Since our CockroachDB instances are running in Docker Containers, we can’t use <em>cockroach sql</em> directly. We must do it by connecting to a running container using a bit of docker wizardry:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker ps
+
+CONTAINER ID        IMAGE                                COMMAND         
+10f4b6c727f8        cockroachdb/cockroach:v1.1.3         "/cockroach/cockro..." 
+</code></pre></div></div>
+
+<p>Find a container running the <em>cockroachdb/cockroach</em> container and note the container ID. Then we’ll use <em>docker exec</em> to launch the SQL CLI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker exec -it 10f4b6c727f8 ./cockroach sql --insecure
+
+# Welcome to the cockroach SQL interface.
+# All statements must be terminated by a semicolon.
+# To exit: CTRL + D.
+#
+# Server version: CockroachDB CCL v1.1.3 (linux amd64, built 2017/11/27 13:59:10, go1.8.3) (same version as client)
+# Cluster ID: 5c317c3e-5784-4d8f-8478-ec629d8a920d
+#
+# Enter \? for a brief introduction.
+#
+root@:26257/&gt;  
+</code></pre></div></div>
+
+<p>We’re in!</p>
+
+<p>I’ve prepared a .sql file whose contents we easily can copy-paste directly into the console. This is a one-time job for the purpose of this particular blog post. In a real-life scenario you’d obviously script this using some build automation tool.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE DATABASE account;
+CREATE DATABASE image;
+
+CREATE USER account_user WITH PASSWORD 'account_password';
+CREATE USER image_user WITH PASSWORD 'image_password';
+
+GRANT ALL ON DATABASE account TO account_user;
+GRANT ALL ON DATABASE image TO image_user;
+</code></pre></div></div>
+
+<p>Done! Now on to the wonderful world of Go and O/R-mapping!</p>
+
+<h1 id="5-using-cockroachdb-from-go-using-gorm">5. Using CockroachDB from Go using GORM</h1>
+
+<h3 id="51-landscape-overview">5.1 Landscape overview</h3>
+<p>First let’s start with a brand new overview of what the microservice landscape will look like once this part is done:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-overview.png" alt="New landscape overview" /></p>
+
+<p>Key stuff:</p>
+
+<ul>
+  <li>The BoltDB is gone from the <em>accountservice</em>.</li>
+  <li>The new “dataservice” will access <em>accounts</em> and <em>account events</em> stored in a CockroachDB database named “account”.</li>
+  <li>The existing “imageservice” will now store <em>image urls</em> in another CockroachDB database named “image”. (Remember, bounded-contexts and the share-nothing principle of microservices)</li>
+  <li>The two databases above are both hosted in the three-node CockroachDB cluster. Data may exist on any two of three server nodes.</li>
+  <li>The <em>accountservice</em> used to both act as a service aggregator AND account storage. It’s purpose is now strictly orchestrating the fetching of account objects by talking to the Go-based “imageservice” and “dataservice” as well as the Java-based “quotes-service” and then aggregating them to a unified response.</li>
+  <li>The communication from our microservices to the CockroachDB cluster uses the <a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html#why-does-cockroachdb-use-the-postgresql-wire-protocol-instead-of-the-mysql-protocol">postgresql wire protocol</a>.</li>
+</ul>
+
+<h3 id="52-gorm">5.2 GORM</h3>
+<p>GORM is an “<a href="https://en.wikipedia.org/wiki/Object-relational_mapping">object-relational mapper</a>” (ORM) for Go - think of it as a rough equivalent of <a href="http://hibernate.org/">Hibernate</a> or similar, although perhaps not as mature or fully-featured. Still - &gt; 7000 stars on github and over 120 contributors gives an indication of a well-liked and commonly used library.</p>
+
+<p>CockroachDB uses the <a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html#why-does-cockroachdb-use-the-postgresql-wire-protocol-instead-of-the-mysql-protocol">postgresql wire protocol</a> which works very nicely with GORM - GORM has support for several major SQL vendors <a href="http://jinzhu.me/gorm/database.html#connecting-to-a-database">out of the box</a>.</p>
+
+<p>What about tables where we’ll store and retrieve actual data? In this particular blog, we’ll utilize the <a href="http://jinzhu.me/gorm/database.html#migration">AutoMigrate</a> feature of <a href="http://jinzhu.me/gorm/">GORM</a> to create our tables.</p>
+
+<h5 id="521-structs-and-gorm-tags">5.2.1 Structs and gorm tags</h5>
+<p>The AutoMigrate feature introspects Go structs with ‘gorm’-tags and automatically creates tables and columns given these structs. Let’s take a closer look how we declare primary keys, foreign keys and an index directly on the structs by using gorm <a href="https://github.com/golang/go/wiki/Well-known-struct-tags">tags</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type AccountData struct {
+    ID               string         `json:"" gorm:"primary_key"`
+    Name             string         `json:"name"`
+    AccountEvents    []AccountEvent `json:"events" gorm:"ForeignKey:AccountID"`
+}
+
+type AccountEvent struct {
+    ID        string `json:"" gorm:"primary_key"`
+    AccountID string `json:"-" gorm:"index"`
+    EventName string `json:"eventName"`
+    Created   string `json:"created"`
+}    
+</code></pre></div></div>
+
+<p>Most of the GORM tags should be self-explanatory for people vaguely familiar with relational databases - e.g. “primary_key”, “index” etc.</p>
+
+<p>The <em>AccountData</em> struct has a <a href="http://jinzhu.me/gorm/associations.html#has-many">has-many</a> relationship with <em>AccountEvents</em>, mapped using the “ForeignKey:AccountID” tag. This will result in AutoMigrate creating two tables with columns appropriate for each of the struct fields, including foreign key constraints and the specified index. The two tables will be created within the <em>same</em> database with full referential integrity, i.e. they belong to the same “account data” <a href="https://martinfowler.com/bliki/BoundedContext.html">bounded context</a> that’ll be served by our new <em>dataservice</em>. The “image data” - consisting of a single <em>AccountImage</em> struct, will belong to its own bounded context and be served from the <em>imageservice</em> microservice.</p>
+
+<p>The generated tables looks like this from the CockroachDB GUI:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-tables.png" alt="tables tables" /></p>
+
+<p><em>(I’ve rearranged the codebase somewhat so “model” structs used by more than one service resides in _/goblog/common/model</em> now.)_</p>
+
+<h5 id="522-working-with-gorm">5.2.2 Working with Gorm</h5>
+<p>Dealing with Gorm requires surprisingly little boilerplate on the structs, but working with its DSL for querying and mutating data may take a little while getting used to. Let’s take a look at a few basic use cases:</p>
+
+<h6 id="5221-basics-connection-and-automigrate">5.2.2.1 Basics, Connection and AutoMigrate</h6>
+<p>All interactions with the GORM API in these examples happen through “gc.crDB” which is my wrapping of a pointer to <a href="https://godoc.org/github.com/jinzhu/gorm#DB">gorm.DB</a>, i.e:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type GormClient struct {
+    crDB *gorm.DB
+}
+
+var gc &amp;GormClient{}
+</code></pre></div></div>
+
+<p>Below, we’re opening the connection using <em>postgres</em> SQL dialect and then calling the <em>AutoMigrate</em> function to create tables.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> var err error
+ gc.crDB, err = gorm.Open("postgres", addr)    // Addr is supplied from config server, of course
+ if err != nil {
+     panic("failed to connect database: " + err.Error())
+ }
+ 
+ // Migrate the schema
+ gc.crDB.AutoMigrate(&amp;model.AccountData{}, &amp;model.AccountEvent{})  // Note that we pass the structs we want tables for.
+</code></pre></div></div>
+
+<h6 id="5222-persisting-data">5.2.2.2 Persisting data</h6>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Create an instance of our Account struct
+acc := model.AccountData{
+    ID:     key,                      // A pre-generated string id
+    Name:   randomPersonName(),       // Some person name
+    Events: accountEvents,            // slice of AccountEvents
+}
+
+gc.crDB.Create(&amp;acc)                  // Persist!
+</code></pre></div></div>
+
+<p>The code above will write both a row to the ACCOUNT_DATA table as well as any ACCOUNT_EVENT rows present in the Events slice, including foreign keys. Using the SQL client, we can try a standard JOIN:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@:26257&gt; use account;
+root@:26257/account&gt; SELECT * FROM account_data AS ad INNER JOIN account_events AS ae ON ae.account_id = ad.id WHERE ad.id='10000';
++-------+----------+--------------------+------------+------------+---------------------+
+|  id   |   name   |         id         | account_id | event_name |       created       |
++-------+----------+--------------------+------------+------------+---------------------+
+| 10000 | Person_0 | accountEvent-10000 |      10000 | CREATED    | 2017-12-22T21:38:21 |
++-------+----------+--------------------+------------+------------+---------------------+
+(1 row)
+</code></pre></div></div>
+
+<p>We’re seeding one AccountEvent per AccountData so the result is absolutely right!</p>
+
+<h6 id="5223-querying-data">5.2.2.3 Querying data</h6>
+<p>It’s of course possible to use the postgres driver and do standard SQL queries like the one above. However, to leverage GORM appropriately, we’ll use the <a href="http://jinzhu.me/gorm/crud.html#query">query DSL</a> of GORM.</p>
+
+<p>Here’s an example where we load an AccountData instance by ID, <a href="http://jinzhu.me/gorm/crud.html#preloading-eager-loading">eagerly loading</a> any AccountEvents related to it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func (gc *GormClient) QueryAccount(ctx context.Context, accountId string) (model.AccountData, error) {
+    acc := model.AccountData{}                                 // Create empty struct to store result in
+    gc.crDB.Preload("Events").First(&amp;acc, "ID = ?", accountId) // Use the Preload to eagerly fetch events for 
+                                                               // the account. Note use of ID = ?
+    if acc.ID == "" {                                          // Not found handling...
+        return acc, fmt.Errorf("Not Found")
+    }
+    return acc, nil                                            // Return populated struct.
+}    
+</code></pre></div></div>
+
+<p>A more complex example - find all AccountData instances having a person whose name starts with ‘Person_8’ and count the number of AccountEvents for each entry.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func (gc *GormClient) QueryAccountByNameWithCount(ctx context.Context, name string) ([]Pair, error) {
+
+    rows, err := gc.crDB.Table("account_data as ad").             // Specify table including alias
+    Select("name, count(ae.ID)").                                 // Select columns including count, see Group by
+    Joins("join account_events as ae on ae.account_id = ad.id").  // Do a JOIN
+    Where("name like ?", name + "%").                             // Add a where clause
+    Group("name")                                                 // Group by name
+    .Rows()                                                       // Call Rows() to execute the query
+
+    result := make([]Pair, 0)                                     // Create slice for result
+    for rows.Next() {                                             // Iterate over returned rows
+        pair := Pair{}                                            // Pair is just a simple local struct
+        rows.Scan(&amp;pair.Name, &amp;pair.Count)                        // Pass result into struct fields
+        result = append(result, pair)                             // Add resulting pair into slice
+    }
+    return result, err                                            // Return slice with pairs.
+}    
+</code></pre></div></div>
+
+<p>Note the fluent DSL with Select..Joins..Where..Group which is surprisingly pleasant to work with once you get used to it. Should be familiar if you’ve worked with similar APIs in the past such as <a href="https://en.wikipedia.org/wiki/Java_Object_Oriented_Querying">JOOQ</a></p>
+
+<p>Calling an endpoint exposing the query above yields:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[{
+    "Name": "Person_80",
+    "Count": 3
+  }, 
+  {
+    "Name": "Person_81",
+    "Count": 6
+}]
+</code></pre></div></div>
+
+<p><em>Tidied up the response JSON for the sake of readability</em></p>
+
+<h3 id="53-unit-testing-with-gorm">5.3 Unit Testing with GORM</h3>
+<p>Regrettably, there doesn’t seem to be an idiomatic and super-simple way to unit-test GORM interactions with the database. Some strategies do however exist, such as:</p>
+
+<ul>
+  <li>Using <a href="https://github.com/mattn/go-sqlite3">go-sqlite3</a> to boot a real light-weight database in unit tests.</li>
+  <li>Using <a href="https://github.com/DATA-DOG/go-sqlmock">go-sqlmock</a>, see some examples <a href="https://github.com/jirfag/go-queryset/blob/master/queryset/queryset_test.go">here</a>.</li>
+  <li>Using <a href="https://github.com/erikstmartin/go-testdb">go-testdb</a>.</li>
+</ul>
+
+<p>In all honesty, I havn’t really examined any of the options above closely. Instead, I’ve wrapped the GORM db struct in a struct of my own, which implicitly implements this interface:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> type IGormClient interface {
+     QueryAccount(ctx context.Context, accountId string) (model.AccountData, error)
+     QueryAccountByNameWithCount(ctx context.Context, name string) ([]Pair, error)
+     SetupDB(addr string)
+     SeedAccounts() error
+     Check() bool
+     Close()
+ }        
+</code></pre></div></div>
+
+<p>Having an interface makes it very straightforward to use <a href="https://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/github.com/stretchr/testify/mock">testify/mock</a> to mock any interaction with methods on the struct wrapping the GORM db object.</p>
+
+<h1 id="6-running-and-testing-an-endpoint">6. Running and testing an endpoint</h1>
+<p>If you’ve cloned the source and have installed CockroachDB, you can execute the <em>./copyall.sh</em> script to build and deploy the updated microservices:</p>
+
+<ul>
+  <li>accountservice</li>
+  <li>imageservice</li>
+  <li>dataservice (NEW)</li>
+  <li>vipservice</li>
+</ul>
+
+<p>The configuration has been updated, including <a href="https://github.com/eriklupander/go-microservice-config/blob/P13/dataservice-test.yml">.yaml-files</a> for the new “dataservice”.</p>
+
+<p>Once we’re up and running, let’s do a curl request to the “accountservice” <em>/accounts/{accountId}</em> endpoint:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://192.168.99.100:6767/accounts/10002 -k | json_pp
+{
+   "imageData" : {
+      "id" : "10002",
+      "servedBy" : "10.0.0.26",
+      "url" : "http://path.to.some.image/10002.png"
+   },
+   "id" : "10002",
+   "servedBy" : "10.0.0.3",
+   "name" : "Person_2",
+   "accountEvents" : [
+      {
+         "ID" : "accountEvent-10002",
+         "created" : "2017-12-22T22:31:06",
+         "eventName" : "CREATED"
+      }
+   ],
+   "quote" : {
+      "ipAddress" : "eecd94253fcc/10.0.0.18:8080",
+      "quote" : "To be or not to be",
+      "language" : "en"
+   }
+}
+</code></pre></div></div>
+
+<p>Looks good to me!</p>
+
+<h1 id="7-load-test-and-resilience">7. Load test and resilience</h1>
+<p>Let’s get down to the business of testing whether our setup with CockroachDB is Consistent and Partition Tolerant, while providing acceptable levels of Availability.</p>
+
+<p>Load- and resilience testing a microservice landscape with a distributed data store such as CockroachDB on a laptop running everything in virtualbox isn’t that realistic perhaps, but should at least provide some insights.</p>
+
+<p>For this purpose, I’m going to set up a landscape with the following characteristics:</p>
+
+<ul>
+  <li>We’ll bypass our EDGE server. We’ll call the accountservice directly to remove TLS overhead for this particular test case.</li>
+  <li>1 instance of the <em>accountservice</em>, <em>imageservice</em>, <em>dataservice</em> respectively.</li>
+  <li>2 instances of the <em>quotes-service</em>.</li>
+  <li>3 CockroachDB instances each running as a Docker Swarm mode service.</li>
+</ul>
+
+<h3 id="71-results---gatling">7.1 Results - Gatling</h3>
+
+<p>I’ve pre-seeded the “account” database with about 15000 records, including at least one “account_event” per “account”. First test runs a <a href="https://gatling.io">gatling</a> <a href="https://github.com">test</a> that bombs away at the <em>/accounts/{accountId}</em> microservice to fetch our account objects with a peak rate of 50 req/s.</p>
+
+<h5 id="711-first-run">7.1.1 First run</h5>
+<p>The test runs for 75 seconds with a 5 second ramp-up time.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-gatling2.png" alt="gatling report 1" />
+<em>Figure 7.1.1: Latencies (ms)</em></p>
+
+<p>Overall latencies are just fine, our microservices and the CockroachDB have no issue whatsoever handling ~50 req/s.</p>
+
+<p><em>(Why not more traffic? I ran into <a href="https://github.com/moby/moby/issues/31746">this bug</a> which introduced 1 or 2 seconds of extra latency per “hop” inside the cluster when running the test for a longer time _or</em> with more traffic - effectively making the results worthless for this test case)_</p>
+
+<h5 id="712-second-run">7.1.2 Second run</h5>
+<p>During the second run at approx. 20:10:00 in the test, I’m deliberately killing the “cockroachdb3” service. At 20:10:30, I restart the “cockroachdb3” service.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-gatling1.png" alt="gatling report 2" />
+<em>Figure 7.1.2.1: Service response time (ms)</em></p>
+
+<p>Killing one of the three cockroachdb nodes and restarting it ~30 seconds later has the following effects:</p>
+
+<ul>
+  <li>No requests fail. This is probably a combination of the CockroachDB master quickly stopping handing over queries to the unavailable node as well as the retrier logic in our microservice which makes sure a failed call from the <em>accountservice</em> to the <em>dataservice</em> is retried 100 ms later.</li>
+  <li>Taking down the node just before 20:10:00 <em>probably</em> causes the small latency spike at ~20:09:57_, though I’d say it is a very manageable little spike end-users probably wouldn’t notice unless this was some kind of near-realtime trading platform or similar.</li>
+  <li>The larger much more noticable spike actually happens when the “cockroachdb3” node comes back up again. My best guess here is that the cockroachdb cluster spends some CPU time and possibly blocks operations when the node re-joins the cluster making sure it’s put into a synchronized state or similar.</li>
+  <li>The mean service latency increased from 33 in run #1 to 39 in run #2, which indicates that while the “spike” at 20:10:30 is noticable, it affects relatively few requests as a whole causing just a slight adverse effect on the overall latencies of the test run.</li>
+</ul>
+
+<h5 id="713-both-scenarios-from-the-cockroachdb-gui">7.1.3 Both scenarios from the CockroachDB GUI</h5>
+<p>We can look at the same scenarios from the perspective of the CockroachDB GUI where we can examine a plethora of different metrics.</p>
+
+<p>In the graphs below, we see both scenarios in each graph - i.e. we first run the Gatling test <em>without</em> taking down a CockroachDB instance, while we do the same “kill and revive”-scenario a minute later.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-qps.png" alt="cockroachdb1" />
+<em>Figure 7.1.3.1: CockroachDB queries per second over the last 10 seconds</em></p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-99th.png" alt="cockroachdb2" />
+<em>Figure 7.1.3.2: CockroachDB 99th percentile latency over the last minute</em></p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-lnc.png" alt="cockroachdb3" />
+<em>Figure 7.1.3.3: CockroachDB live node count</em></p>
+
+<p>The graphs from CockroachDB are pretty consistent with what we saw in the Gatling tests - <em>taking down</em> a CockroachDB node has hardly any noticable effect on latencies or availabilty, while <em>taking up</em> a node actually has a rather severe - though short-lived - effect on the system.</p>
+
+<h5 id="713-resource-utilization">7.1.3 Resource utilization</h5>
+<p>A typical snapshot of Docker Swarm mode manager node CPU and memory utilization for a number of running containers during the first test:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER                                    CPU %               MEM USAGE / LIMIT    
+cockroachdb1.1.jerstedhcv8pc7a3ec3ck9th5     33.46%              207.9MiB / 7.789GiB  
+cockroachdb2.1.pkhk6dn93fyr14dp8mpqwkpcx     1.30%               148.3MiB / 7.789GiB 
+cockroachdb3.1.2ek4eunib4horzte5l1utacc0     10.94%              193.1MiB / 7.789GiB 
+dataservice.1.p342v6rp7vn79qsn3dyzx0mq6      8.41%               10.52MiB / 7.789GiB
+imageservice.1.o7odce6gaxet5zxrpme8oo8pr     9.81%               11.5MiB / 7.789GiB   
+accountservice.1.isajx2vrkgyn6qm50ntd2adja   17.44%              15.98MiB / 7.789GiB  
+quotes-service.2.yi0n6088226dafum8djz6u3rf   7.03%               264.5MiB / 7.789GiB 
+quotes-service.1.5zrjagriq6hfwom6uydlofkx1   10.16%              250.7MiB / 7.789GiB 
+</code></pre></div></div>
+
+<p>We see that the master CockroachDB instance (#1) takes most of the load, while #2 seems to be almost unused while #3 uses ~10% CPU. Not entirely sure what’s going on under the hood among the CockroachDB nodes, probably the master node is handing off some work to the other node(s) (perhaps those requests whose data it doesn’t store itself?).</p>
+
+<p>Another note is that our Go microservices - especially the “accountservice” - is using a substantial amount of CPU serving the load - in a more real-life scenario we would almost certainly have scaled the accountservice to several worker nodes as well. On a positive note - our Go-based microservices are still using very little RAM.</p>
+
+<h3 id="72-concurrent-readwrites">7.2 Concurrent read/writes</h3>
+<p>This test case will <em>write</em> random account objects through a new POST API in the <em>accountservice</em> to the databases while simultaneously performing a lot of reads. We’ll observe behaviour as we put the system under moderate (total ~140 DB interactions per second) load and finally see what happens when we pull the plug from one, then another, of the CockroachDB instances just like in 7.1.2 above.</p>
+
+<p>This load-test that writes/reads things concurrently and acts upon newly created data is written in a simple Go <a href="https://github.com/callistaenterprise/goblog/blob/P13/dbloadtest/main.go">program</a>. We’ll observe the behaviour by looking at the graphs in the CockroachDB admin GUI.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-qps2.png" alt="concurrent 1" />
+<em>Figure 7.2.1: Queries per second and 99th percentile</em></p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-lnc2.png" alt="concurrent 2" />
+<em>Figure 7.2.2: Node count</em></p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-cockroachdb-replicas.png" alt="concurrent 3" />
+<em>Figure 7.2.3: Replicas</em></p>
+
+<p>What can we make of the above?</p>
+
+<ul>
+  <li>CoachroachDB and our microservices seems to handle taking down and then up nodes during a read/write load quite well.</li>
+  <li>The main noticable latency spike we see happens at 10:18:30 in the timeline when we bring “cockroachdb3” back up.</li>
+  <li>Again - taking <em>down</em> nodes are handled really well.</li>
+  <li>Taking <em>up</em> “cockroachdb2” at 10:15:30 was hardly noticable, while taking up “cockroachdb3” at 10:18:30 affected latencies much more. This is - as previously stated - probably related to how CockroachDB distributes data and queries amongst cluster members. For example - perhaps the ~500 records written per minute while a node were down is automatically replicated to the node that was unavailable when it comes back up.</li>
+</ul>
+
+<h3 id="73-the-issue-of-addressing">7.3 The issue of addressing</h3>
+<p>As you just saw, our cluster can handle when a CockroachDB worker node goes down, providing seamless balancing and failover mechanisms. The problem is that if we kill “cockroachdb1”, things comes abruptly to a halt. This stems from the fact that our CoackroachDB cluster is running as three <em>separate</em> Docker Swarm mode services - each having their own unique “cockroachdb1”, “cockroachdb2” and “cockroachdb3” service name. Our <em>dataservice</em> only knows about this connection URL:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> postgresql://account_user:account_password@cockroachdb1:26257/account 
+                                            ^  HERE!  ^
+</code></pre></div></div>
+
+<p>so if the service named “cockroachdb1” goes down, we’re in deep s–t. The setup with three separate Docker Swarm mode services is by the way the <a href="https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html">official</a> way to run CockroachDB on Docker Swarm mode.</p>
+
+<p>Ideally, our “dataservice” should only need to know about a single “cockroachdb” service, but at this point I havn’t figured out how to run three <em>replicas</em> of a CockroachDB service which would make them a single adressable entity. The main issue seems to be mounting <em>separate</em> persistent storage volumes for <em>each</em> replica, but there may be other issues.</p>
+
+<p>Anyway - my interrim <strong>hacky</strong> solution would probably be based around the concept of client-side load balancing (see <a href="../../../../2017/04/24/go-blog-series-part7.html">part 7</a> of the blog series), where our <em>dataservice</em> would have to become Docker API-aware and use the Docker Remote API to get and maintain a list of IP-addresses for containers having a given label.</p>
+
+<p>If we add <em>–label cockroachdb</em> to our <em>docker service create</em> commands, we could then apply a filter predicate for that label to a “list services” Docker API call in order to get all running CockroachDB instances. Then, it’ll be straightforward to implement a simple round-robin client-side load balancing mechanism rotating connection instance(s) to the CockroachDB nodes including circuit-breaking and housekeeping.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part13-clb.png" alt="part13 - client side load balancer" /> 
+<em>Figure 7.3</em></p>
+
+<p>I’d consider the above solution a hack, I’d much rather figure out how to run CockroachDB instances using replicas. Also - do note that running production databases inside containers with mounted storage is kind of <a href="https://myopsblog.wordpress.com/2017/02/06/why-databases-is-not-for-containers/">frowned upon</a> anyway, so in a production scenario you’d probably want to use a dedicated DB cluster anyway.</p>
+
+<h1 id="8-summary">8. Summary</h1>
+<p>In this part of the blog series, we’ve added a “dataservice” that works with the CockroachDB database well suited to distributed operation, also using the Gorm O/R-mapper for Go for mapping our Go structs to SQL and back. While we’ve only scratched the surface of the capabilities of CockroachDB, our simple tests seems to indicate an open-source database that might be a really interesting candidate for systems that needs a SQL/ACID-capable relational database with horizontal scalability, consistency and high availability.</p>
+
+<p>The <a href="../../../05/07/go-blog-series-part14/index.html">next part</a> <del>should deal with an issue that actually should be one of the first things to incorporate in a sound software architecture - security</del>~ adds support for querying accounts using GraphQL. We’ll get to security - promise!</p>
+
+<p>Please help spread the word! Feel free to share this blog post using your favorite social media platform, there’s some icons below to get you started.</p>
+
+<p>Until next time,</p>
+
+<p>// Erik</p>
+
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part13&url=https://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part13&u=https://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part13&url=https://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

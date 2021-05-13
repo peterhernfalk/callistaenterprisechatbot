@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Microservices, part 6. Adding a Configuration Server | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Microservices, part 6. Adding a Configuration Server</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-05-12T00:00:00+00:00">
+            12 May 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>The more microservices we get in our system landscape, the harder it gets to perform configuration management. If each microservice have its own configuration, typically in a local property or yaml file, it can quickly become a nightmare to maintain. Let’s add a Configuration Server to centralise management of all the configuration files!</p>
+
+<p></p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>In this blog post we will complement the system landscape in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series - Building Microservices</a> with a configuration server based on <a href="https://cloud.spring.io/spring-cloud-config/">Spring Cloud Config</a>:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-6/adding-config-server.png" alt="Config Server" /></p>
+
+<p>…and describe how it can be used to centralise the configuration management for a microservices based system landscape:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-6/config-server.png" alt="Config Server" /></p>
+
+<blockquote>
+  <p>We actually used the configuration server already in the <a href="../../../../2016/09/30/building-microservices-part-5-springcloud11-docker4mac/index.html">previous blog post</a> that focused on tooling, e.g. Docker for Mac and Spring Cloud Brixton (i.e. v1.1). Now it’s time to explain how it works!</p>
+</blockquote>
+
+<p>We will cover the following aspects of using <a href="https://cloud.spring.io/spring-cloud-config/">Spring Cloud Config</a>:</p>
+
+<ol>
+  <li>
+    <p><strong>Server setup</strong><br />
+ How to create a configuration server</p>
+  </li>
+  <li>
+    <p><strong>Client configuration</strong><br />
+How to configure the clients, i.e. our microservices, to get their configuration from the config server</p>
+  </li>
+  <li>
+    <p><strong>Configuration structure</strong><br />
+ How a configuration repository can be structured</p>
+  </li>
+  <li>
+    <p><strong>Secure the configuration</strong><br />
+ How to secure the configuration, both at rest and in transit</p>
+  </li>
+  <li>
+    <p><strong>Configuration storage and change propagation</strong><br />
+ How to store the configuration and how changes in the configuration can be propagated to the configuration server and affected microservices</p>
+  </li>
+  <li>
+    <p><strong>Refreshable properties</strong><br />
+ How a microservice can react on an updated configuration in runtime without require a restart</p>
+  </li>
+</ol>
+
+<p>Each section will explain the most central parts of the code and when applicable run some tests to prove that it’s actually working!</p>
+
+<p>But first, let’s get it up and running without any further explanations, shall we?</p>
+
+<h2 id="build-and-run">Build and Run</h2>
+
+<p>For details on how to build and run the microservice landscape in this blog post series, see the <a href="../../../../2016/09/30/building-microservices-part-5-springcloud11-docker4mac/index.html">previous blog post</a>.</p>
+
+<blockquote>
+  <p>To be able to run some of the commands used below you need to have the tools <a href="http://curl.haxx.se">cURL</a> and <a href="http://stedolan.github.io/jq/">jq</a> installed.</p>
+</blockquote>
+
+<p>In summary:</p>
+
+<ol>
+  <li>
+    <p>Open a terminal, create a folder of your choice and <code class="language-plaintext highlighter-rouge">cd</code> into it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ mkdir a-folder-of-your-choice
+ $ cd a-folder-of-your-choice
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Since we have externalised our configuration into a configuration repository we first need to get it from GitHub:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ git clone https://github.com/callistaenterprise/blog-microservices-config.git
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Next, we get the source code from GitHub and checkout the branch used for this blog post:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ git clone https://github.com/callistaenterprise/blog-microservices.git
+ $ cd blog-microservices
+ $ git checkout -b B9 M9
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now we can build our microservices with:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ ./build-all.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Finally we can bring up the dockerized microservice landscape and run a test:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ . ./test-all.sh start
+</code></pre></div>    </div>
+
+    <p>It should after a while result in a response from the API request like:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -ks https://localhost:443/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+ {
+   "productId": 123,
+   "name": "name",
+   "weight": 123,
+   "recommendations": [	...  ],
+   "reviews": [ ... ],
+   "serviceAddresses": { ... }
+ }
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Note #1:</strong> We, don’t shut down the microservice landscape (can be done by adding the parameter: <code class="language-plaintext highlighter-rouge">stop</code>). We will use it later on run some tests that demonstrates that the things we explain actually works.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>Note #2:</strong> The first <code class="language-plaintext highlighter-rouge">.</code>in the command above is essential. It allows us to reuse the <code class="language-plaintext highlighter-rouge">TOKEN</code> environment variable that the script creates to store an OAuth Access Token, i.e. we don’t need to acquire one ourselves.</p>
+</blockquote>
+
+<h2 id="reference-documentation">Reference documentation</h2>
+
+<p>Further details, not covered in this blog post, on how to use <a href="https://cloud.spring.io/spring-cloud-config/">Spring Cloud Config</a> can be found in the <a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html">reference documentation</a>.</p>
+
+<h2 id="notes-on-upgrades-from-the-previous-blog-post">Notes on upgrades from the previous blog post</h2>
+
+<p>We have replaced the no longer maintained Docker image for a 32 bit embedded Java 8 JRE, used to keep memory consumption to a minimum, with the official 64 bit Open JDK Java 8 JRE. To minimise the increase of memory usage by going from 32 bit to 64 bit we have setup a max size of the heap for each microservice in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> - file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>environment:
+  - JAVA_TOOL_OPTIONS=${MY_JAVA_TOOL_OPTIONS}
+</code></pre></div></div>
+
+<p>We have created a setup-file, <code class="language-plaintext highlighter-rouge">setup-env.sh</code> for the required environment variable <code class="language-plaintext highlighter-rouge">MY_JAVA_TOOL_OPTIONS</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export MY_JAVA_TOOL_OPTIONS=-Xmx256M
+</code></pre></div></div>
+
+<p>You need to execute it once before you run any <code class="language-plaintext highlighter-rouge">docker-compose</code>commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ . ./setup-env.sh
+</code></pre></div></div>
+
+<p>Then you can, for example, start up the system landscape with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
+</code></pre></div></div>
+
+<h1 id="1-server-setup">1. Server setup</h1>
+
+<p>Setting up a Spring Cloud Config server is very straight forward, i.e. very similar to how to setup the other Spring Cloud servers, e.g. Discovery, Edge and OAuth Authorization Servers:</p>
+
+<ol>
+  <li>The config server runs as a conventional Spring Boot application</li>
+  <li>
+    <p>The Gradle dependency that enables it to be a config server is:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> compile('org.springframework.cloud:spring-cloud-config-server')
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>It only contains a single Java class: <code class="language-plaintext highlighter-rouge">ConfigServerApplication</code> and the only thing of interest in it is the following annotations on its <code class="language-plaintext highlighter-rouge">static main</code> - method:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> @EnableConfigServer
+ @EnableDiscoveryClient
+ @SpringBootApplication
+</code></pre></div>    </div>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">@EnableConfigServer</code> is what makes it a config server</li>
+      <li><code class="language-plaintext highlighter-rouge">@EnableDiscoveryClient</code> enables it to register itself with Eureka, our discovery server, (more on that below)</li>
+      <li><code class="language-plaintext highlighter-rouge">@SpringBootApplication</code> is, as usual, what makes our application an Spring Boot application.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>The source code of the config server also contains:</p>
+
+<ol>
+  <li>Standard configuration files, its content will be explained below</li>
+  <li>An empty test-class, that at least ensure that the config server can start</li>
+  <li>A conventional Dockerfile</li>
+</ol>
+
+<h1 id="2-client-configuration">2. Client configuration</h1>
+
+<p>Clients, i.e. our microservices, that want’s to access its configuration can reach the config server in two ways:</p>
+
+<ol>
+  <li>Bind directly to the config server using the configuration property <code class="language-plaintext highlighter-rouge">spring.cloud.config.uri</code></li>
+  <li>Lookup a config server using the discovery server, Eureka. This can be done by specifying the properties:
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">spring.cloud.config.discovery.enabled: true</code> (defaults to false)</li>
+      <li><code class="language-plaintext highlighter-rouge">spring.cloud.config.discovery.serviceId: config-server</code>, i.e. the name of the config server as specified in the config server’s <code class="language-plaintext highlighter-rouge">bootstrap.yml</code> - file in the property <code class="language-plaintext highlighter-rouge">spring.application.name</code>.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>Each client stores this connection configuration in its local <code class="language-plaintext highlighter-rouge">bootstrap.yml</code>-file.</p>
+
+<blockquote>
+  <p>Clients can’t store information on how to connect to the config server in the config servers repository, right?</p>
+</blockquote>
+
+<p>Option no. 2 might seem better due to the looser coupling, e.g. you can  move the config-server or have multiple config servers started to avoid a single point of failure. Option no. 1 however works fine as well given that you deploy your microservices in a container orchestrator, e.g. Docker in Swarm mode or Kubernetes, since they will provide a logical service name that the clients can use and the container orchestrator will forward the request to one of the running config server. More on that subject in a future blog post.</p>
+
+<p>For the scope of this blog post we will use option no. 1, but the configuration files are prepared for option no. 2, just change the properties <code class="language-plaintext highlighter-rouge">spring.cloud.config.discovery.enabled</code> from <code class="language-plaintext highlighter-rouge">false</code>to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>To add some robustness to the solution I have also added connection configuration that allows the clients to retry connecting to the config server if they can’t access the config server, e.g. during startup of all the services after a <code class="language-plaintext highlighter-rouge">docker-compose ut -d</code> - command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring:
+  cloud:
+    config:
+      failFast: true
+      retry:
+        initialInterval: 3000
+        multiplier: 1.3
+        maxInterval: 5000
+        maxAttempts: 20
+</code></pre></div></div>
+
+<h1 id="3-configuration-structure">3. Configuration structure</h1>
+
+<p>All local configuration files, e.g. <code class="language-plaintext highlighter-rouge">application.yml</code>, for each microservice will be moved to a central configuration repository (use <a href="https://github.com/callistaenterprise/blog-microservices/tree/B6">Git branch B6</a> to see the local configuration files before they were centralised). An obvious question is how to structure the files when they are placed together.</p>
+
+<p>Two important aspects are:</p>
+
+<ol>
+  <li>How to share common configuration and how to allow for microservice specific configuration</li>
+  <li>How to handle environment specific configuration</li>
+</ol>
+
+<p>All common configuration is placed in the file <code class="language-plaintext highlighter-rouge">application.yml</code> and specific configuration per microservice is placed in a file with the name of the microservice (as specified in the property <code class="language-plaintext highlighter-rouge">spring.application.name</code> in the local file <code class="language-plaintext highlighter-rouge">bootstrap.yml</code>).</p>
+
+<p>Environment specific configuration is handled as before, i.e. in different Spring profiles. The <code class="language-plaintext highlighter-rouge">default</code> profile is used for running the microservices locally without containers and the <code class="language-plaintext highlighter-rouge">docker</code> profile is used for deployment in Docker. This model can easily be extended by adding more profiles for specific environments, e.g. profiles for <code class="language-plaintext highlighter-rouge">test</code>, <code class="language-plaintext highlighter-rouge">qa</code>and <code class="language-plaintext highlighter-rouge">prod</code>.</p>
+
+<p>The config repository contains the following files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>application.yml
+auth-server.yml
+composite-service.yml
+edge-server.yml
+monitor-dashboard.yml
+review-service.yml
+</code></pre></div></div>
+
+<p>The config server expose a REST API for accessing the configuration.</p>
+
+<p>To get access to the default configuration for all microservices you make a request like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/application/default | jq
+</code></pre></div></div>
+
+<blockquote>
+  <p>The use of <code class="language-plaintext highlighter-rouge">$MY_CONFIG_USER:$MY_CONFIG_PWD@</code> will be explain below in the section regarding security.</p>
+</blockquote>
+
+<p>…and you will get a response like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "name": "application",
+  "profiles": [
+    "default"
+  ],
+  "label": null,
+  "version": null,
+  "propertySources": [
+    {
+      "name": "file:/config-repo/application.yml",
+      "source": {
+        "server.port": 0,
+        "service.defaultMinMs": 5,
+        "service.defaultMaxMs": 20,
+		  .	..	
+</code></pre></div></div>
+
+<p>If you want to see the configuration for the review-service when it runs in Docker you ca submit a request like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/review-service/docker | jq
+</code></pre></div></div>
+
+<p>…and get a response like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "name": "review-service",
+  "profiles": [
+    "docker"
+  ],
+  "label": null,
+  "version": null,
+  "propertySources": [
+    {
+      "name": "file:/config-repo/application.yml#docker",
+      "source": {
+        "spring.profiles": "docker",
+        "server.port": 8080,
+        "spring.rabbitmq.host": "rabbitmq",
+        "eureka.instance.preferIpAddress": true,
+        "eureka.client.serviceUrl.defaultZone": "http://discovery:8761/eureka/"
+      }
+    },
+    {
+      "name": "file:/config-repo/review-service.yml",
+      "source": {
+        "service": "",
+        "my-secret-property": "my-secret-value"
+      }
+    },
+    {
+      "name": "file:/config-repo/application.yml",
+      "source": {
+        "server.port": 0,
+        "service.defaultMinMs": 5,
+		  .	..	
+</code></pre></div></div>
+
+<h1 id="4-secure-the-configuration">4. Secure the configuration</h1>
+
+<p>Securing the configuration is of course vital in a production environment.</p>
+
+<p>To me, security aspects can be divided in two main areas:</p>
+
+<ol>
+  <li>
+    <p>How to prevent unauthorised clients to access the configuration information when it is <em>in transit</em>, i.e. during an API call to the configuration server.</p>
+  </li>
+  <li>
+    <p>How to protect sensitive data (e.g. credentials) <em>at rest</em>, i.e on disk, from potential intruders that got access to the file system.</p>
+  </li>
+</ol>
+
+<h2 id="41-secure-the-configuration-in-transit">4.1 Secure the configuration in transit</h2>
+
+<p>To protect the configuration information in transit there are two aspects to cover:</p>
+
+<ol>
+  <li>
+    <p>How to ensure that only authorised clients can make calls to the configuration server API.</p>
+  </li>
+  <li>
+    <p>How to ensure that a non authorised third parties can’t eavesdrop the API calls, i.e. intercept the network traffic and get access to the configuration information.</p>
+  </li>
+</ol>
+
+<p>To prevent eavesdropping we need to ensure that the traffic is encrypted in a sufficient way (i.e. using HTTPS with TLS and proper encryption algorithms and cipher suites) and to authorise the clients we can apply a wide range of mechanisms e.g. HTTP Basic Authentication, HTTPS with mutual authentication or OAuth.</p>
+
+<p>In this blog post we use HTTPS to encrypt the communication and HTTP Basic Auth to ensure that only authorised clients can make calls to the configuration server.</p>
+
+<p>The username and password used for Basic Auth is externalised in the <code class="language-plaintext highlighter-rouge">setup-env.sh</code> - file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export MY_CONFIG_USER=config_client
+export MY_CONFIG_PWD=config_client_pwd
+</code></pre></div></div>
+
+<p>The config server uses Spring Security to protect its API’s and gets the approved username and password injected in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> - file as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  config:
+    environment:
+      - SECURITY_USER_NAME=${MY_CONFIG_USER}
+      - SECURITY_USER_PASSWORD=${MY_CONFIG_PWD}
+</code></pre></div></div>
+
+<p>All config clients gets a pair of environment variables defined in <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> - file as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>environment:
+  - MY_CONFIG_USER=${MY_CONFIG_USER}
+  - MY_CONFIG_PWD=${MY_CONFIG_PWD}
+</code></pre></div></div>
+
+<p>That they use in their local <code class="language-plaintext highlighter-rouge">bootstrap.yml</code> - file to setup the username and password in the URL to the config server as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring:
+  cloud:
+    config:
+      uri: https://${MY_CONFIG_USER}:${MY_CONFIG_PWD}@config:8888
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> In a Docker based production environment I strongly recommend you to use a container orchestrator such as Kubernetes or Docker in Swarm mode and then use the build in support in those tools for handling secrets such as usernames and passwords instead of passing them through environment files. I hope to be able to cover how that is done in a future blog post!</p>
+</blockquote>
+
+<p>Try it out by asking for some configuration information!</p>
+
+<p>First without supplying any credentials:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://localhost:8888/application/default | jq
+</code></pre></div></div>
+
+<p>Returns an expected error message:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "timestamp": 1494318890659,
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Full authentication is required to access this resource",
+  "path": "/application/default"
+}
+</code></pre></div></div>
+
+<p>Next, add authentication info in the request:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/application/default | jq
+</code></pre></div></div>
+
+<p>…and you will get the expected configuration information:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "name": "application",
+  "profiles": [
+    "default"
+  ],
+  "label": null,
+  "version": null,
+  "propertySources": [
+    {
+      "name": "file:/config-repo/application.yml",
+      "source": {
+        "server.port": 0,
+        .
+        .
+        .
+</code></pre></div></div>
+
+<h2 id="42-secure-the-configuration-at-rest">4.2 Secure the configuration at rest</h2>
+
+<p>The Spring Cloud Config server supports encryption of sensitive properties in the configuration files. To be able to encrypt sensitive properties it needs a encryption key to be configured. The key can either be symmetric or asymmetric.</p>
+
+<p>Asymmetric keys are superior in terms of security, but symmetric keys are easier to setup so we will use a symmetric key in this blog post. For details see the reference documentation regarding <a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_key_management">key_management</a>.</p>
+
+<p>The config server provides two endpoint for encrypting and decrypting sensitive properties: <code class="language-plaintext highlighter-rouge">/encrypt</code>and <code class="language-plaintext highlighter-rouge">/decrypt</code>. These two endpoints needs of course to be protected as well as described above.</p>
+
+<p>We have, again, used the <code class="language-plaintext highlighter-rouge">setup-env.sh</code>- file to externalise sensitive information, in this case the symmetric key:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export MY_CONFIG_ENCRYPT_KEY=my-very-secret-encryption-key
+</code></pre></div></div>
+
+<p>We setup an environment variable for the config server with the symmetric key in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> - file as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  config:
+    environment:
+	   - MY_CONFIG_ENCRYPT_KEY=${MY_CONFIG_ENCRYPT_KEY}
+</code></pre></div></div>
+
+<p>Finally is the config server using the environment variable in its local configuration file <code class="language-plaintext highlighter-rouge">bootstrap.yml</code> as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>encrypt.key: ${MY_CONFIG_ENCRYPT_KEY}
+</code></pre></div></div>
+
+<p>Try it out, encrypt the text <code class="language-plaintext highlighter-rouge">my-secret</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/encrypt -d my-secret
+cfdfe0ed3eeb9dc406508d4a5a7124e7192def5422a86bd5183ff00eb6fb1d77
+</code></pre></div></div>
+
+<p>…and decrypt it back:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/decrypt -d cfdfe0ed3eeb9dc406508d4a5a7124e7192def5422a86bd5183ff00eb6fb1d77
+my-secret
+</code></pre></div></div>
+
+<p>The encrypted value can be used in our config files in the config repo, e.g. in <code class="language-plaintext highlighter-rouge">review-service.yml</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my-secret-property: '{cipher}cfdfe0ed3eeb9dc406508d4a5a7124e7192def5422a86bd5183ff00eb6fb1d77'
+</code></pre></div></div>
+
+<p>The review service will get the property in clear text from the config server, so it is totally unaware of that the property is protected at rest.</p>
+
+<p>See <code class="language-plaintext highlighter-rouge">blog-microservices/microservices/core/review-service/src/main/java/se/callista/microservices/core/review/service/ReviewService.java</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class ReviewService {
+
+    @Value("${my-secret-property:UNKNOWN}")
+    private String mySecretProperty;
+
+	...
+
+    @RequestMapping("/review")
+    public List&lt;Review&gt; getReviews(
+        @RequestParam(value = "productId",  required = true) int productId) {
+
+        LOG.info("mySecretProperty: {}", mySecretProperty);
+</code></pre></div></div>
+
+<p>Try it out with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://localhost:443/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+</code></pre></div></div>
+
+<p>…and you will see the decrypted value in the log output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose logs --tail=10 rev
+...
+rev_1 | 2017-05-12 13:34:30.185 INFO ... ReviewService : mySecretProperty: my-secret-value
+...
+</code></pre></div></div>
+
+<blockquote>
+  <p>In general it is obviously not a very good idea to print out decrypted values in the log output…</p>
+</blockquote>
+
+<h1 id="5-configuration-storage-and-change-propagation">5. Configuration storage and change propagation</h1>
+
+<p>Spring Cloud Config supports storing the configuration files in either:</p>
+
+<ol>
+  <li>A version control system, either Git or Subversion</li>
+  <li>The local file system</li>
+  <li><a href="https://www.vaultproject.io/">HashiCorp Vault</a></li>
+</ol>
+
+<p>This blog post covers how to store the configuration files in ether a Git repo or in the local file system, checkout the <a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html">reference documentation</a> for information on the other options.</p>
+
+<p>The configuration files are normally stored in a Git repo, providing version control of the configuration (actually very useful!). For development, storing the configuration directly in the local file system is very handy.</p>
+
+<p>In this section we will go through:</p>
+
+<ol>
+  <li>Git based storage</li>
+  <li>Push notifications from a Git server</li>
+  <li>Propagating configuration changes to the clients</li>
+  <li>File based storage</li>
+  <li>Usage in this blog post</li>
+</ol>
+
+<h2 id="51-git-based-storage">5.1 Git based storage</h2>
+
+<p>The Git repo can be stored locally, e.g during development, but is normally hosted on a Git server.</p>
+
+<p>For a local Git repo, the configuration can look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.config.server.git.uri: file:///${PWD}/../../../../blog-microservices-config/
+</code></pre></div></div>
+
+<p>For a git repo on GitHub, the configuration can look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.config.server.git:
+  uri: https://github.com/callistaenterprise/blog-microservices-config.git
+  username: your-username
+  password: your-password
+</code></pre></div></div>
+
+<h2 id="52-push-notifications-from-a-git-server">5.2 Push notifications from a Git server</h2>
+
+<p>To be able to be notified on changes of the configuration in a Git repo on a Git server Spring Cloud Config supports webhook based push notifications from GitHub, GitLab and Bitbucket. By adding the following dependency in the config servers Gradle build file, a <code class="language-plaintext highlighter-rouge">/monitor</code> endpoint is enabled:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>compile('org.springframework.cloud:spring-cloud-config-monitor')
+</code></pre></div></div>
+
+<p>A webhook can now be registered in the Git repo on the Git server using a URL like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://dns-name-for-the-config-server:8888/monitor
+</code></pre></div></div>
+
+<p>To test push notifications locally you can simulate a webhook request from GitHub using <code class="language-plaintext highlighter-rouge">curl</code> like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "X-Github-Event: push" -H "Content-Type: application/json" -X POST -d '{"commits": [{"modified": ["review-service.yml"]}]}' -ks https://$MY_CONFIG_USER:$MY_CONFIG_PWD@localhost:8888/monitor
+["review:service","review-service"]
+</code></pre></div></div>
+
+<p>What this request actually says is that the configuration file <code class="language-plaintext highlighter-rouge">review-service.yml</code> is changed in the Git repo.</p>
+
+<h2 id="53-propagating-configuration-changes-to-the-clients">5.3 Propagating configuration changes to the clients</h2>
+
+<p>The configuration server will notify the affected microservices, the review-service in the example above, and it will pick up the changes. This can be seen in the log output from the affected microservices, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose logs --tail=10 rev
+...
+rev_1        | 2017-05-12 13:40:21.552  INFO [review-service, ... : Fetching config from server at: https://config:8888
+rev_1        | 2017-05-12 13:40:21.776  INFO [review-service, ... : Located environment: name=review-service, profiles=[docker], label=null, version=null
+...
+</code></pre></div></div>
+
+<p>To notify the affected clients Spring Cloud Config use the <a href="https://cloud.spring.io/spring-cloud-bus/">Spring Cloud Bus</a> (that uses <a href="https://cloud.spring.io/spring-cloud-stream/">Spring Cloud Stream</a> under the hood). Spring Cloud Bus supports a number of message brokers, e.g. RabbitMQ and Kafka.</p>
+
+<p>In this blog post we use <a href="https://www.rabbitmq.com">RabbitMQ</a> by adding the following dependency in both the config server and config clients Gradle build files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>compile("org.springframework.cloud:spring-cloud-starter-bus-amqp")
+</code></pre></div></div>
+
+<p>…and adding the following configuration for both the default profile and the docker profile:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.rabbitmq:
+  host: localhost
+  port: 5672
+
+---
+# For deployment in Docker containers
+spring:
+  profiles: docker
+
+spring.rabbitmq.host: rabbitmq
+</code></pre></div></div>
+
+<p>The configuration is added in the config repo file <code class="language-plaintext highlighter-rouge">application.yml</code>, so it applies to all microservices. Since the config server don’t reads its own configuration from the config repo we also needs to repeat the configuration in the config servers local <code class="language-plaintext highlighter-rouge">application.yml</code> - file, see <code class="language-plaintext highlighter-rouge">blog-microservices/microservices/support/config-server/src/main/resources/application.yml</code></p>
+
+<p>Finally to bring in RabbitMQ we simply run it as a Docker container added to our <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "15672:15672"
+</code></pre></div></div>
+
+<blockquote>
+  <p>Running RabbitMQ in a single container like this is only useful for development and test, for production you need to setup a proper RabbitMQ cluster or use a cloud service like <a href="https://www.cloudamqp.com">CloudAMQP</a></p>
+</blockquote>
+
+<p>The RabbitMQ web admin GUI can be reached at: <a href="http://localhost:15672">http://localhost:15672</a> and you can login using the default credentials “guest/guest”.</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-6/activemq.png" alt="RabbitMQ" /></p>
+
+<h2 id="54-file-based-storage">5.4. File based storage</h2>
+
+<p>Another option, that is very handy during development, is to configure the config server to use the native file system instead of Git. This enable the config server to pickup changes directly form the local file system and promote them immediately to the affected clients (i.e. our microservice instances).</p>
+
+<p>To setup the config server to use the native file system instead of Git you configure it to use the Spring profile <code class="language-plaintext highlighter-rouge">native</code> and then use the property <code class="language-plaintext highlighter-rouge">spring.cloud.config.server.native.searchLocations</code> to specify where to find the configuration files.</p>
+
+<h2 id="55-usage-in-this-blog-post">5.5 Usage in this blog post</h2>
+
+<p>In this blog post we are using a file based configuration repository. We specify the configuration for the config server in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>- file like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>environment:
+  - SPRING_PROFILES_ACTIVE=docker,native
+  - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=file:/config-repo
+</code></pre></div></div>
+
+<p>…and we have a Docker volume that connects the Docker container folder <code class="language-plaintext highlighter-rouge">/config-repo</code> to the config-repo we checked out from Git above:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>volumes:
+  - $PWD/../blog-microservices-config:/config-repo
+</code></pre></div></div>
+
+<p>If you want to try out Git based usage you can remove the <code class="language-plaintext highlighter-rouge">native</code> profile and the <code class="language-plaintext highlighter-rouge">SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS</code> environment variable from the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file.</p>
+
+<p>I have setup the config server to use a local Git repo in the file: <code class="language-plaintext highlighter-rouge">blog-microservices/microservices/support/config-server/src/main/resources/application.yml</code> for both the default Spring profile and the docker profile:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Configuration of a local Git-repo for development locally without Docker
+# note that we are still using git; We just access the git-repo via file: protocol
+spring.cloud.config.server.git.uri: file:///${PWD}/../../../../blog-microservices-config/
+
+---
+# For deployment in Docker containers
+spring:
+  profiles: docker
+
+# when running docker locally on a dev pc the config-repo is mounted to a local git-repo in docker-compose file
+spring.cloud.config.server.git.uri: /config-repo
+</code></pre></div></div>
+
+<h1 id="6-refreshable-properties">6. Refreshable properties</h1>
+
+<p>Ok, so the learned that the config server can get notifications from the config repo (e.g. GitHub) when some configuration was changed and the config server can use Spring Cloud Bus to inform our microservices regarding the change…</p>
+
+<p>But now what?</p>
+
+<p>I.e. how can we write code to react on changed configurations in realtime, i.e. without perform a traditional restart of the service?</p>
+
+<p>Spring Cloud comes with a bean annotation, <code class="language-plaintext highlighter-rouge">@RefreshScope</code>, that is very useful for this purpose. It will instruct Spring to reinject all fields and setter methods that are annotated with the <code class="language-plaintext highlighter-rouge">@Value</code> - annotation if their configuration property is changed. See (refresh scope)[http://cloud.spring.io/spring-cloud-static/docs/1.0.x/spring-cloud.html#_refresh_scope] for details.</p>
+
+<h2 id="61-builtin-refreshable-properties">6.1 Builtin refreshable properties</h2>
+
+<p>Some built in properties are already using the <code class="language-plaintext highlighter-rouge">@RefreshScope</code> - annotation, e.g. logging. This means that changes of the log level settings in the config repo has immediate affect.</p>
+
+<p>Try it by monitoring the logs and then change log level from INFO to DEBUG for the review-service.
+Edit <code class="language-plaintext highlighter-rouge">review-service.yml</code> in the config repo and remove the comment mark from:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#logging.level.se.callista: DEBUG
+</code></pre></div></div>
+
+<p>to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logging.level.se.callista: DEBUG
+</code></pre></div></div>
+
+<p>Try call the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -ks https://localhost:443/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+</code></pre></div></div>
+
+<p>…and you should start to see log output from the review service with <code class="language-plaintext highlighter-rouge">DEBUG</code> level like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose logs --tail=10 rev
+...
+rev_1 | 2017-05-12 13:56:15.662 DEBUG [review-service, ... : Return calculated processing time: 14 ms
+...
+</code></pre></div></div>
+
+<h2 id="62-custom-refreshable-properties">6.2 Custom refreshable properties</h2>
+
+<p>As seen when playing with the circuit breaker in the <a href="../../../../2016/09/30/building-microservices-part-5-springcloud11-docker4mac/index.html">previous blog post</a> you can change the response time for our services with properties:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service:
+  defaultMinMs: 6000
+  defaultMaxMs: 6000
+</code></pre></div></div>
+
+<p>The code to enable realtime updates of these properties looks like:
+(see <code class="language-plaintext highlighter-rouge">blog-microservices/util/src/main/java/se/callista/microservices/util/SetProcTimeBean.java</code>)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RefreshScope
+@Component
+public class SetProcTimeBean {
+
+    @Value("${service.defaultMinMs:0}")
+    public void setMinMs(int minMs) {
+        LOG.info("Set min response time to {} ms.", Integer.valueOf(minMs));
+        this.minMs = minMs;
+    }
+
+    @Value("${service.defaultMaxMs:0}")
+    public void setMaxMs(int maxMs) {
+        LOG.info("Set max response time to {} ms.", Integer.valueOf(maxMs));
+        this.maxMs = maxMs;
+    }
+</code></pre></div></div>
+
+<p>I.e. a Spring Bean that is annotated with <code class="language-plaintext highlighter-rouge">@RefreshScope</code> and a couple setter-methods that are annotated with <code class="language-plaintext highlighter-rouge">@Value(...)</code>.</p>
+
+<h1 id="7-next-step">7. Next Step</h1>
+
+<p>Well, that’s it!</p>
+
+<p>It might look a bit overwhelming at a first glance. But when you get used to it I hope you will find it as convenient to work with as I did!</p>
+
+<p>Next up in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series - Building Microservices</a> is centralised logging and a pre-req for doing centralised logging, handling correlation ids, stay tuned…</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices Part 6 Configuration Server&url=https://callistaenterprise.se/blogg/teknik/2017/05/12/building-microservices-part-6-configuration-server/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices Part 6 Configuration Server&u=https://callistaenterprise.se/blogg/teknik/2017/05/12/building-microservices-part-6-configuration-server/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices Part 6 Configuration Server&url=https://callistaenterprise.se/blogg/teknik/2017/05/12/building-microservices-part-6-configuration-server/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

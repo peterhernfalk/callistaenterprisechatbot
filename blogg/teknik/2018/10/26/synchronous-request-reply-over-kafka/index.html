@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Synchronous Request-Reply using Apache Kafka | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Synchronous Request-Reply using Apache Kafka</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-10-26T00:00:00+00:00">
+            26 October 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="https://martinfowler.com/articles/201701-event-driven.html">Event Driven Architectures</a> in general and <a href="Https://kafka.apache.org/">Apache Kafka</a> specifically have gained lots of attention lately. To realize the full benefits of an Event Driven Architecture, the event delegation mechanism must be inherently asynchronous. There may however be some specific use cases/flows where a Synchronous Request-Reply semantics is needed. This blog post shows how to realize <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReply.html">Request Reply</a> using Apache Kafka.</p>
+
+<p></p>
+
+<p>Apache Kafka is by design inherently asynchronous. Hence Request-Reply semantics is not natural in Apache Kafka. This challenge is however not new. The <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReply.html">Request Reply</a> Enterprise Integration Pattern provides a proven mechanism for synchronous message exchange over asynchonous channels:</p>
+
+<p><img src="https://www.enterpriseintegrationpatterns.com/img/RequestReply.gif" alt="Request Reply" /></p>
+
+<p>The <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/ReturnAddress.html">Return Address</a> pattern complements <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReply.html">Request Reply</a> with a mechanism for the requestor to specify to which address the reply should be sent:</p>
+
+<p><img src="https://www.enterpriseintegrationpatterns.com/img/ReturnAddressSolution.gif" alt="Return Addess" /></p>
+
+<p>Recently, <a href="https://spring.io/projects/spring-kafka">Spring Kafka</a> 2.1.3 added support for the Request Reply pattern out-of-the box, and version 2.2 polished some of it’s rough edges. Let’s have a look at how that support works:</p>
+
+<h3 id="client-side-replyingkafkatemplate">Client Side: ReplyingKafkaTemplate</h3>
+
+<p>The well known <strong><code class="language-plaintext highlighter-rouge">Template</code></strong> abstraction forms the basis for the client-side part of the Spring Request-Reply mechanism.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">ReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="nf">replyKafkaTemplate</span><span class="o">(</span><span class="nc">ProducerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;</span> <span class="n">pf</span><span class="o">,</span> <span class="nc">KafkaMessageListenerContainer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">lc</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nc">ReplyingKafkaTemplate</span><span class="o">&lt;&gt;(</span><span class="n">pf</span><span class="o">,</span> <span class="n">lc</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>That’s fairly straight forward: We setup a ReplyingKafkaTemplate that sends Request messages with String keys, and receives Reply messages with String keys. The ReplyingKafkaTemplate however needs to be backed by a Request ProducerFactory, a ReplyConsumerFactory and a MessageListenerContainer, with corresponding consumer and producer configs. Hence the needed config is rather extensive:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Value</span><span class="o">(</span><span class="s">"${kafka.topic.car.reply}"</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">replyTopic</span><span class="o">;</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nf">consumerConfigs</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="o">,</span> <span class="n">bootstrapServers</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">KEY_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">StringDeserializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">VALUE_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">JsonDeserializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">GROUP_ID_CONFIG</span><span class="o">,</span> <span class="n">groupId</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">props</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nf">producerConfigs</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="o">,</span> <span class="n">bootstrapServers</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">KEY_SERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">StringSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">VALUE_SERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">JsonSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">props</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">ProducerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;</span> <span class="nf">requestProducerFactory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">DefaultKafkaProducerFactory</span><span class="o">&lt;&gt;(</span><span class="n">producerConfigs</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">ConsumerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="nf">replyConsumerFactory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">DefaultKafkaConsumerFactory</span><span class="o">&lt;&gt;(</span><span class="n">consumerConfigs</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">StringDeserializer</span><span class="o">(),</span>
+        <span class="k">new</span> <span class="nc">JsonSerializer</span><span class="o">&lt;</span><span class="nc">Reply</span><span class="o">&gt;());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">KafkaMessageListenerContainer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="nf">replyListenerContainer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ContainerProperties</span> <span class="n">containerProperties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ContainerProperties</span><span class="o">(</span><span class="n">replyTopic</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">KafkaMessageListenerContainer</span><span class="o">&lt;&gt;(</span><span class="n">replyConsumerFactory</span><span class="o">(),</span> <span class="n">containerProperties</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>With that in place, using the replyKafkaTemplate to send a synchronous reqeust and get a reply back looks like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Value</span><span class="o">(</span><span class="s">"${kafka.topic.car.request}"</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">requestTopic</span><span class="o">;</span>
+
+  <span class="nd">@Value</span><span class="o">(</span><span class="s">"${kafka.topic.car.reply}"</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">replyTopic</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="nc">ReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">requestReplyKafkaTemplate</span><span class="o">;</span>
+
+<span class="o">...</span>
+  <span class="nc">RequestReply</span> <span class="n">request</span> <span class="o">=</span> <span class="nc">RequestReply</span><span class="o">.</span><span class="na">request</span><span class="o">(...);</span>
+  <span class="c1">// create producer record</span>
+  <span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;(</span><span class="n">requestTopic</span><span class="o">,</span> <span class="n">request</span><span class="o">);</span>
+  <span class="c1">// set reply topic in header</span>
+  <span class="n">record</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">RecordHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_TOPIC</span><span class="o">,</span> <span class="n">requestReplyTopic</span><span class="o">.</span><span class="na">getBytes</span><span class="o">()));</span>
+  <span class="c1">// post requst to kafka topic, and asynchronously get reply on the specified reply topic</span>
+  <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">sendAndReceive</span> <span class="o">=</span> <span class="n">requestReplyKafkaTemplate</span><span class="o">.</span><span class="na">sendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="n">sendAndReceive</span><span class="o">.</span><span class="na">addCallback</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListenableFutureCallback</span><span class="o">&lt;</span><span class="nc">ConsumerRecord</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;&gt;()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="nc">ConsumerRecord</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// get consumer record value</span>
+        <span class="nc">Reply</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="na">value</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Reply: "</span> <span class="o">+</span> <span class="n">reply</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+      <span class="o">}</span>
+  <span class="o">});</span>
+</code></pre></div></div>
+
+<p>Lots of boiler plate code and low level api’s there as well, and that old <code class="language-plaintext highlighter-rouge">ListenableFuture</code> API instead of the modern CompletableFuture. The requestReplyKafkaTemplate takes care of generating and setting a <code class="language-plaintext highlighter-rouge">KafkaHeaders.CORRELATION_ID</code> header, but we have to set the <code class="language-plaintext highlighter-rouge">KafkaHeaders.REPLY_TOPIC</code> header on the request explicitly. Note also that this same reply topic was redundantly wired into the replyListenerContainer above. Yuck. Not quite what I expected from a Spring abstraction.</p>
+
+<h3 id="server-side-sendto">Server Side: @SendTo</h3>
+
+<p>On the server side, a regular KafkaListener listening on the request topic is decorated with an additional <code class="language-plaintext highlighter-rouge">@SendTo</code> annotation, to provide the reply message. The object returned by the listener method is automatically wrapped into a reply message, the <code class="language-plaintext highlighter-rouge">CORRELATION_ID</code> added, and the reply is posted on the topic specified by the <code class="language-plaintext highlighter-rouge">REPLY_TOPIC</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nf">consumerConfigs</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="o">,</span> <span class="n">bootstrapServers</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">KEY_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">StringDeserializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">VALUE_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">JsonSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="na">GROUP_ID_CONFIG</span><span class="o">,</span> <span class="n">groupId</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">props</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nf">producerConfigs</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="o">,</span> <span class="n">bootstrapServers</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">KEY_SERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">StringSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">ProducerConfig</span><span class="o">.</span><span class="na">VALUE_SERIALIZER_CLASS_CONFIG</span><span class="o">,</span> <span class="nc">JsonSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">props</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">ConsumerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;</span> <span class="nf">requestConsumerFactory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">DefaultKafkaConsumerFactory</span><span class="o">&lt;&gt;(</span><span class="n">consumerConfigs</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">StringDeserializer</span><span class="o">(),</span>
+        <span class="k">new</span> <span class="nc">JsonSerializer</span><span class="o">&lt;</span><span class="nc">Request</span><span class="o">&gt;());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">KafkaListenerContainerFactory</span><span class="o">&lt;</span><span class="nc">ConcurrentMessageListenerContainer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;&gt;</span> <span class="nf">requestListenerContainerFactory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ConcurrentKafkaListenerContainerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Request</span><span class="o">&gt;</span> <span class="n">factory</span> <span class="o">=</span>
+        <span class="k">new</span> <span class="nc">ConcurrentKafkaListenerContainerFactory</span><span class="o">&lt;&gt;();</span>
+    <span class="n">factory</span><span class="o">.</span><span class="na">setConsumerFactory</span><span class="o">(</span><span class="n">requestConsumerFactory</span><span class="o">());</span>
+    <span class="n">factory</span><span class="o">.</span><span class="na">setReplyTemplate</span><span class="o">(</span><span class="n">replyTemplate</span><span class="o">());</span>
+    <span class="k">return</span> <span class="n">factory</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">ProducerFactory</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="nf">replyProducerFactory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">DefaultKafkaProducerFactory</span><span class="o">&lt;&gt;(</span><span class="n">producerConfigs</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">KafkaTemplate</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Reply</span><span class="o">&gt;</span> <span class="nf">replyTemplate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">KafkaTemplate</span><span class="o">&lt;&gt;(</span><span class="n">replyProducerFactory</span><span class="o">());</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Also quite some configuration needed, but configuration of the listener is easier:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@KafkaListener</span><span class="o">(</span><span class="n">topics</span> <span class="o">=</span> <span class="s">"${kafka.topic.car.request}"</span><span class="o">,</span> <span class="n">containerFactory</span> <span class="o">=</span> <span class="s">"requestListenerContainerFactory"</span><span class="o">)</span>
+  <span class="nd">@SendTo</span><span class="o">()</span>
+  <span class="kd">public</span> <span class="nc">Reply</span> <span class="nf">receive</span><span class="o">(</span><span class="nc">Request</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Reply</span> <span class="n">reply</span> <span class="o">=</span> <span class="o">...;</span>
+    <span class="k">return</span> <span class="n">reply</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="but-what-about-multiple-consumer-instances">But what about multiple consumer instances?</h3>
+
+<p>It sort of works, as long as we don’t use multiple consumer instances. If we have multiple client instances, we must make sure that the reply is sent back to the correct client instance. The Spring Kafka documentation suggests that each consumer may use a unique topic, or that an additional <code class="language-plaintext highlighter-rouge">KafkaHeaders.REPLY_PARTITION</code> header value is sent with the request, a four byte field containing a BIG-ENDIAN representation of the partition integer. Using separate topics for different clients is clearly not very flexible, hence we opt for setting the <code class="language-plaintext highlighter-rouge">REPLY_PARTITION</code> explicitly. The client will then need to know which partition it is assigned to. The documentation suggests using explicit configuration to select a specific partition. Let’s add that to our example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Value</span><span class="o">(</span><span class="s">"${kafka.topic.car.reply.partition}"</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">replyPartition</span><span class="o">;</span>
+  
+  <span class="o">...</span>
+  
+    <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">KafkaMessageListenerContainer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">RequestReply</span><span class="o">&gt;</span> <span class="nf">replyListenerContainer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ContainerProperties</span> <span class="n">containerProperties</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ContainerProperties</span><span class="o">(</span><span class="n">replyTopic</span><span class="o">);</span>
+    <span class="nc">TopicPartitionInitialOffset</span> <span class="n">initialOffset</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TopicPartitionInitialOffset</span><span class="o">(</span><span class="n">replyTopic</span><span class="o">,</span> <span class="n">replyPartition</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">KafkaMessageListenerContainer</span><span class="o">&lt;&gt;(</span><span class="n">replyConsumerFactory</span><span class="o">(),</span> <span class="n">containerProperties</span><span class="o">,</span> <span class="n">initialOffset</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">intToBytesBigEndian</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[]</span> <span class="o">{(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span>
+        <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),};</span>
+  <span class="o">}</span>
+
+  <span class="o">...</span>
+  <span class="n">record</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">RecordHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_TOPIC</span><span class="o">,</span> <span class="n">requestReplyTopic</span><span class="o">.</span><span class="na">getBytes</span><span class="o">()));</span>
+  <span class="n">record</span><span class="o">.</span><span class="na">headers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">RecordHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_PARTITION</span><span class="o">,</span> <span class="n">intToBytesBigEndian</span><span class="o">(</span><span class="n">replyPartition</span><span class="o">)));</span>
+  <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">RequestReply</span><span class="o">,</span> <span class="nc">RequestReply</span><span class="o">&gt;</span> <span class="n">sendAndReceive</span> <span class="o">=</span> <span class="n">requestReplyKafkaTemplate</span><span class="o">.</span><span class="na">sendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">...</span>
+</code></pre></div></div>
+
+<p>Not pretty, but it works. The configuration needed is extensive, and the APIs are kind of low level. The need for explicit partition configuration adds complexity if we need to dynamically scale number of clients. Clearly, we could do better.</p>
+
+<h3 id="encapsulating-reply-topic-and-partition-handling">Encapsulating reply topic and partition handling</h3>
+
+<p>Let’s start with encapsulating the <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/ReturnAddress.html">Return Address</a> pattern, passing along the reply topic and partition. The Reply topic needs to be wired into the RequestReplyTemplate, and hence shouldn’t be present in the API at all. When it comes to the reply partition, let’s do it the other way around: Retrieve which partition(s) the reply topic listener has been assigned, and pass that partition along automatically. This eliminates the need for the client to care about these headers.</p>
+
+<p>While doing this, let’s also complete the API to resemble the standard KafkaTemplate (overloading the sendAndReceive() method with simplified parameters, and adding corresponding overloaded methods which use a configured default topic):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PartitionAwareReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">ReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="nf">PartitionAwareReplyingKafkaTemplate</span><span class="o">(</span><span class="nc">ProducerFactory</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">producerFactory</span><span class="o">,</span>
+      <span class="nc">GenericMessageListenerContainer</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="n">replyContainer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">producerFactory</span><span class="o">,</span> <span class="n">replyContainer</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">TopicPartition</span> <span class="nf">getFirstAssignedReplyTopicPartition</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">getAssignedReplyTopicPartitions</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span>
+        <span class="n">getAssignedReplyTopicPartitions</span><span class="o">().</span><span class="na">iterator</span><span class="o">().</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+      <span class="nc">TopicPartition</span> <span class="n">replyPartition</span> <span class="o">=</span> <span class="n">getAssignedReplyTopicPartitions</span><span class="o">().</span><span class="na">iterator</span><span class="o">().</span><span class="na">next</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Using partition "</span> <span class="o">+</span> <span class="n">replyPartition</span><span class="o">.</span><span class="na">partition</span><span class="o">());</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">replyPartition</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">KafkaException</span><span class="o">(</span><span class="s">"Illegal state: No reply partition is assigned to this instance"</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">intToBytesBigEndian</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[]</span> <span class="o">{(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span>
+        <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="o">((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="o">),};</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">sendAndReceiveDefault</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="no">V</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">sendAndReceive</span><span class="o">(</span><span class="n">getDefaultTopic</span><span class="o">(),</span> <span class="n">data</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">sendAndReceiveDefault</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="no">V</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">sendAndReceive</span><span class="o">(</span><span class="n">getDefaultTopic</span><span class="o">(),</span> <span class="n">key</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="o">...</span>
+  
+  <span class="kd">public</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">sendAndReceive</span><span class="o">(</span><span class="nc">String</span> <span class="n">topic</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="no">V</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProducerRecord</span><span class="o">&lt;&gt;(</span><span class="n">topic</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nf">doSendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">sendAndReceive</span><span class="o">(</span><span class="nc">String</span> <span class="n">topic</span><span class="o">,</span> <span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="no">V</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ProducerRecord</span><span class="o">&lt;&gt;(</span><span class="n">topic</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nf">doSendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="o">...</span>
+  
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">sendAndReceive</span><span class="o">(</span><span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">record</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">doSendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">}</span>
+  
+  <span class="kd">protected</span> <span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">doSendAndReceive</span><span class="o">(</span><span class="nc">ProducerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">record</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">TopicPartition</span> <span class="n">replyPartition</span> <span class="o">=</span> <span class="n">getFirstAssignedReplyTopicPartition</span><span class="o">();</span>
+    <span class="n">record</span><span class="o">.</span><span class="na">headers</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">RecordHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_TOPIC</span><span class="o">,</span> <span class="n">replyPartition</span><span class="o">.</span><span class="na">topic</span><span class="o">().</span><span class="na">getBytes</span><span class="o">()))</span>
+        <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">RecordHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_PARTITION</span><span class="o">,</span>
+            <span class="n">intToBytesBigEndian</span><span class="o">(</span><span class="n">replyPartition</span><span class="o">.</span><span class="na">partition</span><span class="o">())));</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">sendAndReceive</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">}</span>  
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Next step: Let’s adapt the ListenableFuture to the more modern CompletableFuture.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CompletableFutureReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">PartitionAwareReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="nf">CompletableFutureReplyingKafkaTemplate</span><span class="o">(</span><span class="nc">ProducerFactory</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">producerFactory</span><span class="o">,</span>
+      <span class="nc">GenericMessageListenerContainer</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="n">replyContainer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">producerFactory</span><span class="o">,</span> <span class="n">replyContainer</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nf">requestReplyDefault</span><span class="o">(</span><span class="no">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">adapt</span><span class="o">(</span><span class="n">sendAndReceiveDefault</span><span class="o">(</span><span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nf">requestReplyDefault</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">adapt</span><span class="o">(</span><span class="n">sendAndReceiveDefault</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="o">...</span>
+  
+  <span class="kd">public</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nf">requestReply</span><span class="o">(</span><span class="nc">String</span> <span class="n">topic</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">adapt</span><span class="o">(</span><span class="n">sendAndReceive</span><span class="o">(</span><span class="n">topic</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nf">requestReply</span><span class="o">(</span><span class="nc">String</span> <span class="n">topic</span><span class="o">,</span> <span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">adapt</span><span class="o">(</span><span class="n">sendAndReceive</span><span class="o">(</span><span class="n">topic</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="o">...</span>
+  
+  <span class="kd">private</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="nf">adapt</span><span class="o">(</span><span class="nc">RequestReplyFuture</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="n">requestReplyFuture</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="n">completableResult</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">cancel</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">mayInterruptIfRunning</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">requestReplyFuture</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="n">mayInterruptIfRunning</span><span class="o">);</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="n">mayInterruptIfRunning</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">};</span>
+    <span class="c1">// Add callback to the request sending result</span>
+    <span class="n">requestReplyFuture</span><span class="o">.</span><span class="na">getSendFuture</span><span class="o">().</span><span class="na">addCallback</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListenableFutureCallback</span><span class="o">&lt;</span><span class="nc">SendResult</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;&gt;()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="nc">SendResult</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">sendResult</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// NOOP</span>
+      <span class="o">}</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFailure</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">completableResult</span><span class="o">.</span><span class="na">completeExceptionally</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+    <span class="c1">// Add callback to the reply</span>
+    <span class="n">requestReplyFuture</span><span class="o">.</span><span class="na">addCallback</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListenableFutureCallback</span><span class="o">&lt;</span><span class="nc">ConsumerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;&gt;()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSuccess</span><span class="o">(</span><span class="nc">ConsumerRecord</span><span class="o">&lt;</span><span class="no">K</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">completableResult</span><span class="o">.</span><span class="na">complete</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
+      <span class="o">}</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onFailure</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">completableResult</span><span class="o">.</span><span class="na">completeExceptionally</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+    <span class="k">return</span> <span class="n">completableResult</span><span class="o">;</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Pack that up in a utility library, and we now have an API that is much more in line with the general Convention over Configuration design philosophy of Spring. This is the resulting client code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="nc">CompletableFutureReplyingKafkaTemplate</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Request</span><span class="o">,</span><span class="nc">Reply</span><span class="o">&gt;</span> <span class="n">requestReplyKafkaTemplate</span><span class="o">;</span>
+
+<span class="o">...</span>
+
+  <span class="n">requestReplyKafkaTemplate</span><span class="o">.</span><span class="na">requestReply</span><span class="o">(</span><span class="n">request</span><span class="o">).</span><span class="na">thenAccept</span><span class="o">(</span><span class="n">reply</span> <span class="o">-&gt;</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Reply: "</span> <span class="o">+</span> <span class="n">reply</span><span class="o">.</span><span class="na">toString</span><span class="o">())</span>
+  <span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="summing-up">Summing up</h3>
+
+<p>To summarize, Spring for Kafka 2.2 provides a fully functional implementation of the Request-Reply pattern over Apache Kafka, but the API still have some rough edges. In this blog post, we have seen that some additional abstractions and API adaptations can give a more consistent, high-level API.</p>
+
+<p><strong>Caveat 1</strong>: One of the principal benefits of an Event Driven Architecture is the decoupling of event producers and consumers, allowing for much more flexible and evolvable systems. Relying on a synchronous Request-Reply semantics is the exact opposite, where the requestor and replyer are tightly coupled. Hence it should be used only when needed.</p>
+
+<p><strong>Caveat 2</strong>: If synchronous Request-Reply is required, an HTTP-based protocol is much simpler and more efficient than using an asynchronous channel like Apache Kafka.</p>
+
+<p>Still, there may be scenarios when synchronous Request-Reply over Kafka makes sense. Choose wisely the best tool for the job.</p>
+
+<p>A fully working example can be found at <a href="https://github.com/callistaenterprise/blog-synchronous-kafka">github.com/callistaenterprise/blog-synchronous-kafka</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Synchronous Request Reply Over kafka&url=https://callistaenterprise.se/blogg/teknik/2018/10/26/synchronous-request-reply-over-kafka/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Synchronous Request Reply Over kafka&u=https://callistaenterprise.se/blogg/teknik/2018/10/26/synchronous-request-reply-over-kafka/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Synchronous Request Reply Over kafka&url=https://callistaenterprise.se/blogg/teknik/2018/10/26/synchronous-request-reply-over-kafka/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

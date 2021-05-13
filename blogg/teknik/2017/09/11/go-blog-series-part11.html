@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices blog series, part 11 - hystrix and resilience | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="go-blog-series-part11.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="go-blog-series-part11.html#">
+                <img alt="Sök" src="../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="go-blog-series-part11.html">Go Microservices blog series, part 11 - hystrix and resilience</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-09-11T00:00:00+00:00">
+            11 September 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part of the Go microservices <a href="../../02/17/go-blog-series-part1.html">blog series</a>, we’ll explore how we can make our inter-service communication resilient using the circuit breaker pattern using a <a href="https://github.com/afex/hystrix-go">go implementation</a> of Netflix <a href="https://github.com/Netflix/Hystrix">Hystrix</a> and the retries package of <a href="https://github.com/eapache/go-resiliency">go-resilience</a>.</p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li>Overview</li>
+  <li>The Circuit Breaker</li>
+  <li>Resilience through Retrier</li>
+  <li>Landscape overview</li>
+  <li>Go code - adding circuit breaker and retrier</li>
+  <li>Deploy &amp; run</li>
+  <li>Hystrix Dashboard and Netflix Turbine</li>
+  <li>Turbine &amp; Service discovery</li>
+  <li>Summary</li>
+</ol>
+
+<h3 id="source-code">Source code</h3>
+
+<p>The finished source can be cloned from github:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/callistaenterprise/goblog.git
+&gt; git checkout P11
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P11">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="1-overview">1. Overview</h1>
+<p>Consider the following make-believe system landscape where a number of microservices handles an incoming request:</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-cb-1.png" alt="circuit breaker 1" />
+<em>Figure 1 - system landscape</em></p>
+
+<p>What happens if the right-most service “Service Y” fails? Let’s say it will accept incoming requests but then just keep them waiting, perhaps the underlying data storage isn’t responsive. The waiting requests of the consumer services (Service N &amp; Service A) will eventually time out, but if you have a system handling tens or hundreds of requests per second, you’ll have thread pools filling up, memory usage skyrocketing and irritated end consumers (those who called Service 1) waiting for their response. This may even cascade through the call chain all the way back to the entry point service, effectively grinding your entire landscape to a halt.</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-cb3.png" alt="circuit breaker 2" />
+<em>Figure 2 - cascading failure</em></p>
+
+<p>While a properly implemented <a href="../../03/22/go-blog-series-part6.html">healthcheck</a> will eventually trigger a service restart of the failing service through mechanisms in the container orchestrator, that may take several minutes. Meanwhile, an application under heavy load will suffer from <a href="https://en.wikipedia.org/wiki/Cascading_failure">cascading failures</a> unless we’ve actually implemented patterns to handle this situation. This is where the <a href="https://martinfowler.com/bliki/CircuitBreaker.html">circuit breaker</a> pattern comes in.</p>
+
+<h1 id="2-the-circuit-breaker">2. The Circuit Breaker</h1>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-cb-2.png" alt="circuit breaker 3" />
+<em>Figure 3 - circuit breaker</em></p>
+
+<p>Here we see how a <em>circuit breaker</em> logically exists between Service A and Service Y (the actual breaker is always implemented in the <em>consumer</em> service). The concept of the circuit breaker comes from the domain of electricity. Thomas Edison filed a patent application back in 1879. The circuit breaker is designed to open when a failure is detected, making sure cascading side effect such as your house burning down or microservices crashing doesn’t happen. The hystrix circuit breaker basically works like this:</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-cb-std.png" alt="circuit breaker 4" />
+<em>Figure 4 - circuit breaker states</em></p>
+
+<h2 id="21-states">2.1 States</h2>
+<ol>
+  <li>Closed: In normal operation, the circuit breaker is <em>closed</em>, letting requests (or electricity) pass through.</li>
+  <li>Open: Whenever a failure has been detected (n number of failed requests within a time span, request(s) taking too long, massive spike of current), the circuit <em>opens</em>, making sure the consumer service short-circuits instead of waiting for the failing producer service.</li>
+  <li>Half-open: Periodically, the circuit breaker lets a request pass through. If successful, the circuit can be closed again, otherwise it stays open.</li>
+</ol>
+
+<p>There’s two key take-aways with Hystrix when the circuit is closed:</p>
+
+<ol>
+  <li>Hystrix allows us to provide a <em>fallback</em> function that will be executed <em>instead</em> of running the normal request. This allows us to provide a fallback behaviour. Sometimes, we can’t do without the data or service of the broken producer - but just as often, our fallback method can provide a default result, a well-structured error message or perhaps calling a backup service.</li>
+  <li>Stopping cascading failures. While the fallback behaviour is very useful, the most important part of the circuit breaker pattern is that we’re immediately returning some response to the calling service. No thread pools filling up with pending requests, no timeouts and hopefully less annoyed end-consumers.</li>
+</ol>
+
+<h1 id="3-resilience-through-retrier">3. Resilience through Retrier</h1>
+
+<p>The circuit breaker makes sure that if a given producer service goes down, we can both handle the problem gracefully and save the rest of the application from cascading failures. However, in a microservice environment we seldom only have a single instance of a given service. Why consider the first attempt as a failure inside the circuit breaker if you have many instances where perhaps just a single one has problems? This is where the <em>retrier</em> comes in:</p>
+
+<p>In our context - using Go microservices within a Docker Swarm mode landscape - if we have let’s say 3 instances of a given producer service, we know that the Swarm Load-balancer will automatically round-robin requests addressed to a given <em>service</em>. So instead of failing inside the breaker, why not have a mechanism that automatically performs a configurable number of retries including some kind of backoff?</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-retrier.png" alt="retrier" />
+<em>Figure 5 - retrier</em></p>
+
+<p>Perhaps somewhat simplified - the sequence diagram should hopefully explain the key concepts:</p>
+
+<ol>
+  <li>The retrier runs <em>inside</em> the circuit breaker.</li>
+  <li>The circuit breaker only considers the request failed if all retry attempts failed. Actually, the circuit breaker has no notion of what’s going on inside it - it only cares about whether the operation it encapsulates returns an error or not.</li>
+</ol>
+
+<p>In this blog post, we’ll use the <a href="https://github.com/eapache/go-resiliency/retries">retries</a> package of <a href="https://github.com/eapache/go-resiliency">go-resilience</a>.</p>
+
+<h1 id="4-landscape-overview">4. Landscape overview</h1>
+<p>In this blog post and the example code we’re going to implement later, we’ll add circuit breakers to the <em>accountservice</em> for its outgoing calls to the <em>quotes-service</em> and a new service called <em>imageservice</em>. We will also install services running the Netflix Hystrix <a href="https://github.com/Netflix/Hystrix/wiki/Dashboard">Monitoring dashboard</a> and <a href="https://github.com/Netflix/Turbine">Netflix Turbine</a> hystrix stream aggregator. More on those two later.</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-overview.png" alt="overview" />
+<em>Figure 6 - landscape overview</em></p>
+
+<h1 id="5-go-code---adding-circuit-breaker-and-retrier">5. Go code - adding circuit breaker and retrier</h1>
+
+<p>Finally time for some Go code! In this part we’re introducing a brand new underlying service, the <em>imageservice</em>. However, we won’t spend any precious blog space describing it. It will just return an URL for a given “acountId” along with the IP-address of the serving container. It provides a bit more complexity to the landscape which is suitable for showcasing how we can have multiple named circuit breakers in a single service.</p>
+
+<p>Let’s dive into our “accountservice” and the <em>/goblog/accountservice/service/handlers.go</em> file. From the code of the <em>GetAccount</em> func, we want to call the underlying <em>quotes-service</em> and the new <em>imageservice</em> using go-hystrix and go-resilience/retrier. Here’s the starting point for the quotes-service call:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> func getQuote() (model.Quote, error) {
+   
+ 	body, err := cb.CallUsingCircuitBreaker("quotes-service", "http://quotes-service:8080/api/quote?strength=4", "GET")
+ 
+    // Code handling response or err below, omitted for clarity
+    ...
+ }
+</code></pre></div></div>
+
+<h3 id="51-circuit-breaker-code">5.1 Circuit breaker code</h3>
+<p>The <em>cb.CallUsingCircuitBreaker</em> func is something I’ve added to our <em>/common/circuitbreaker/hystrix.go</em> file. It’s a bit on the simplistic side, but basically wraps the go-hystrix and retries libraries. I’ve deliberately made the code more verbose and non-compact for readbility reasons.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func CallUsingCircuitBreaker(breakerName string, url string, method string) ([]byte, error) {
+        output := make(chan []byte, 1)  // Declare the channel where the hystrix goroutine will put success responses.
+        
+        errors := hystrix.Go(breakerName,    // Pass the name of the circuit breaker as first parameter.
+        
+            // 2nd parameter, the inlined func to run inside the breaker.
+            func() error {
+                    // Create the request. Omitted err handling for brevity
+                    req, _ := http.NewRequest(method, url, nil)
+                    
+                    // For hystrix, forward the err from the retrier. It's nil if successful.  
+                    return callWithRetries(req, output)
+            }, 
+        
+            // 3rd parameter, the fallback func. In this case, we just do a bit of logging and return the error.
+            func(err error) error {
+                    logrus.Errorf("In fallback function for breaker %v, error: %v", breakerName, err.Error())
+                    circuit, _, _ := hystrix.GetCircuit(breakerName)
+                    logrus.Errorf("Circuit state is: %v", circuit.IsOpen())
+                    return err
+        })
+
+        // Response and error handling. If the call was successful, the output channel gets the response. Otherwise,
+        // the errors channel gives us the error.
+        select {
+        case out := &lt;-output:
+                logrus.Debugf("Call in breaker %v successful", breakerName)
+                return out, nil
+
+        case err := &lt;-errors:
+                return nil, err
+        }
+}    
+</code></pre></div></div>
+
+<p>As seen above, go-hystrix allows us to name circuit breakers, which we also can provide fine-granular configuration for given the names. Do note that the hystrix.Go func will execute the actual work in a new goroutine, where the result sometime later is passed through the unbuffered (e.g. blocking) <em>output</em> channel to the <a href="https://tour.golang.org/concurrency/5">select</a> code snippet, which will effectively block until <em>either</em> the <em>output</em> or <em>errors</em> channels recieves a message.</p>
+
+<h3 id="52-retrier-code">5.2 Retrier code</h3>
+<p>Next, the <em>callWithRetries(…)</em> func that uses the retrier package of go-resilience:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func callWithRetries(req *http.Request, output chan []byte) error {
+
+    // Create a retrier with constant backoff, RETRIES number of attempts (3) with a 100ms sleep between retries.
+    r := retrier.New(retrier.ConstantBackoff(RETRIES, 100 * time.Millisecond), nil)
+    
+    // This counter is just for getting some logging for showcasing, remove in production code.
+    attempt := 0
+    
+    // Retrier works similar to hystrix, we pass the actual work (doing the HTTP request) in a func.
+    err := r.Run(func() error {
+            attempt++
+            
+            // Do HTTP request and handle response. If successful, pass resp.Body over output channel,
+            // otherwise, do a bit of error logging and return the err.
+            resp, err := Client.Do(req)
+            if err == nil &amp;&amp; resp.StatusCode &lt; 299 {
+                    responseBody, err := ioutil.ReadAll(resp.Body)
+                    if err == nil {
+                            output &lt;- responseBody
+                            return nil
+                    }
+                    return err
+            } else if err == nil {
+                    err = fmt.Errorf("Status was %v", resp.StatusCode)
+            }
+
+            logrus.Errorf("Retrier failed, attempt %v", attempt)
+            return err
+    })
+    return err
+}
+</code></pre></div></div>
+
+<h3 id="53-unit-testing">5.3 Unit testing</h3>
+
+<p>I’ve created three unit tests in the <em>/goblog/common/circuitbreaker/hystrix_test.go</em> file which runs the <em>CallUsingCircuitBreaker()</em> func. We won’t go through all test code, one example should be enough. In this test we use <em>gock</em> to mock responses to three outgoing HTTP requests, two failed and at last one successful:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func TestCallUsingResilienceLastSucceeds(t *testing.T) {
+        defer gock.Off()
+
+        buildGockMatcherTimes(500, 2)        // First two requests respond with 500 Server Error
+        
+        body := []byte("Some response")
+        buildGockMatcherWithBody(200, string(body))   // Next (3rd) request respond with 200 OK
+        
+        hystrix.Flush()     // Reset circuit breaker state
+
+        Convey("Given a Call request", t, func() {
+                Convey("When", func() {
+                        // Call single time (will become three requests given that we retry thrice)
+                        bytes, err := CallUsingCircuitBreaker("TEST", "http://quotes-service", "GET")
+
+                        Convey("Then", func() {
+                                // Assert no error and expected response
+                                So(err, ShouldBeNil)
+                                So(bytes, ShouldNotBeNil)
+                                So(string(bytes), ShouldEqual, string(body))
+                        })
+                })
+        })
+}
+</code></pre></div></div>
+
+<p>The console output of the test above looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERRO[2017-09-03T10:26:28.106] Retrier failed, attempt 1                    
+ERRO[2017-09-03T10:26:28.208] Retrier failed, attempt 2                    
+DEBU[2017-09-03T10:26:28.414] Call in breaker TEST successful              
+</code></pre></div></div>
+
+<p>The other <a href="https://github.com/callistaenterprise/goblog/blob/P11/common/circuitbreaker/hystrix_test.go">tests</a> asserts that hystrix fallback func runs if all retries fail and another test makes sure that the hystrix circuit breaker is opened if sufficient number of requests fail.</p>
+
+<h3 id="54-configuring-hystrix">5.4 Configuring Hystrix</h3>
+
+<p>Hystrix circuit breakers can be configured in a variety of ways. A simple example below where we specifiy the number of failed requests that should open the circuit and the retry timeout:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hystrix.ConfigureCommand("quotes-service", hystrix.CommandConfig{
+    SleepWindow:            5000,
+	RequestVolumeThreshold: 10,
+})
+</code></pre></div></div>
+
+<p>See the <a href="https://github.com/afex/hystrix-go#configure-settings">docs</a> for details. My <em>/common/circuitbreaker/hystrix.go</em> “library” has some code for automatically trying to pick configuration values fetched from the <a href="../../05/15/go-blog-series-part8.html">config server</a> using this naming convention:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> hystrix.command.[circuit name].[config property] = [value]
+</code></pre></div></div>
+
+<p>Example: (in <em>accountservice-test.yml</em>)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hystrix.command.quotes-service.SleepWindow: 5000
+</code></pre></div></div>
+
+<h1 id="6-deploy-and-run">6. Deploy and run</h1>
+
+<p>In the git branch of this part, there’s updated microservice code and ./copyall.sh which builds and deploys the new <em>imageservice</em>. Nothing new, really. So let’s take a look at the circuit breaker in action.</p>
+
+<p>In this scenario, we’ll run a little <a href="https://github.com/callistaenterprise/goblog/blob/P11/loadtest/main.go">load test</a> that by default will run 10 requests per second to the /accounts/{accountId} endpoint.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go -zuul=false
+</code></pre></div></div>
+
+<p>(Never mind that <em>-zuul</em> property, that’s for a later part of the blog series.)</p>
+
+<p>Let’s say we have 2 instances of the <em>imageservice</em> and <em>quotes-service</em> respectively. With all services running OK, a few sample responses might look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"name":"Person_6","servedBy":"10.255.0.19","quote":{"quote":"To be or not to be","ipAddress":"10.0.0.22"},"imageUrl":"http://imageservice:7777/file/cake.jpg"} 
+{"name":"Person_23","servedBy":"10.255.0.21","quote":{"quote":"You, too, Brutus?","ipAddress":"10.0.0.25"},"imageUrl":"http://imageservice:7777/file/cake.jpg"}
+</code></pre></div></div>
+
+<p>If we kill the quotes-service:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker service scale quotes-service=0
+</code></pre></div></div>
+
+<p>We’ll see almost right away (due to connection refused) how the fallback function has kicked in and are returning the fallbackQuote:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{name":"Person_23","servedBy":"10.255.0.19","quote":{"quote":"May the source be with you, always.","ipAddress":"circuit-breaker"},"imageUrl":"http://imageservice:7777/file/cake.jpg"}
+</code></pre></div></div>
+
+<h2 id="62-what-happens-under-load">6.2 What happens under load?</h2>
+<p>What’s a lot more interesting is to see how the application as a whole reacts if the quote-service starts to respond really slowly. There’s a little “feature” in the quotes-service that allows us to specify a hashing strength when calling the quotes-service.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://quotes-service:8080/api/quote?strength=4
+</code></pre></div></div>
+
+<p>Such a request is typically completed in about 10 milliseconds. By changing the <em>strength</em> query-param to ?strength=13 the <em>quotes-service</em> will use a LOT of CPU and need slightly less than a second to complete. This is a perfect case for seeing how our circuit breaker reacts when the system comes under load <em>and</em> probably is getting CPU-starved. Let’s use Gatling for two scenarios - one where we’ve disabled the circuit breaker and one with the circuit breaker active.</p>
+
+<h3 id="621-disabled-circuit-breaker">6.2.1 Disabled circuit breaker</h3>
+<p>No circuit breaker, just using the standard <em>http.Get(url string)</em>:
+<img src="../../../../../assets/blogg/goblog/part11-gatling-nocb0.png" alt="no circuit breaker" />
+<img src="../../../../../assets/blogg/goblog/part11-gatling-nocb1.png" alt="no circuit breaker 2" /></p>
+
+<p>The very first requests needs slightly less than a second, but then latencies increases, topping out at 15-20 <em>seconds</em> per request. Peak throughput of our two <em>quotes-service</em> instances (both using 100% CPU) is actually not more than approx 3 req/s since they’re fully CPU-starved (and in all honesty - they’re both running on the same Swarm node on my laptop having 2 CPU cores shared across all running microservices).</p>
+
+<h3 id="622-with-circuit-breaker">6.2.2 With circuit breaker</h3>
+<p>Circuit breaker, with Timeout set to 5000 ms. I.e - when enough requests have waited more than 5000 ms, the circuit will open and the fallback Quote will be returned.
+<img src="../../../../../assets/blogg/goblog/part11-gatling-cb0.png" alt="with circuit breaker" />
+<img src="../../../../../assets/blogg/goblog/part11-gatling-cb1.png" alt="with circuit breaker 2" />
+<em>(Note the tiny bars around the 4-5 second mark on the far right - that’s requests from when the circuit was in “semi-open”-state and a few of the early requests before the circuit opened)</em>
+<img src="../../../../../assets/blogg/goblog/part11-gatling-cb2.png" alt="with circuit breaker 3" />
+In this diagram, we see the distribution of response time halfway through the test. At the marked data point, the breaker is certainly open and the 95%th percentile is 10ms, while the 99%th percentile is over 4 seconds. In other words, about 95% of requests are handled within 10ms but a small percentage (probably half-open retries) are using up to 5 seconds before timing out.</p>
+
+<p>During the first 15 seconds or so, the greenish/yellowish part, we see that more or less all requests are linearily increasing latencies approaching the 5000 ms threshold. The behaviour is - as expected - similar to when we were running <em>without</em> the circuit breaker. I.e. - requests can be successfully handled but takes a lot of time. Then - the increasing latencies trip the breaker and we immediately see how response times drops back to a few milliseconds instead of ~5 seconds for the majority of the requests. As stated above, the breaker lets a request through every once in a while when in the “half-open” state. The two <em>quotes-service</em> instances can handle a few of those “half-open” requsts, but the circuit will open again almost immediately since since the <em>quotes-service</em> instances cannot serve more than a few req/s before the latencies gets too high again and the breaker is tripped anew.</p>
+
+<p>We see two neat things about circuit breakers in action here:</p>
+
+<ul>
+  <li>The open circuit breaker keeps latencies to a minimum when the underlying quotes-service has a problem, it also “reacts” quite quickly - significantly faster than any healthcheck/automatic scaling/service restart will.</li>
+  <li>The 5000 ms timeout of the breaker makes sure no user has to wait ~15 seconds for their response. The 5000 ms configured timeout takes care of that. (Of course, you can handle timeouts in other ways than just using circuit breakers)</li>
+</ul>
+
+<h1 id="7-hystrix-dashboard-and-netflix-turbine">7. Hystrix Dashboard and Netflix Turbine</h1>
+
+<p>One neat thing about Hystrix is that there’s a companion Web application called <em>Hystrix Dashboard</em> that can provide a graphical representation of what’s currently going on in the circuit breakers inside your microservices.</p>
+
+<p>It works by producing HTTP streams of the state and statistics of each configured circuit breaker updated once per second. The Hystrix Dashboard can however only read one such stream at a time and therefore <em>Netflix Turbine</em> exists - a piece of software that collects the streams of <em>all</em> circuit breakers in your landscape and aggregates those into one data stream the dashboard can consume:</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-turbine1.png" alt="Turbine" />
+<em>Figure 7 - Service -&gt; Turbine -&gt; Hystrix dasboard relationship</em></p>
+
+<p>In Figure 7, note that the Hystrix dashboard <em>requests</em> the <em>/turbine.stream</em> from the Turbine server, and Turbine in it’s turn requests <em>/hystrix.stream</em> from a number of microservices. With Turbine collecting circuit breaker metrics from our <em>accountservice</em>, the dashboard output may look like this:</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-turbine3.png" alt="turbine 2" />
+<em>Figure 8 - Hystrix dashboard</em></p>
+
+<p>The GUI of Hystrix Dashboard is definitely not the easiest to grasp at first. Above, we see the two circuit breakers inside <em>accountservice</em> and their state in the middle of one of the load-test runs above. For each circuit breaker, we see breaker state, req/s, average latencies, number of connected hosts per breaker name and error percentages. Among things. There’s also a thread pools section below, though I’m not sure they work correctly when the root statistics producer is the go-hystrix library rather than a hystrix-enabled Spring Boot application. After all - we don’t really have the concept of thread pools in Go when using standard goroutines.</p>
+
+<p>Here’s a short video of the “quotes-service” circuit breaker inside the <em>accountservice</em> when running part of the load-test used above: <em>(click on the image to start the video)</em></p>
+
+<p><a href="https://www.youtube.com/watch?v=BkG-xWLhCyU"><img src="https://img.youtube.com/vi/BkG-xWLhCyU/0.jpg" alt="The video" /></a></p>
+
+<p>All in all - Turbine and Hystrix Dashboard provides a rather nice monitoring function that makes it quite easy to pinpoint unhealthy services or where unexpected latencies are coming from - in real time. Always make sure your inter-service calls are performed inside a circuit breaker.</p>
+
+<h1 id="8-turbine-and-service-discovery">8. Turbine and Service Discovery</h1>
+<p>There’s one issue with using Netflix Turbine &amp; Hystrix Dashboard with non-Spring microservices and/or container orchestrator based service discovery. The reason is that Turbine needs to know where to find those /hystrix.stream endpoints, for example <em>http://10.0.0.13:8181/hystrix.stream</em>. In an ever-changing microservice landscape with services scaling up and down etc, there must exist mechanisms that makes sure <em>which</em> URLs Turbine tries to connect to to consume hystrix data streams.</p>
+
+<p>By default, Turbine relies on <a href="https://github.com/Netflix/eureka">Netflix Eureka</a> and that microservices are registering themselves with Eureka. Then, Turbine can internally query Eureka to get possible service IPs to connect to.</p>
+
+<p>In our context, we’re running on Docker Swarm mode and are relying on the built-in service abstraction Docker in swarm mode provides for us. How do we get our service IPs into Turbine?</p>
+
+<p>Luckily, Turbine has support for plugging in custom discovery mechanisms. I guess there’s two options apart from doubling up and using Eureka in addition to the orchestrator’s service discovery mechanism - something I thought was a pretty bad idea back in <a href="../../04/24/go-blog-series-part7.html">part 7</a>.</p>
+
+<h4 id="811-discovery-tokens">8.1.1 Discovery tokens</h4>
+<p>This solution uses the AMQP messaging bus (RabbitMQ) and a “discovery” channel. When our microservices having circuit breakers start up, they figure out their own IP-address and then sends a message through the broker which our custom Turbine plug-in can read and transform into something Turbine understands.</p>
+
+<p><img src="../../../../../assets/blogg/goblog/part11-turbine2.png" alt="turbine with messaging" />
+<em>Figure 9 - hystrix stream discovery using messaging</em></p>
+
+<p>The registration code that runs at <em>accountservice</em> startup:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func publishDiscoveryToken(amqpClient messaging.IMessagingClient) {
+        // Get hold of our IP adress (reads it from /etc/hosts) and build a discovery token.
+        ip, _ := util.ResolveIpFromHostsFile()
+        token := DiscoveryToken{
+                State:   "UP",
+                Address: ip,
+        }
+        bytes, _ := json.Marshal(token)
+        
+        // Enter an eternal loop in a new goroutine that sends the UP token every
+        // 30 seconds to the "discovery" channel.
+        go func() {
+                for {
+                        amqpClient.PublishOnQueue(bytes, "discovery")
+                        time.Sleep(time.Second * 30)
+                }
+        }()
+}
+</code></pre></div></div>
+
+<p>Full source of my little <em>circuitbreaker</em> library that wraps go-hystrix and go-resilience can be found <a href="https://github.com/callistaenterprise/goblog/blob/P11/common/circuitbreaker/hystrix.go">here</a>.</p>
+
+<h4 id="812-docker-remote-api">8.1.2. Docker Remote API</h4>
+<p>An other option is to let a custom Turbine plugin use the Docker Remote API to get hold of containers and their IP-addresses, which then can be transformed into something Turbine can use. This should work too, but has some drawbacks such as tying the plugin to a specific container orchestrator as well as having run Turbine on a Docker swarm mode manager node.</p>
+
+<h3 id="82-the-turbine-plugin">8.2 The Turbine plugin</h3>
+<p>The <a href="https://github.com/eriklupander/turbine-amqp-plugin">source code</a> and some basic docs for the Turbine plugin I’ve written can be found on my personal github page. Since it’s Java-based I’m not going to spend precious blog space describing it in detail in this context.</p>
+
+<p>You can also use a pre-built <a href="https://hub.docker.com/r/eriklupander/turbine/">container image</a> I’ve put on hub.docker.com. Just launch as a Docker swarm <em>service</em>.</p>
+
+<h2 id="83-running-with-option-1">8.3 Running with option 1</h2>
+<p>An executable jar file and a Dockerfile for the Hystrix dashboard exists in <em>/goblog/support/monitor-dashboard</em>. The customized Turbine is easiest used from my container image linked above.</p>
+
+<h3 id="831-building-and-running">8.3.1 Building and running</h3>
+<p>I’ve updated my shell scripts to launch the custom Turbine and Hystrix Dashboards. In <em>springcloud.sh</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Hystrix Dashboard
+docker build -t someprefix/hystrix support/monitor-dashboard
+docker service rm hystrix
+docker service create --constraint node.role==manager --replicas 1 -p 7979:7979 --name hystrix --network my_network --update-delay 10s --with-registry-auth  --update-parallelism 1 someprefix/hystrix
+
+# Turbine
+docker service rm turbine
+docker service create --constraint node.role==manager --replicas 1 -p 8282:8282 --name turbine --network my_network --update-delay 10s --with-registry-auth  --update-parallelism 1 eriklupander/turbine
+</code></pre></div></div>
+
+<p>Also, the <em>accountservice</em> Dockerfile now exposes port 8181 so Hystrix streams can be read from within the cluster. You <em>shouldn’t</em> map 8181 to a public port in your <em>docker service create</em> command.</p>
+
+<h3 id="832-troubleshooting">8.3.2 Troubleshooting</h3>
+<p>I don’t know if Turbine is slightly buggy or what the matter is, but I tend to having to do the following for Hystrix Dashboard to pick up a stream from Turbine:</p>
+
+<ul>
+  <li>Sometimes restart my <em>turbine</em> service, easiest done using <em>docker service scale=0</em></li>
+  <li>Have some requests going through the circuit breakers. Unsure if hystrix streams are produced by go-hystrix if there’s been no or no ongoing traffic passing through.</li>
+  <li>Making sure the URL one enters into Hystrix Dashboard is correct. <em>http://turbine:8282/turbine.stream?cluster=swarm</em> works for me.</li>
+</ul>
+
+<h1 id="9-summary">9. Summary</h1>
+<p>In part 11 of the <a href="../../02/17/go-blog-series-part1.html">blog series</a> we’ve looked at circuit breakers and resilience and how those mechanisms can be used to build a more fault-tolerant and resilient system.</p>
+
+<p>In the <a href="../../10/25/go-blog-series-part12/index.html">next part</a> of the <a href="../../02/17/go-blog-series-part1.html">blog series</a>, we’ll be introducing two new concepts: The Zuul EDGE server and distributed tracing using Zipkin and Opentracing.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part11&url=https://callistaenterprise.se/blogg/teknik/2017/09/11/go-blog-series-part11/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part11&u=https://callistaenterprise.se/blogg/teknik/2017/09/11/go-blog-series-part11/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part11&url=https://callistaenterprise.se/blogg/teknik/2017/09/11/go-blog-series-part11/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../js/app.js"></script>
+    <script src="../../../../../js/analytics.js"></script>
+    <script src="../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

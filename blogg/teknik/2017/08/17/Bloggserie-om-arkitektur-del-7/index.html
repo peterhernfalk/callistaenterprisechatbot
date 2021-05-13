@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 7: UML – Arkitektens skruvmejsel | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Alexander Gunnerhell" src="../../../../../../assets/medarbetare/alexandergunnerhell_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 7: UML – Arkitektens skruvmejsel</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-08-17T00:00:00+00:00">
+            17 August 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Alexander Gunnerhell
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I <a href="../../../02/10/Bloggserie-om-arkitektur-del-6/index.html">föregående</a> inlägg i den här <a href="../../../../2016/11/19/Arkitekturblogg-en-överblick/index.html">bloggserien</a> om arkitektur så utlovades ett blogginlägg om olika typer av diagram och hur de kan kategoriseras. Jag kommer att börja med att beskriva några av de vanligaste diagramtyperna över några blogginlägg, för att därefter avsluta med en överblick över UMLs hela omfång och varför man har olika kategorier av diagram.</p>
+
+<p></p>
+
+<p>I arbetet med mjukvaruarkitektur, så är kommunikation oerhört viktigt. Arkitekten behöver kommunicera arkitekturen med omgivningen på ett begripligt och tillräckligt exakt sätt. Den gamla klyschan: ”en bild säger mer än tusen ord” stämmer in bra också på arkitekturarbete.</p>
+
+<p>De bilder en arkitekt kommunicerar via är oftast olika typer av diagram. Det går naturligtvis ibland bra att rita en kladd över tex ett arkitekturmönster lite hursomhelst så länge mottagaren förstår, men det är förstås ännu bättre om arkitekten håller sig till någon form av allmänt accepterad beskrivningsform.</p>
+
+<p>Mao en standard för att beskriva mjukvaruarkitektur!</p>
+
+<h2 id="uml">UML</h2>
+<p><a href="http://www.uml.org/">UML</a>, ”Unified Modelling Language” är en <a href="http://www.omg.org/index.htm">standard</a> för att visuellt och textuellt (formellt är det en s.k. ”notation”) beskriva olika typer av mjukvaruartefakter samt näraliggande företeelser som driver mjukvarans utformning, bla:</p>
+
+<ul>
+  <li>Affärsprocesser</li>
+  <li>Krav</li>
+  <li>Hur mjukvarukomponenter (software elements) är strukturerade</li>
+  <li>Hur mjukvarukomponenter beter sig</li>
+  <li>Etc…</li>
+</ul>
+
+<p>Vi skall nu kika lite närmare på några vanligt förekommande UML-diagram som används inom arbetet med att utforma en mjukvaruarkitektur.</p>
+
+<h3 id="uml-diagram-för-att-beskriva-mjukvarustruktur">UML-diagram för att beskriva mjukvarustruktur</h3>
+<p>I <a href="../../../../2016/10/20/Bloggserie-om-arkitektur-del-2/index.html">del 2</a> av bloggserien definierade vi arkitektur på följande sätt:</p>
+
+<p><img src="../../../../../../assets/definition.png" alt="definition.png" /></p>
+
+<p>”<em>The software architecture of a system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both</em>”</p>
+
+<p>Det följer då naturligtvis, helt logiskt, att arkitekten behöver ha åtminstone några slags diagram för att beskriva mjukvarustrukturer!</p>
+
+<h3 id="klassdiagram">Klassdiagram</h3>
+<p>UML specificerar <a href="https://en.wikipedia.org/wiki/Unified_Modeling_Language#Diagrams">många olika diagram</a>, men klassdiagrammet är ett av de mest grundläggande diagrammen då det används för att beskriva exakt det som definitionen av mjukvaruarkitektur ovan formulerar: hur olika delar av mjukvaran förhåller sig till varandra och vilka egenskaper de olika delarna har.</p>
+
+<p><img src="../../../../../../assets/Exempel&#32;pa&#32;klassdiagram.png" alt="Exempel pa klassdiagram.png" /></p>
+
+<p>Klassdiagrammet ovan skulle tex kunna vara början på designen av ett IT-system för att hålla reda på fordon i ett geografiskt område, kanske ett trafikinformationssystem?</p>
+
+<p>Vad kan vi då utläsa av klassdiagrammet? Jo, att IT-systemet skall hålla reda på ”<em>Fordon</em>” som alla ”befinner sig på” en ”Position”, samt att ”Buss” och ”Lastbil” är en slags ”<em>Fordon</em>”.</p>
+
+<p>Låt oss gå igenom de olika delarna i diagrammet mer i detalj:</p>
+
+<p><img src="../../../../../../assets/Exempel&#32;pa&#32;klassdiagram&#32;annoterat.png" alt="Exempel pa klassdiagram annoterat.png" /></p>
+
+<h3 id="klasser">Klasser</h3>
+<p>Klassen ”Lastbil” beskriver hur vårt IT-system skall representera lastbilar. Man kan tänka på en klass som en ”behållare” som håller ihop två olika slags egenskaper för i detta fall lastbilar:</p>
+
+<ul>
+  <li>information (eller data) som specificeras som attribut och</li>
+  <li>beteende (eller affärslogik/verksamhetsregler) som specificeras som metoder (eller operationer)</li>
+</ul>
+
+<p>Informationen om en lastbil representeras i vårt IT-system av attributet ”lastVikt”. Attributet ”lastvikt” skulle tex kunna representera vilken vikt lasten har för en viss lastbil vid ett givet ögonblick i IT-systemet. Låt oss titta närmare på attributets specifikation:</p>
+<ul>
+  <li>prefixet ”-” betyder att attributet ”lastVikt” inte kan manipuleras direkt utanför klassen ”Lastbil” utan att endast klassen ”Lastbil” själv har rätt att manipulera detta attribut</li>
+  <li>”lastVikt” är attributets namn eller identifierare</li>
+  <li>postfixet ”: int” specificerar att attributets värde endast kan vara ett heltal (”int” är en förkortning av engelskans ”Integer)</li>
+</ul>
+
+<p>Hur ska man då komma åt informationen om vikten på lastbilens last, tex om en användare vill uppdatera lastbilens aktuella lastvikt i IT-systemet? Det är här klassens beteende kommer in i bilden: Klassen ”Lastbil” innehåller bla metoden ”ändraLastvikt”. Metoden beskriver hur man går tillväga (eller beteendet som krävs) för att ändra på värdet på lastbilens attribut ”lastVikt”. Låt oss titta närmare på metodens specifikation:</p>
+<ul>
+  <li>”+”-prefixet betyder att alla delar av IT-systemet får komma åt metoden ”ändraLastvikt”</li>
+  <li>”ändraLastvikt” är metodens namn eller identifierare</li>
+  <li>”(nyLastvikt : int)” är metodens formella parameter, den används för att tala om för klassen vilket nytt värde attributet ”lastVikt” skall anta och att endast heltal kan användas för att uppdatera attributet ”lastVikt”</li>
+</ul>
+
+<h3 id="association">Association</h3>
+<p>Klasser kan förhålla sig till varandra på <a href="https://en.wikipedia.org/wiki/Class_diagram#Relationships">flera olika typer av sätt</a>, i detta blogginlägg kommer vi dock bara titta närmare på de allra vanligaste.</p>
+
+<p>Ett grundläggande förhållande är att klasser helt enkelt känner till varandra ”i största allmänhet”: detta förhållande kallas för ”association” helt enkelt därför att klasserna är associerade med varandra!</p>
+
+<p>Låt oss titta närmare på den enda associationen i vårt klassdiagram ovan: den mellan klassen ”<em>Fordon</em>” och klassen ”Position”:</p>
+
+<ul>
+  <li>
+    <p>det finns en association mellan ”<em>Fordon</em>” och ”Position” de är mao inte oberoende av varandra</p>
+  </li>
+  <li>
+    <p>associationen är en pil som utgår från ”<em>Fordon</em>” och pekar på ”Position”, det betyder att ”<em>Fordon</em>” kan ta reda på sin ”Position”, klassen ”Position” däremot kan inte ta reda på vilket ”<em>Fordon</em>” denna utgör ”Position” för (pilen är inte dubbelriktad)</p>
+  </li>
+  <li>
+    <p>associationens namn ”befinner sig på” läses i pilens riktning och anger innebörden av associationen</p>
+  </li>
+  <li>
+    <p>”0..*” talar om multipliciteten för ”<em>Fordon</em>” i associationen med ”Position”: en ”Position” kan innehålla noll, ett eller flera ”<em>Fordon</em>” (not: fordon kan befinna sig på samma position när de är på olika höjd, tex i en planskild korsning)</p>
+  </li>
+  <li>
+    <p>”1” talar om multipliciteten för ”Position” i associationen med ”<em>Fordon</em>”: ett ”<em>Fordon</em>” har en och endast en ”Position” i varje givet ögonblick</p>
+  </li>
+</ul>
+
+<h3 id="generaliseringspecialisering">Generalisering/specialisering</h3>
+<p>Ett annat vanligt förhållande mellan klasser är att en generell klass samlar egenskaper (beteende och/eller information) som sedan ärvs av klasser som är specialiseringar av den generella klassen. I vårt diagram är ”<em>Fordon</em>” en generell klass som samlar egenskaper som alla slags fordon skall kunna ha i IT-systemet:</p>
+<ul>
+  <li>en viss hastighet</li>
+  <li>en viss riktning samt</li>
+  <li>metoder för att manipulera deras hastighet och riktning</li>
+</ul>
+
+<p>Klassen ”Buss” är en specialisering av klassen ”<em>Fordon</em>” eller annorlunda uttryckt: en ”Buss” är ett slags ”<em>Fordon</em>”. Detta betyder i vårt IT-system att alla egenskaper som ”<em>Fordon</em>” har, har också ”Buss”, man kan säga att ”Buss” har ärvt ”<em>Fordon</em>”s egenskaper!</p>
+
+<p>Utöver de ärvda egenskaperna, så innehåller klassen ”Buss” även sina egna specialiserade egenskaper som är unika för klassen ”Buss”:</p>
+<ul>
+  <li>information om antal passagerare som sitter i bussen samt</li>
+  <li>metoder för att manipulera antalet passagerare i bussen</li>
+</ul>
+
+<p>På samma sätt ”ärver” klassen ”Lastbil” samtliga egenskaper från ”<em>Fordon</em>” och har också sina egna unika egenskaper, precis som klassen ”Buss”.</p>
+
+<h3 id="klassen-och-dess-instanser">Klassen och dess instans(er)</h3>
+<p>En viktig sak att förstå är också skillnaden mellan en klass och dess instanser (not: begreppet objekt är också vanligt). I klassdiagrammen ovan har vi beskrivit olika mjukvarukomponenter som klasser. Ett sätt att se på klasser är, som tidigare nämnts, som behållare för beteende och information (egenskaper) som naturligt hör ihop.</p>
+
+<p>Vi kan också se på en klass som en mall (eller specifikation) för dess instanser eller förenklat som en stämpel med vars hjälp man ”stämplar fram” instanser i IT-systemet.</p>
+
+<p>Vad är då en instans? En instans är en representation i IT-systemet av en viss förekomst av en klass eller i verkligheten en specifik lastbil eller buss:</p>
+
+<p><img src="../../../../../../assets/Exempel&#32;pae&#32;objektdiagram.png" alt="Exempel pae objektdiagram.png" /></p>
+
+<p>I diagrammet ovan ser vi nu tydligt hur klasserna ”Lastbil” (och därmed indirekt också ”<em>Fordon</em>”) samt ”Position” har använts för att ”stämpla fram” unika instanser eller objekt med faktiska värden på alla attribut!</p>
+
+<p>Det vi också har fått ovan är ett s.k. UML-”Objektdiagram”, man kan se objektdiagrammet som ett klassdiagram specificerat vid ett visst ögonblick i tid och rum.</p>
+
+<p>Vi kommer inte fördjupa oss i objektdiagram i detta bloggavsnitt, men för den intresserade är Wikipedia alltid en bra <a href="https://en.wikipedia.org/wiki/Object_diagram">början</a>.</p>
+
+<h3 id="när-används-klassdiagram">När används klassdiagram?</h3>
+<p>Klassdiagrammet används för att beskriva många olika företeelser inom mjukvaruutveckling i allmänhet och arkitektur i synnerhet:</p>
+
+<ul>
+  <li>som ett uttrycksfullare sätt att specificera begrepps- och informationsmodeller</li>
+  <li>för design av enskilda mjukvarukomponenter</li>
+  <li>för att specificera integrationsmodeller (eller meddelandemodeller) vid systemkommunikation</li>
+  <li>för att beskriva <a href="../../../../2016/12/20/Bloggserie-om-arkitektur-del-5/index.html">arkitektur-</a>, integrations- och designmönster</li>
+  <li>som bas för att strukturerat kunna specificera mer avancerade UML-diagram (tex, <a href="https://en.wikipedia.org/wiki/Sequence_diagram">sekvensdiagram</a>)</li>
+</ul>
+
+<h2 id="slutord">Slutord</h2>
+<p>För den som inte kan vänta på nästa blogginlägg, utan redan nu vill fördjupa sig ytterligare i UML, så rekommenderas boken ”<a href="https://www.martinfowler.com/books/uml.html">UML Distilled</a>” av <a href="https://martinfowler.com/">Martin Fowler</a>.</p>
+
+<p>Martin Fowler har skrivit mängder av böcker kring systemutveckling i allmänhet och arkitektur i synnerhet och jag rekommenderar den som är intresserad av området att botanisera på Martin Fowlers hemsida.</p>
+
+<p>I nästa blogginlägg kommer vi kika närmare på sekvensdiagram och hur dessa kan användas.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 7&url=https://callistaenterprise.se/blogg/teknik/2017/08/17/Bloggserie-om-arkitektur-del-7/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 7&u=https://callistaenterprise.se/blogg/teknik/2017/08/17/Bloggserie-om-arkitektur-del-7/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 7&url=https://callistaenterprise.se/blogg/teknik/2017/08/17/Bloggserie-om-arkitektur-del-7/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

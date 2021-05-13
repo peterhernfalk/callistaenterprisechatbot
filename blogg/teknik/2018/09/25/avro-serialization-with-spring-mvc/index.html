@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Apache Avro Serialization with Spring MVC | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Apache Avro Serialization with Spring MVC</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-09-25T00:00:00+00:00">
+            25 September 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Apache Avro is becoming a popular choice for Java Object Serialization in Event
+Driven Architectures using Apache Kafka, due to its compact binary payloads and stringent schema support. If combining Event Notification using Kafka with traditional Request-Response, it is convenient to use the same serialization mechanism for the domain objects, regardless of if they are part of events emitted over Kafka or requested through a REST API. Here’s how to do that in a Spring-MVC REST environment.</p>
+
+<p></p>
+
+<p><a href="https://martinfowler.com/articles/201701-event-driven.html">Event Driven Architectures</a> are becoming increasingly more popular, partly due to the challenges with tightly coupled micro services. When streaming events at scale, a highly scalable messaging backbone is a critical enabler. <a href="Https://kafka.apache.org/">Apache Kafka</a> is widely used, due to its distributed nature and thus extreme scalability. In order for Kafka to really deliver, individual messages needs to be fairly small (see e.g. <a href="https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines">Kafka Benchmark</a>). Hence verbose data serialization formats like XML or JSON might not be appropriate for event notifications.</p>
+
+<p>While there are several serialization protocols offering compact binary payloads (among them, <a href="https://developers.google.com/protocol-buffers/">Google Protobuf</a> stands out a modern and elegant framework), <a href="https://avro.apache.org/">Apache Avro</a> is frequently used together with Kafka. While not necessarily the most elegant framework, the <a href="https://www.confluent.io/">Confluent</a> Kafka packaging provides a <a href="https://docs.confluent.io/current/schema-registry/docs/index.html">Schema Registry</a>, which allows a structured way to manage message schemas and schema versions, and the Schema Registry is based on Avro schemas.</p>
+
+<h4 id="avro-idl">Avro IDL</h4>
+
+<p>Avro schemas can be defined in two ways: In JSON syntax, or in <em>Avro IDL</em>, a custom DSL for describing datatypes and RPC operations. While the JSON syntax might seem more appealing, it lacks a decent <strong>include</strong> mechanism, making it hard to decompose and reuse common datatypes between schemas. Hence Avro IDL seems to me to be the syntax most appropriate for serious use. Below is a simple example of an Avro IDL schema, defining a Car type with a mandatory VIN and an optional Plate Number:</p>
+
+<pre class=" line-numbers"><code class="language-src/main/resources/avro/Car.avdl">@namespace("se.callista.blog.avro_spring.car.avro")
+protocol CarProtocol {
+
+  record Car {
+    string VIN;
+    union { null, string } plateNumber;
+  }
+
+}
+</code></pre>
+
+<p>An Avro schema may be used in runtime (useful when working with dynamically typed languages) or compiled into language-specific bindings for e.g. Java. 
+The following is an example of a Maven configuration snippet to feed Avro schemas through the Avro IDL compiler:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.avro&lt;/groupId&gt;
+				&lt;artifactId&gt;avro-maven-plugin&lt;/artifactId&gt;
+				&lt;version&gt;${avro.version}&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;phase&gt;generate-sources&lt;/phase&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;idl-protocol&lt;/goal&gt;
+						&lt;/goals&gt;
+						&lt;configuration&gt;
+							&lt;sourceDirectory&gt;${project.basedir}/src/main/resources/avro/&lt;/sourceDirectory&gt;
+							&lt;outputDirectory&gt;${project.build.directory}/generated-sources/avro&lt;/outputDirectory&gt;
+						&lt;/configuration&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+</code></pre></div></div>
+
+<p>When feeding it through the IDL compiler, a corresponding Java class is generated:</p>
+
+<pre class=" line-numbers"><code class="language-Java">package se.callista.blog.avro_spring.car.avro;
+...
+@org.apache.avro.specific.AvroGenerated
+public class Car extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  ...
+}
+</code></pre>
+
+<p>The resulting Java class can then be used to efficiently serialize and deserialize Java objects to and from byte arrays (using the <strong>org.apache.avro.specific</strong> serialization mechanism, which is the recommended style for statically compiled languages). Using the resulting Java classes when reading from or publishing to Kafka topics is straight forward.</p>
+
+<h3 id="request-reply-and-rest">Request-Reply and REST</h3>
+
+<p>But what if you want to use the same Schema definitions in your RESTful API (i.e. using Avro serialization over http)? Avro comes with a proprietary RPC mechanism <a href="https://github.com/phunt/avro-rpc-quickstart">Avro RPC</a>, with an http server implementation built on top of Netty. But such a mechanism doesn’t easily integrate with other REST frameworks, like e.g. a <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> application. I was a little surprised to find that there seems to be no formal support in neither Avro nor Spring to easily integrate Avro serialization with the <em>HttpMessageConverter</em> abstraction of Spring MVC.</p>
+
+<p>Luckily, this can fairly easily be done using the existing Avro Serializer/Deserializer framework and the Spring MVC interfaces. Let’s see how (a fully working example can be found at <a href="https://github.com/callistaenterprise/blog-avro-spring">github.com/callistaenterprise/blog-avro-spring</a>):</p>
+
+<h4 id="generic-interfaces">Generic Interfaces</h4>
+
+<p>Lets start by defining two generic interfaces for serialization and deserialization to and from byte arrays:</p>
+
+<pre class=" line-numbers"><code class="language-Java">public interface Serializer&lt;T&gt; {
+
+  /**
+   * Serialize object as byte array.
+   * @param T data the object to serialize
+   * @return byte[]
+   */
+  byte[] serialize(T data) throws SerializationException;
+
+}
+</code></pre>
+<pre class=" line-numbers"><code class="language-Java">public interface Deserializer&lt;T&gt; {
+
+  /**
+   * Deserialize object from a byte array.
+   * @param Class&lt;? extends T&gt; clazz the expected class for the deserialized object
+   * @param byte[] data the byte array
+   * @return T object instance
+   */
+  T deserialize(Class&lt;? extends T&gt; clazz, byte[] data) throws SerializationException;
+
+}
+</code></pre>
+
+<h4 id="avro-implementations-using-orgapacheavrospecific">Avro implementations using org.apache.avro.specific</h4>
+
+<p>Now let’s use the <strong>org.apache.avro.specific</strong> mechanism to implement serialization and deserialization for all Java classes generated from Avro IDL (supporting serialization using both Avro binary format as well as Avro JSon format):</p>
+
+<pre class=" line-numbers"><code class="language-Java">public class AvroSerializer&lt;T extends SpecificRecordBase&gt; implements Serializer&lt;T&gt; {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AvroSerializer.class);
+
+  private final boolean useBinaryEncoding;
+  
+  public AvroSerializer(boolean useBinaryEncoding) {
+    this.useBinaryEncoding = useBinaryEncoding;
+  }
+
+  public boolean isUseBinaryEncoding() {
+    return useBinaryEncoding;
+  }
+
+  @Override
+  public byte[] serialize(T data) throws SerializationException {
+    try {
+      byte[] result = null;
+
+      if (data != null) {
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("data={}:{}", data.getClass().getName(), data);
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Encoder encoder = useBinaryEncoding ?
+            EncoderFactory.get().binaryEncoder(byteArrayOutputStream, null) :
+            EncoderFactory.get().jsonEncoder(data.getSchema(), byteArrayOutputStream);;
+
+        DatumWriter&lt;T&gt; datumWriter = new SpecificDatumWriter&lt;&gt;(data.getSchema());
+        datumWriter.write(data, encoder);
+
+        encoder.flush();
+        byteArrayOutputStream.close();
+
+        result = byteArrayOutputStream.toByteArray();
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("serialized data='{}' ({})", DatatypeConverter.printHexBinary(result), new String(result));
+        }
+      }
+      return result;
+    } catch (IOException e) {
+      throw new SerializationException("Can't serialize data='" + data + "'", e);
+    }
+  }
+}
+</code></pre>
+<pre class=" line-numbers"><code class="language-Java">public class AvroDeserializer&lt;T extends SpecificRecordBase&gt; implements Deserializer&lt;T&gt; {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AvroDeserializer.class);
+
+  private final boolean useBinaryEncoding;
+  
+  public AvroDeserializer(boolean useBinaryEncoding) {
+    this.useBinaryEncoding = useBinaryEncoding;
+  }
+
+  public boolean isUseBinaryEncoding() {
+    return useBinaryEncoding;
+  }
+
+  @Override
+  public T deserialize(Class&lt;? extends T&gt; clazz, byte[] data) throws SerializationException {
+    try {
+      T result = null;
+      if (data != null) {
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("data='{}' ({})", DatatypeConverter.printHexBinary(data), new String(data));
+        }
+        Class&lt;? extends SpecificRecordBase&gt; specificRecordClass =
+            (Class&lt;? extends SpecificRecordBase&gt;) clazz;
+        Schema schema = specificRecordClass.newInstance().getSchema();
+        DatumReader&lt;T&gt; datumReader =
+            new SpecificDatumReader&lt;&gt;(schema);
+        Decoder decoder = useBinaryEncoding ?
+            DecoderFactory.get().binaryDecoder(data, null) :
+            DecoderFactory.get().jsonDecoder(schema, new ByteArrayInputStream(data));;
+
+        result = datumReader.read(null, decoder);
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("deserialized data={}:{}", clazz.getName(), result);
+        }
+      }
+      return result;
+    } catch (InstantiationException | IllegalAccessException | IOException e) {
+      throw new SerializationException("Can't deserialize data '" + Arrays.toString(data) + "'", e);
+    }
+  }
+}
+</code></pre>
+
+<p>A bit verbose, but nothing fancy in there, just the boiler plate code for using the Avro <strong>org.apache.avro.specific</strong> mechanisms.</p>
+
+<h4 id="spring-mvc-httpmessageconverter-avro-implementation">Spring MVC <em>HttpMessageConverter</em> Avro implementation</h4>
+
+<p>Next step is to provide an implementation of Spring MVC’s <em>HttpMessageConverter</em>, using the Avro serializers. The <em>AbstractHttpMessageConverter</em> base class provides most the boiler plate code necessary, so we just needs to complement it with what Mime types and Java types the MessageConverter supports, and the actual conversion to and from those types. We’ll do it in two different flavors, to support binary or JSON serialization respectively:</p>
+
+<pre class=" line-numbers"><code class="language-Java">public abstract class AvroHttpMessageConverter&lt;T&gt; extends AbstractHttpMessageConverter&lt;T&gt; {
+
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+  public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+
+  private Serializer&lt;SpecificRecordBase&gt; serializer;
+  private Deserializer&lt;SpecificRecordBase&gt; deserializer;
+
+  public AvroHttpMessageConverter(boolean useBinaryEncoding, MediaType... supportedMediaTypes) {
+    super(supportedMediaTypes);
+    serializer = new AvroSerializer&lt;&gt;(useBinaryEncoding);
+    deserializer = new AvroDeserializer&lt;&gt;(useBinaryEncoding);
+  }
+
+  @Override
+  protected boolean supports(Class&lt;?&gt; clazz) {
+    return SpecificRecordBase.class.isAssignableFrom(clazz);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  protected T readInternal(Class&lt;? extends T&gt; clazz, HttpInputMessage inputMessage)
+      throws IOException, HttpMessageNotReadableException {
+    T result = null;
+    byte[] data = IOUtils.toByteArray(inputMessage.getBody());
+    if (data.length &gt; 0) {
+      result = (T) deserializer.deserialize((Class&lt;? extends SpecificRecordBase&gt;) clazz, data);
+    }
+    return result;
+  }
+
+  @Override
+  protected void writeInternal(T t, HttpOutputMessage outputMessage)
+      throws IOException, HttpMessageNotWritableException {
+    byte[] data = serializer.serialize((SpecificRecordBase) t);
+    outputMessage.getBody().write(data);
+  }
+
+}
+</code></pre>
+<pre class=" line-numbers"><code class="language-Java">public class AvroBinaryHttpMessageConverter&lt;T&gt; extends AvroHttpMessageConverter&lt;T&gt; {
+
+  public AvroBinaryHttpMessageConverter() {
+    super(true, new MediaType("application", "avro", DEFAULT_CHARSET),
+        new MediaType("application", "*+avro", DEFAULT_CHARSET));
+  }
+
+}
+</code></pre>
+<pre class=" line-numbers"><code class="language-Java">public class AvroJsonHttpMessageConverter&lt;T&gt; extends AvroHttpMessageConverter&lt;T&gt; {
+
+  public AvroJsonHttpMessageConverter() {
+    super(false, new MediaType("application", "avro+json", DEFAULT_CHARSET),
+        new MediaType("application", "*+avro+json", DEFAULT_CHARSET));
+  }
+
+}
+</code></pre>
+
+<p>Simple enough. Now we need to configure Spring MVC to use the new MessageConverter in Controllers and in REST clients using RestTemplate:</p>
+
+<pre class=" line-numbers"><code class="language-Java">@Configuration
+public class ConverterConfig extends WebMvcConfigurerAdapter {
+
+  @Override
+  public void configureMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) {
+    super.configureMessageConverters(converters);
+    converters.add(new AvroJsonHttpMessageConverter&lt;SpecificRecordBase&gt;());
+  }
+
+  @Bean
+  public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    RestTemplate restTemplate = builder.build();
+    restTemplate.getMessageConverters().add(0, new AvroJsonHttpMessageConverter&lt;SpecificRecordBase&gt;());
+    return restTemplate;
+  }
+
+}
+</code></pre>
+
+<h4 id="using-the-messageconverter-in-a-rest-endpoint">Using the MessageConverter in a REST endpoint</h4>
+
+<p>Once we have the MessageConverter configured, we can use the Avro generated classes as parameter and return types in our Controller implementation, relying on the MessageConverter doing the correct Serialization/Deserialization based on content type negotiation:</p>
+
+<pre class=" line-numbers"><code class="language-Java">import se.callista.blog.avro_spring.car.avro.Car;
+
+@RestController
+public class CarController {
+
+  @RequestMapping(value = "/car/{VIN}", method = RequestMethod.GET, produces = "application/avro+json")
+  public Car getCar(@PathVariable("VIN") String VIN) {
+    ...
+  }
+
+  @RequestMapping(value = "/car/{VIN}", method = RequestMethod.PUT, consumes = "application/avro+json",
+      produces = "application/avro+json")
+  public Car updateCar(@PathVariable("VIN") String VIN, @RequestBody Car car) {
+    ...
+  }
+}
+</code></pre>
+
+<p>Similar for consuming a REST endpoint using RestTemplate:</p>
+
+<pre class=" line-numbers"><code class="language-Java">import se.callista.blog.avro_spring.car.avro.Car;
+
+public class CarClient {
+
+  private static final MediaType APPLICATION_AVRO_JSON =
+      new MediaType("application", "avro+json", Charset.forName("UTF-8"));
+
+  @Autowired
+  private RestTemplate restTemplate;
+
+  public Car getCar(String VIN) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList(APPLICATION_AVRO_JSON));
+    HttpEntity&lt;Void&gt; entity = new HttpEntity&lt;&gt;(headers);
+
+    ResponseEntity&lt;Car&gt; result =
+        restTemplate.exchange("/car/" + VIN, HttpMethod.GET, entity, Car.class);
+    return result.getBody();
+  }
+
+  public Car updateCar(String VIN, Car car) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList(APPLICATION_AVRO_JSON));
+    headers.setContentType(APPLICATION_AVRO);
+    HttpEntity&lt;Car&gt; entity = new HttpEntity&lt;&gt;(car, headers);
+
+    ResponseEntity&lt;Car&gt; result =
+        restTemplate.exchange("/car/" + VIN, HttpMethod.PUT, entity, Car.class);
+    return result.getBody();
+  }
+
+}
+</code></pre>
+
+<p>As usual with most of the Spring APIs, the end result is reasonably elegant and non-intrusive, isn’t it?</p>
+
+<h4 id="why-avro-over-rest-anyway">Why Avro over REST anyway?</h4>
+
+<p>So why would you like to use Avro serialization in a REST API anyway? If you are investing in an Event-Driven Architecture and are using Kafka as event distribution platform, Avro is the recommended choice due to its compact binary message format and good Schema versioning support from the Schema Registry. But then there may be a small area within your solution where a Synchronous Query API is needed, maybe to support a subsystem or client that is not yet ready to go all-in event driven. In such a situation, it makes perfect sense to reuse the same Avro-based Domain Object types from the existing Event streams to define your REST-based API.</p>
+
+<p>Your mileage may vary …</p>
+
+<p>Enjoy!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Avro Serialization With Spring Mvc&url=https://callistaenterprise.se/blogg/teknik/2018/09/25/avro-serialization-with-spring-mvc/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Avro Serialization With Spring Mvc&u=https://callistaenterprise.se/blogg/teknik/2018/09/25/avro-serialization-with-spring-mvc/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Avro Serialization With Spring Mvc&url=https://callistaenterprise.se/blogg/teknik/2018/09/25/avro-serialization-with-spring-mvc/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Microservices, part 5. Upgrading to Spring Cloud 1.1 and Docker for Mac | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Microservices, part 5. Upgrading to Spring Cloud 1.1 and Docker for Mac</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-09-30T00:00:00+00:00">
+            30 September 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This blog post is mainly about updating the underlying software used in our <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series</a> on building microservices. Most important is the upgrade of Spring Cloud to the Brixton release (v1.1 SR3) and upgrading the Docker development environment to Docker For Mac v1.12. Spring Boot has also been upgraded to v1.3.6.</p>
+
+<p>We will also throw in a Spring Cloud Config server for externalised configuration and Spring Cloud Sleuth for handling correlation ids but the details regarding the configuration server and correlation ids will be saved for later blog posts.</p>
+
+<p></p>
+
+<p>The blog post basically repeats the tests performed in part 1 - 4 in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series</a>, but on the upgraded versions. First we verify that we have installed the tools we need, then we will get the source code, build it and finally perform tests to verify that everything works.</p>
+
+<p>If your are interested, here are some links to information on how to migrate source code from Spring Cloud v1.0 (the Angle release) to v1.1 (the Brixton release):</p>
+
+<ul>
+  <li><a href="https://spring.io/blog/2015/11/25/migrating-spring-cloud-apps-from-spring-boot-1-2-to-1-3">Migrating Spring Cloud apps from Spring Boot 1.2 to 1.3</a></li>
+  <li><a href="https://spring.io/blog/2015/11/30/migrating-oauth2-apps-from-spring-boot-1-2-to-1-3">Migrating OAuth2 apps from Spring Boot 1.2 to 1.3</a></li>
+  <li><a href="https://spring.io/blog/2016/03/24/spring-cloud-brixton-rc1-is-now-available#notes">A @LoadBalanced RestTemplate is no longer created by default</a></li>
+  <li><a href="https://spring.io/blog/2016/05/11/spring-cloud-brixton-release-is-available">Spring Cloud Bus is now powered by the recently released Spring Cloud Stream</a></li>
+</ul>
+
+<h1 id="1-install-required-tools">1. Install required tools</h1>
+
+<ul>
+  <li>You need to have Java SE 8 and Git installed to be able to checkout the source code and build it.</li>
+  <li>To deploy and run it you will need <a href="http://www.docker.com/products/overview#/install_the_platform">Docker</a>, this blog post assume you are using <a href="http://www.docker.com/products/docker#/mac">Docker for Mac</a>.</li>
+  <li>To be able to run some of the test commands used below you also need to have the tools <a href="http://curl.haxx.se">cURL</a> and <a href="http://stedolan.github.io/jq/">jq</a> installed.</li>
+</ul>
+
+<p>It is strongly recommended that you give your Docker environment a lot of memory and CPUs/cores. I have configured Docker for Mac to use all eight CPU cores available on my Mac and allocating up to 8 GM of memory if required:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-5/dockerPreference.png" alt="Docker" /></p>
+
+<h1 id="2-get-the-source-code-and-build">2. Get the source code and build</h1>
+
+<p>Open a terminal and <code class="language-plaintext highlighter-rouge">cd</code> into a folder of your choice:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd a-folder-of-your-choice
+</code></pre></div></div>
+
+<p>Since we have externalised our configuration into a configuration repository we first need to get it from GitHub:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-microservices-config.git
+</code></pre></div></div>
+
+<p>Next, we get the source code from GitHub:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/callistaenterprise/blog-microservices.git
+$ cd blog-microservices
+$ git checkout -b B8 M8
+</code></pre></div></div>
+
+<p>Time to build our microservices with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./build-all.sh
+</code></pre></div></div>
+
+<p>Finally, we verify that we have docker images created in our docker environment:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker images | grep blogmicroservices
+blogmicroservices_rev         latest              02a156c0e27d        3 days ago          126.1 MB
+blogmicroservices_composite   latest              1c7b4d313595        5 days ago          128.2 MB
+blogmicroservices_pro         latest              315c508ee5c9        5 days ago          126.1 MB
+blogmicroservices_auth        latest              e7ec2f569efc        5 days ago          106.4 MB
+blogmicroservices_edge        latest              501ea469296d        5 days ago          125.2 MB
+blogmicroservices_rec         latest              d0331cbe7451        5 days ago          126.1 MB
+blogmicroservices_config      latest              5452ef106f6a        5 days ago          126.9 MB
+blogmicroservices_discovery   latest              82c0cc4f1f71        5 days ago          124.1 MB
+blogmicroservices_monitor     latest              a142cf8fe027        5 days ago          109.7 MB
+</code></pre></div></div>
+
+<h1 id="3-start-up-the-microservices">3. Start up the microservices</h1>
+
+<p>Now, we can start up the microservices as Docker containers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
+</code></pre></div></div>
+
+<p>We can follow the startup procedure with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose logs -f
+</code></pre></div></div>
+
+<p>…once the output from the logs stops rolling (takes a minute on my laptop) we can see if we can find our microservices in the discovery server (Netflix Eureka)</p>
+
+<p>In another terminal window, try the following curl command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s -H "Accept: application/json" http://localhost:8761/eureka/apps | jq .applications.application[].name
+</code></pre></div></div>
+
+<p>It should respond with something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"REVIEW-SERVICE"
+"CONFIG-SERVER"
+"RECOMMENDATION-SERVICE"
+"COMPOSITE-SERVICE"
+"EDGE-SERVER"
+"PRODUCT-SERVICE"
+</code></pre></div></div>
+
+<p>We can also open the following URL in a web browser to get a graphical representation of the same information:</p>
+
+<p><a href="http://localhost:8761">http://localhost:8761</a></p>
+
+<p>It should look something like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-5/eureka.png" alt="Eureka" /></p>
+
+<p>See <a href="../../../../2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/index.html">Part 1</a> regarding details of the microservice landscape in the blog series.</p>
+
+<h1 id="4-run-tests">4. Run tests</h1>
+
+<p>First we will get an OAuth Access Token and execute a successful request using the Access Token.</p>
+
+<p>Next we will use Docker to scale up and down the number of microservice instances.</p>
+
+<p>Thirdly we will introduce problems into the microservice landscape and see how our circuit breaker, Netflix Hystrix, can be used to monitor and mitigate the problem.</p>
+
+<p>Finally, we will use a shell script to fully automate an end-to-end test, including starting up a test environment, run tests and then bring the test environment down again.</p>
+
+<h2 id="41-get-an-oauth-access-token">4.1 Get an OAuth Access Token</h2>
+
+<p>Since our microservices are protected using OAuth we first need to get an OAuth Access Token. To avoid involving a Web Browser we will use OAuth <a href="https://tools.ietf.org/html/rfc6749#section-4.3">resource owner password credentials grant</a> flow:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ TOKEN=$(curl -ks https://acme:acmesecret@localhost:9999/uaa/oauth/token -d grant_type=password -d client_id=acme -d username=user -d password=password | jq -r .access_token)
+$ echo $TOKEN
+f2340e30-2122-473c-9d6d-e9a27e912050
+</code></pre></div></div>
+
+<p>See <a href="../../../../2015/04/27/building-microservices-part-3-secure-APIs-with-OAuth/index.html">Part 3</a> for details regarding use of OAuth.</p>
+
+<h2 id="42-execute-a-request">4.2 Execute a request</h2>
+
+<p>Now, we can use the access token to execute a request to the microservice landscape:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" \
+  -ks 'https://localhost/api/product/1046' | jq .
+{
+  "productId": 1046,
+  "name": "name",
+  "weight": 123,
+  "recommendations": [ ... ],
+  "reviews": [ ... ]
+}
+</code></pre></div></div>
+
+<p>After a couple of requests the log should look something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composite_1  | 2016-08-14 06:24:19.634  INFO [composite-service,ba5eab537ac321b4,ebb02a82821b3a0,false] 1 --- [  XNIO-2 task-2] s.c.m.c.p.s.ProductCompositeService      : Synch start...
+pro_1        | 2016-08-14 06:24:19.641  INFO [product-service,ba5eab537ac321b4,8b39d9547a53e9ba,false] 1 --- [  XNIO-2 task-2] s.c.m.c.product.service.ProductService   : /product called, processing time: 7
+rec_1        | 2016-08-14 06:24:19.663  INFO [recommendation-service,ba5eab537ac321b4,b406512ef768f18c,false] 1 --- [  XNIO-2 task-2] s.c.m.c.r.service.RecommendationService  : /recommendation called, processing time: 15
+rev_1        | 2016-08-14 06:24:19.694  INFO [review-service,ba5eab537ac321b4,b5a63711698de4be,false] 1 --- [  XNIO-2 task-2] s.c.m.core.review.service.ReviewService  : /reviews called, processing time: 5
+</code></pre></div></div>
+
+<p><strong>NOTE:</strong> In the log output you can see that the output from the four microservices contains one and the same correlation id, <code class="language-plaintext highlighter-rouge">ba5eab537ac321b4</code>. This is Spring Cloud Sleuth in action, more about that in a future blog post!</p>
+
+<p>See <a href="../../../../2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/index.html">Part 1</a> regarding details of the microservice landscape.</p>
+
+<h2 id="43-scale-up-and-down">4.3 Scale up and down</h2>
+
+<p>Scale up the Recommendation Service to two instances:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose scale rec=2
+Creating and starting blogmicroservices_rec_2 ... done
+
+Note output in the log!
+</code></pre></div></div>
+
+<p>Verify that we now have two instances:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose ps rec
+         Name                        Command               State    Ports
+---------------------------------------------------------------------------
+blogmicroservices_rec_1   java -Dspring.profiles.act ...   Up      8080/tcp
+blogmicroservices_rec_2   java -Dspring.profiles.act ...   Up      8080/tcp
+</code></pre></div></div>
+
+<p>Execute some new requests (as above) and note responses from both instances (<strong>rec_1</strong> and <strong>rec_2</strong>) in the log:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rec_1        | 2016-08-14 06:32:11.900  INFO [recommendation-service,c7e72729ea4f882a,809aff42409141c4,false] 1 --- [  XNIO-2 task-4] s.c.m.c.r.service.RecommendationService  : /recommendation called, processing time: 12
+rec_2        | 2016-08-14 06:32:12.839  INFO [recommendation-service,75f6a7a27a8c0bb4,a558db8647189c44,false] 1 --- [  XNIO-2 task-2] s.c.m.c.r.service.RecommendationService  : /recommendation called, processing time: 7
+</code></pre></div></div>
+
+<p>Scale down the Recommendation Service to one instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose scale rec=1
+Stopping and removing blogmicroservices_rec_2 ... done
+</code></pre></div></div>
+
+<p>Verify that we only have one instance left:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose ps rec
+Name                        Command               State    Ports
+---------------------------------------------------------------------------
+blogmicroservices_rec_1   java -Dspring.profiles.act ...   Up      8080/tcp
+</code></pre></div></div>
+
+<p>Execute some more requests and note responses only from <strong>rec_1</strong> in the log:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rec_1        | 2016-08-14 06:34:11.198  INFO [recommendation-service,268a97317916e011,4aec1db3daf67fa9,false] 1 --- [  XNIO-2 task-6] s.c.m.c.r.service.RecommendationService  : /recommendation called, processing time: 8
+rec_1        | 2016-08-14 06:34:13.094  INFO [recommendation-service,6fa3111ae02b02a0,7f6a62fa890afd70,false] 1 --- [  XNIO-2 task-7] s.c.m.c.r.service.RecommendationService  : /recommendation called, processing time: 10
+</code></pre></div></div>
+
+<p>See <a href="../../../../2015/06/08/building-microservices-part-4-dockerize-your-microservices/index.html">Part 4</a> regarding more information on how to use Docker.</p>
+
+<h2 id="44-make-a-microservice-slow">4.4 Make a microservice slow</h2>
+
+<p>We will now configure one of our microservices to respond slowly. This will make it possible to see our circuit breaker, Netflix Hystrix, in action. See <a href="../../../../2015/04/15/building-microservices-with-spring-cloud-and-netflix-oss-part-2/index.html">Part 2</a> for background and details on the circuit breaker.</p>
+
+<p>Our microservices use a Spring Bean, <code class="language-plaintext highlighter-rouge">SetProcTimeBean</code>, to calculate a simulated processing time. <code class="language-plaintext highlighter-rouge">SetProcTimeBean</code> calculates a random processing time given two configuration parameters: <code class="language-plaintext highlighter-rouge">service.defaultMinMs</code> and <code class="language-plaintext highlighter-rouge">service.defaultMaxMs</code>.</p>
+
+<p>These parameters can be changed during runtime using the configuration server without require a restart of the affected microservice. See <code class="language-plaintext highlighter-rouge">blog-microservices/util/src/main/java/se/callista/microservices/util/SetProcTimeBean.java</code> for details.</p>
+
+<p>Let’s try it out!</p>
+
+<p>Change the processing time limits and the log level (to see some <code class="language-plaintext highlighter-rouge">DEBUG</code> logging) in the Review Service by editing the file <code class="language-plaintext highlighter-rouge">review-service.yml</code> in the configuration repository:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ../blog-microservices-config
+$ vi review-service.yml
+</code></pre></div></div>
+
+<p>Remove the comment marks <code class="language-plaintext highlighter-rouge">#</code> in the file. After you are done, <code class="language-plaintext highlighter-rouge">review-service.yml</code> should look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service:
+  defaultMinMs: 6000
+  defaultMaxMs: 6000
+  
+logging.level.se.callista: DEBUG
+</code></pre></div></div>
+
+<p>Commit the change to the Git based configuration repository:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git commit -a -m "make review service slow and increase log-level to DEBUG"
+$ cd ../blog-microservices
+</code></pre></div></div>
+
+<p>Ask the Review Service to reload its configuration:  <br />
+(note that it responds with a list of the names of the updated properties)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose exec rev wget -qO- localhost:8080/refresh --post-data=""
+["logging.level.se.callista","service.defaultMaxMs","service.defaultMinMs"]    
+</code></pre></div></div>
+
+<p>Execute a new request to verify that the microservice now responds slower:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" -ks 'https://localhost/api/product/12345' | jq .
+</code></pre></div></div>
+
+<p>From the log output we can now see <code class="language-plaintext highlighter-rouge">DEBUG</code> level logging and that the processing time for the Review Service has increased to 6 sec:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rev_1        | 2016-08-14 06:45:23.036 DEBUG [review-service,1962e7e12f2d3f6b,4992a65717f568b6,false] 1 --- [ XNIO-2 task-11] s.c.microservices.util.SetProcTimeBean   : Return calculated processing time: 6000 ms
+</code></pre></div></div>
+
+<h2 id="45-netflix-hystrix-in-action">4.5 Netflix Hystrix in action</h2>
+
+<p>This will cause the Composite Service to timeout its request to the Review Service and, using Netflix Hystrix, applying a fallback method to compensate for the missing response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composite_1  | 2016-08-14 06:45:27.033  WARN [composite-service,1962e7e12f2d3f6b,e2ddef075bb6640,false] 1 --- [ HystrixTimer-8] s.c.m.c.p.s.ProductCompositeIntegration  : Using fallback method for review-service
+</code></pre></div></div>
+
+<p>The result can be seen in the response from the Composite Service where the review part now comes from the fallback method in the Composite Service (e.g. simulating results from a cache instead from the Review Service):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  "reviews": [
+    {
+      "reviewId": 1,
+      "author": "Fallback Author 1",
+      "subject": "Fallback Subject 1"
+    }
+  ]
+</code></pre></div></div>
+
+<p>We can also monitor the state of our microservices using the Netflix Hystrix dashboard. Immediately after a failing request the <a href="http://localhost:7979/hystrix/monitor?stream=http%3A%2F%2Fcomposite%3A8080%2Fhystrix.stream">dashboard</a> should display a timeout error for the <code class="language-plaintext highlighter-rouge">getReviews</code> circuit like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-5/hystrix-warning.png" alt="Hystrix-warning" /></p>
+
+<p>Since only one error is reported on <code class="language-plaintext highlighter-rouge">getReviews</code>, Hystrix keeps the circuit <strong style="color: green;">Closed</strong>, i.e. still allow requests to the Review Service to come through!</p>
+
+<h2 id="46-force-hystrix-to-open-the-circuit">4.6 Force Hystrix to open the circuit</h2>
+
+<p>Now, we will make things worse. Force Hystrix to open the circuit by executing three requests immediately after each other. Verify that <code class="language-plaintext highlighter-rouge">getReviews</code> circuit now is <strong style="color: red;">Open</strong> in the <a href="http://docker.me:7979/hystrix/monitor?stream=http%3A%2F%2Fcomposite%3A8080%2Fhystrix.stream">dashboard</a> like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-5/hystrix-error.png" alt="Hystrix-warning" /></p>
+
+<p>The dashboard reports two timeout errors on the <code class="language-plaintext highlighter-rouge">getReviews</code> circuit and the circuit is open, i.e. it does not allow calls to the Review Service!</p>
+
+<p>If we execute a new requests to the API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" -ks 'https://localhost/api/product/12345' | jq .
+</code></pre></div></div>
+
+<p>We will still get the fallback response in the review part, but the response is <strong>returned immediately</strong>. This means that the circuit breaker <strong>failed fast</strong>, i.e. never tried calling the Review Service!</p>
+
+<h2 id="47-make-the-microservice-fast-again">4.7 Make the microservice fast again</h2>
+
+<p>After a while (30 sec in our configuration) the circuit breaker will allow a request to be passed to the Review Service, to see if the services is working again. Once the failing service is operational again the circuit breaker will detect this and close the circuit again. This means that the system landscape is self healing!</p>
+
+<p>Let’s make the Review Service fast again!</p>
+
+<p>First remove the changed response time limits and remove the debug log level in the configuration of the Review Service:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ../blog-microservices-config
+$ vi review-service.yml
+</code></pre></div></div>
+
+<p>Add back the comment marks <code class="language-plaintext highlighter-rouge">#</code>. After you are done, <code class="language-plaintext highlighter-rouge">review-service.yml</code> should look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#service:
+#  defaultMinMs: 6000
+#  defaultMaxMs: 6000
+  
+#logging.level.se.callista: DEBUG
+</code></pre></div></div>
+
+<p>Commit the change to the git based configuration repository:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git commit -a -m "make review service fast again and decrease log-level to INFO"
+$ cd ../blog-microservices
+</code></pre></div></div>
+
+<p>Ask the Review Service to reload its configuration:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose exec rev wget -qO- localhost:8080/refresh --post-data=""
+["logging.level.se.callista","service.defaultMaxMs","service.defaultMinMs"]    
+</code></pre></div></div>
+
+<p>Make a new request:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H "Authorization: Bearer $TOKEN" -ks 'https://localhost/api/product/12345' | jq .
+</code></pre></div></div>
+
+<p>Probably 30 sec has passed while we were reconfiguring the Review Service so the circuit breaker allows a request to see if the service is up again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rev_1        | 2016-08-14 07:21:38.634  INFO [review-service,2a7ce13ae36ce0d,258cec0ffc5cf69d,false] 1 --- [ XNIO-2 task-24] s.c.m.core.review.service.ReviewService  : /reviews called, processing time: 6
+</code></pre></div></div>
+
+<p>We will get a normal response and the circuit is closed, i.e. the system landscape is self healing:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  "reviews": [
+    {
+      "reviewId": 1,
+      "author": "Author 1",
+      "subject": "Subject 1"
+    },
+    ...
+  ]
+</code></pre></div></div>
+
+<p>Also verify that the <code class="language-plaintext highlighter-rouge">GetReviews</code> circuit is <strong style="color: green;">Closed</strong> in the <a href="http://docker.me:7979/hystrix/monitor?stream=http%3A%2F%2Fcomposite%3A8080%2Fhystrix.stream">dashboard</a> like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-5/hystrix-ok.png" alt="Hystrix-warning" /></p>
+
+<h1 id="5-automated-end-to-end-tests">5. Automated end to end tests</h1>
+
+<p>Even if doing these tests are rather fun to perform the first time (personel preference…), they can be quite boring to repeat manually whenever you want to ensure that the microservice landscape is operational (e.g. as part of a CI/CD solution…)</p>
+
+<p>Therefore I have written a small bash-script that automates parts of the tests above (left as an exercise for the interested reader to fill in more advanced tests :-)</p>
+
+<p>The script will fist verify that all services are registered in Netflix Eureka, then get an Access Token from the OAuth server and finally call the composite service through the edge server.</p>
+
+<p>Optionally, the script can also startup the system landscape using <code class="language-plaintext highlighter-rouge">docker-compose</code> before the tests are executed and shut it down again afterwards (controlled by adding the parameters <code class="language-plaintext highlighter-rouge">start</code> and <code class="language-plaintext highlighter-rouge">stop</code>).</p>
+
+<p>Try it out with no containers up and running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./test-all.sh start stop
+</code></pre></div></div>
+
+<p>Fractions of the output will look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start: Sun Aug 28 10:19:07 CEST 2016
+Restarting the test environment...
+$ docker-compose down
+$ docker-compose up -d
+
+Wait for: localhost:8761... 
+Wait for: localhost:8761/eureka/apps/config-server... 
+
+Get an OAuth Access Token:
+ACCESS TOKEN: fabb3934-3d5e-42aa-b17e-f7ba1688f32e
+
+Call API with Access Token...
+Wait for API: ... Is the API awake?
+$ curl -ks https://localhost:443/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+Ok
+
+We are done, stopping the test environment...
+$ docker-compose down
+End: Sun Aug 28 10:20:43 CEST 2016
+</code></pre></div></div>
+
+<p>Afterwards all containers are removed, i.e. the test environment only existed during the execution of the automated end-to-end tests. Very useful, for example, in a CI/CD solution!</p>
+
+<h1 id="6-summary">6. Summary</h1>
+
+<p>Ok, so we are back on track with updated versions of Docker, Spring Boot and Spring Cloud!</p>
+
+<p>All the previously described functionality in earlier <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog posts</a> still works and we have added a fully automated end-to-end test script. We have also seen some new components in action like the Spring Cloud Configuration Server and Spring Cloud Sleuth. Actually Spring Cloud Stream is also new, but much harder to observe.</p>
+
+<h1 id="7-next-step">7. Next Step</h1>
+
+<p>In the next blog posts in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">Blog Series - Building Microservices</a> we will cover the newly added components, Spring Cloud Configuration Server and Spring Cloud Sleuth. Eventually we will also cover the ELK stack that I promised a looong time ago, stay tuned…</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices Part 5 Springcloud11 Docker4mac&url=https://callistaenterprise.se/blogg/teknik/2016/09/30/building-microservices-part-5-springcloud11-docker4mac/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices Part 5 Springcloud11 Docker4mac&u=https://callistaenterprise.se/blogg/teknik/2016/09/30/building-microservices-part-5-springcloud11-docker4mac/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices Part 5 Springcloud11 Docker4mac&url=https://callistaenterprise.se/blogg/teknik/2016/09/30/building-microservices-part-5-springcloud11-docker4mac/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

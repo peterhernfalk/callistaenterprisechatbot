@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices, part 3 - embedded database and JSON | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="../go-blog-series-part3.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="../go-blog-series-part3.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="../go-blog-series-part3.html">Go Microservices, part 3 - embedded database and JSON</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-02-27T00:00:00+00:00">
+            27 February 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In part 3, we’ll make our Accountservice do something useful.</p>
+
+<ul>
+  <li>Declare an ‘Account’ struct</li>
+  <li>Embed a simple key-value store that we can store Account structs in.</li>
+  <li>Serialize a struct to JSON and serve over our /accounts/{accountId} HTTP service.</li>
+</ul>
+
+<h1 id="source-code">Source code</h1>
+<p>As in all upcoming parts of this blog series, you can get the complete source code of this part by cloning the source (see <a href="../../21/go-blog-series-part2.html">part 2</a>) and switching to the P3 branch, i.e:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout P3
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P3">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h2 id="declaring-an-account-struct">Declaring an Account struct</h2>
+<p>For a more elaborate introduction to Go structs, please check <a href="https://www.golang-book.com/books/intro/9">this guide</a>.</p>
+
+<p>In our project, create a folder named <em>model</em> under the /accountservice folder.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir model
+</code></pre></div></div>
+
+<p>Now, create a file named <em>account.go</em> in the <em>model</em> folder with the following content:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package model
+
+type Account struct {
+        Id string `json:"id"`
+        Name string  `json:"name"`
+}
+</code></pre></div></div>
+
+<p>This declares our <em>Account</em> abstraction that basically is an id and a name. The case of the first letter denotes scoping (Upper-case == public, lower-case package-scoped). We also use the built-in support for declaring how each field should be serialized by the json.Marshal function in Go.</p>
+
+<h3 id="embedding-a-key-value-store">Embedding a key-value store</h3>
+<p>For this, we’ll use the <a href="https://github.com/boltdb/bolt">BoltDB</a> key-value store. It’s simple, fast and easy to work with. We can actually preempt <em>go get</em> to retrieve the dependency before we’ve declared use of it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get github.com/boltdb/bolt
+</code></pre></div></div>
+
+<p>Next, in the <em>/goblog/accountservice</em> folder, create a new folder named “dbclient” and a file named <em>boltclient.go</em>. To make mocking easier later on, we’ll start by declaring an interface that defines the contract we need implementors to fulfill:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package dbclient
+
+import (
+        "github.com/callistaenterprise/goblog/accountservice/model"
+)
+
+type IBoltClient interface {
+        OpenBoltDb()
+        QueryAccount(accountId string) (model.Account, error)
+        Seed()
+}
+</code></pre></div></div>
+
+<p>In the same file, we’ll provide an implementation of this interface. Start by declaring a struct that encapsulates a pointer to a bolt.DB instance.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Real implementation
+type BoltClient struct {
+        boltDB *bolt.DB
+}
+</code></pre></div></div>
+
+<p>Here is the implementation of <em>OpenBoltDb()</em>. We’ll add the two remaining functions a bit further down.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func (bc *BoltClient) OpenBoltDb() {
+        var err error
+        bc.boltDB, err = bolt.Open("accounts.db", 0600, nil)
+        if err != nil {
+                log.Fatal(err)
+        }
+}
+</code></pre></div></div>
+
+<p>This part of Go syntax can feel a bit weird at first, where we bind a function to a struct. Our struct now implicitly implements one of the three methods.</p>
+
+<p>We’ll need an instance of this “bolt client” somewhere. Let’s put it where it’s going to be used, in <em>/goblog/accountservice/service/handlers.go</em>. Create that file and add the instance of our struct:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  package service
+  
+  import (
+          "github.com/callistaenterprise/goblog/accountservice/dbclient"
+  )
+  
+  var DBClient dbclient.IBoltClient
+</code></pre></div></div>
+
+<p>Update <em>main.go</em> so it’ll open the DB on start:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func main() {
+        fmt.Printf("Starting %v\n", appName)
+        initializeBoltClient()                 // NEW
+        service.StartWebServer("6767")
+}
+
+// Creates instance and calls the OpenBoltDb and Seed funcs
+func initializeBoltClient() {
+        service.DBClient = &amp;dbclient.BoltClient{}
+        service.DBClient.OpenBoltDb()
+        service.DBClient.Seed()
+}
+</code></pre></div></div>
+
+<p>Our microservice should now create a database on start. However, before running we’ll add a piece of code that’ll bootstrap some accounts for us on startup.</p>
+
+<h2 id="seed-some-accounts-on-startup">Seed some Accounts on startup</h2>
+<p>Open <em>boltclient.go</em> again and add the following functions:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Start seeding accounts
+func (bc *BoltClient) Seed() {
+        initializeBucket()
+        seedAccounts()
+}
+
+// Creates an "AccountBucket" in our BoltDB. It will overwrite any existing bucket of the same name.
+func (bc *BoltClient) initializeBucket() {
+        bc.boltDB.Update(func(tx *bolt.Tx) error {
+                _, err := tx.CreateBucket([]byte("AccountBucket"))
+                if err != nil {
+                        return fmt.Errorf("create bucket failed: %s", err)
+                }
+                return nil
+        })
+}
+
+
+// Seed (n) make-believe account objects into the AcountBucket bucket.
+func (bc *BoltClient) seedAccounts() {
+
+        total := 100
+        for i := 0; i &lt; total; i++ {
+
+                // Generate a key 10000 or larger
+                key := strconv.Itoa(10000 + i)
+
+                // Create an instance of our Account struct
+                acc := model.Account{
+                        Id: key,
+                        Name: "Person_" + strconv.Itoa(i),
+                }
+
+                // Serialize the struct to JSON
+                jsonBytes, _ := json.Marshal(acc)
+
+                // Write the data to the AccountBucket
+                bc.boltDB.Update(func(tx *bolt.Tx) error {
+                        b := tx.Bucket([]byte("AccountBucket"))
+                        err := b.Put([]byte(key), jsonBytes)
+                        return err
+                })
+        }
+        fmt.Printf("Seeded %v fake accounts...\n", total)
+}
+</code></pre></div></div>
+
+<p>For more details on the Bolt API and how the Update method accepts a func that does the work for us, see the <a href="https://github.com/boltdb/bolt#using-buckets">BoltDB documentation</a>.</p>
+
+<p>We’re done with the BoltDB part for now. Let’s build and run again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go
+Starting accountservice
+Seeded 100 fake accounts...
+2017/01/31 16:30:59 Starting HTTP service at 6767
+</code></pre></div></div>
+
+<p>Lovely! Stop it using Ctrl+C.</p>
+
+<h2 id="adding-a-query-method">Adding a Query method</h2>
+<p>Now we finish our little DB API by adding a Query method to the <em>boltclient.go</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func (bc *BoltClient) QueryAccount(accountId string) (model.Account, error) {
+        // Allocate an empty Account instance we'll let json.Unmarhal populate for us in a bit.
+        account := model.Account{}
+
+        // Read an object from the bucket using boltDB.View
+        err := bc.boltDB.View(func(tx *bolt.Tx) error {
+                // Read the bucket from the DB
+                b := tx.Bucket([]byte("AccountBucket"))
+
+                // Read the value identified by our accountId supplied as []byte
+                accountBytes := b.Get([]byte(accountId))
+                if accountBytes == nil {
+                        return fmt.Errorf("No account found for " + accountId)
+                }
+                // Unmarshal the returned bytes into the account struct we created at
+                // the top of the function
+                json.Unmarshal(accountBytes, &amp;account)
+
+                // Return nil to indicate nothing went wrong, e.g no error
+                return nil
+        })
+        // If there were an error, return the error
+        if err != nil {
+                return model.Account{}, err
+        }
+        // Return the Account struct and nil as error.
+        return account, nil
+}
+</code></pre></div></div>
+
+<p>Follow the comments if the code doesn’t make sense. The function will query the BoltDB using a supplied <em>accountId</em> parameter and will return an Account struct <em>or</em> an error.</p>
+
+<h2 id="serving-the-account-over-http">Serving the Account over HTTP</h2>
+<p>Let’s fix the <em>/accounts/{accountId}</em> route we declared in <em>/service/routes.go</em> so it actually returns one of the seeded Account structs. Open routes.go and replace the inlined <em>func(w http.ResponseWriter, r *http.Request) {</em> with a reference to a function <em>GetAccount</em> we’ll create in a moment:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Route{
+        "GetAccount",             // Name
+        "GET",                    // HTTP method
+        "/accounts/{accountId}",  // Route pattern
+        GetAccount,
+},
+</code></pre></div></div>
+
+<p>Next, update <em>/service/handlers.go</em> with a <em>GetAccount</em> func that fulfills the HTTP handler func signature:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var DBClient dbclient.IBoltClient
+
+func GetAccount(w http.ResponseWriter, r *http.Request) {
+
+	// Read the 'accountId' path parameter from the mux map
+	var accountId = mux.Vars(r)["accountId"]
+
+        // Read the account struct BoltDB
+	account, err := DBClient.QueryAccount(accountId)
+
+        // If err, return a 404
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+        // If found, marshal into JSON, write headers and content
+	data, _ := json.Marshal(account)
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
+</code></pre></div></div>
+
+<p>The GetAccount func fulfills the handler func signature so when Gorilla detects a call to /accounts/{accountId} it will route the request into the GetAccount function. Let’s run it!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go
+Starting accountservice
+Seeded 100 fake accounts...
+2017/01/31 16:30:59 Starting HTTP service at 6767
+</code></pre></div></div>
+
+<p>Call the API using curl. Remember, we seeded 100 accounts starting with an Id of 10000.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://localhost:6767/accounts/10000
+{"id":"10000","name":"Person_0"}
+</code></pre></div></div>
+
+<p>Nice! Our microservice is now actually serving JSON data from an underlying store over HTTP.</p>
+
+<h1 id="footprint-and-performance">Footprint and performance</h1>
+<p>Let’s check the same memory and CPU usage metrics as in <a href="../../21/go-blog-series-part2.html">part 2</a>: Before, during and after our simple Gatling-based load test.</p>
+
+<h2 id="memory-usage-after-startup">Memory usage after startup</h2>
+<p><img src="../../../../../../assets/blogg/goblog/part3-memuse.png" alt="mem use" /></p>
+
+<p>2.1 mb, still not bad! Adding the embedded BoltDB and some more code to handle routing etc. added 300kb to our initial footprint. Let’s start the Gatling test running 1K req/s. Now we’re actually returning a real Account object fetched from the BoltDB which also is serialized to JSON:</p>
+
+<h2 id="memory-usage-after-load-test">Memory usage after load test</h2>
+<p><img src="../../../../../../assets/blogg/goblog/part3-memuse2.png" alt="mem use2" />
+31.2 mb of RAM. The extra overhead of serving 1K req/s using an embedded DB was really small compared to the naive service from Part 2.</p>
+
+<h2 id="performance-and-cpu-usage">Performance and CPU usage</h2>
+<p><img src="../../../../../../assets/blogg/goblog/part3-cpuuse.png" alt="cpu use" />
+Serving 1K req/s uses about 10% of a single Core. The overhead of the BoltDB and JSON serialization is not very significant, good! By the way - the <em>java</em> process at the top is our Gatling test which actually uses ~3x the CPU resources as the software it is testing.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part3-performance.png" alt="performance" />
+Mean response time is still less than one millisecond.</p>
+
+<p>Perhaps we should test with a heavier load, shall we say 4K req/s? (Note that one may need to increase the number of available file handles on the OS level):</p>
+
+<h2 id="memory-use-at-4k-reqs">Memory use at 4K req/s</h2>
+<p><img src="../../../../../../assets/blogg/goblog/part3-memuse4k.png" alt="mem use" />
+Approx 120 mb. Almost exactly an increase by 4x. This memory scaling with n/o concurrent requests is almost certainly due to the Golang runtime or possibly Gorilla increasing the number of internal goroutines used to serve requests concurrently as load goes up.</p>
+
+<h2 id="performance-at-4k-reqs">Performance at 4K req/s</h2>
+<p><img src="../../../../../../assets/blogg/goblog/part3-cpuuse4k.png" alt="cpu use" />
+CPU use stays just below 30% at 4K req/s. At this point, i.e. running on a 16 GB RAM / Core i7 equipped laptop, I’d say that IO or file handles would bottleneck sooner than available CPU cycles.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part3-performance4k.png" alt="performance" />
+Mean latency now finally rises above 1 ms with 95% of requests staying below 3ms. We do see latency starting to take a hit at 4K req/s, though I’d personally say that the little Accountservice with its embedded BoltDB performs really well.</p>
+
+<h1 id="comparison-to-other-platforms">Comparison to other platforms</h1>
+<p>One could probably write an interesting blog post about benchmarking this “accountservice” against an functionally equivalent microservice implemented on the JVM, NodeJS, CLR and others.</p>
+
+<p>I did some <em>naive</em> inconclusive benchmarking (using a Gatling test) on this myself late 2015 comparing a HTTP/JSON service + MongoDB access implemented in Go 1.5 vs Spring Boot@Java 8 and NodeJS. In that particular case the JVM and Go-based solutions scaled equally well with a slight edge to the JVM-based solution regarding latencies. The NodeJS server performed quite similarly to the others up to the point where the CPU utilization reached 100% on a single core and things started going south regarding latencies.</p>
+
+<p><em>Please don’t take the benchmarking mentioned above as some kind of fact as it was just a quick and dirty thing I did for my own pleasure.</em></p>
+
+<p>So while the numbers I’ve shown regarding performance at 4K req/s using Go 1.7 for the “accountservice” may seem very impressive, they can probably be matched by other platforms as well, though I doubt their memory use will be as pleasant. I guess your milage may vary.</p>
+
+<h1 id="final-words">Final words</h1>
+
+<p>In the <a href="../../../03/03/go-blog-series-part4.html">next part</a> of this blog series we’ll take a look at unit testing our service using GoConvey and mocking the BoltDB client.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part3&url=https://callistaenterprise.se/blogg/teknik/2017/02/27/go-blog-series-part3/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part3&u=https://callistaenterprise.se/blogg/teknik/2017/02/27/go-blog-series-part3/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part3&url=https://callistaenterprise.se/blogg/teknik/2017/02/27/go-blog-series-part3/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

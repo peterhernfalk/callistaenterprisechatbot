@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Lessons learned from a year with AWS. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Jonas Behmer" src="../../../../../../assets/medarbetare/jonasbehmer_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Lessons learned from a year with AWS.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-05-02T00:00:00+00:00">
+            02 May 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/jonasbehmer/index.html">Jonas Behmer</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>For more than a year, since the end of 2015, I’ve been working on a project based on <a href="https://aws.amazon.com">Amazon web services</a> (AWS). One important design decision for the project was to not allow any “traditional” servers in the backend as the customer wanted to move away from maintaining servers on their own, thus we aimed to be serverless. Cloud container platforms like <a href="https://aws.amazon.com/ec2/">AWS EC2</a> was off limits to us and that meant that <a href="https://aws.amazon.com/lambda/">AWS Lambda</a> was the only option we had.</p>
+
+<p>All though my lessons learned might be perceived as being sligthly negative that is by no means representative for my overall experience which in contrary has been overwhelmingly positive. Using Lambda, for instance, has been most rewarding and has just worked with very little hassle. The support for <a href="https://nodejs.org/en/">Node.js</a>, that we use, has been first rate with really no breaking changes.</p>
+
+<h2 id="dont-build-your-own-build-and-deploy-tool">Don’t build your own build and deploy tool</h2>
+<p>Unfortunately we had to build our own build and deploy tool due to the lack of options back in 2015 and now we have to live with all of its warts. We would, if we could, move out of it in an instant. Today when we create new subprojects we use the <a href="https://serverless.com">Serverless framework</a>. Serverless will make it a breeze to deploy and abstracts away the boring <a href="https://aws.amazon.com/cloudformation/">AWS Cloudformation</a> templating stuff in a nice way. Serverless also comes with a plethora of community contributed <a href="https://github.com/serverless/plugins">plugins</a> that cater for all kinds of specific needs that aren’t covered by the core plugins.</p>
+
+<h2 id="modularize-your-deployment-resources">Modularize your deployment resources</h2>
+<p>We provision all AWS resources we need in a single cloudformation stack, thus we have no modularization to speak of. I guess this monolithic approach is how many projects start out but in hindsight it would have been wise to break out resources that seldom change into their own stacks, e.g. <a href="https://www.elastic.co">Elasticsearch</a> clusters. A modular approach would also allow for easier additions of new functionality and reuse of existing cloudformation templates. The cloudformation template we are sitting on today is a monster in size.</p>
+
+<h2 id="you-cant-use-kinesis-if-you-have-near-realtime-expectations">You can’t use kinesis if you have near realtime expectations</h2>
+<p><a href="https://aws.amazon.com/kinesis/streams/">AWS Kinesis</a> caters for all of your streaming needs and it is a great tool when you need to handle big amounts of data. It is probably also the cheapest way of shuffling that same data out of an AWS account. However, when you have flows that need to be near realtime (NRT) you can’t really use kinesis as it will add a considerable amount of latency to your flow. Used in conjunction with Lambda we have, at best, been able to get down to 1000 ms added latency. If your application doesn’t have the need for NRT events, then there is nothing better to use than Kinesis.</p>
+
+<p>We use <a href="http://mqtt.org">MQTT</a>, through <a href="https://aws.amazon.com/iot/">AWS IoT</a> for our NRT purposes. Using MQTT is also, at the time of writing, the only way of setting up websockets in a truly serverless fashion, i.e. without provisioning an EC2 instance to handle it.</p>
+
+<h2 id="use-api-gateway-in-front-of-lambda">Use API Gateway in front of Lambda</h2>
+<p>Our API is based on a client directly invoking a lambda and not going through <a href="https://aws.amazon.com/api-gateway/">AWS API Gateway</a> at all.
+I would have preferred a REST API on top of the lambdas. I think the purpose of API Gateway is well put in the following quote:</p>
+
+<blockquote>
+  <p>Amazon API Gateway handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls,
+including traffic management, authorization and access control, monitoring, and API version management.</p>
+</blockquote>
+
+<p>Thus, API Gateway is about handling the http side of things and lambda is about doing your backend chores. That we use lambda is really an implementation detail and nothing you want the user of your api to adhere to.</p>
+
+<h2 id="get-your-lambda-error-handling-correct">Get your Lambda error handling correct</h2>
+<p>It has happened to us on several occasions that a kinesis stream has filled up without any records being processed due to a payload in one record causing the lambda to throw an error. Not taking care of the error inside of the Lambda means that the same kinesis batch will be processed over and over, until it is removed automatically when it falls out of kinesis 24 hour gliding window.</p>
+
+<p>I think that non returning lambdas that aren’t part of a traditional request/response flow nearly always need to handle all errors inside of the lambda to avoid getting stuck and use a <a href="https://en.wikipedia.org/wiki/Dead_letter_queue">dead letter queue</a> (DLQ) for those requests that can not be processed by the lambda. Typically an event is, after a certain number of retries, automatically moved to the DLQ.</p>
+
+<h2 id="you-will-suffer-if-you-use-lambda-with-rds">You will suffer if you use Lambda with RDS</h2>
+<p>In one subproject we used Lambda in conjunction with <a href="https://aws.amazon.com/rds/">AWS RDS</a>, i.e. a relational database service. There is a definitive upside to this in that it enables local testing by allowing you to run an in memory db in place of the real db.
+The biggest issue we have had with this, and this is a big one in my opinion, is that your Lambda have to run in the same virtual private cloud (VPC) as the RDS instance, in effect forcing you to do lots of VPC configuration. This turned out to be non trivial and I would rather not do it again. If you do it wrong, like I did, you will lose public access to internet and soon you’ll start wondering why services like <a href="https://aws.amazon.com/kms/">AWS KMS</a> has ceased to work all of a sudden.</p>
+
+<p>The statefulness of database connection pooling is another thing that goes against the grain of the Lambda stateless nature. For the time being I consider <a href="https://aws.amazon.com/dynamodb/">AWS DynamoDB</a> to be the best fit for usage with Lambdas if you truly want to stay as close to a serverless vision on AWS. DynamoDB of course it has its own quirks and it is obviously not a relational db either.</p>
+
+<h2 id="you-will-have-to-deal-with-aws-limits">You will have to deal with AWS limits</h2>
+<p>The are a big list of <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">limits</a> for AWS Accounts. Some of these limits are hard ones, meaning there is no way you can change them and then there are soft limits that you can change, like how many concurrent lambdas you can have. Unfortunately it is not always possible to know, by the list itself, wether or not a particular limit is hard or soft. Only by asking a support contact at Amazon will, hopefully, give you the answer.</p>
+
+<p>The hard lesson we’ve learnt, regarding limits in AWS, is that you will run in to limits and it will be the ones you least expect. So take a good look at the limits and have a plan from the beginning.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Aws Lessons Learned&url=https://callistaenterprise.se/blogg/teknik/2017/05/02/aws-lessons-learned/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Aws Lessons Learned&u=https://callistaenterprise.se/blogg/teknik/2017/05/02/aws-lessons-learned/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Aws Lessons Learned&url=https://callistaenterprise.se/blogg/teknik/2017/05/02/aws-lessons-learned/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

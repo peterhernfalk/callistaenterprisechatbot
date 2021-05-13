@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices blog series, part 12 - distributed tracing with Zipkin | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Go Microservices blog series, part 12 - distributed tracing with Zipkin</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-10-25T00:00:00+00:00">
+            25 October 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part of the Go microservices <a href="../../../02/17/go-blog-series-part1.html">blog series</a>, we’ll explore the concept of <a href="index.html">distributed tracing</a> and how to add this to our Go microservices.</p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li>Overview</li>
+  <li>Distributed Tracing</li>
+  <li>Zipkin</li>
+  <li>EDGE server - Netflix Zuul</li>
+  <li>Go code - adding distributed tracing</li>
+  <li>Deploy &amp; run</li>
+  <li>Summary</li>
+</ol>
+
+<h3 id="source-code">Source code</h3>
+
+<p>The finished source can be cloned from github:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/callistaenterprise/goblog.git
+&gt; git checkout P12
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P12">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="1-overview">1. Overview</h1>
+
+<p>State of the microservices landscape when we’re finished with this part of the blog series:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-overview.png" alt="landscape overview" />
+<em>Figure 1: Landscape overview for part 12</em></p>
+
+<p>Marked with red boxes, we see our two new supporting components - the <a href="https://github.com/Netflix/zuul">Zuul</a> EDGE server and <a href="http://zipkin.io/">Zipkin</a>. Also, we see small boxes with “TA” indicating services where we’ve added distributed tracing.</p>
+
+<h1 id="2-distributed-tracing">2. Distributed tracing</h1>
+<p>Keeping track of the life of a request passing through a system (and back) isn’t exactly new. We’ve been adding request ID’s, thread identifiers and user id’s to log statements for ages. However, during the transition from monolithic applications to fine-grained microservices, the complexity increases when requests are passed between microservices, to storage backends, with messages spawning new requests - all belonging to the one and same business transaction. How do we identify performance bottlenecks when a requests is served by a large number of services, possibly in part relying on asynchronous operations completing?</p>
+
+<p>While logs are very useful for this purpose, the concept of <a href="http://microservices.io/patterns/observability/distributed-tracing.html">distributed tracing</a> has now emerged as an important part of a maintainable and production-ready microservices operations model. For a more in-depth explantion of the rationale and basics of distributed tracing, I suggest reading my co-worker Magnus <a href="../../../07/29/building-microservices-part-7-distributed-tracing/index.html">blog post</a> about <a href="https://cloud.spring.io/spring-cloud-sleuth/">Spring Cloud Sleuth</a> and distributed tracing with Zipkin.</p>
+
+<h1 id="3-zipkin">3. Zipkin</h1>
+<p><a href="http://zipkin.io/">Zipkin</a> is an application for visualizing traces between and within services, their supporting components and even messaging. Zipkin originates from Twitter and is currently an open source project on GitHub. Zipkin provides a user-friendly GUI while the backend takes care of collecting tracing data and aggregating those into something we humans can make sense of.</p>
+
+<p>I’m using an external pre-baked container image for Zipkin that exposes port 9411 for the admin GUI. Of course, you can build zipkin from <a href="https://github.com/openzipkin/zipkin">source</a>, configure different storage backends etc.</p>
+
+<p>A <em>docker service create</em> can look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker service create --constraint node.role==manager --replicas 1 \
+-p 9411:9411 --name zipkin --network my_network \
+--update-delay 10s --with-registry-auth  \
+--update-parallelism 1 openzipkin/zipkin
+</code></pre></div></div>
+
+<p>The visualization of a distributed trace can look like this (borrowed from my colleagues <a href="../../../07/29/building-microservices-part-7-distributed-tracing/index.html">blog post</a>):</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-3.png" alt="tracing example" /></p>
+
+<p>We’ll dig a little bit deeper into the possibilities of Zipkin when we’ve gotten our own tracing up and running.</p>
+
+<h1 id="4-edge-server---netflix-zuul">4. EDGE server - Netflix Zuul</h1>
+<p>In order to showcase how we can trace a request from start to finish, we’ll introduce an Edge server capable of adding zipkin-compatible tracing information to HTTP requests out of the box. <a href="https://github.com/Netflix/zuul">Netflix Zuul</a> is the default Edge server of Spring Cloud / Netflix OSS.</p>
+
+<p>If you’re wondering what the difference is between an Edge Server, a reverse-proxy and a load-balancer such as Nginx or HAProxy you’re probably in good company. From my point of view, an Edge Server such as Netflix Zuul can act both as reverse proxy, load-balancer and to some extent a security gateway with capabilities to support your applications with - for example - routing requests to the appropriate internal service, adding correlation id’s to inbound requests or relaying certain HTTP headers such as OAuth tokens.</p>
+
+<p>The “edge” in the name stems from the fact that these servers usually resides where your internal network connects to the public internet or a DMZ net - or even <em>between</em> different applications within your own enterprise, acting as the single way traffic may enter the logical internal network of your application.</p>
+
+<p>I’ve prepared a container image pre-configured for our sample landscape with Spring Sleuth / Zipkin enabled as well as a simple routing rule that will provide a https endpoint at <em>/api/accounts/{accountId}</em> that will forward requests to our good ol’ underlying “accountservice” at port 6767.</p>
+
+<p>Just a glimpse of some of the Zuul configuration:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Disable Eureka service discovery, we're on Docker Swarm mode.
+eureka:
+  client:
+    enabled: false
+
+# Enable zipkin support, sample all requests
+spring:
+  zipkin:
+    baseUrl: http://zipkin:9411
+  sleuth:
+    sampler:
+      percentage: 1.0    
+sample:
+  zipkin:
+    enabled: true
+
+# Zuul routing rules, will create /api/accounts/ mapping to  http://accountservice:6767/accounts    
+zuul:
+  ignoredServices: "*"
+  prefix: /api
+  routes:
+    accountservice:
+      path: /accounts/**
+      url:  http://accountservice:6767/accounts
+</code></pre></div></div>
+
+<p>You can deploy a pre-baked Zuul image for this blog series using the following <em>docker service create</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker service create --replicas 1 --name edge-server -p 8765:8765 \
+ --network my_network --update-delay 10s --with-registry-auth \
+ --update-parallelism 1 eriklupander/edge-server
+</code></pre></div></div>
+
+<h1 id="5-go-code---opentracing">5. Go code - opentracing</h1>
+
+<h3 id="51-on-tracing-without-thread-local-storage">5.1 On tracing without thread-local storage</h3>
+<p>All of this sounds great - but how do we <em>actually</em> add this cool tracing stuff to our Go-based microservices and how will Zipkin get hold of our traces?</p>
+
+<p>Conveniently enough, there’s a ready to use tracing library for us Go-nuts we can use, named <a href="https://github.com/opentracing/opentracing-go">opentracing-go</a> based on the <a href="http://opentracing.io/">opentracing</a> standard - which is very compatible with Spring Cloud Sleuth used by Zuul and other Spring Cloud-based support services - that we’re already using in this blog series.</p>
+
+<p>In all honesty - Go isn’t the ideal language to add this kind of stuff since there exists no (usable) notion of <a href="https://stackoverflow.com/a/31933609">thread-local storage in Go</a>. Also, the mechanisms offered by interceptors and/or AOP-based programming which is quite suitable for transparently adding functionality such as distributed tracing to a call-stack, isn’t natively available in Go.</p>
+
+<p>However - with some careful use of the go <a href="https://medium.com/@matryer/writing-middleware-in-golang-and-how-go-makes-it-so-much-fun-4375c1246e81">middleware pattern</a> and the <a href="https://golang.org/pkg/context/">go contexts</a> introduced in Go 1.7 we can add tracing to our Go microservices in a somewhat developer-friendly. I must admit I frown a bit upon the context pattern where the idiomatic use is to always pass <a href="https://golang.org/pkg/context/">context.Context</a> as the first parameter of each func in the call stack. Google themselves says the following in the official docs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests."
+</code></pre></div></div>
+
+<p>This is a somewhat controversial thing within the Go community. I know thread-locals are considered evil too, though very useful at times to keep track of request-scoped information such as security tokens, user principals and of course logging/tracing IDs.</p>
+
+<p>Oh well - enough of this <em>“I dislike it but I use it anyway”</em> stuff. Let’s start coding!</p>
+
+<h3 id="52-our-tracing-library">5.2 Our tracing library</h3>
+<p>Well - I wouldn’t necessary call our little <a href="index.html">tracing.go</a> file a library. It basically wraps some functionality of the go-opentracing library and provides a somewhat clean abstraction with a declarative API to start, stop and parse traces.</p>
+
+<p>There’s a few typical use cases where we need to concern ourselves with tracing info:</p>
+
+<ul>
+  <li>Incoming HTTP requests: We look for opentracing correlation id’s in HTTP headers and if found - starts a trace as well as dumping the required data structure into a Go context.</li>
+  <li>Outbound HTTP requests: Basically the reverse of the above. We check for tracing data in our Context and add that as a HTTP header in outgoing requests.</li>
+  <li>Sending a Message with AMQP: More or less the same as above, i.e. if our context contains opentracing ID’s we stuff them into headers along with the message. Instead of HTTP headers we’re using the header abstraction provided in the AMQP protocol.</li>
+  <li>Receiving a Message over AMQP: As you’ve probably figured out already - check if there’s tracing data in a message header and if so - extract and start a new trace.</li>
+  <li>Internal tracing: Talking to an external database? Spawn a child-span to keep track of the amount of time used for that action? Performing a CPU-intensive operation on some data? Track this using a child-span as well. There are many occurrences where it makes sense to keep track of what’s going on using tracing even within services.</li>
+</ul>
+
+<h4 id="521-initialization">5.2.1 Initialization</h4>
+<p>Each microservice that wants to transmit tracing results to Zipkin needs to be configured to do that. For that purpose, we’re going to use <a href="https://github.com/openzipkin/zipkin-go-opentracing">zipkin-go-opentracing</a>. The code to set this up is very simple:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var tracer opentracing.Tracer
+
+// InitTracing connects the calling service to Zipkin
+func InitTracing(zipkinURL string, serviceName string) {
+        collector, err := zipkin.NewHTTPCollector(fmt.Sprintf("%s/api/v1/spans", zipkinURL))
+        if err != nil {
+                panic("Error connecting to zipkin server at " +
+                        fmt.Sprintf("%s/api/v1/spans", zipkinURL) + ". Error: " + err.Error())
+        }
+        tracer, err = zipkin.NewTracer(
+                zipkin.NewRecorder(collector, false, "127.0.0.1:0", serviceName))
+        if err != nil {
+                panic("Error starting new zipkin tracer. Error: " + err.Error())
+        }
+}
+</code></pre></div></div>
+
+<p>Note the initialization of the package-scoped <em>tracer opentracing.Tracer</em> variable, which is the object we’ll be doing all our tracing work with. The <em>zipkinURL</em> actually comes from our Yaml-based config files stored on github and served to us over Spring Config and Viper:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zipkin_server_url: http://zipkin:9411
+</code></pre></div></div>
+
+<p>As you might notice, we’ll using the http protocol for uploading traces to zipkin. Probably not the most efficient protocol for this purpose. Zipkin also support consumption of AMQP (e.g. RabbitMQ) messages.</p>
+
+<h4 id="522-incoming-http-requests">5.2.2 Incoming HTTP requests</h4>
+<p>As previously stated, we’re going to be using the middleware pattern and <em>context.Context</em> to work with tracing data in incoming HTTP requests. In <em>/accountservice/services/router.go</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func NewRouter() *mux.Router {
+        .... other code above ....
+		router.Methods(route.Method).
+			Path(route.Pattern).
+			Name(route.Name).
+			Handler(loadTracing(route.HandlerFunc))   // LOOK HERE!
+        .... other code below ....
+}
+
+func loadTracing(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+            span := tracing.StartHTTPTrace(req, "GetAccount")   // Start the span
+            
+
+		    ctx := tracing.UpdateContext(req.Context(), span)   // Add span to context
+		    next.ServeHTTP(rw, req.WithContext(ctx))            // Note next-based chaining and copy of context!!
+		    span.Finish()                                       // Finish the span
+	})
+}
+</code></pre></div></div>
+
+<p>What’s going on above? In the <em>NewRouter()</em> we are passing a func <em>loadTracing()</em> to the Handler func of the router builder API. As argument to <em>loadTracing()</em>, we’re passning the func defined in the <em>route</em>. This is actually the “GetAccount” func from <a href="https://github.com/callistaenterprise/goblog/blob/P12/accountservice/service/handlers.go">handlers.go</a> where we do the actual work.</p>
+
+<p>This looks a lot like interceptors and filter chains familiar from other languages and frameworks, where we “wrap” the call to a function into another function, allowing us to do stuff before and after the actual call - in this case starting a span and then closing it once the “next” func is done. We’ll probably be adding more chaining of handlers in a later blog post where we’ll be adding security and auth checking to our microservices.</p>
+
+<p>The code to start a new HTTPTrace looks like this, e.g. our wrapping of go-opentracing code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func StartHTTPTrace(r *http.Request, opName string) opentracing.Span {
+        carrier := opentracing.HTTPHeadersCarrier(r.Header)                     // 1. Get hold of HTTP headers for tracing from request.
+        clientContext, err := tracer.Extract(opentracing.HTTPHeaders, carrier)  // 2. Extract into a tracing context
+        if err == nil {                                                         // 3. If there were a tracing context...
+                return tracer.StartSpan(                                        // 3.1 Start and return child span of the ongoing one
+                        opName, ext.RPCServerOption(clientContext))
+        } else {
+                return tracer.StartSpan(opName)                                 // 3.2 Otherwise, start a new one from scratch
+        }
+}
+</code></pre></div></div>
+
+<p>How are we using context to store the “tracing info”, i.e. some correlation id’s and such?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func UpdateContext(ctx context.Context, span opentracing.Span) context.Context {
+        return context.WithValue(ctx, "opentracing-span", span)
+}
+</code></pre></div></div>
+
+<p>Since the contexts are immutable, we’re using <em>context.WithValue</em> to add the supplied span to our existing context, returning the new context. Note the ugly use of <em>“opentracing-span”</em> as key. I don’t particularly like this pattern with hard-coded keys but at least its <em>only</em> the “tracing.go” code that knows about the key we’re using to fetch the current tracing span from our thread-local substitute - e.g. the context we’re passing around.</p>
+
+<h4 id="523-outgoing-http-requests">5.2.3 Outgoing HTTP requests</h4>
+<p>So - let’s say our “accountservice” got tracing info when Zuul routed a request to <em>/accounts/{accountId}</em>. Now, we want to continue that trace when the “accountservice” performs a HTTP call to the “imageservice”. This code is quite intermingled with the Circuit-breaker and retry code from the <a href="../../../09/11/go-blog-series-part11.html">last part</a>, but I hope it makes sense anyway:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Note how we pass context as 1st param and are passing the HTTP req object as a parameter too.
+func PerformHTTPRequestCircuitBreaker(ctx context.Context, breakerName string, req *http.Request) ([]byte, error) {
+        output := make(chan []byte, 1)                          // hystrix stuff...
+        errors := hystrix.Go(breakerName, func() error {        // hystrix stuff...
+                tracing.AddTracingToReqFromContext(ctx, req)    // HERE!!! 
+                err := callWithRetries(req, output)
+                return err     // For hystrix, forward the err from the retrier. It's nil if OK.
+        }, func(err error) error {
+                return err
+        })
+... some more code ...
+</code></pre></div></div>
+
+<p>We see that we’re calling <em>tracing.AddTracingToReqFromContext(ctx, req)</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> func AddTracingToReqFromContext(ctx context.Context, req *http.Request) {
+         if ctx.Value("opentracing-span") == nil {                           // Do nothing if no tracing context available
+                 return
+         }
+         carrier := opentracing.HTTPHeadersCarrier(req.Header)               // Create HTTP carrier for passing tracing data connected to the passed request.
+         err := tracer.Inject(                                               // Inject passes span data into the HTTP headers of the request
+                 ctx.Value("opentracing-span").(opentracing.Span).Context(), // Note ugly typecast here and use of the hard-coded key...
+                 opentracing.HTTPHeaders,
+                 carrier)
+         if err != nil {
+                 panic("Unable to inject tracing context: " + err.Error())   // Here be dragons.
+         }
+ }
+</code></pre></div></div>
+
+<p>We’ll - I guess the code above isn’t my finest hour, but it basically fetches tracing stuff from the passed context (our substitute for thread-local storage) and passes it into the request object as HTTP headers.</p>
+
+<h4 id="524-internal-tracing">5.2.4 Internal tracing</h4>
+<p>We can of course add child traces without dealing with HTTP headers - we could even pass <em>opentracing.Span</em> structs around as parameters instead of using that ugly <em>context.Context</em>. A really simple use case is when we’re calling our BoltDB to fetch the Account instance. Looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Note that we're passing the context as 1st param, just as Google asks us to!
+func (bc *BoltClient) QueryAccount(ctx context.Context, accountID string) (model.Account, error) {
+
+        // Tracing code.
+        span := tracing.StartChildSpanFromContext(ctx, "QueryAccount")    // Start a child span of the current one, 
+                                                                          // named QueryAccount
+        defer span.Finish()      // Note use of defer, e.g. the span won't be finished and uploaded to Zipkin until
+                                 // the ongoing func has finished. (we could also put span.Finish() at the very last 
+                                 // line of this func.
+
+        account := model.Account{}
+        err := bc.boltDB.View(func(tx *bolt.Tx) error {
+            ......... more code .........
+        }
+</code></pre></div></div>
+
+<p>See comments for details.</p>
+
+<p>A quick peek at this particular trace in Zipkin:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-queryaccount.png" alt="queryaccount" /></p>
+
+<p>Yes, it’s the tiny one using 33 microseconds just below the middle, with “accountservice” as its parent. We’ll look more closely at Zipkin very soon.</p>
+
+<p>There’s a number of other code changes for this part of the blog series. The key changes being introduction of <em>context.Context</em> as 1st parameter, passing of trace id’s (e.g. spans) across microservices using HTTP or AMQP headers and each microservice uploading traces to Zipkin using HTTP.</p>
+
+<h1 id="6-deploy-and-run">6. Deploy and run</h1>
+
+<p>Let’s get this show on the road, shall we? We’ve already covered deployment of Netflix Zuul and Zipkin. Also make sure you’ve checked out branch <a href="https://github.com/callistaenterprise/goblog/tree/P12">P12</a> of the source code repo. Given that we’ve got a working Go environment (remember GOPATH) and Docker running (don’t forget to <em>eval “$(docker-machine env swarm-manager-0)”</em> etc.), we can continue by rebuilding all our go microservices using the “./copyall.sh” shell script:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; ./copyall.sh
+built /Users/myuser/goblog/src/github.com/callistaenterprise/goblog/accountservice
+built /Users/myuser/goblog/src/github.com/callistaenterprise/goblog/vipservice
+... and so on ...
+</code></pre></div></div>
+
+<p>This should build all go-based microservices and deploy them to our Swarm. Let’s take a look at <a href="https://github.com/eriklupander/dvizz">dvizz</a> on http://192.168.99.100:6969:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-dvizz.png" alt="dvizz" /></p>
+
+<p>Quite a few services! Time to do a few requests using curl to the Edge server and see if we can get some traces into zipkin!</p>
+
+<h1 id="61-produce-some-traces">6.1 Produce some traces</h1>
+<p>We’ll use curl to request <em>/api/accounts/10000</em> which is the endpoint served by our Zuul Edge server. Internally, the flow of requests should be like this:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-flow.png" alt="flow" /></p>
+
+<ol>
+  <li>Our HTTP client only knows about the EDGE server and requests /api/accounts/{accountId} over HTTPS</li>
+  <li>Zuul routes this request to the <em>accountservice</em> using the logical service name “accountservice” using HTTP.</li>
+  <li>The <em>accountservice</em> internally loads an accountobject from its BoltDB database and then sends a message to the <em>VipService</em> using AMQP.</li>
+  <li>Next, the <em>accountservice</em> requests a “quote of the day” from the <em>quotes-service</em>.</li>
+  <li>Finally, the <em>accountservice</em> requests an imageURL from the <em>imageservice</em>.</li>
+</ol>
+
+<p>Run a few calls using url:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -k https://192.168.99.100:8765/api/accounts/10000
+</code></pre></div></div>
+
+<p><em>(the -k flag is to ignore SSL warnings, I’m running Zuul with a self-signed cert)</em></p>
+
+<p>Open the zipkin GUI at http://192.168.99.100:9411 and click the “Find traces” button:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-trace1.png" alt="zipkin1" /></p>
+
+<p>Cool! The traces are there right away. We see that the longest request needed about 45ms from start (in the EDGE server) to finish (when the EDGE server responded to curl). The 45ms trace is made up of 9 spans with varying lengths. By clicking on the topmost trace, we can examine it in more detail:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-trace2.png" alt="zipkin2" /></p>
+
+<p>Examine the trace above closely. If we are troubleshooting performance issues, it should be relatively straightforward to spot the most likely culprit for most of the 45ms duration.</p>
+
+<p>Remember, when reading the trace, the topmost spans are usually spending most of their time waiting for sub-services to finish. We should pay special attention to <em>leaf</em> operations taking a lot of time. Let’s see:</p>
+
+<ul>
+  <li>getaccount uses 32ms</li>
+  <li>getquote uses 30 ms</li>
+  <li>queryaccount using 29μs is the BoltDB query.</li>
+  <li>getimageurl uses 1.1 ms (and 17μs internally) so that call is also quite cheap.</li>
+  <li>vipservice#onmessage uses about 11ms, but remember that we’re just sending an asynchronous message so that execution isn’t blocking anything else.</li>
+</ul>
+
+<p>Since the <em>getquote</em> span makes up 30 ms of the total 32 ms of the <em>getaccount</em> span, we can probably say for certain that the quotes-service is guilty.</p>
+
+<p><em>(In this case, we shouldn’t blame Java. You might remember from a few blog posts back that we send a ?strength=4 query param to the _quotes-service</em> that makes it use CPU cycles artificially to simulate work.)_</p>
+
+<p>Needless to say, a tool such as Zipkin can be invaluable for identifying both <em>which</em> services that’s invoked when your microservices are serving a request as well as identifying where time is being spent.</p>
+
+<p>It’s also possible to click on the individual spans for even more detail. A cool thing about opentracing and zipkin is that you can attach both arbitrary key-value pairs as well as “log events” to spans that ends up in Zipkin. Here we see Zuul providing some extra info for us:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part12-trace3.png" alt="zipkin3" /></p>
+
+<p>Of course, we can add this kind of stuff in Go code too.</p>
+
+<h1 id="62-resource-usage">6.2 Resource usage</h1>
+
+<p>Let’s take a quick peek at resource usage, we’ve added quite a bit of code in the last parts in regard to circuit breakers, tracing, configuration, logging etc:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER                                    CPU %               MEM USAGE   
+imageservice.1.fcaax3b2coexljqs82l72sw6q     2.13%               4.496MiB
+accountservice.3.ma5x5r9wzkkfippr5lg1rucce   0.22%               4.445MiB
+vipservice.1.ydi9g7qg5fx6841dznzhlynk1       1.93%               3.418MiB
+</code></pre></div></div>
+
+<p>Our go services are still lean.</p>
+
+<p>In a few blog posts, I plan to deploy all of the above using AWS CloudFormation and Docker Stack to an Amazon EC2 cluster made up of t2.micro instances. There, we will really start to notice the impact of resource-friendly services when we start to scale stuff.</p>
+
+<h1 id="7-summary">7. Summary</h1>
+
+<p>In this part of the <a href="../../../02/17/go-blog-series-part1.html">blog series</a> we’ve added distributed tracing to our Go microservices and added an EDGE server (Zuul) and Zipkin for collecting and viewing traces.</p>
+
+<p>In <a href="../../../../2018/02/14/go-blog-series-part13.html">part 13</a> we’ll take a look at using Go with CockroachDB and the O/R-mapper GORM.</p>
+
+<p>Please help spread the word! Feel free to share this blog post using your favorite social media platform, there’s some icons below to get you started.</p>
+
+<p>Until next time,</p>
+
+<p>// Erik</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part12&url=https://callistaenterprise.se/blogg/teknik/2017/10/25/go-blog-series-part12/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part12&u=https://callistaenterprise.se/blogg/teknik/2017/10/25/go-blog-series-part12/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part12&url=https://callistaenterprise.se/blogg/teknik/2017/10/25/go-blog-series-part12/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

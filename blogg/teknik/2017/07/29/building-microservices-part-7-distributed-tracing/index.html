@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Building Microservices, part 7. Distributed tracing with Zipkin and Spring Cloud Sleuth | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Building Microservices, part 7. Distributed tracing with Zipkin and Spring Cloud Sleuth</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-07-29T00:00:00+00:00">
+            29 July 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog post we will add a <a href="http://zipkin.io">Zipkin server</a> to the system landscape in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series - Building Microservices</a>, adding support for distributed tracing. We will also see how <a href="https://cloud.spring.io/spring-cloud-sleuth/">Spring Cloud Sleuth</a> can simplify both creation of trace events and sending them to the Zipkin server.</p>
+
+<p></p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/adding-a-zipkin-server.png" alt="Zipkin Server" /></p>
+
+<h1 id="1-introduction">1. Introduction</h1>
+
+<p>The more cooperating microservices we get in our system landscape, the harder it gets to understand what’s going on. Specifically, when the load increase and response times starts to get slower than expected…</p>
+
+<p>To get a better understanding of what is going on we need to be able to trace a request as it pass through a number of cooperating microservices and measure the processing time in each microservice that is involved in responding to the request.</p>
+
+<p>The trace events for one request must be collected, grouped together and presented in an understandable way. This is exactly what <a href="http://zipkin.io">Zipkin</a> is about!</p>
+
+<p>A request through our system landscape can be visualized as:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/call-graph.png" alt="call-graph" /></p>
+
+<p>Zipkin can visualize the processing time in each involved microservice for a sample request as:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-sample.png" alt="Zipkin-sample" /></p>
+
+<p>Zipkin originates from Twitter (see the blog post <a href="https://blog.twitter.com/2012/distributed-systems-tracing-with-zipkin">Distributed Systems Tracing with Zipkin</a>) and lives today as an open source project in <a href="https://github.com/openzipkin/zipkin">GitHub</a>.</p>
+
+<p>The terminology used by Zipkin is based on a paper written by Google: <a href="https://research.google.com/pubs/pub36356.html">Dapper, a Large-Scale Distributed Systems Tracing Infrastructure</a>.</p>
+
+<p><a href="https://cloud.spring.io/spring-cloud-sleuth/">Spring Cloud Sleuth</a> can be used by microservices developed using <a href="http://projects.spring.io/spring-cloud/">Spring Cloud</a>, to simplify both creation of trace events and sending them to the Zipkin server.</p>
+
+<h2 id="11-some-words-on-trace-id-and-span-id">1.1 Some words on Trace Id and Span Id</h2>
+
+<p>A <em>trace</em> represents the whole processing of a request. A <em>span</em> represents the processing that takes part in each individual microservice, as a step in the processing of a request. All trace events from processing a request share a common unique <em>Trace Id</em>. Each individual processing step, i.e. a <em>span</em>, is given a unique <em>Span Id</em>.</p>
+
+<p>For further explanation of traces and spans see the <a href="http://cloud.spring.io/spring-cloud-sleuth/spring-cloud-sleuth.html#_terminology">Spring Cloud Sleuth documentation regarding terminology</a>.</p>
+
+<h2 id="12-some-words-on-spring-cloud-sleuth">1.2 Some words on spring Cloud Sleuth</h2>
+
+<p>Spring Cloud Sleuth intercepts incoming requests and either picks up the trace id from the incoming message or creates a new trace id if none was specified. For outgoing requests, it fills in the current trace id in the outgoing message. Both synchronous requests and asynchronous messages are supported, using HTTP for synchronous request and a Spring Cloud Stream binder (e.g. RabbitMQ) for asynchronous messages.</p>
+
+<p>Spring Cloud Sleuth also:</p>
+
+<ol>
+  <li>handles creation of spans and span id’s and sends them to the Zipkin server.</li>
+  <li>if the internal processing uses multiple threads, e.g. a Hystrix based circuit breaker, Spring Cloud Sleuth is capable to move thread local information, e.g. the trace id between the threads.</li>
+  <li>interacts with the logging framework used in each microservice (e.g. Log4j or SLF4J) and adds the trace id and span id to each log record, see below for an example.</li>
+</ol>
+
+<h1 id="2-adding-a-zipkin-server">2. Adding a Zipkin server</h1>
+
+<p>Setting up a Zipkin server is straight forward, similar to how you setup the other Spring Cloud servers, e.g. a Discovery, Edge or Configuration server:</p>
+
+<ol>
+  <li>The Zipkin server runs as a conventional Spring Boot application</li>
+  <li>
+    <p>The Gradle dependencies that enables the Spring Boot application to be a Zipkin server are:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> compile "org.springframework.cloud:spring-cloud-sleuth-zipkin-stream"
+ compile "org.springframework.cloud:spring-cloud-starter-sleuth"
+ compile "org.springframework.cloud:spring-cloud-stream-binder-rabbit"
+ runtime('io.zipkin.java:zipkin-autoconfigure-ui')
+</code></pre></div>    </div>
+
+    <blockquote>
+      <p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">-stream</code>-suffix on the <code class="language-plaintext highlighter-rouge">spring-cloud-sleuth-zipkin-stream </code> dependency enables the Zipkin server to receive trace events using an event bus based on <code class="language-plaintext highlighter-rouge">spring-cloud-stream</code>. The dependency <code class="language-plaintext highlighter-rouge">spring-cloud-stream-binder-rabbit</code> binds the Zipkin server to use RabbitMQ as event bus.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>The server only contains a single Java class: <code class="language-plaintext highlighter-rouge">ZipkinServerApplication</code> and the only thing of interest in it is the following annotations on its <code class="language-plaintext highlighter-rouge">static main</code> - method:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> @SpringBootApplication
+ @EnableZipkinStreamServer
+</code></pre></div>    </div>
+
+    <ol>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">@SpringBootApplication</code> is, as usual, what makes our application a Spring Boot application.</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">@EnableZipkinStreamServer </code> is what makes it a Zipkin server that is able to:
+ 	1. Receive trace events synchronously over HTTP
+ 	2. Receive trace events asynchronously over Spring Cloud Stream
+ 	3. Present a Web based UI for searching trace events manually
+ 	4. Present a RESTful and JSON-based API for searching trace events programmatically
+ 	5. Store trace events in memory</p>
+
+        <blockquote>
+          <p><strong>Note:</strong> It is possible to configure a Zipkin server to store the trace events in a database, e.g. MySQL or Elasticsearch.</p>
+        </blockquote>
+
+        <p>That’s not bad for a single annotation, right?</p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<p>The source code of the Zipkin server also contains:</p>
+
+<ol>
+  <li>
+    <p>Standard configuration files</p>
+
+    <blockquote>
+      <p><strong>Note:</strong> The Zipkin server does not use the Configuration server at this time, to be fixed in a future blog post :-)</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>An empty integration test class, that verifies that the Zipkin server can start</p>
+  </li>
+  <li>
+    <p>A conventional Dockerfile</p>
+  </li>
+</ol>
+
+<p>For further details see the folder <code class="language-plaintext highlighter-rouge">blog-microservices/microservices/support/zipkin-server</code> in the source code.</p>
+
+<h1 id="3-sending-trace-events-using-spring-cloud-sleuth">3. Sending trace events using Spring Cloud Sleuth</h1>
+
+<p>To enable our microservices to send trace events to the Zipkin server we have added the following dependencies in our Gradle build files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+compile('org.springframework.cloud:spring-cloud-sleuth-stream')
+</code></pre></div></div>
+
+<p>These dependencies will enable our microservices to stream tracing events asynchronously to the Zipkin server over the event bus.</p>
+
+<p>To ensure that we send all trace messages to the Zipkin server we have added the following configuration to the common config file, <code class="language-plaintext highlighter-rouge">application.yml</code>, in the config repo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 1.0 means 100%, see http://cloud.spring.io/spring-cloud-sleuth/spring-cloud-sleuth.html#_sampling
+spring.sleuth.sampler.percentage: 1.0
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note #1:</strong> To promote loose coupling we prefer sending trace events to the Zipkin server asynchronously over the event bus instead of sending events synchronously using HTTP directly to the Zipkin server.</p>
+
+  <p><strong>Note #2:</strong> From earlier blog posts we already have dependencies and configuration in place that binds the microservices to use RabbitMQ as the event bus.</p>
+
+  <p><strong>Note #3:</strong> A system with high traffic volumes can produce large amounts of trace events. It might be sufficient to only collect some of the events to understand what is going on. This can be achieved by lowering the value of the property <code class="language-plaintext highlighter-rouge">spring.sleuth.sampler.percentage</code>.</p>
+
+  <p><strong>Note #4:</strong> The name of the microservices in the trace events are taken from the property <code class="language-plaintext highlighter-rouge">spring.application.name</code> in each microservice local <code class="language-plaintext highlighter-rouge">bootstrap.yml</code>- file.</p>
+</blockquote>
+
+<p><strong>A final note on use of Spring’s RestTemplate:</strong> To make it possible for Spring Cloud Sleuth to add tracing headers to the outgoing requests it is important that the RestTemplate is injected and not created directly in the code, e.g. not using <code class="language-plaintext highlighter-rouge">new RestTemplate()</code>.</p>
+
+<p>For a correct usage see <code class="language-plaintext highlighter-rouge">ProductCompositeIntegration.java</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private final ServiceUtils util;
+private final RestOperations restTemplate;
+
+@Inject
+public ProductCompositeIntegration(ServiceUtils util, RestOperations restTemplate) {
+    this.util = util;
+    this.restTemplate = restTemplate;
+}
+</code></pre></div></div>
+
+<h1 id="4-build-and-run">4. Build and Run</h1>
+
+<p>For details on how to build and run the microservice landscape in this blog post series, see the <a href="../../../../2016/09/30/building-microservices-part-5-springcloud11-docker4mac/index.html">blog post #5</a>.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> To be able to run some of the commands used below you need to have the tools <a href="http://curl.haxx.se">cURL</a> and <a href="http://stedolan.github.io/jq/">jq</a> installed.</p>
+</blockquote>
+
+<p>In summary:</p>
+
+<ol>
+  <li>
+    <p>Open a terminal, create a folder of your choice and <code class="language-plaintext highlighter-rouge">cd</code> into it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ mkdir a-folder-of-your-choice
+ $ cd a-folder-of-your-choice
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Since we have externalized our configuration into a configuration repository we first need to get it from GitHub:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ git clone https://github.com/callistaenterprise/blog-microservices-config.git
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Next, we get the source code from GitHub and checkout the branch used for this blog post:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ git clone https://github.com/callistaenterprise/blog-microservices.git
+ $ cd blog-microservices
+ $ git checkout -b B10.1 M10.1
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now we can build our microservices with:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ ./build-all.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Finally, we can bring up the dockerized microservice landscape and run a test:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ . ./test-all.sh start
+</code></pre></div>    </div>
+
+    <p>After a while, it should result in a response from the API request like:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -ks https://localhost:443/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+ {
+   "productId": 123,
+   "name": "name",
+   "weight": 123,
+   "recommendations": [	...  ],
+   "reviews": [ ... ],
+   "serviceAddresses": { ... }
+ }
+</code></pre></div>    </div>
+
+    <blockquote>
+      <p><strong>Note #1:</strong> We will not shut down the microservice landscape (can be done by adding the parameter: <code class="language-plaintext highlighter-rouge">stop</code>). Below we will use it to try out the Zipkin server.</p>
+    </blockquote>
+
+    <blockquote>
+      <p><strong>Note #2:</strong> The first <code class="language-plaintext highlighter-rouge">.</code> in the command above is essential. It allows us to reuse the <code class="language-plaintext highlighter-rouge">TOKEN</code> environment variable that the script creates to store an OAuth Access Token, i.e. we don’t need to acquire one ourselves.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Try a manual call like:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -ks https://localhost/api/product/123 -H "Authorization: Bearer $TOKEN" | jq .
+ {
+   "productId": 123,
+   "name": "name",
+   "weight": 123,
+   "recommendations": [	...  ],
+   "reviews": [ ... ],
+   "serviceAddresses": { ... }
+ }
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h1 id="5-try-out-distributed-tracing-with-zipkin">5. Try out distributed tracing with Zipkin</h1>
+
+<h2 id="51-trace-information-injected-in-log-events-by-spring-cloud-sleuth">5.1 Trace information injected in log events by Spring Cloud Sleuth</h2>
+
+<p>Before we start to test Zipkin let’s inspect a log event a bit closer, e.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composite_1  | 2017-07-17 07:27:28.678  INFO [composite-service,8f79b9c84065ccd8,529909c553bfed03,true] 1 --- [  XNIO-2 task-9] o.s.b.a.s.o.r.UserInfoTokenServices      : Getting user info from: https://auth:9999/uaa/user
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> You can see you log events with the command: <code class="language-plaintext highlighter-rouge">docker-compose logs -f</code></p>
+</blockquote>
+
+<p>The part <code class="language-plaintext highlighter-rouge">[composite-service,8f79b9c84065ccd8,529909c553bfed03,true]</code> comes from Spring Cloud Sleuth with the following information:</p>
+
+<ol>
+  <li>
+    <p>The name of the component, e.g.  <code class="language-plaintext highlighter-rouge">composite-service</code><br />
+Taken from the <code class="language-plaintext highlighter-rouge">spring.application.name</code> - property as described above.</p>
+  </li>
+  <li>
+    <p>The trace id, e.g. <code class="language-plaintext highlighter-rouge">8f79b9c84065ccd8</code><br />
+If you search for a trace id in the log output you will find all log events from the involved microservices related to the processing of one request.</p>
+  </li>
+  <li>The span id <code class="language-plaintext highlighter-rouge">529909c553bfed03</code>.<br />
+If you search for a span id in the log output you will find all log events from a single microservice.
+    <blockquote>
+      <p><strong>Note:</strong> The id of the first span in the processing of a request, known as the root span, is used as the trace id.</p>
+    </blockquote>
+  </li>
+  <li>A boolean known as exportable, e.g. <code class="language-plaintext highlighter-rouge">true</code><br />
+The value <code class="language-plaintext highlighter-rouge">true</code> indicates that the span will be reported to Zipkin.</li>
+</ol>
+
+<h2 id="52-try-out-the-zipkin-web-ui">5.2 Try out the Zipkin Web UI</h2>
+
+<p>Now, make some calls to the microservice landscape:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -k -H "Authorization: Bearer $TOKEN" https://localhost/api/product/456
+</code></pre></div></div>
+
+<p>Let’s first take a quick look into RabbitMQ to verify that trace events are sent to the Zipkin server (using the <em>exchange</em> <code class="language-plaintext highlighter-rouge">sleuth</code> and the <em>queue</em> <code class="language-plaintext highlighter-rouge">sleuth.sleuth</code>). Open the URL <a href="index.html">http://localhost:15672/#/queues/%2F/sleuth.sleuth</a> in your web browser and log in using <em>guest/guest</em> and you should see something like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/rabbitmq-trace-events.png" alt="rabbitmq-trace-events" /></p>
+
+<p>Now open the Zipkin Web UI in your web browser: <a href="http://localhost:9411">http://localhost:9411</a>:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-1.png" alt="Zipkin-1" /></p>
+
+<p>Select the <code class="language-plaintext highlighter-rouge">edge-server</code> and ensure that you have set a proper time interval and click on the “Find Trace” - button:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-2.png" alt="Zipkin-2" /></p>
+
+<p>A number of traces are displayed. If you click on one of them it will expand and show something like:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-3.png" alt="Zipkin-3" /></p>
+
+<blockquote>
+  <p><strong>Hint:</strong> Click on the “Expand All” button to see the complete call graph.</p>
+</blockquote>
+
+<p>I guess the graph is self explanatory :-)</p>
+
+<p>To find a specific request you can use the query field to specify the HTTP request URI (e.g. assuming it is known from examine the log output)</p>
+
+<p>Go back to the initial search dialog an enter <code class="language-plaintext highlighter-rouge">http.path=/api/product/456</code> in the query field:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-5.png" alt="Zipkin-5" /></p>
+
+<p>Click on the “Find Trace” - button and you should see traces that match the query you entered:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-6.png" alt="Zipkin-6" /></p>
+
+<p>Click on one of the matched traces and verify that the  HTTP request URI matches:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-7.png" alt="Zipkin-7" /></p>
+
+<p>Also try out clicking on the “Dependencies” tab:</p>
+
+<p><img src="../../../../../../assets/blogg/build-microservices-part-7/Zipkin-4.png" alt="Zipkin-4" /></p>
+
+<p>Could be useful in a larger microservice - landscape, don’t you think?</p>
+
+<h2 id="53-try-out-the-zipkin-query-api">5.3 Try out the Zipkin Query API</h2>
+
+<p>The Web UI uses a query API in the Zipkin server that is public, i.e. you can use it to build your own search front end. For details see: <a href="http://zipkin.io/zipkin-api/#/">http://zipkin.io/zipkin-api/#/</a>. Let’s try it out!</p>
+
+<blockquote>
+  <p><strong>Hint:</strong> Prepare for receiving large responses! They are not expected to be consumed by the human eye, but programmatically :-)</p>
+</blockquote>
+
+<p>Start with repeating the query for a specific HTTP request URI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:9411/api/v1/traces?annotationQuery="http.path=/api/product/456" | jq .
+</code></pre></div></div>
+
+<p>Next try searching for a specific Trace Id (pick one from your log events):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:9411/api/v1/trace/917e8549d0324e3f | jq .
+</code></pre></div></div>
+
+<p>Finally lookup all traces where a specific microservice has been involved:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:9411/api/v1/traces?serviceName=edge-server | jq .
+</code></pre></div></div>
+
+<p>If you want to refine the traces-queries you can experiment with the query parameters: <code class="language-plaintext highlighter-rouge">endsTs</code>, <code class="language-plaintext highlighter-rouge">lookback</code> and <code class="language-plaintext highlighter-rouge">limit</code>. Se the <a href="http://zipkin.io/zipkin-api/#/paths/%252Ftraces">API docs</a> for details.</p>
+
+<h2 id="54-try-with-some-other-scenarios">5.4 Try with some other scenarios</h2>
+
+<p>Examples for the interested reader to try out on yourself:</p>
+
+<ol>
+  <li>
+    <p>Make a microservice slow by increasing its response time</p>
+  </li>
+  <li>
+    <p>Force the Circuit Breaker to Open its Circuit and verify the shorter response time when “fail fast” is applied</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Hint:</strong> See section 3.3 - 3.7 in <a href="../../../../2016/09/30/building-microservices-part-5-springcloud11-docker4mac/index.html">this blog post</a> for instructions.</p>
+</blockquote>
+
+<h1 id="6-next-step">6. Next Step</h1>
+
+<p>Next up in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series - Building Microservices</a>, is centralized logging with the ELK stack. Thanks to trace ids introduced by Spring Cloud Sleuth in the log events we are already half way, stay tuned…</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building Microservices Part 7 Distributed Tracing&url=https://callistaenterprise.se/blogg/teknik/2017/07/29/building-microservices-part-7-distributed-tracing/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building Microservices Part 7 Distributed Tracing&u=https://callistaenterprise.se/blogg/teknik/2017/07/29/building-microservices-part-7-distributed-tracing/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building Microservices Part 7 Distributed Tracing&url=https://callistaenterprise.se/blogg/teknik/2017/07/29/building-microservices-part-7-distributed-tracing/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

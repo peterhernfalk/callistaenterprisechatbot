@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Setting up a Docker Swarm cluster using Docker in Docker | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Setting up a Docker Swarm cluster using Docker in Docker</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-12-18T00:00:00+00:00">
+            18 December 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog post I will describe how to setup a local Docker Swarm cluster for test purposes with a minimal memory usage and fast startup times, using <a href="https://store.docker.com/images/docker">Docker in Docker</a> instead of traditional local virtual machines.</p>
+
+<p></p>
+
+<p>This blog post is part of the blog series - <a href="../../17/blog-series-docker-news/index.html">Trying out new features in Docker</a>.</p>
+
+<h1 id="background">Background</h1>
+
+<p>Before deploying your Docker containers to production you most probably need a <em>Container Orchestrator</em>, such as <a href="https://docs.docker.com/engine/swarm/">Docker in Swarm mode</a> or <a href="https://kubernetes.io">Kubernetes</a>, to manage a cluster of nodes where your containers can be deployed (regardless of whether you are going to run them on premises or in the cloud). For a background see, for example, the blog post <a href="https://thenewstack.io/containers-container-orchestration/">from containers to container orchestration</a>.</p>
+
+<p>Before deploying your Docker containers to a container orchestrator, you need to understand how your container orchestrator works. Even though you can setup a test instance in the cloud to get used to it, it is typically much more convenient and efficient to learn a complex software, such as a container orchestrator, if you initially can try it out locally.</p>
+
+<p>Traditionally, setting up a local multi - node container orchestrator means spinning up a number of virtual machines locally and then setting up the container orchestrator on these nodes. It is known to both consume a lot of memory (a virtual machine with Docker running consumes at least 1 GB just to get started) and is also time consuming to setup.</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/docker-swarm.png" alt="docker-swarm" />
+<strong>Source:</strong> <a href="http://info.crunchydata.com/blog/easy-postgresql-cluster-recipe-using-docker-1.12">http://info.crunchydata.com/blog/easy-postgresql-cluster-recipe-using-docker-1.12</a></p>
+
+<p>But, what if we can use a number of containers to act as our cluster nodes instead of fully fledged virtual machines?</p>
+
+<p>We know for sure that they start much faster and have very little overhead in terms of memory!</p>
+
+<p>The <em>only</em> tricky thing is that these containers needs to run Docker in themselves, i.e. run Docker in Docker :-)</p>
+
+<p>Docker provides a official Docker image for this specific purpose: <a href="https://store.docker.com/images/docker">Docker in Docker</a></p>
+
+<blockquote>
+  <p><strong>Words of warning:</strong> You should only use Docker in Docker for test purposes. See, for example, this <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">blog post</a> for details.</p>
+</blockquote>
+
+<p>Let’s try it out using <a href="https://docs.docker.com/engine/swarm/">Docker in Swarm mode</a>!</p>
+
+<p>We will use <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a> acting both as the Swarm Manager and as the Docker Host for three Swarm Workers (i.e. that will run as containers).</p>
+
+<h1 id="installation">Installation</h1>
+
+<p>First, you need to have <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a> installed, I’m on version <code class="language-plaintext highlighter-rouge">17.09.1-ce-mac42</code>.</p>
+
+<p>Next, you also need to have <code class="language-plaintext highlighter-rouge">jq</code> and <code class="language-plaintext highlighter-rouge">ctop</code> installed to be able to follow my instructions below.
+If you use <a href="https://brew.sh">Homebrew</a> they can be installed with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install jq
+brew install ctop
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">ctop</code> is like <code class="language-plaintext highlighter-rouge">top</code>, but for containers.</p>
+</blockquote>
+
+<h1 id="setup">Setup</h1>
+
+<p>To be able to follow the startup sequence, launch the <code class="language-plaintext highlighter-rouge">ctop</code> tool in one terminal window:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Monitor Master and Worker nodes
+ctop
+</code></pre></div></div>
+
+<p>Next, in another terminal window, run commands to:</p>
+
+<ol>
+  <li>Ensure that Docker for Mac runs in Swarm mode, i.e. acts as a Swarm Master</li>
+  <li>Setup environment variables for the token to be used to join worker nodes and the IP address of the master node</li>
+</ol>
+
+<p>Run the following commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Init Swarm master
+docker swarm init
+
+# Get join token:
+SWARM_TOKEN=$(docker swarm join-token -q worker)
+echo $SWARM_TOKEN
+
+# Get Swarm master IP (Docker for Mac xhyve VM IP)
+SWARM_MASTER_IP=$(docker info | grep -w 'Node Address' | awk '{print $3}')
+echo $SWARM_MASTER_IP
+</code></pre></div></div>
+
+<p>Next, setup environment variables for what Docker version to use and how many worker nodes you want:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Docker version
+DOCKER_VERSION=17.09.1-ce-dind
+
+# Number of workers
+NUM_WORKERS=3
+</code></pre></div></div>
+
+<p>Now, we can launch the worker nodes as containers and ask them to join our Docker Swarm cluster:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Run NUM_WORKERS workers with SWARM_TOKEN
+for i in $(seq "${NUM_WORKERS}"); do
+	docker run -d --privileged --name worker-${i} --hostname=worker-${i} -p ${i}2375:2375 docker:${DOCKER_VERSION}
+	docker --host=localhost:${i}2375 swarm join --token ${SWARM_TOKEN} ${SWARM_MASTER_IP}:2377
+done
+</code></pre></div></div>
+
+<p>The first <code class="language-plaintext highlighter-rouge">docker run</code> command might take some time due to the required Docker image needs to be downloaded, otherwise it should only take a few seconds to setup the Swarm cluster!</p>
+
+<p>Verify that you can see the worker nodes using <code class="language-plaintext highlighter-rouge">ctop</code> as ordinary containers in Docker for Mac:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/ctop-3-workers.png" alt="ctop-3-workers" /></p>
+
+<blockquote>
+  <p><strong>Note:</strong> The memory used per worker node is only some 30 MB! <br />
+To be compared to (at least) 1 GB required for an empty worker node that runs as a virtual machine…</p>
+</blockquote>
+
+<p>To be able to monitor the state of the cluster you can start a Visualizer service as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Setup the visualizer
+docker service create \
+  --detach=true \
+  --name=viz \
+  --publish=8000:8080/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  dockersamples/visualizer
+</code></pre></div></div>
+
+<h1 id="view">View</h1>
+
+<p>Ok, so let’s see if we actually have a Docker Swarm cluster up and running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node ls
+</code></pre></div></div>
+
+<p>It should result in a response like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS
+p04lc6eikqz76rdzp9ehpejdx *   moby                Ready               Active              Leader
+owpvm6mt8xpoxqk28mph81n0g     worker-1            Ready               Active
+blf4o51phy1k7ds7pn2sok1h9     worker-2            Ready               Active
+wtia3kscr694577je4v5ryms4     worker-3            Ready               Active
+</code></pre></div></div>
+
+<p>Also, let’s see if we have the Visualizer service up and running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service ls
+</code></pre></div></div>
+
+<p>Expect output as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
+nv7uhth4k3vw        viz                 replicated          1/1                 dockersamples/visualizer:latest   *:8000-&gt;8080/tcp
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> <code class="language-plaintext highlighter-rouge">REPLICAS</code> set to <code class="language-plaintext highlighter-rouge">1/1</code> means that the service is up and running!</p>
+</blockquote>
+
+<p>Try out the Visualizer: <a href="http://localhost:8000">localhost:8000</a></p>
+
+<p>Expect only a single Visualizer container to show up at this point:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-1.png" alt="visualizer-1" /></p>
+
+<h1 id="deploy">Deploy</h1>
+
+<p>Now, let’s deploy a service and try it out!</p>
+
+<p>I have a very simple <code class="language-plaintext highlighter-rouge">quote-service</code> (written in Go) that creates some random quotes about successful programming languages. It can be deployed with the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service create --name quotes-service --detach=false -p 8080:8080 magnuslarsson/quotes:go-22
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: This time we set the <code class="language-plaintext highlighter-rouge">--detach</code> - flag to <code class="language-plaintext highlighter-rouge">false</code> meaning that the docker service create command waits to complete until the service is actually accessible, i.e. at least one container for the service reports to Docker that it is up and running.</p>
+</blockquote>
+
+<p>Expect an output from the command like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xvcvdc28kt1or1tslj0dv5ptn
+overall progress: 1 out of 1 tasks
+1/1: running   [==================================================&gt;]
+verify: Service converged
+</code></pre></div></div>
+
+<p>The Visualizer should report:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-2.png" alt="visualizer-2" /></p>
+
+<p>We can now try it out using <code class="language-plaintext highlighter-rouge">curl</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl localhost:8080/api/quote -s -w "\n" | jq .
+</code></pre></div></div>
+
+<p>Output should look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "ipAddress": "fc9193f817ef/",
+  "quote": "If I had to describe Go with one word it’d be ‘sensible’.",
+  "language": "EN"
+}
+</code></pre></div></div>
+
+<p>The most interesting part of the response from the service is actually the field <code class="language-plaintext highlighter-rouge">ipAddress</code>, that contains the hostname of the container that served the request, <code class="language-plaintext highlighter-rouge">fc9193f817ef</code> in the sample response above.</p>
+
+<h1 id="scale">Scale</h1>
+
+<p>This can be used to verify that scaling of a service actually works. In the output from a scaled service we expect different values in the <code class="language-plaintext highlighter-rouge">ipAddress</code> - field from subsequent requests, indicating that the request is load balanced over the available containers.</p>
+
+<p>Let’s try it out, shall we?</p>
+
+<p>First, start a loop that use <code class="language-plaintext highlighter-rouge">curl</code> to sends one request per second to the <code class="language-plaintext highlighter-rouge">quote-service</code> and prints out the  <code class="language-plaintext highlighter-rouge">ipAddress</code> - field from the response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>while true; do curl localhost:8080/api/quote -s -w "\n" | jq -r .ipAddress; sleep 1; done
+</code></pre></div></div>
+
+<p>Initially the output should return one and the same hostname, since we only have one container running in the service:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5fcdd3974d5c/
+5fcdd3974d5c/
+5fcdd3974d5c/
+5fcdd3974d5c/
+5fcdd3974d5c/
+5fcdd3974d5c/
+</code></pre></div></div>
+
+<p>Now, scale the <code class="language-plaintext highlighter-rouge">quote-service</code> by adding 10 new containers to it (11 in total):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service scale quotes-service=11 --detach=true
+</code></pre></div></div>
+
+<p>Verify that you can see all 11 <code class="language-plaintext highlighter-rouge">quote-service</code> containers in the Visualizer:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-3.png" alt="visualizer-3" /></p>
+
+<p>Now, the output from the curl - loop should report different hostnames as the requests are load balanced over the 11 containers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5fcdd3974d5c/
+5aa06cf9a0df/
+8e02323f6b67/
+5fcdd3974d5c/
+b9f8da53ec30/
+be9489f011c3/
+559489f857d6/
+494d5b0a5b5a/
+4541532bc9bb/
+709a6b244149/
+</code></pre></div></div>
+
+<p>Great, isn’t it?</p>
+
+<h1 id="resilience">Resilience</h1>
+
+<p>Now, let’s expose the container orchestrator, i.e. Docker in Swarm mode, to some problems and see if it handles them as expected!</p>
+
+<h2 id="kill-some-containers">Kill some containers</h2>
+
+<p>First, let’s shut down some arbitrary containers and see if the orchestrator detects it and start new ones!</p>
+
+<p>To keep things relatively simple, let’s kill all <code class="language-plaintext highlighter-rouge">quote-services</code> running on the master node:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f $(docker ps --filter name=quotes-service -q)
+</code></pre></div></div>
+
+<p>The command should respond with the ids of the killed containers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>25ca7c327cb4
+6d28d64ff831
+</code></pre></div></div>
+
+<p>Take a quick look (you have to be fast!) in the Visualizer and you will see that there are two missing <code class="language-plaintext highlighter-rouge">quote-service</code> containers in the master node:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-4.png" alt="visualizer-4" /></p>
+
+<p>But after a few seconds you will find the new containers started by the orchestrator to fulfill the desired state, i.e. 11 containers for the <code class="language-plaintext highlighter-rouge">quote-service</code>!</p>
+
+<h2 id="crash-a-worker-node">Crash a worker node</h2>
+
+<p>Now, let’s make it even worse by killing a worker node, i.e. simulating that the node crash unexpected. Since we use Docker in Docker, this can be done by killing the worker nodes container. Let’s shutdown <code class="language-plaintext highlighter-rouge">worker-2</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f worker-2
+</code></pre></div></div>
+
+<p>You will soon see how <code class="language-plaintext highlighter-rouge">worker-2</code> disappears from the <code class="language-plaintext highlighter-rouge">ctop</code> display:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/ctop-worker-2-down.png" alt="ctop-worker-2-down" /></p>
+
+<p>…and the Visualizer also reports that <code class="language-plaintext highlighter-rouge">worker-2</code> is down:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-5.png" alt="visualizer-5" /></p>
+
+<p>…and soon after, the containers that was running on the failing node are rescheduled on the other nodes:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-6.png" alt="visualizer-6" /></p>
+
+<p>Let’s wrap up with restarting the node again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>i=2
+docker node rm worker-${i}
+docker run -d --privileged --name worker-${i} --hostname=worker-${i} -p ${i}2375:2375 docker:${DOCKER_VERSION}
+docker --host=localhost:${i}2375 swarm join --token ${SWARM_TOKEN} ${SWARM_MASTER_IP}:2377
+</code></pre></div></div>
+
+<p>As you can see in the Visualizer, the new <code class="language-plaintext highlighter-rouge">worker-2</code> node is back online but the containers are not rebalanced back to the new worker node automatically:</p>
+
+<blockquote>
+  <p><strong>Note:</strong> You might need to refresh the Visualizer window in the browser to see that the <code class="language-plaintext highlighter-rouge">worker-2</code> node is back online.</p>
+</blockquote>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-7.png" alt="visualizer-7" /></p>
+
+<p>You can, however, manually rebalance your containers with the commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service scale quotes-service=8 --detach=false
+docker service scale quotes-service=11 --detach=false
+</code></pre></div></div>
+
+<p><img src="../../../../../../assets/blogg/docker/docker-in-swarm-mode-on-docker-in-docker/visualizer-8.png" alt="visualizer-8" /></p>
+
+<h1 id="teardown">Teardown</h1>
+
+<p>That’s it, let’s remove the Swarm cluster:</p>
+
+<ol>
+  <li>Remove the services</li>
+  <li>Unregister the worker nodes from the Swarm cluster</li>
+  <li>Shutdown the worker nodes (i.e. kill the worker node containers)</li>
+  <li>Remove the “Docker for Mac” Docker engine from the Swarm cluster</li>
+</ol>
+
+<p>Run the following commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Remove services
+docker service rm quotes-service viz
+
+# Unregister worker nodes
+for i in $(seq "${NUM_WORKERS}"); do
+	docker --host=localhost:${i}2375 swarm leave
+done
+
+# Remove worker nodes
+docker rm -f $(docker ps -a -q --filter ancestor=docker:${DOCKER_VERSION} --format="")		
+
+# Leave Swarm mode
+docker swarm leave --force
+</code></pre></div></div>
+
+<h1 id="next-up">Next up…</h1>
+
+<p>For more blog posts on new features in Docker, see the blog series - <a href="../../17/blog-series-docker-news/index.html">Trying out new features in Docker</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Docker In Swarm Mode On Docker In Docker&url=https://callistaenterprise.se/blogg/teknik/2017/12/18/docker-in-swarm-mode-on-docker-in-docker/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Docker In Swarm Mode On Docker In Docker&u=https://callistaenterprise.se/blogg/teknik/2017/12/18/docker-in-swarm-mode-on-docker-in-docker/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Docker In Swarm Mode On Docker In Docker&url=https://callistaenterprise.se/blogg/teknik/2017/12/18/docker-in-swarm-mode-on-docker-in-docker/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

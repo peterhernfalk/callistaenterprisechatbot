@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Google’s gRPC - ett nyare kommunikationsprotokoll | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Ekstrand" src="../../../../../../assets/medarbetare/magnusekstrand_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Google’s gRPC - ett nyare kommunikationsprotokoll</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-05-25T00:00:00+00:00">
+            25 May 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnusekstrand/index.html">Magnus Ekstrand</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I början av maj gick KubeCon + CloudNativeCon Europe 2018 i Köpenhamn av stapeln. Ett ämne som fick stort utrymme på konferensen var gRPC som lades fram some ett super-snabbt och effektivt Remote Procedure Call-system (RPC) som ska göra att microservices pratar med varandra med ljusets hastighet…</p>
+
+<h1 id="vad-är-grpc">Vad är gRPC?</h1>
+<p>gRPC är en RPC-plattform med som utvecklats av Google och som blev öppen källkod i början av 2015. Vid första anblicken påminde mig gRPC om CORBA. Båda ramverken deklarerar tjänster i ett språk-agnostiskt gränssnitt (IDL) för att sedan generera språkspecifika bindningar.</p>
+
+<p><img src="../../../../../../assets/blogg/gRPC/gRPC-klient_server.png" alt="gRPC" style="width: 400px;" /></p>
+
+<p>Både CORBA och gRPC är utformade för att klienterna ska tro att servern är på samma maskin. Klienter anropar en metod på stubben, som hanteras transparent genom det underliggande protokollet. Men där slutar också likheterna. För att förstå vad gRPC egentligen är, låt oss titta på se på vad vi är vana vid, d.v.s REST API, och göra en jämförelse.</p>
+
+<h5 id="det-som-används-i-många-tillämpningar-idag">Det som används i många tillämpningar idag</h5>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> REST API = HTTP1.1 + REST + JSON
+</code></pre></div></div>
+
+<h5 id="grpc">gRPC</h5>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gRPC = Google + RPC Framework
+gRPC = Google + (HTTP2 + Remote Procedure Call + Protobuf)
+</code></pre></div></div>
+
+<h1 id="remote-procedure-call">Remote Procedure Call</h1>
+<p>Remote Procedure Call eller RPC är när “… en procedur (subrutin) i ett dataprogram utföras i ett annat adressutrymme (vanligtvis på en annan dator i ett gemensamt nätverk) som om det var ett normalt (lokalt) proceduranrop utan att programmeraren kodar explicita detaljer för (fjärr)interaktionen.”</p>
+
+<p>Vi är vana att göra detta med våra REST API-server / klienter. Vi exekverar kod på en annan dator utan att uttryckligen skriva kommandon på just den datorn. Skillnaden mellan REST och RPC är i huvudsak hur du exponerar serverns endpoints. Som exempel kanske en REST-server endast tillhandahåller CRUD-operationer på ett objekt, medan en RPC-server kan exponera mer allmänna funktioner som t.ex genHash().</p>
+
+<h1 id="grpc-protokollet">gRPC-protokollet</h1>
+<p>Protokollet är baserat på <strong>HTTP2</strong> som är nästa generation WWW-protokoll. gRPC stödjer flera inbyggda funktioner ärvda från HTTP2. Till exempel går det att ha duplexkommunikationen (dubbelriktad) över en enda anslutning vilket är en av anledningarna till att gRPC sägs vara “högpresterande”. I andra ord; med en (1) anslutning mellan server och klient kan data överföras i båda riktningarna samtidigt.</p>
+
+<p>En annan bieffekt av HTTP2 är att gRPC kräver en TLS-anslutning. Det betyder emellertid inte att din anslutning alltid är säker, utan det betyder att om (och endast om) du har en säker anslutning så kan du använda HTTP2.</p>
+
+<h3 id="grpc-erbjuder-två-typer-för-klientserver-kommunikation">gRPC erbjuder två typer för klient/server-kommunikation</h3>
+
+<h5 id="unär">Unär</h5>
+<p>I huvudsak är det synkrona förfrågningar som görs till gRPC-servern med en request som blockerar tills ett svar tas emot.</p>
+
+<h5 id="strömmar">Strömmar</h5>
+<p>Strömmar är riktigt kraftfullt och kan användas på tre olika sätt:</p>
+<ul>
+  <li>klient pushar meddelanden till en ström</li>
+  <li>server pushar meddelanden till en ström</li>
+  <li>dubbelriktad: både klient och server skickar data i två strömmar i samma metod.</li>
+</ul>
+
+<p>En ström ger ingen kvittens för mottagande av meddelande förrän strömmen slutförts. Men det går att lösa genom att använda en dubbelriktad ström för att returnera ACKs.</p>
+
+<h1 id="serialisering">Serialisering</h1>
+<p>Protocol Buffers eller Protobufs är en av Googles metoder för att serialisera strukturerad data. Med Protobuf kan vi definiera strukturen (eller vågar jag säga schema) för vår data i .proto-filer. Med hjälp av en Protobuf Compiler kan vi sedan generea datastrukturen på önskat programmeringsspråk. På så sätt går det att definiera strukturen en gång och använda den för många språk.</p>
+
+<p>Protobuf gör det möjligt att skicka små meddelande med snabb kodning/avkodning. Till skillnad från andra serialiseringsformat som JSON eller XML försöker Protobuf att minimera tiden för kodning/avkodning genom att tillhandahålla starkt typade fält i ett binärt format som snabbt kan läsas på ett förutsägbart sätt.</p>
+
+<p>Den senaste versionen av Protocol Buffer är proto3, som stöder (antingen officiellt eller via tredjeparts applikationer) kodgenerering för C++, Java, Python, JavaNano, Go, Ruby, Objective-C, C#, JavaScript, Perl, PHP, Scala, Julia.</p>
+
+<h1 id="rest-vs-grpc">REST vs. gRPC</h1>
+<p>Så vad betyder allt detta för API-design? Och mer specifikt, vad betyder detta för REST?  Skillnaden mellan REST och RPC är enkel - REST exponerar data som resurser som man agerar på, medan RPC exponerar operationer som en metod för att agera på data.</p>
+
+<p>Problemet är att vi kan få RPC-liknande funktionalitet med hjälp av REST, och att vi kan få REST-liknande funktionalitet med hjälp av RPC. Att använda REST med HTTP har till exempel fördelarna med den förutsägbarhet som kommer från dess HTTP-arv. RPC har inte denna fördel men kan omvänt utnyttja nyare lösningar såsom HTTP2 i fallet med gRPC. Diskussionen REST över RPC och vise versa är egentligen ointressant. Det är problemets sammanhang som bör avgöra vilken lösning som är bättre. Och som med alla applikationer så kokar detta ned till de specifika användningsfall som man har att ta ställning till.</p>
+
+<h1 id="summering">Summering</h1>
+
+<p>Jämfört med REST + JSON ska gRPC ge en bättre prestanda och säkerhet. gRPC främjar användning av SSL / TLS för server-autentisering och kryptering av den data som utväxlas mellan klient och server.</p>
+
+<p>Är man van vid REST APIs där HTTP1.1, REST, och JSON används och vill börja använda gRPC krävs nya tekniker</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP1.1 =&gt; HTTP2
+REST =&gt; RPC
+JSON =&gt; Protobuf
+</code></pre></div></div>
+
+<p>gRPC är en utveckling av den klassiska RPC-strukturen men nyttjar moderna protokoll för en ny generation av högeffektiv och smidig interoperabilitet. När vi numer börjar använda fler och mindre enheter med högre efterfrågan på bearbetning kommer lösningar som gRPC att utmana det REST-centrerade paradigmet som hittills varit ganska ohotat.</p>
+
+<p>Men en övergång från REST till gRPC har emellertid vissa smärtpunkter för alla utvecklare på grund av saknade alternativ för vanliga verktyg. Att skicka JSON över cURL fungerar inte. Det finns ingen integration med Swagger / OpenAPI. Alternativ till grafiska gränssnitt som Postman eller Swagger UI existerar inte. Allt sådant som vi vant oss vid i vårt dagliga arbete är borta.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Grpc A New Communication Protocol&url=https://callistaenterprise.se/blogg/teknik/2018/05/25/gRPC-a-new-communication-protocol/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Grpc A New Communication Protocol&u=https://callistaenterprise.se/blogg/teknik/2018/05/25/gRPC-a-new-communication-protocol/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Grpc A New Communication Protocol&url=https://callistaenterprise.se/blogg/teknik/2018/05/25/gRPC-a-new-communication-protocol/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

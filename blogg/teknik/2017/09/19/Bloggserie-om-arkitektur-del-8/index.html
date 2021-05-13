@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 8: Fortsättning på UML – Arkitektens skruvmejsel | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Alexander Gunnerhell" src="../../../../../../assets/medarbetare/alexandergunnerhell_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 8: Fortsättning på UML – Arkitektens skruvmejsel</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-09-19T00:00:00+00:00">
+            19 September 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Alexander Gunnerhell
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I <a href="../../../08/17/Bloggserie-om-arkitektur-del-7/index.html">föregående</a> inlägg i den här <a href="../../../../2016/11/19/Arkitekturblogg-en-överblick/index.html">bloggserien</a> om arkitektur, gick vi igenom klassdiagram.</p>
+
+<p>Klassdiagram tillhör en kategori av diagram i UML som används för att beskriva olika typer av mjukvarurelaterade strukturer. På svenska kallas denna kategori av diagram ibland för statiska diagram.  Strukturella/statiska UML-diagram är alltid oberoende av tid och rum.</p>
+
+<p>I detta inlägg fortsätter vi med att gå igenom det ofta använda sekvensdiagrammet.</p>
+
+<p></p>
+
+<h2 id="sekvensdiagram">Sekvensdiagram</h2>
+<p>Sekvensdiagrammet tillhör en kategori av diagram som alla uttrycker olika former av beteende, på svenska kallas dessa ibland för dynamiska diagram.</p>
+
+<p>Ett dynamiskt diagram kan vara <strong>beroende</strong> av både tid och rum. Mao: om man vill beskriva hur en mjukvarustruktur beter sig över tiden och/eller rumsligt, så väljer man något av de dynamiska diagrammen.</p>
+
+<p>Allt det här med tid och rum blir snabbt abstrakt, så nu kikar vi på ett exempel:</p>
+
+<p>Vi vill nu specificera att vårt hypotetiska trafikinformationssystem från <a href="../../../08/17/Bloggserie-om-arkitektur-del-7/index.html">del 7</a> i bloggserien behöver utökas med beteende (metoder) och information (attribut) som ger stöd för att hantera statistik.</p>
+
+<p>Men innan vi gör detta måste vi utöka klassdiagrammet från <a href="../../../08/17/Bloggserie-om-arkitektur-del-7/index.html">föregående blogginlägg</a> en aning:</p>
+
+<p><img src="../../../../../../assets/Exempel&#32;2&#32;pa&#32;klassdiagram.png" alt="Exempel 2 pa klassdiagram.png" /></p>
+
+<p>I det utökade klassdiagrammet ovan har vi lagt till klassen ”Fordonsregister” som håller reda på alla fordon som är i tjänst samt en ”Fordonsstatistik”-klass som möjliggör att kontinuerligt hålla reda på det totala antalet passagerare på samtliga bussar som är i trafik.</p>
+
+<p>Vi passar här också på att bekanta oss med två nya typer av beroenden mellan klasser:</p>
+
+<ul>
+  <li>”aggregate” (aggregat på svenska) och</li>
+  <li>”use” (använder på svenska)</li>
+</ul>
+
+<p>Aggregatet mellan ”Fordonsregister” och ”<em>Fordon</em>” betyder här att klassen ”Fordonsregister” aggregerar (eller enklare: samlar ihop) alla ”<em>Fordon</em>” i vårt IT-system men att ”<em>Fordon</em>” existerar oberoende av om det finns ett ”Fordonsregister” eller inte. Det passar ju bra här eftersom det är så ett register brukar användas: för att samla ihop och hålla reda på olika saker och fordon brukar vanligtvis inte försvinna trots att de tas bort ur ett register ☺ ! Ett syskon till aggregatet är ”Komposition”, något du kan läsa mer om <a href="https://en.wikipedia.org/wiki/Object_composition#UML_notation">här</a>.</p>
+
+<p>”Använder”-beroendet betyder att ”Fordonsstatistik” beror av ”Fordonsregister” för att kunna fungera i systemet. ”Använder” är ett av flera beroenden som tillhör kategorin ”Beroende”-associationer (dependency på engelska). Vi kommer inte att fördjupa oss i denna kategori i detta blogginlägg men för den som vill veta mer är <a href="http://bit.ly/2xbzHPY">Wikipedia</a> alltid en bra start!</p>
+
+<p>Det vi nu vill göra är förstås att specificera hur vi tänker oss att systemet kontinuerligt skall hålla reda på det totala antalet passagerare på alla bussar som är i tjänst, dvs systemets beteende beskrivet i form av ett sekvensdiagram:</p>
+
+<p><img src="../../../../../../assets/Annoterat&#32;sekvensdiagram.png" alt="Annoterat sekvensdiagram.png" /></p>
+
+<p>Här händer det en massa saker! Låt oss börja med de grundläggande ”byggstenarna” i sekvensdiagrammet innan vi går igenom själva beteendet eller flödet:</p>
+
+<ul>
+  <li>Aktörer: användare eller system som inte är en del av vårt system men som interagerar med vårt system, här i form av passagerarsensorer i respektive buss och en extern timer (längst upp till höger i diagrammet)</li>
+  <li>Instans: unika representationer i vårt system av olika klasser av företeelser, tex ”enStatistikhanterare”, ”enBlåBuss”, etc…</li>
+  <li>Livslinje: hur länge (tidsdimensionen!) instanser finns tillgängliga för anrop i systemet</li>
+  <li>Aktivering: den exekvering (rumsdimensionen!) som sker i respektive instans som en följd av ett givet meddelande</li>
+  <li>Synkront meddelandeutbyte: exekveringen i den anropande instansen stannar tills denna fått ett svar från den anropade instansen</li>
+  <li>Asynkront meddelande: exekveringen i den anropande instansen fortsätter utan att denna fått ett svar från den anropade instansen (i detta fall är det t.o.m. så att den anropande instansen inte behöver få ett svar överhuvudtaget)</li>
+  <li>Fragment: uttrycker olika typer av flödeskontroll för ett eller flera meddelandeutbyten (oftast flera), tex repetitionsflöden (loopar), alternativa flöden, flödesavbrott, etc…</li>
+</ul>
+
+<p>Låt oss nu gå igenom vad som händer i systemet för att hålla reda på statistiken om det totala antalet passagerare på bussar som är i tjänst (siffrorna i varje punkt refererar till meddelandeid:na i sekvensdiagrammet)!</p>
+
+<p>1,3,5) Instanserna:</p>
+
+<ul>
+  <li>”enBlåBuss” av klassen ”Buss”,</li>
+  <li>”enRödBuss” av klassen ”Buss” och</li>
+  <li>”enGrönLastbil” av klassen ”Lastbil”</li>
+</ul>
+
+<p>registrerar sig hos instansen ”ettRegister” i och med att dessa tas i tjänst. Detta sker genom anrop till metoden ”taFordonITjänst(ettFordon : Fordon) i instansen ”ettRegister”. Eftersom både bussar och lastbilar är ett slags fordon så går det utmärkt att skicka med en instans av klassen ”Buss” till en metod som förväntar sig instanser av klassen ”<em>Fordon</em>”.</p>
+
+<p>2,4) Aktörerna:</p>
+
+<ul>
+  <li>”passagerarSensorBlåBuss” och</li>
+  <li>”passagerarSensorRödBuss”</li>
+</ul>
+
+<p>registrerar de första påstigande passagerarna på respektive buss och anropar asynkront instanserna:</p>
+
+<ul>
+  <li>”enBlåBuss” och</li>
+  <li>”enRödBuss”</li>
+</ul>
+
+<p>via meddelandena ”ändraAntalPassagerare(nyttAntalPassagerare : int = 9)” samt ”ändraAntalPassagerare(nyttAntalPassagerare : int = 3)”.</p>
+
+<p>6) Aktören ”timer” anropar asynkront instansen ”enStatistikhanterare” via metoden ”uppdateraTotaltAntalPassagerare”, detta för att tala om för systemet att det är dags att uppdatera statistiken.</p>
+
+<p>6.1) Instansen ”enStatistikhanterare” anropar sig själv för att nollställa attributet ”totaltAntalPassagerare” via metoden ”nollställTotaltAntalPassagerare()”. Därefter börjar denna iterera över alla fordon som är i tjänst i fordonsregistret (fragmentet ”loop”)</p>
+
+<p>6.2) Instansen ”enStatistikhanterare” anropar instansen ”ettRegister” för att kontrollera om det finns något fordon kvar att behandla i ”ettRegister”, detta sker via metoden ”harEttTillFordonITjänst() : boolean”. Finns det fordon kvar i ”ettRegister” så är svaret på anropet true (sant) annars är det false (falskt).</p>
+
+<p>Detta anrop sker i fragmentet ”break” som är ett fragment inuti fragmentet ”loop”. Innebörden av ”break” är att om fragmentets styrvillkor är true (sant) så avbryts exekveringen i det omslutande fragmentet ”loop”. Är det false (falskt) så fortsätter exekveringen i det omgivande fragmentet ”loop”.</p>
+
+<p>6.4) Instansen ”enStatistikhanterare” hämtar nästa fordon i fordonsregistret genom att anropa metoden ”hämtaNästaFordonITjänst() : Fordon” i instansen ”ettRegister”. Svaret blir en referens till fordonet som vi placerar i attributet ”aktuelltFordonITjänst” av klassen ”<em>Fordon</em>”.</p>
+
+<p>6.5) Om ”aktuelltFordonITjänst” refererar till en instans av klassen ”Buss”, så skapar instansen ”enStatistikhanterare” referensen ”aktuellBussITjänst” till denna instans.
+Om ”aktuelltFordonITjänst” refererar till en instans av någon annan klass än ”Buss”, så händer inget mer i denna del av iterationen utan exekveringen fortsätter i 6.2) ovan.</p>
+
+<p>Allt detta sker genom att meddelandeutbytena 6.5, 6.6 och 6.8 placerats i fragmentet ”alt” med styrvillkoret ”aktuelltFordonITjänst är en Buss”</p>
+
+<p>6.6) Om ”aktuelltFordonITjänst” refererar till en instans av klassen ”Buss”, så hämtar ”enStatistikhanterare” antal passagerare i den aktuella bussen via metoden ”hämtaAntalPassagerare() : int”.</p>
+
+<p>6.8) Om ”aktuelltFordonITjänst” refererar till en instans av klassen ”Buss”, så adderar ”enStatistikhanterare” antalet passagerare till det totala antalet passagerare genom att anropa sig själv via metoden ”adderaTillTotaltantalPassagerare(operand : long)”.</p>
+
+<p>Därefter börjar iterationen om i steg 6.2) ovan.</p>
+
+<h2 id="slutord">Slutord</h2>
+<p>Då har vi gått igenom de två vanligaste UML-diagrammen, <a href="../../../08/17/Bloggserie-om-arkitektur-del-7/index.html">klassdiagrammet</a> som är ett exempel på ett statiskt diagram och sekvensdiagrammet som är ett exempel på ett dynamiskt diagram.</p>
+
+<p>Med detta avslutar vi det här blogginlägget och i och med det även den här bloggserien kring grunderna i IT-arkitektur. För den som vill lära sig mer om UML så är, som alltid, <a href="https://en.wikipedia.org/wiki/Unified_Modeling_Language">Wikipedia</a> en bra start!</p>
+
+<p>Arkitekturbloggen kommer däremot att leva kvar och vi kommer fortsätta att publicera material kring olika områden inom IT-arkitektur, väl mött i en snar framtid!</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 8&url=https://callistaenterprise.se/blogg/teknik/2017/09/19/Bloggserie-om-arkitektur-del-8/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 8&u=https://callistaenterprise.se/blogg/teknik/2017/09/19/Bloggserie-om-arkitektur-del-8/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 8&url=https://callistaenterprise.se/blogg/teknik/2017/09/19/Bloggserie-om-arkitektur-del-8/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

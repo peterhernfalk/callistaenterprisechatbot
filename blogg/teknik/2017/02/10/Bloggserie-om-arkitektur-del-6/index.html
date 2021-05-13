@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 6: Integrationsmönster och designmönster | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Patrik Gustavsson" src="../../../../../../assets/medarbetare/patrikgustavsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 6: Integrationsmönster och designmönster</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-02-10T00:00:00+00:00">
+            10 February 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Patrik Gustavsson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I slutet av <a href="../../../../2016/12/20/Bloggserie-om-arkitektur-del-5/index.html">förra inlägget</a> i den här <a href="../../../../2016/11/19/Arkitekturblogg-en-överblick/index.html">bloggserien</a> om arkitektur så utlovades att nästa inlägg ska ha följande innehåll: ”Integrationsmönster och designmönster. I samband med det finns det även anledning att titta lite närmare på den roll som arkitekten har.” Det är tre helt olika ämnen så det är på sin plats med en motivering varför jag valde just dessa tre.</p>
+
+<p></p>
+
+<p>Återigen vill jag därför påminna om den definition av mjukvaruarkitektur som den här bloggserien utgår ifrån.</p>
+
+<p><img src="../../../../../../assets/blogg/arkitektur-6/arkblogg&#32;6&#32;1.png" alt="arkblogg 6 1.png" /></p>
+
+<p><strong>”The software architecture of a system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both”</strong></p>
+
+<p>Vi har i tidigare inlägg i bloggserien lärt oss vilka faktorer och omständigheter som har påverkan på arkitekturen och även hur man med hjälp av taktiker och mönster som arkitekt kan forma arkitekturen. Vi har alltså lärt oss hur man kommer fram till de mjukvaruelement som behövs och hur de är relaterade till varandra med sina olika ansvarsområden. Det är därför helt naturligt att vi nu tittar på en typ av <strong>mönster som kan användas mellan olika mjukvaruelement (integrationsmönster)</strong> och en typ av <strong>mönster som kan användas inom ett mjukvaruelement (designmönster).</strong>
+ </p>
+
+<h2 id="några-ord-om-arkitektens-roll">Några ord om arkitektens roll</h2>
+
+<p>När vi tittar på bilden ovan som beskriver definitionen av mjukvaruarkitektur så inser vi också att en mjukvaruarkitekt har mutat in olika områden där arbete kan bedrivas. Några designers, utvecklare och testare kanske arbetar med ett mjukvaruelement samtidigt som några andra arbetar med ett eller ett par andra mjukvaruelement. Samtidigt arbetar någon med integrationslösningar mellan mjukvaruelementen och inom de olika områdena råder en viss frihet att ta egna designbeslut.</p>
+
+<p>En arkitekt behöver inte (och ska heller inte) lägga sig i alla detaljer inom ett mjukvaruelement eller i samarbetet mellan dem. Det finns även en rent psykologisk aspekt av den delen som inte ska underskattas. Jag tror nämligen att de flesta människor som arbetar med utveckling av mjukvara vill känna sig delaktiga i den kreativa process som arbetet innebär. Därför är det bara bra att lösningar inte tas fram i minsta detalj utan snarare som olika områden där viss frihet till egna designbeslut kan tas.</p>
+
+<h2 id="integrationsmönster">Integrationsmönster</h2>
+
+<p>När man inom IT hör ordet integration så går tankarna nästan direkt till att olika system och lösningar utbyter information med varandra. Men integration handlar egentligen om att ge en <strong>upplevd helhet</strong> (jfr ord som ’Integer’ och ’Integral’ på Engelska med ordet integration. Latinskt ursprung är ordet ’Integra’ som betyder ungefär: helhet, att vara hel). Men det är sant att den upplevda helheten inom mjukvara nästan alltid kommer sig av utbyten av information mellan olika delar av en lösning. Upplevd helhet kan ibland uppnås i portalliknande lösningar där man utan att byta ut information visar upp information från olika källor i samma användargränssnitt. De mönster som tas upp i denna bloggpost handlar om att skapa helhet med hjälp av informationsutbyte. 
+<img src="../../../../../../assets/blogg/arkitektur-6/Integrationsmonster.png" alt="Integrationsmonster.png" /></p>
+
+<p>Dessa integrationsmönstren finns beskrivna i den utmärkta bok som finns på bilden – Enterprise Integration Patterns av Gregor Hohpe and Bobby Woolf. Mönstren (65 stycken) finns även beskrivna på <a href="http://www.enterpriseintegrationpatterns.com/">bokens hemsida</a>.</p>
+
+<h3 id="integration-styles">”Integration styles”</h3>
+<p>Det finns egentligen bara fyra stycken tillvägagångssätt för integration och bilder som illustrerar dem följer nedan.</p>
+<ul>
+  <li>Filöverföring</li>
+  <li>Gemensam databas</li>
+  <li>Anrop av API funktioner (ex WS) som tillhandahålls av en applikation</li>
+  <li>Utbyte av meddelanden mellan applikationer</li>
+</ul>
+
+<h3 id="filöverföring">Filöverföring</h3>
+<p><img src="../../../../../../assets/blogg/arkitektur-6/monster1.png" alt="monster1.png" /> 
+Bilden visar hur applikation A skapar en fil som sedan läses in i applikation B. Efter inläsning finns den information som stod i filen tillgänglig för applikation B. Det är vanligt att man föder till exempel ekonomisystem med information på det här sättet. Man ska inte blanda ihop integration med hjälp av filöverföring med den kvalitetsegenskap som handlar om samarbetsförmåga (interoperability). Integration med filöverföring är något man gör men samarbetsförmåga är något man har. På min Mac dator finns program som jag kan skapa presentationer med och om jag vill så kan jag spara presentationerna i samma format som Microsoft PowerPoint. Det innebär att programmet jag använder har en hög grad av samarbetsförmåga. Men det är inte alls samma sak som att ha en uppsatt integration. Filöverföring är mindre lämpligt att använda om applikation A och applikation B båda två behöver ändra informationen. Filöverföring är bäst lämpad för att överföra färdig information från ett system till ett annat. <br />
+ </p>
+
+<h3 id="gemensam-databas">Gemensam databas</h3>
+<p><img src="../../../../../../assets/blogg/arkitektur-6/Monster2.png" alt="Monster2.png" />
+Bilden visar hur några applikationer har tillgång till samma information eftersom de alla lagrar och hämtar i samma databas. Det finns en hel del skrivet om när det är lämpligt eller inte att integrera på det här sättet och den intresserade kan hitta mycket information om det på Internet. Men oavsett vad man har för inställning till det här tillvägagångssättet för integration så är det ett av de fyra möjliga tillvägagångssätten och tas därför upp här.</p>
+
+<h3 id="anrop-av-api-funktioner-som-tillhandahålls-av-en-applikation">Anrop av API funktioner som tillhandahålls av en applikation</h3>
+<p><img src="../../../../../../assets/blogg/arkitektur-6/Monster3.png" alt="Monster3.png" />
+Ett mycket vanligt sätt att integrera applikationer är att applikation B tillhandahåller olika gränssnitt för funktioner som applikation A kan anropa. Webservices är ett populärt sätt att hantera själva gränssnitten. En intressant sak är att API funktioner ger inte bara möjlighet att skicka information mellan applikation A och applikation B. En anropad funktion behöver inte bara ta emot information utan den kan även utföra saker.
+ </p>
+
+<h3 id="utbyte-av-meddelanden-mellan-applikationer">Utbyte av meddelanden mellan applikationer</h3>
+<p><img src="https://callistaenterprise.se/assets/blogg/arkitektur-6/Monster41.png" alt="Monster41.png" />
+Meddelanden mellan applikationer ger en stor frihet till integrationer och en applikation behöver inte ens nödvändigtvis känna till vilka andra applikationer som tar emot meddelandena. En applikation kan med ett meddelande informera om en händelse och de applikationer som behöver känna till den händelsen är på förhand konfigurerade till att ta emot meddelanden avseende den typen av händelser. Själva meddelandena (ofta givna på XML format) innehåller den information som ingår meddelandet. I bilden visas hur meddelanden transporteras med en meddelandebuss. Det går även att skicka meddelanden mellan applikationer enbart med hjälp av en köhanterare som exempelvis MQSeries från IBM eller MSMQ från Microsoft. 
+ </p>
+
+<h3 id="ett-par-exempel-på-integrationsmönster">Ett par exempel på integrationsmönster</h3>
+<p><img src="../../../../../../assets/blogg/arkitektur-6/Oversiktsbild.png" alt="Oversiktsbild.png" />
+Som den här översiktsbilden visar (även den från <a href="http://www.enterpriseintegrationpatterns.com/">Enterprise Integration Patterns </a>) så finns det ett ganska stort antal integrationsmönster insorterade inom olika kategorier. Eftersom dessa finns beskrivna både i boken och på nätet så ger jag bara ett par exempel på integrationsmönster här och lämnar till den som vill att studera saken närmare att göra det på egen hand på ovanstående länk eller direkt i boken.</p>
+
+<p><strong>Hur kan vi utföra komplex hantering på ett meddelande och ändå upprätthålla oberoende och flexibilitet?</strong>
+<img src="../../../../../../assets/blogg/arkitektur-6/meddelande1.png" alt="meddelande1.png" /></p>
+
+<p>Känns mönstret igen? Jag hoppas det, för det är exakt ett av de mönster som Mary Shaw identifierade och beskrev som ett arkitekturmönster (som vi tittade på i föregående blogginlägg).</p>
+
+<p><strong>Hur kan vi skicka meddelanden genom ett antal olika bearbetningssteg när stegen inte är kända under design-time och även kan variera från meddelande till meddelande?</strong>
+<img src="../../../../../../assets/blogg/arkitektur-6/meddelande2.png" alt="meddelande2.png" /></p>
+
+<p>Routing Slip är ett mönster som jag gillar och det går helt enkelt ut på att du till själva meddelandet lägger till information om var det ska skickas och i vilken ordning. En ”routing slip” är då att betrakta ungefär som en fraktsedel som bestämmer vart ett paket ska skickas.</p>
+
+<p>Förutom de fyra olika tillvägagångssätten för integration och de olika mönstren för integration (och de kategorier som de ingår i) så är det bra att även känna till grundbegrepp som message, queue, topic, channel osv.
+ </p>
+
+<h2 id="designmönster">Designmönster</h2>
+
+<p><img src="../../../../../../assets/blogg/arkitektur-6/designspattens.png" alt="designspattens.png" /></p>
+
+<p>Den här boken är en klassiker och skrevs av fyra personer som ibland kallas för ”Gang of Four”. Den har många år på nacken men de designmönster som den tar upp är fortfarande i hög grad aktuella och jag kan varmt rekommendera boken. På samma sätt som vi såg att arkitekturmönstren som Mary Shaw beskrev fortfarande är aktuella så är designmönstren som den här boken tar upp fortfarande aktuella. Båda typer av mönster är oberoende av teknik och är därför inte benägna att behöva ändras så ofta. Det handlar oftare om att mönster kan tillkomma snarare än att mönster blir inaktuella. Boken har kategoriserat in designmönstren i tre olika kategorier.</p>
+
+<ul>
+  <li>Creational</li>
+  <li>Structural</li>
+  <li>Behaviour</li>
+</ul>
+
+<p>För att förstå designmönster så behöver man även förstå grundkoncept som klass och objekt. Det är begrepp som visserligen är ganska programmeringsnära men ändå helt nödvändiga att förstå när vi i senare inlägg tittar på modelleringsspråket UML.</p>
+
+<p>En klass är helt enkelt ett grundbegrepp som exempelvis <strong>Person</strong> eller <strong>Bok</strong>. Personer har ett antal gemensamma egenskaper och böcker har även de ett antal gemensamma egenskaper. Exempelvis så har alla personer ett personnummer och ett efternamn. På samma sätt har alla böcker en författare (som är en person).</p>
+
+<p>Utgående från klasser kan man sedan tala om ”objekt” som är specifika instanser av klasser. Boken ”The Fellowship of the Ring” har ”JRR Tolkien” som författare och boken ”Emil i Lönneberga” har ”Astrid Lindgren” som författare. Både JRR Tolkien och Astrid Lindgren har personnummer och efternamn. Det är alltså inte själva egenskaperna som är lika mellan olika objekt i en klass utan själva uppsättningen av egenskaper. Dvs även om ”Lindgren” och ”Tolkien” är helt olika efternamn så hör båda två till klassen Person och de har båda två egenskapen att de har ett efternamn.</p>
+
+<p>I början av det här blogginlägget skrev jag att designmönster används <strong>inom</strong> ett mjukvaruelement. Hur kan vi vara säkra på det? Jo, det är helt enkelt för att designmönster handlar om objekt (hur de skapas, hanteras osv) och när du skapar ett objekt (det sker alltid baserat på en klass) så sker det direkt i internminnet där den kod körs där du skapar objektet, inte i någon annan mjukvara som kör någonstans.
+<img src="../../../../../../assets/blogg/arkitektur-6/kodexempel.png" alt="kodexempel.png" /></p>
+
+<p>Ovan visas lite kod (från Engelskspråkiga Wikipedia) som visar exempel på det kanske mest grundläggande designmönstret – Singleton. Syftet med en Singleton är säkerställa att man bara skapar en enda instans av en klass. Ett exempel på det kan vara en klass som hanterar loggning och som är tänkt att användas av hela applikationen. Singleton ingår i kategorin ”Creational patterns” eftersom det handlar om skapandet av ett objekt.</p>
+
+<p>Det som sker i koden är följande:</p>
+
+<ul>
+  <li>Om det var tillåtet att skapa nya instanser med new från andra delar av koden så kan du vara ganska säker på att någon råkar skapa en andra instans av din Singleton. Därför sätts konstruktorn till private vilket förhindrar just det.</li>
+  <li>Istället för new så måste det finnas andra sätt att få tag på den instans som finns av klassen. Metoden som heter getInstance() returnerar alltid samma instans som finns sparad i en medlemsvariabel som i exemplet heter INSTANCE. Det är därför alla som anropar getInstance() metoden garanterat alltid får samma instans.</li>
+  <li>Metoden getInstance() och medlemsvariablen INSTANCE är båda definierade som static och det löser ett problem som kan jämställas med det klassiska hönan-och-ägget problemet. Hur ska du kunna anropa getInstance på ett Singleton om du inte redan har en instans av en Singleton att anropa? Static innebär i det här fallet att metoden och instansvariablen är samma oavsett instans och därför kan du anropa getInstance utgående från klassen och behöver inte redan en instans (ett objekt baserat på klassen) för att göra det anropet.</li>
+</ul>
+
+<h2 id="nästkommande-inlägg">Nästkommande inlägg</h2>
+<p>Nu har bloggserien kommit till ett läge där det är lämpligt att titta på det mest använda språket för att rita mjukvaruarkitektur med bilder – ”The Unified Modelling Language”.</p>
+
+<p>Nästa inlägg kommer att beskriva vilka typer av UML diagram som finns och hur de är kategoriserade. Naturligtvis kommer jag i beskrivningen av dem att fokusera mest på de som används oftast.</p>
+
+<p>Förutom att gå igenom de olika typerna av diagram som finns så kommer jag också att beskriva vilka diagram som är bäst lämpade i förhållande till olika delar av arbetet med mjukvaruutvecklingen.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 6&url=https://callistaenterprise.se/blogg/teknik/2017/02/10/Bloggserie-om-arkitektur-del-6/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 6&u=https://callistaenterprise.se/blogg/teknik/2017/02/10/Bloggserie-om-arkitektur-del-6/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 6&url=https://callistaenterprise.se/blogg/teknik/2017/02/10/Bloggserie-om-arkitektur-del-6/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

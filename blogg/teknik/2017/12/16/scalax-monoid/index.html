@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Scala Exchange, Funktionella programmeringsmönster | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Anders Asplund" src="../../../../../../assets/medarbetare/andersasplund_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Scala Exchange, Funktionella programmeringsmönster</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-12-16T00:00:00+00:00">
+            16 December 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/andersasplund/index.html">Anders Asplund</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Efter två intensiva men mycket intressanta dagar på <a href="https://skillsmatter.com/conferences/8784-scala-exchange-2017#skillscasts">Scala eXchange</a> i London har vi fått se två mycket bra sammanfattningar av hela konferensen i och med <a href="../../14/scalax-day1/index.html">Andreas Mossljungs</a> och <a href="../../15/scalax-day2/index.html">Pär Wenåkers</a> bloggposter. Jag tänkte därför istället skriva om ett ämne som på ett eller annat sätt återkom i många av presentationerna - mönster för funktionell programmering.</p>
+
+<p>Dessa är motsvarigheten till objektorienteringens mönster och kallas för Type Classes. Många av dessa mönster grundar sig i matematikens kategoriteori och används bl.a. för att uppnå <a href="https://en.wikipedia.org/wiki/Principle_of_compositionality">kompositionalitet</a>. I denna blogpost kommer jag lämna de matematiska teorierna därhän och istället på ett lite mer pragmatiskt sätt försöka förklara hur de används. Jag kommer att utgå från den kanske mest grundläggande av mönstren, <strong>Monoid</strong>.</p>
+
+<p>Vill man läsa om fler mönster och gå lite mer på djupet jag rekommendera <a href="https://skillsmatter.com/skillscasts/11064-a-pragmatic-introduction-to-category-theory">Daniela Sfregolas</a> presentation samt boken <a href="https://underscore.io/books/scala-with-cats/">“Scala with cats”</a>. Är man intresserad av matematiken bakom kan jag varmt rekommendera <a href="https://skillsmatter.com/skillscasts/10179-the-maths-behind-types">Bartosz Milewskis</a> mycket pedagogiska keynote i ämnet.</p>
+
+<h2 id="monoid">Monoid</h2>
+<p><em>Monoid</em> är en typklass som beskriver ett mönster för hur man kan kombinera två objekt av samma typ och det kan finnas många olika implementationer, t.ex. för Int, String och List. En <em>monoid</em> har några dessutom viktiga egenskaper som är viktiga att förstå:</p>
+
+<h4 id="kombinera">Kombinera</h4>
+<p>Den första brukar namnges <em>combine</em> och brukar beskriva hur man kombinerar två objekt av samma typ och kan se ut så här:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">combine</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+</code></pre></div></div>
+<h4 id="identitet">Identitet</h4>
+<p>Den andra egenskapen är ett identitetselement och fungerar på så sätt att om man kombinerar ett objekt med sin så kallade identitet så returneras alltid ursprungsobjektet. Den brukar beskrivas:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">identity</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span>
+</code></pre></div></div>
+<h4 id="associativitet">Associativitet</h4>
+<p>En <em>monoid</em> är också alltid <em>associativ</em>, dvs. om man kombinerar flera element så spelar det inte någon roll i vilken ordning man utför operationerna (detta skiljer sig från om något är <em>kommutativt</em>, då inte heller ordningen på operanderna spelar någon roll) t.ex:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2 + 3) + 4 == 9 == 2 + (3 + 4)
+(2 * 3) * 4 == 24 == 2 * (3 * 4)
+("A" + "B") + "C" == "ABC" == "A" + ("B" + "C") //Ej kommutativ
+</code></pre></div></div>
+
+<p>Sammanfattar man dessa egenskaper i en trait så skulle den kunna se så här:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Monoid</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">combine</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+    <span class="k">def</span> <span class="nf">identity</span><span class="k">:</span> <span class="kt">A</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Nedan följer några exempel för hur några implementationer av en sådan typklass skulle kunna se ut:</p>
+
+<h3 id="addition-av-integers">Addition av Integers</h3>
+<p><strong>Kombinera</strong>: <code class="language-plaintext highlighter-rouge">1 + 2 == 3</code></p>
+
+<p><strong>Identitet</strong>: <code class="language-plaintext highlighter-rouge">0</code></p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">IntAddition</span> <span class="k">extends</span> <span class="nc">Monoid</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">{</span>
+   <span class="k">def</span> <span class="nf">combine</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+   <span class="k">def</span> <span class="nf">identity</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="multiplikation-av-integers">Multiplikation av Integers</h3>
+<p><strong>Kombinera</strong>: <code class="language-plaintext highlighter-rouge">2 * 3 == 6</code></p>
+
+<p><strong>Identitet</strong>: <code class="language-plaintext highlighter-rouge">1</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class IntMultiplication extends Monoid[Int] {
+   def combine(x: Int, y: Int): Int = x * y
+   def identity: Int = 1 
+}
+</code></pre></div></div>
+
+<h3 id="konkatenering-av-strängar">Konkatenering av strängar</h3>
+<p><strong>Kombinera</strong>: <code class="language-plaintext highlighter-rouge">"Hello" + " World" == "Hello World"</code></p>
+
+<p><strong>Identitet</strong>: <code class="language-plaintext highlighter-rouge">""</code></p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">StringConcat</span> <span class="k">extends</span> <span class="nc">Monoid</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="o">{</span>
+   <span class="k">def</span> <span class="nf">combine</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+   <span class="k">def</span> <span class="nf">identity</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="sammanfattning">Sammanfattning</h2>
+<p>På detta sätt kan man alltså abstrahera över några mycket grundläggande egenskaper som vissa typer har. Detta kan man sedan utnyttja för att komponera mer komplexa funktioner på ett generiskt sätt. T.ex. kan man tänka sig en funktion som slår ihop en lista med objekt som vi kan döpa till addAll:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+Definition av en funktion som adderar/slår ihop en lista av objekt som har monoid-egenskaper.
+*/</span>
+<span class="k">def</span> <span class="nf">addAll</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">m</span><span class="k">:</span> <span class="kt">Monoid</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span><span class="kt">A</span> <span class="o">=</span> <span class="nv">l</span><span class="o">.</span><span class="py">foldRight</span><span class="o">(</span><span class="nv">m</span><span class="o">.</span><span class="py">identity</span><span class="o">)(</span><span class="nv">m</span><span class="o">.</span><span class="py">combine</span><span class="o">)</span>
+
+
+
+<span class="k">val</span> <span class="nv">answer1</span> <span class="k">=</span> <span class="nf">addAll</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">),</span> <span class="k">new</span> <span class="nc">IntAddition</span><span class="o">())</span>
+<span class="c1">// answer1: Int = 15</span>
+
+<span class="k">val</span> <span class="nv">answer2</span> <span class="k">=</span> <span class="nf">addAll</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">),</span> <span class="k">new</span> <span class="nc">IntMultiplication</span><span class="o">())</span>
+<span class="c1">// answer2: Int = 120</span>
+
+<span class="k">val</span> <span class="nv">answer3</span> <span class="k">=</span> <span class="nf">addAll</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="s">"A"</span><span class="o">,</span> <span class="s">"B"</span><span class="o">,</span> <span class="s">"C"</span><span class="o">,</span> <span class="s">"D"</span><span class="o">),</span> <span class="k">new</span> <span class="nc">StringConcat</span><span class="o">())</span>
+<span class="c1">// answer3: String = "ABCD"</span>
+</code></pre></div></div>
+
+<p>Ett par andra viktiga typklasser som man ofta stöter på är <strong>Functor</strong> och <strong>Monad</strong> men dessa får jag inte plats med i denna post. Det finns dock mycket bra förklaringar på dessa samt ytterligare någon typklass i tidigare nämna referenser. Jag kan varm rekommendera att lägga lite tid på att titta på dessa presentationer om man vill fördjupa sig lite. Jag hoppas dock att jag lyckats kasta lite ljus över <em>Monoiden</em> och att det blivit lite mer begripligt varför typklasser kan vara nyttiga.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Scalax Monoid&url=https://callistaenterprise.se/blogg/teknik/2017/12/16/scalax-monoid/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Scalax Monoid&u=https://callistaenterprise.se/blogg/teknik/2017/12/16/scalax-monoid/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Scalax Monoid&url=https://callistaenterprise.se/blogg/teknik/2017/12/16/scalax-monoid/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

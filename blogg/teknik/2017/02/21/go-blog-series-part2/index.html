@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go microservices, part 2 - building our first service | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="../go-blog-series-part2.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="../go-blog-series-part2.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="../go-blog-series-part2.html">Go microservices, part 2 - building our first service</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-02-21T00:00:00+00:00">
+            21 February 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In part 2 of this blog series, we will:</p>
+<ul>
+  <li>Set up our Go workspace</li>
+  <li>Build our first microservice</li>
+  <li>Serve some JSON over HTTP using Gorilla Web Toolkit.</li>
+</ul>
+
+<p>To stay focused on the Go fundamentals, we’ll wait a bit with deploying it on Docker Swarm.</p>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P2">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="introduction">Introduction</h1>
+<p>While serving JSON over HTTP isn’t the only option for inter-service or external communication, we’ll focus on HTTP and JSON in this blog series. Using RPC mechanisms and binary messaging formats such as <a href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> can be a very interesting option for inter-service communication or for external communication when the external consumer of your service(s) is another system. Go has built-in RPC support and gRPC is absolutely worth looking at as well. However, for now we’ll focus on HTTP provided by the built-in <a href="https://golang.org/pkg/net/http/">http package</a> and <a href="http://www.gorillatoolkit.org/">Gorilla Web Toolkit</a>.</p>
+
+<p>Another aspect to take into account is that many useful frameworks (security, tracing, …) relies on HTTP headers to transfer state about the ongoing request between participants. Examples we’ll see in later blog posts is how we’ll pass correlation ID’s and OAuth bearers in HTTP headers. While other protocols certainly supports similar mechanisms, many frameworks are built with HTTP in mind and I’d rather try to keep our integrations as straightforward as possible.</p>
+
+<h1 id="setting-up-a-go-workspace">Setting up a Go Workspace</h1>
+<p>Feel free to skip the section if you’re already a seasoned Go dev. In my humble opinion, the structure of a Go workspace took some time getting used to. Where I’m used to typically having the root of a project as workspace root, Go conventions about how to properly structure a workspace so the go compiler can find source codes and dependencies is somewhat unorthodox, placing your source code under the <em>/src</em> folder in a subtree named after its source control path. I strongly recommend reading the <a href="https://golang.org/doc/code.html">official guide</a> and <a href="https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/01.2.html">this article</a> before getting started. I wish I had.</p>
+
+<h2 id="installing-the-sdk">Installing the SDK</h2>
+<p>Before writing our first lines of code (or checking out the complete source), we’ll need to install the Go SDK. I suggest following <a href="https://golang.org/doc/install">the official guide</a>, it should be straightforward enough.</p>
+
+<h2 id="setting-up-a-development-environment">Setting up a development environment.</h2>
+<p>In this blog series, we’ll be using the built-in Go SDK tools we just installed for building and running, as well as following the idiomatic way of setting up a Go workspace.</p>
+
+<h3 id="1-create-a-root-folder-for-your-workspace">1. Create a root folder for your workspace</h3>
+<p>All commands are based on a OS X or Linux dev environment. If you’re running Windows, please adapt the instructions as necessary.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir ~/goworkspace
+cd goworkspace
+export GOPATH=`pwd`
+</code></pre></div></div>
+
+<p>Here we created a root folder and then assigned the environment variable <a href="https://github.com/golang/go/wiki/GOPATH">GOPATH</a> to that folder. This is the root of our workspace under which all Go source we write or 3rd party libraries we’ll use will end up. I recommend adding this GOPATH to your <em>.bash_profile</em> or similar so you don’t have to reset it each time you open up a new console window.</p>
+
+<h3 id="2-create-folders-and-files-for-our-first-project">2. Create folders and files for our first project</h3>
+<p>Given that we’re in the root of the workspace (e.g. the same folder as specified in the GOPATH env var), execute the following statements:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p src/github.com/callistaenterprise
+</code></pre></div></div>
+
+<p>If you want to follow along and code stuff yourself, execute these commands:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd src/github.com/callistaenterprise
+mkdir -p goblog/accountservice
+cd goblog/accountservice
+touch main.go
+mkdir service
+</code></pre></div></div>
+
+<p>OR - you can clone the git repository containing the sample code and switch to branch P2. From the <em>src/github.com/callistaenterprise</em> folder you created above, execute:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/callistaenterprise/goblog.git
+cd goblog
+git checkout P2
+</code></pre></div></div>
+
+<p>Remember - <em>$GOPATH/src/github.com/callistaenterprise/goblog</em> is the root folder of <em>our project</em> and what’s actually stored on github.</p>
+
+<p>Now we should have enough structure to easily get us started. Open up <em>main.go</em> in your Go IDE of choice. I’m using IntelliJ IDEA with their excellent Golang plugin when writing the code for this blog series. Other popular choices seems to be <a href="https://marketplace.eclipse.org/category/free-tagging/golang">Eclipse (with Go plugin)</a>, <a href="https://atom.io/packages/go-plus">Atom</a>, <a href="https://github.com/DisposaBoy/GoSublime">Sublime</a>, <a href="https://github.com/fatih/vim-go">vim</a> or JetBrains new dedicated commercial <a href="https://www.jetbrains.com/go/">Gogland</a> IDE.</p>
+
+<h1 id="creating-the-service---maingo">Creating the service - main.go</h1>
+<p>The <em>main</em> function in Go is exactly what you expect it to be - the entry point of our Go programs. Let’s create just enough code to get something we can actually build and run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package main
+
+import (
+        "fmt"
+        )
+        
+var appName = "accountservice"
+
+func main() {
+    fmt.Printf("Starting %v\n", appName)
+}
+</code></pre></div></div>
+
+<p>Now, let’s run it. Make sure you’re in the folder corresponding to your <em>$GOPATH/src/github.com/callistaenterprise/goblog/accountservice</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go
+Starting accountservice
+&gt;
+</code></pre></div></div>
+
+<p>That’s it! This program will just print and then exit. Time to add our very first HTTP endpoint!</p>
+
+<h1 id="building-an-http-web-server">Building an HTTP web server</h1>
+
+<p><em>Note: The basics of these HTTP examples were derived from an excellent <a href="http://thenewstack.io/make-a-restful-json-api-go/">blog post</a></em></p>
+
+<p>To keep things neat, we’ll put all HTTP service related files into the <em>service</em> folder.</p>
+
+<h3 id="bootstrap-the-http-server">Bootstrap the HTTP server</h3>
+
+<p>Create the file <em>webserver.go</em> inside the <em>/services</em> folder:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package service
+
+import (
+        "net/http"
+        "log"
+)
+
+func StartWebServer(port string) {
+
+        log.Println("Starting HTTP service at " + port)
+        err := http.ListenAndServe(":" + port, nil)    // Goroutine will block here
+
+        if err != nil {
+                log.Println("An error occured starting HTTP listener at port " + port)
+                log.Println("Error: " + err.Error())
+        }
+}
+</code></pre></div></div>
+
+<p>We’re using the built-in <em>net/http</em> package to execute <em>ListenAndServe</em> which starts a HTTP server on the specified port.</p>
+
+<p>Update <em>main.go</em> so we call the <em>StartWebServer</em> function with a (for now) hard-coded port:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package main
+
+import (
+        "fmt"
+        "github.com/callistaenterprise/goblog/accountservice/service"  // NEW
+)
+
+var appName = "accountservice"
+
+func main() {
+        fmt.Printf("Starting %v\n", appName)
+        service.StartWebServer("6767")           // NEW
+}
+</code></pre></div></div>
+
+<p>Run the program again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go
+Starting accountservice
+2017/01/30 19:36:00 Starting HTTP service at 6767
+</code></pre></div></div>
+
+<p>We now have a simple HTTP server listening to port 6767 on localhost. <a href="https://curl.haxx.se/">Curl</a> it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://localhost:6767
+404 page not found
+</code></pre></div></div>
+
+<p>A 404 is exactly what we’re expecting as we havn’t declared any routes yet.</p>
+
+<p>Stop the Web server by pressing Ctrl+C.</p>
+
+<h2 id="adding-our-first-route">Adding our first route</h2>
+<p>It’s time to actually serve something from our server. We’ll start by declaring our very first <a href="http://www.gorillatoolkit.org/pkg/mux#Route">route</a> using a Go <a href="https://gobyexample.com/structs">struct</a> that we’ll use to populate the Gorilla router. In the <em>service</em> folder, create <em>routes.go</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package service
+
+import "net/http"
+
+// Defines a single route, e.g. a human readable name, HTTP method and the
+// pattern the function that will execute when the route is called.
+type Route struct {
+	Name        string
+	Method      string
+	Pattern     string
+	HandlerFunc http.HandlerFunc
+}
+
+// Defines the type Routes which is just an array (slice) of Route structs.
+type Routes []Route
+
+// Initialize our routes
+var routes = Routes{
+
+	Route{
+		"GetAccount",                                     // Name
+		"GET",                                            // HTTP method
+		"/accounts/{accountId}",                          // Route pattern
+		func(w http.ResponseWriter, r *http.Request) {
+            w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+            w.Write([]byte("{\"result\":\"OK\"}"))
+        },
+	},
+}
+</code></pre></div></div>
+
+<p>In the snippet above, we declared the path <em>/accounts/{accountId}</em> which we later can curl. Gorilla also supports complex routing with regexp pattern matching, schemes, methods, queries, headers values etc. so one is certainly not limited to just paths and path parameters.</p>
+
+<p>For now, we will just return a tiny JSON message we’ve hard-coded as response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   {"result":"OK"}
+</code></pre></div></div>
+
+<p>We’ll also need some boilerplate code that hooks up the actual <a href="http://www.gorillatoolkit.org/pkg/mux#overview">Gorilla Router</a> to the routes we declared. In <em>service</em> folder, create <em>router.go</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package service
+
+import (
+	"github.com/gorilla/mux"
+)
+
+// Function that returns a pointer to a mux.Router we can use as a handler.
+func NewRouter() *mux.Router {
+
+    // Create an instance of the Gorilla router
+	router := mux.NewRouter().StrictSlash(true)
+	
+	// Iterate over the routes we declared in routes.go and attach them to the router instance
+	for _, route := range routes {
+	    
+	    // Attach each route, uses a Builder-like pattern to set each route up.
+		router.Methods(route.Method).
+                Path(route.Pattern).
+                Name(route.Name).
+                Handler(route.HandlerFunc)
+	}
+	return router
+}
+</code></pre></div></div>
+
+<h4 id="importing-dependencies">Importing dependencies</h4>
+<p>In the import section for <em>router.go</em> we see that we have declared a dependency on the <em>github.com/gorilla/mux</em> package. See <a href="https://github.com/golang/go/wiki/GOPATH#repository-integration-and-creating-go-gettable-projects">here</a> for a good explanation on how go dependencies are fetched using <em>go get</em>.</p>
+
+<p>In order for the above file to compile and run, we’ll need to use <em>go get</em> to fetch the declared package(s) into our workspace:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go get
+</code></pre></div></div>
+
+<p>This may take a little while since the Go tool is actually downloading all the source code required by the gorilla/mux package from https://github.com/gorilla/mux. This source code will end up in <em>$GOPATH/src/github.com/gorilla/mux</em> on your local file system and it will be built into your statically linked binary.</p>
+
+<h4 id="wrapping-up">Wrapping up</h4>
+<p>Now, revisit <em>webserver.go</em> and add the two following lines at the start of the StartWebServer function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func StartWebServer(port string) {
+
+        r := NewRouter()             // NEW
+        http.Handle("/", r)          // NEW
+</code></pre></div></div>
+
+<p>This attaches the Router we just created to the http.Handle for the root path <em>/</em>. Let’s compile and run the server again.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run *.go
+Starting accountservice
+2017/01/31 15:15:57 Starting HTTP service at 6767
+</code></pre></div></div>
+
+<p>Try to curl:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://localhost:6767/accounts/10000
+  {"result":"OK"}
+</code></pre></div></div>
+
+<p>Nice! We’ve just created our first HTTP service!</p>
+
+<h1 id="footprint-and-performance">Footprint and performance</h1>
+<p>Given that we’re exploring Go-based microservices due to alleged awesome memory footprint and good performance, we’d better do a quick benchmark to see how this performs. I’ve developed a simple <a href="http://gatling.io/">Gatling</a> test that hammers <em>/accounts/{accountId}</em> with GET requests. If you’ve checked out the source for this part, you can find the load test in the <em>/goblog/loadtest</em> folder. Or you can look at it on <a href="https://github.com/callistaenterprise/goblog/tree/master/loadtest">github</a>.</p>
+
+<h3 id="running-the-load-test-yourself">Running the load test yourself</h3>
+<p>If you want to run the load-test yourself, make sure the “accountservice” is up and running on localhost and that you have cloned the source and checked out branch P2. You’ll also need to have a Java Runtime Environment and <a href="https://maven.apache.org/">Apache Maven</a> installed.</p>
+
+<p>Change directory to the <em>/goblog/loadtest</em> folder and execute the following command from the command-line:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; mvn gatling:execute -Dusers=1000 -Dduration=30 -DbaseUrl=http://localhost:6767
+</code></pre></div></div>
+
+<p>This should start and run the test. The arguments are:</p>
+
+<ul>
+  <li>users: Number of concurrent users the test will simulate</li>
+  <li>duration: For how many seconds the test will run</li>
+  <li>baseUrl: Base path to the host providing the service we’re testing. When we move over to Docker Swarm, the baseUrl will need to be changed to the public IP of the Swarm. More on that in <a href="../../../03/09/go-blog-series-part5.html">part 5</a>.</li>
+</ul>
+
+<p>After the test has finished, it writes results to the console windows as well as a fancy HTML report into <em>target/gatling/results/</em>.</p>
+
+<h3 id="results">Results</h3>
+
+<p><em>Note: Later on, when the services we’re building are running inside Docker containers on Docker Swarm, we’ll do all benchmarks and metrics capturing there. Until then, my mid-2014 MacBook Pro will have to suffice.</em></p>
+
+<p><em>Before</em> starting the load test, the memory consumption of the Go-based “accountservice” is as follows according to the OS X task manager:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part2-memuse.png" alt="mem use" /></p>
+
+<p>1.8 mb, not bad! Let’s start the Gatling test running 1K req/s. Remember that this is a <em>very</em> naive implementation that just responds with a hard-coded string.</p>
+
+<h3 id="memory-use">Memory use</h3>
+<p><img src="../../../../../../assets/blogg/goblog/part2-memuse2.png" alt="mem use2" />
+Ok, serving 1K req/s makes the “accountservice” consume about 28 mb of RAM. That’s still perhaps 1/10th of what a Spring Boot application uses at startup. It will be very interesting to see how this figures changes once we start to add some real functionality to it.</p>
+
+<h3 id="performance-and-cpu-usage">Performance and CPU usage</h3>
+<p><img src="../../../../../../assets/blogg/goblog/part2-cpuuse.png" alt="cpu use" />
+Serving 1K req/s uses about 8% of a single Core.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part2-performance.png" alt="performance" />
+Note sure how Gatling rounds sub-millisecond latencies, but mean latency is reported as 0 ms with <em>one</em> request taking a whopping 11 millisecond. At this point, our “Accountservice” is performing admirably, serving on average 745~req/s in the sub-millisecond range.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+<p>In the <a href="../../27/go-blog-series-part3.html">next part</a>, we’ll actually make our <em>accountservice</em> do something useful. We’ll add a simple embedded database with Account objects that we’ll serve over HTTP. We’ll also take a look at JSON serialization and check how these additions to the service affects its footprint and performance.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part2&url=https://callistaenterprise.se/blogg/teknik/2017/02/21/go-blog-series-part2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part2&u=https://callistaenterprise.se/blogg/teknik/2017/02/21/go-blog-series-part2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part2&url=https://callistaenterprise.se/blogg/teknik/2017/02/21/go-blog-series-part2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

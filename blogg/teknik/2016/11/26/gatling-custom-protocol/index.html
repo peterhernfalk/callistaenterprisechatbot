@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Creating a custom Gatling prococol for AWS Lambda | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Björn Beskow" src="../../../../../../assets/medarbetare/bjornbeskow_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Creating a custom Gatling prococol for AWS Lambda</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-11-26T00:00:00+00:00">
+            26 November 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/bjornbeskow/index.html">Björn Beskow</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="http://gatling.io/">Gatling</a> is a powerful load-testing framework with excellent support for testing http-based applications out of the box (and from version 2.x also with limited support for JMS). While http is enough for many applications, we find a frequent need for using other protocols in addition to http. Gatling has a well designed extension mechanism, which allows you to write your own custom protocol handler to use in your Gatling scenarios. Unfortunately, this mechanism is poorly documented (the ‘seminal’ work refered to, <a href="https://github.com/jagregory/gatling/blob/master/GatlingProtocolBreakdown.md">GatlingProtocolBreakdown</a>, is from version 1.x). To make things worse, the extension APIs have changed a lot between recent versions. While there are several third party protocol handlers listed in the documentation (<a href="http://gatling.io/docs/2.2.3/extensions/index.html">extensions</a>), all of them are out-of-date and don’t work with recent Gatling releases. When looking around, I found two excellent, more recent blog posts that both do a good job in describing the bits and pieces of a Gatling custom protocol (<a href="https://www.trivento.io/write-custom-protocol-for-gatling/">write-custom-protocol-for-gatling</a> and <a href="http://mintbeans.com/load-testing-zeromq-with-gatling/">load-testing-zeromq-with-gatling</a>), but unfortunately they too are out-of-date with the 2.2.x versions.</p>
+
+<p>Since I recently needed a custom protocol to load test a Serverless architecture based on AWS <a href="https://aws.amazon.com/lambda">Lambda</a> functions and <a href="https://aws.amazon.com/kinesis">Kinesis</a> streams, I had to dig into the API changes to get things working. I ended up reading the source code for the latest version of both the http and jms protocols, in order to understand the APIs. It took me quite a while, so I might as well share my findings!</p>
+
+<p></p>
+
+<p>So here we go: (the complete source code is available at https://github.com/callistaenterprise/gatling-aws.git) Most of the work involved in building a custom Gatling protocol consists of creating the internal DSL used in the Gatling scenario. The DSL for a protocol is typically split in two parts: Configuration of the Protocol, and invoking the protocol Actions and optionally cheking the Action’s result. For both the Protocol and the Actions, you need to create a definition of the Protocol and the Actions themselves, as well as a ProtocolBuilder and ActionBuilders to support the DSL for using them. Optionally, you may also want a custom Check and corresponding CheckBuilder to validate the outcome of an Action.</p>
+
+<p>In writing a custom protocol for invoking AWS Lambda functions, we will hence need to define a number of classes:</p>
+
+<ul>
+  <li>AWSProtocol</li>
+  <li>AWSProtocolBuilder</li>
+  <li>LambdaAction</li>
+  <li>LambdaActionBuilder</li>
+  <li>LambdaCheck</li>
+  <li>LambdaCheckBuilder</li>
+</ul>
+
+<p>Armed with the DSL these classes provide, we should be able to use them in a Gatling test scenario like this:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.awspoc.scenario
+
+import io.gatling.core.Predef._
+import se.callistaenterprise.gatling.aws.Predef._
+
+import scala.concurrent.duration._
+
+import com.amazonaws.regions.{Region, Regions}
+
+class LambdaGatlingTest extends Simulation {
+
+  val awsConfig = Aws
+    .accessKey("myAccessKey")
+    .secretKey("mySecretKey")
+    .region(Region.getRegion(Regions.US_EAST_2))
+  val lambdaScenario = scenario("Call lambda")
+    .exec(
+      lambda("myTestGatling").payload("""{"name":"Gatling"}""")
+      .check(jsonPath("$[?(@.greeting == 'Hello from Gatling')]"))
+    )
+
+  setUp(
+    lambdaScenario.inject(atOnceUsers(1))
+  ).protocols(awsConfig)
+  
+}
+</code></pre>
+
+<p>Let’s begin! We start by defining the Protocol and corresponding ProtocolBuilder. Our protocol should be configured with 3 mandatory properties: accessKey, secretKey and region. These properties should be available for the Action later on. The Protocol looks like this:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.protocol
+
+import io.gatling.core.CoreComponents
+import io.gatling.core.config.{ GatlingConfiguration, Credentials }
+import io.gatling.core.protocol.{ ProtocolKey, Protocol }
+
+import com.amazonaws.regions.Region
+
+import akka.actor.ActorSystem
+
+object AwsProtocol {
+
+  val AwsProtocolKey = new ProtocolKey {
+
+    type Protocol = AwsProtocol
+    type Components = AwsComponents
+
+    def protocolClass: Class[io.gatling.core.protocol.Protocol] = classOf[AwsProtocol].asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
+
+    def defaultProtocolValue(configuration: GatlingConfiguration): AwsProtocol = throw new IllegalStateException("Can't provide a default value for AwsProtocol")
+
+    def newComponents(system: ActorSystem, coreComponents: CoreComponents): AwsProtocol =&gt; AwsComponents = {
+      awsProtocol =&gt; AwsComponents(awsProtocol)
+    }
+  }
+}
+
+case class AwsProtocol(
+    awsAccessKeyId: String,
+    awsSecretAccessKey: String,
+    awsRegion: Region
+) extends Protocol {
+
+  type Components = AwsComponents
+}
+</code></pre>
+
+<p>In order to make the protocol properties easily accessible for the Action, we wrap them in a Gatling protocol Component:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.protocol
+
+import io.gatling.core.protocol.ProtocolComponents
+import io.gatling.core.session.Session
+
+import akka.actor.ActorRef
+
+case class AwsComponents(awsProtocol: AwsProtocol) extends ProtocolComponents {
+
+  def onStart: Option[Session =&gt; Session] = None
+  def onExit: Option[Session =&gt; Unit] = None
+}
+</code></pre>
+
+<p>Now that we have the protocol itself defined, we need a ProtocolBuilder to support the DSL for creating and configuring the protocol:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.protocol
+
+import com.amazonaws.regions.Region
+
+object AwsProtocolBuilderBase {
+  def accessKey(accessKey: String) = AwsProtocolBuilderSecretKeyStep(accessKey)
+}
+
+case class AwsProtocolBuilderSecretKeyStep(accessKey: String) {
+  def secretKey(secretKey: String) = AwsProtocolBuilderRegionStep(accessKey, secretKey)
+}
+
+case class AwsProtocolBuilderRegionStep(accessKey: String, secretKey: String) {
+  def region(region: Region) = AwsProtocolBuilder(accessKey, secretKey, region)
+}
+
+case class AwsProtocolBuilder(accessKey: String, secretKey: String, region: Region) {
+
+  def build = AwsProtocol(
+        awsAccessKeyId = accessKey,
+        awsSecretAccessKey = secretKey,
+        awsRegion = region
+  )
+}
+</code></pre>
+
+<p>The Builder defines the 3 methods that our DSL provides for configuring the Protocol with the parameters for accessKey, secretKey and region. Notice the usage of intermediate classes: We start with the AwsProtocolBuilderBase, and pass through AwsProtocolBuilderSecretKeyStep and AwsProtocolBuilderRegionStep until we land in a fully configured protocol AwsProtocolBuilder. This pattern is typical for creating an internal DSL.</p>
+
+<p>Next, we define the LambdaAction, which performs the actual work. The Action takes a mandatory parameter functionName, an optional payload as paramter for the Lambda function and an optional list of Checks to validate the outcome. The executeOrFail method below is where the Lambda function call is made.</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.action
+
+import se.callistaenterprise.gatling.aws.protocol.AwsProtocol
+import se.callistaenterprise.gatling.aws.lambda.LambdaCheck
+
+import io.gatling.commons.validation._
+import io.gatling.core.action._
+import io.gatling.core.check.Check
+import io.gatling.core.session.{ Session, Expression }
+import io.gatling.core.stats.message.ResponseTimings
+import io.gatling.core.stats.StatsEngine
+import io.gatling.commons.stats.Status
+import io.gatling.core.util.NameGen
+import akka.actor.{ ActorRef, ActorSystem, Props }
+import akka.util.ByteString
+
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.regions.{Region, Regions}
+import com.amazonaws.services.lambda.AWSLambdaClient
+import com.amazonaws.services.lambda.model.InvokeRequest
+import com.amazonaws.services.lambda.model.InvokeResult
+
+import java.nio.ByteBuffer
+
+import scala.collection.JavaConverters._
+
+object LambdaAction extends NameGen {
+
+  def apply(functionName: Expression[String], payload: Option[Expression[String]], checks: List[LambdaCheck], protocol: AwsProtocol, system: ActorSystem, statsEngine: StatsEngine, next: Action) = {
+    val actor = system.actorOf(LambdaActionActor.props(functionName, payload, checks, protocol, statsEngine, next))
+    new ExitableActorDelegatingAction(genName("Lambda"), statsEngine, next, actor)
+  }
+}
+
+object LambdaActionActor {
+  def props(functionName: Expression[String], payload: Option[Expression[String]], checks: List[LambdaCheck], protocol: AwsProtocol, statsEngine: StatsEngine, next: Action): Props =
+    Props(new LambdaActionActor(functionName, payload, checks, protocol, statsEngine, next))
+}
+
+class LambdaActionActor(
+    functionName: Expression[String],
+    payload: Option[Expression[String]],
+    checks: List[LambdaCheck],
+    protocol: AwsProtocol,
+    val statsEngine: StatsEngine,
+    val next: Action
+) extends ActionActor {
+
+  override def execute(session: Session) = {
+    val credentials = new BasicAWSCredentials(protocol.awsAccessKeyId, protocol.awsSecretAccessKey)
+    val awsClient = new AWSLambdaClient(credentials)
+    awsClient.setRegion(protocol.awsRegion)
+    val request = new InvokeRequest
+    functionName(session).flatMap { resolvedFunctionName =&gt;
+      request.setFunctionName(resolvedFunctionName).success
+    }
+    if (payload.isDefined) {
+      payload.get(session).flatMap { resolvePayload =&gt;
+        request.setPayload(resolvePayload).success
+      }
+    }
+
+    var optionalResult : Option[InvokeResult] = None
+    var optionalThrowable : Option[Throwable] = None
+    
+    val startTime = now()
+    try {
+      optionalResult = Some(awsClient.invoke(request))
+    } catch {
+      case t: Throwable =&gt; optionalThrowable = Some(t)
+    }
+    val endTime = now()  
+    val timings = ResponseTimings(startTime, endTime)
+    
+    if (optionalThrowable.isEmpty) {
+      val result = optionalResult.get
+      if (result.getStatusCode &gt;= 200 &amp;&amp; result.getStatusCode &lt;= 299) {
+        val resultPayload = bytesToString(result.getPayload)
+        val (newSession, error) = Check.check(resultPayload, session, checks)
+        error match {
+          case None                        =&gt; {
+            statsEngine.logResponse(session, request.getFunctionName(), timings, Status("OK"), None, None)
+            next ! newSession(session)
+          }
+          case Some(Failure(errorMessage)) =&gt; {
+            statsEngine.logResponse(session, request.getFunctionName(), timings, Status("KO"), None, Some(errorMessage))
+            next ! newSession(session).markAsFailed
+          }
+        }
+      } else {
+        statsEngine.logResponse(session, request.getFunctionName(), timings, Status("KO"), None, Some(s"Status code ${result.getStatusCode}"))
+        next ! session.markAsFailed
+      }
+    } else {
+      val throwable = optionalThrowable.get
+      statsEngine.logResponse(session, request.getFunctionName(), timings, Status("KO"), None, Some(throwable.getMessage))
+        next ! session.markAsFailed
+    }
+  }
+
+  @inline
+  def bytesToString(buffer: ByteBuffer): String = {
+    val bytes = buffer.array()
+    return new String(bytes, "UTF-8")
+  }
+
+  @inline
+  private def now() = System.currentTimeMillis()
+
+}
+</code></pre>
+
+<p>The DSL for the LambdaAction is provided by two Builders. LambdaActionBuilder provides access to theprotocol attributes from within the LambdaAction, whereas the LambdaProcessBuilder provides the DSL for configuring an optional argument payload to the Lamdba, and for configuring optional Checks.</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.action
+
+import se.callistaenterprise.gatling.aws.protocol.{ AwsComponents, AwsProtocol }
+import se.callistaenterprise.gatling.aws.lambda.LambdaCheck
+
+import io.gatling.core.action.Action
+import io.gatling.core.action.builder.ActionBuilder
+import io.gatling.core.config.GatlingConfiguration
+import io.gatling.core.protocol.ProtocolComponentsRegistry
+import io.gatling.core.session.Expression
+import io.gatling.core.structure.ScenarioContext
+
+case class LambdaActionBuilder(functionName: Expression[String], payload: Option[Expression[String]], checks: List[LambdaCheck]) extends ActionBuilder {
+
+  private def components(protocolComponentsRegistry: ProtocolComponentsRegistry): AwsComponents =
+    protocolComponentsRegistry.components(AwsProtocol.AwsProtocolKey)
+
+  override def build(ctx: ScenarioContext, next: Action): Action = {
+    import ctx._
+    val statsEngine = coreComponents.statsEngine
+    val awsComponents = components(protocolComponentsRegistry)
+    LambdaAction(functionName, payload, checks, awsComponents.awsProtocol, ctx.system, statsEngine, next)
+  }
+
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.process
+
+import se.callistaenterprise.gatling.aws.lambda.action.LambdaActionBuilder
+import se.callistaenterprise.gatling.aws.lambda.LambdaCheck
+import se.callistaenterprise.gatling.aws.lambda.check.LambdaCheckSupport
+import io.gatling.core.action.builder.ActionBuilder
+import io.gatling.core.session.Expression
+
+case class LambdaProcessBuilder(functionName: Expression[String], payload: Option[Expression[String]] = None, checks: List[LambdaCheck] = Nil) extends LambdaCheckSupport {
+  /**
+   * Set payload.
+   */
+  def payload(payload: Expression[String]) = copy(payload = Some(payload))
+
+    /**
+   * Add a check that will be perfomed on the response payload before giving Gatling on OK/KO response
+   */
+  def check(lambdaChecks: LambdaCheck*) = copy(checks = checks ::: lambdaChecks.toList)
+
+  def build(): ActionBuilder = LambdaActionBuilder(functionName, payload, checks)
+}
+</code></pre>
+
+<p>Note how the LambdaProcessBuilder uses copy() to implement the optional payload and checks, since the LambdaProcessBuilder itself is immutable. If an optional payload is provided, we create a copy of the builder with the optional parameter set.</p>
+
+<p>We also need to define the Checks classes to support validating the Lambda function result. All checks operate on the resulting payload as a String:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws
+
+import io.gatling.core.check.{ Check, Preparer, Extender }
+import io.gatling.commons.validation.Success
+
+package object lambda {
+
+  /**
+   * Type for Lambda checks
+   */
+  type LambdaCheck = Check[String]
+  
+  val LambdaStringExtender: Extender[LambdaCheck, String] = 
+     (check: LambdaCheck) =&gt; check
+  
+  val LambdaStringPreparer: Preparer[String, String] = 
+     (result: String) =&gt; Success(result)
+  
+}
+</code></pre>
+
+<p>The Extender and Preparer functions are required by the Gatling base check support.</p>
+
+<p>We support validating the Lambda executing result using a Regex, an XPath or JsonPath expression or by providing a custom function.</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.check
+
+import se.callistaenterprise.gatling.aws.lambda._
+
+import io.gatling.core.check.DefaultMultipleFindCheckBuilder
+import io.gatling.core.check.extractor.regex._
+import io.gatling.core.session.{ Expression, RichExpression }
+
+import com.amazonaws.services.lambda.model.InvokeResult
+
+trait LambdaRegexOfType { self: LambdaRegexCheckBuilder[String] =&gt;
+
+  def ofType[X: GroupExtractor](implicit extractorFactory: RegexExtractorFactory) = new LambdaRegexCheckBuilder[X](expression)
+}
+
+object LambdaRegexCheckBuilder {
+
+  def regex(expression: Expression[String])(implicit extractorFactory: RegexExtractorFactory) =
+    new LambdaRegexCheckBuilder[String](expression) with LambdaRegexOfType
+}
+
+class LambdaRegexCheckBuilder[X: GroupExtractor](private[check] val expression: Expression[String])(implicit extractorFactory: RegexExtractorFactory)
+    extends DefaultMultipleFindCheckBuilder[LambdaCheck, String, CharSequence, X](LambdaStringExtender, LambdaStringPreparer) {
+  import extractorFactory._
+
+  def findExtractor(occurrence: Int) = expression.map(newSingleExtractor[X](_, occurrence))
+  def findAllExtractor = expression.map(newMultipleExtractor[X])
+  def countExtractor = expression.map(newCountExtractor)
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.check
+
+import java.io.StringReader
+
+import io.gatling.commons.validation._
+import io.gatling.core.check._
+import io.gatling.core.check.extractor.xpath._
+
+import org.xml.sax.InputSource
+
+import se.callistaenterprise.gatling.aws.lambda._
+
+object LambdaXPathCheckBuilder extends XPathCheckBuilder[LambdaCheck, String] {
+
+  private val ErrorMapper: String =&gt; String = "Could not parse response into a DOM Document: " + _
+
+  def preparer[T](f: InputSource =&gt; T)(payload: String): Validation[Option[T]] =
+    safely(ErrorMapper) {
+      Some(f(new InputSource(new StringReader(payload)))).success
+    }
+
+  val CheckBuilder: Extender[LambdaCheck, String] = (wrapped: LambdaCheck) =&gt; wrapped
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.check
+
+import se.callistaenterprise.gatling.aws.lambda._
+
+import io.gatling.core.check.{ DefaultMultipleFindCheckBuilder, Preparer }
+import io.gatling.core.check.extractor.jsonpath._
+import io.gatling.core.json.JsonParsers
+import io.gatling.core.session.{ Expression, RichExpression }
+
+trait LambdaJsonPathOfType {
+  self: LambdaJsonPathCheckBuilder[String] =&gt;
+
+  def ofType[X: JsonFilter](implicit extractorFactory: JsonPathExtractorFactory) = new LambdaJsonPathCheckBuilder[X](path, jsonParsers)
+}
+
+object LambdaJsonPathCheckBuilder {
+
+  val CharsParsingThreshold = 200 * 1000
+  
+  def preparer(jsonParsers: JsonParsers): Preparer[String, Any] =
+    response =&gt; {
+      if (response.length() &gt; CharsParsingThreshold || jsonParsers.preferJackson)
+        jsonParsers.safeParseJackson(response)
+      else
+        jsonParsers.safeParseBoon(response)
+    }
+
+  def jsonPath(path: Expression[String])(implicit extractorFactory: JsonPathExtractorFactory, jsonParsers: JsonParsers) =
+    new LambdaJsonPathCheckBuilder[String](path, jsonParsers) with LambdaJsonPathOfType
+}
+
+class LambdaJsonPathCheckBuilder[X: JsonFilter](
+  private[check] val path:        Expression[String],
+  private[check] val jsonParsers: JsonParsers
+)(implicit extractorFactory: JsonPathExtractorFactory)
+    extends DefaultMultipleFindCheckBuilder[LambdaCheck, String, Any, X](
+      LambdaStringExtender,
+      LambdaJsonPathCheckBuilder.preparer(jsonParsers)
+    ) {
+
+  import extractorFactory._
+
+  def findExtractor(occurrence: Int) = path.map(newSingleExtractor[X](_, occurrence))
+  def findAllExtractor = path.map(newMultipleExtractor[X])
+  def countExtractor = path.map(newCountExtractor)
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.check
+
+import scala.collection.mutable
+
+import io.gatling.commons.validation._
+import io.gatling.core.check.CheckResult
+import io.gatling.core.session.Session
+import se.callistaenterprise.gatling.aws.lambda._
+
+case class LambdaCustomCheck(func: String =&gt; Boolean) extends LambdaCheck {
+  override def check(response: String, session: Session)(implicit cache: mutable.Map[Any, Any]): Validation[CheckResult] = {
+    func(response) match {
+      case true =&gt; CheckResult.NoopCheckResultSuccess
+      case _    =&gt; Failure("Lambda check failed")
+    }
+  }
+}
+</code></pre>
+
+<p>We also provide a supporting trait LambdaCheckSupport for the DSL to construct and configure the checks:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws.lambda.check
+
+import io.gatling.core.session.Expression
+import io.gatling.core.check.extractor.regex._
+import io.gatling.core.check.extractor.jsonpath.JsonPathExtractorFactory
+import io.gatling.core.check.extractor.xpath.{ JdkXPathExtractorFactory, SaxonXPathExtractorFactory }
+import io.gatling.core.json.JsonParsers
+
+trait LambdaCheckSupport {
+
+  def regex(expression: Expression[String])(implicit extractorFactory: RegexExtractorFactory) =
+    LambdaRegexCheckBuilder.regex(expression)
+
+  def xpath(expression: Expression[String], namespaces: List[(String, String)] = Nil)(implicit extractorFactory: SaxonXPathExtractorFactory, jdkXPathExtractorFactory: JdkXPathExtractorFactory) =
+    LambdaXPathCheckBuilder.xpath(expression, namespaces)
+
+  def jsonPath(path: Expression[String])(implicit extractorFactory: JsonPathExtractorFactory, jsonParsers: JsonParsers) =
+    LambdaJsonPathCheckBuilder.jsonPath(path)
+
+  def customCheck = LambdaCustomCheck
+  
+}
+</code></pre>
+
+<p>Finally, we define a trait AwsDsl to provide the toplevel DSL builder object (Aws), as well as a DSL builder method lambda for the action:</p>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws
+
+import se.callistaenterprise.gatling.aws.lambda.process.LambdaProcessBuilder
+import se.callistaenterprise.gatling.aws.lambda.check.LambdaCheckSupport
+import se.callistaenterprise.gatling.aws.protocol.{ AwsProtocol, AwsProtocolBuilder, AwsProtocolBuilderBase }
+import io.gatling.core.action.builder.ActionBuilder
+
+import scala.language.implicitConversions
+
+trait AwsDsl extends LambdaCheckSupport {
+
+  val Aws = AwsProtocolBuilderBase
+
+  def lambda(functionName: String) = LambdaProcessBuilder(functionName)
+
+  implicit def awsProtocolBuilder2awsProtocol(builder: AwsProtocolBuilder): AwsProtocol = builder.build
+  implicit def lambdaProcessBuilder2ActionBuilder(builder: LambdaProcessBuilder): ActionBuilder = builder.build()
+
+}
+</code></pre>
+
+<pre class=" line-numbers"><code class="language-Scala">package se.callistaenterprise.gatling.aws
+
+object Predef extends AwsDsl
+</code></pre>
+
+<p>And we’re done. Not as simple as I thought when I started, but quite doable. The documentation for the Gatling extension mechanism could definitely be better, but it is extremely powerful once you understand it. I hope this article can be useful for others. You can find the full source code here:</p>
+
+<p>https://github.com/callistaenterprise/gatling-aws.git.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Gatling Custom Protocol&url=https://callistaenterprise.se/blogg/teknik/2016/11/26/gatling-custom-protocol/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Gatling Custom Protocol&u=https://callistaenterprise.se/blogg/teknik/2016/11/26/gatling-custom-protocol/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Gatling Custom Protocol&url=https://callistaenterprise.se/blogg/teknik/2016/11/26/gatling-custom-protocol/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

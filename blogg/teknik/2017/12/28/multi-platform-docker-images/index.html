@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Create multi-platform Docker images | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Magnus Larsson" src="../../../../../../assets/medarbetare/magnuslarsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Create multi-platform Docker images</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2017-12-28T00:00:00+00:00">
+            28 December 2017
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus Larsson</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog post I will describe how to create a Docker image that works on different hardware architectures and operating systems. I will create a Docker image based on a service written in Go and package it for use in both Linux and Windows on 64 bit Intel based hardware.</p>
+
+<p></p>
+
+<p>This blog post is part of the blog series - <a href="../../17/blog-series-docker-news/index.html">Trying out new features in Docker</a>.</p>
+
+<h1 id="background">Background</h1>
+
+<p>Nowadays, Docker runs on different operating systems (Linux and Windows) and hardware architectures (Intel, Arm, IBM PowerPC and mainframes).</p>
+
+<p>A drawback with this multi-platform support is that one Docker image has to be built for each specific target platform, i.e. a specific operating system and hardware architecture. So, if you want to be able to run your Docker container on both Linux and Windows using Intel 64-bit hardware you must create two Docker images, one for Linux and one for Windows. You also have to create each Docker image using a Docker engine running on the specific target platform.</p>
+
+<p>When using the Docker images, you also have to specify what version you want to use, e.g. the Linux or Windows version. This makes it inconvenient to use together with tools like Docker Compose or a container orchestrator, e.g. Kubernetes or Docker in Swarm mode, since the configuration files (Kubernetes yml files or docker-compose.yml) becomes platform specific.</p>
+
+<p>Work is, however, ongoing to support building multi-platform Docker images that are composed by platform specific Docker images. A new Docker tool, <code class="language-plaintext highlighter-rouge">docker manifest</code>, is under development. For the time being, a <a href="https://github.com/estesp/manifest-tool">standalone manifest tool</a> maintained by Phil Estes from IBM can be used to create multi-platform Docker images. For more details, see the following blog post from IBM: <a href="https://developer.ibm.com/linuxonpower/2017/07/27/create-multi-architecture-docker-image/">Create and use multi-architecture docker images</a></p>
+
+<p>In September 2017, Docker announced that their official Docker images were updated to make them multi-platform aware, see the blog post <a href="https://blog.docker.com/2017/09/docker-official-images-now-multi-platform/">Docker official images are now multi-platform</a>.</p>
+
+<p>To inspect multi-platform support in a Docker image a containerized tool, <code class="language-plaintext highlighter-rouge">mplatform/mquery</code>, can be used. E.g. run the following command to inspect multi-platform support in the official Docker image for Go:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --rm mplatform/mquery golang
+</code></pre></div></div>
+
+<p>Expected result:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Image: golang
+ * Manifest List: Yes
+ * Supported platforms:
+   - linux/amd64
+   - linux/arm/v7
+   - linux/arm64/v8
+   - linux/386
+   - linux/ppc64le
+   - linux/s390x
+   - windows/amd64:10.0.14393.1884
+   - windows/amd64:10.0.16299.64	
+</code></pre></div></div>
+
+<p>For more background information, see the DockerCon EU 2017 video: <a href="https://dockercon.docker.com/watch/Q2LpoYRL3drmxzWc8yDmn9">Docker Multi-arch All the Things</a> and the blog post from Docker <a href="https://blog.docker.com/2017/11/multi-arch-all-the-things/">Multi-arch All the Things</a>.</p>
+
+<h1 id="overview">Overview</h1>
+
+<p>To create a multi-platform Docker image we need to:</p>
+
+<ol>
+  <li>Create deployment artifacts (e.g. executable files) for each target platform</li>
+  <li>Create a Dockerfile per target platform</li>
+  <li>Build a Docker image for each target platform</li>
+  <li>Push the target platform specific Docker image to a Docker registry, e.g. DockerHub</li>
+  <li>Create a multi-platform Docker image in the Docker registry based on the individual target platform Docker images</li>
+</ol>
+
+<p>This process is summarized in the following picture:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/multi-arch-docker-images/overview.png" alt="overview" /></p>
+
+<h1 id="test-case">Test Case</h1>
+
+<p>I have developed a simple service, written in Go, that creates some random quotes about successful programming languages. See <a href="https://github.com/callistaenterprise/cadec-2017-service-discovery/tree/master/go-quotes">go-quotes</a>.</p>
+
+<p>I want to run my service both as a Linux and a Windows container (on 64-bit Intel hardware).</p>
+
+<p>Implementation notes:</p>
+
+<ol>
+  <li>
+    <p>Go supports cross compilation, so I can create the executable files on the same developer machine.</p>
+  </li>
+  <li>
+    <p>To be able to create the Linux and Windows based Docker images I need access to Docker engines that runs on Linux and Windows.</p>
+  </li>
+  <li>
+    <p>To minimize the scope of the blog post, I don’t want to involve the use of a CI environment or virtual machines for building my Docker images.</p>
+  </li>
+  <li>
+    <p>“Docker for Mac” only supports Linux containers, while “Docker for Windows” support both Linux and Windows containers.</p>
+  </li>
+  <li>
+    <p>So, for the scope of this blog post, I will use Windows instead of macOS as my development environment.</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Note:</strong> Currently you can only run either Linux or Windows containers at the time on a Windows PC but soon we will be able to run Linux and Windows containers concurrently on a Windows PC, see <a href="https://blog.docker.com/2017/11/docker-for-windows-17-11/">Docker for Windows 17.11 with Windows 10 Fall Creators Update</a>:</p>
+
+  <p>“<em>it will soon be possible to run Windows and Linux Docker containers side-by-side</em>”</p>
+</blockquote>
+
+<p>I’m using:</p>
+
+<ol>
+  <li>Windows 10 Pro, Windows 10 Fall Creators Update (1709)</li>
+  <li>Docker for Windows v17.09.1-ce-win42</li>
+  <li>Go v1.9.2</li>
+</ol>
+
+<h1 id="build">Build</h1>
+
+<p>Below follow instructions for how to build the platform specific Docker images and how to assemble a composed multi-platform Docker image.</p>
+
+<p>Use a “<em>Windows PowerShell</em>” terminal window to execute the commands below.</p>
+
+<h2 id="get-the-code">Get the code</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/callistaenterprise/cadec-2017-service-discovery
+cd cadec-2017-service-discovery\go-quotes\
+</code></pre></div></div>
+
+<h2 id="build-a-docker-image-for-windows">Build a Docker image for Windows</h2>
+
+<p>Compile the Go source code to an executable for Windows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set GOOS=windows
+go build -o quotes-windows-amd64.exe
+</code></pre></div></div>
+
+<p>Try out the Windows executable without using Docker:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./quotes-windows-amd64.exe
+</code></pre></div></div>
+
+<p>It should startup and say something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting ML Go version of quote-service on port 8080
+2017/12/19 16:23:17 Starting ML HTTP service at 8080
+</code></pre></div></div>
+
+<p>Open another “<em>Windows PowerShell</em>” terminal window and try out the service using <code class="language-plaintext highlighter-rouge">curl</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:8080/api/quote -UseBasicParsing
+</code></pre></div></div>
+
+<p>Expected response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>StatusCode        : 200
+StatusDescription : OK
+Content           : {"hardwareArchitecture":"amd64","operatingSystem":"windows","ipAddress":"4d131b511ab9/fe80::9846:5b
+                    e3:c0bb:2d91%Ethernet172.24.224.172","quote":"In Go, the code does exactly what it says on the page
+                    ."...
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: Pay special attention to the value of the fields <code class="language-plaintext highlighter-rouge">hardwareArchitecture</code> and <code class="language-plaintext highlighter-rouge">operatingSystem</code> in the response (<code class="language-plaintext highlighter-rouge">amd64</code> and <code class="language-plaintext highlighter-rouge">windows</code> in the response above). They will be used later on when we want to verify that we are communicating with a container on the expected platform.</p>
+</blockquote>
+
+<p>Stop the program with <code class="language-plaintext highlighter-rouge">CTRL/C</code>.</p>
+
+<p>Ensure that your “Docker for Windows” runs Windows containers. enter the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker info
+</code></pre></div></div>
+
+<p>Look for the field <code class="language-plaintext highlighter-rouge">OSType</code>, it should say <code class="language-plaintext highlighter-rouge">windows</code>.</p>
+
+<p>If not, switch to Windows containers using the Docker menu:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/multi-arch-docker-images/switch-to-windows.png" alt="windows" /></p>
+
+<p>The Dockerfile for building the Windows Docker image, <code class="language-plaintext highlighter-rouge">Dockerfile-windows-amd64</code>, looks like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM microsoft/nanoserver
+EXPOSE 8080
+
+ADD quotes-windows-amd64.exe /
+
+ENTRYPOINT ["./quotes-windows-amd64.exe"] 
+</code></pre></div></div>
+
+<p>Build the Docker image and push it to DockerHub:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build -f Dockerfile-windows-amd64 -t magnuslarsson/quotes:24-go-windows-amd64 .
+docker push magnuslarsson/quotes:24-go-windows-amd64
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note #1:</strong> Obviously you can’t use my username, <code class="language-plaintext highlighter-rouge">magnuslarsson</code>, when pushing images to DockerHub, you have to replace it with your own :-)</p>
+
+  <p><strong>Note #2:</strong> You might need to login to DockerHub first, using <code class="language-plaintext highlighter-rouge">docker login</code>.</p>
+</blockquote>
+
+<p>You can start the Windows specific Docker image with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 8080:8080 --name quotes magnuslarsson/quotes:24-go-windows-amd64
+</code></pre></div></div>
+
+<p>The current version of “Docker for Windows” has a limitation that prevents access ports published by containers using <code class="language-plaintext highlighter-rouge">localhost</code>, e.g. <code class="language-plaintext highlighter-rouge">curl http://localhost:8080/api/quote</code> does not work. For details, see <a href="https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/">https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/</a>.</p>
+
+<p>Instead, we can use the PC’s IP address. You can use <code class="language-plaintext highlighter-rouge">ipconfig</code> to get the IP address.</p>
+
+<p>E.g.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://192.168.1.224:8080/api/quote -UseBasicParsing
+</code></pre></div></div>
+
+<p>Expect a similar response as from the <code class="language-plaintext highlighter-rouge">curl</code> command above. Verify that <code class="language-plaintext highlighter-rouge">operatingSystem</code> field has the value <code class="language-plaintext highlighter-rouge">windows</code>!</p>
+
+<p>Stop the Windows container with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f quotes
+</code></pre></div></div>
+
+<h2 id="build-a-docker-image-for-linux">Build a Docker image for Linux</h2>
+
+<p>Compile the Go source to an executable for Linux:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set GOOS=linux
+go build -o quotes-linux-amd64
+</code></pre></div></div>
+
+<p>Switch to Linux containers using the Docker menu:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/multi-arch-docker-images/switch-to-linux.png" alt="linux" /></p>
+
+<p>The Dockerfile for building the Linux Docker image, <code class="language-plaintext highlighter-rouge">Dockerfile-linux-amd64</code>, looks like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM scratch
+EXPOSE 8080
+
+ADD quotes-linux-amd64 /
+
+ENTRYPOINT ["./quotes-linux-amd64"] 
+</code></pre></div></div>
+
+<p>Build the Docker image and push it to DockerHub:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build -f Dockerfile-linux-amd64 -t magnuslarsson/quotes:24-go-linux-amd64 .
+docker push magnuslarsson/quotes:24-go-linux-amd64
+</code></pre></div></div>
+
+<p>You can start the Linux specific Docker image with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 8080:8080 --name quotes magnuslarsson/quotes:24-go-linux-amd64
+</code></pre></div></div>
+
+<p>Now, try out the service using curl:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:8080/api/quote -UseBasicParsing
+</code></pre></div></div>
+
+<p>Expected response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>StatusCode        : 200
+StatusDescription : OK
+Content           : {"hardwareArchitecture":"amd64","operatingSystem":"linux","ipAddress":"0c4e0824f479/172.17.0.2","qu
+                    ote":"I like a lot of the design decisions they made in the [Go] language. Basically, I like all of
+                     t...
+</code></pre></div></div>
+
+<p>Verify that <code class="language-plaintext highlighter-rouge">operatingSystem</code> field now has the value <code class="language-plaintext highlighter-rouge">linux</code>!</p>
+
+<p>Stop the Linux container with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f quotes
+</code></pre></div></div>
+
+<h2 id="build-a-multi-platform-docker-image">Build a multi-platform Docker image</h2>
+
+<p>Now, it’s time to combine the two platform specific Docker images into one common Docker image.</p>
+
+<p>We will us the standalone tool <code class="language-plaintext highlighter-rouge">manifest-tool</code>. Executables can be downloaded from: <a href="https://github.com/estesp/manifest-tool/releases">https://github.com/estesp/manifest-tool/releases</a>.</p>
+
+<p>I used version v0.7.0 of the tool compiled for macOS (I got stuck on some strange authentication problem when trying out the Windows version).</p>
+
+<p>The manifest file, <code class="language-plaintext highlighter-rouge">manifest-quotes-multi-platform.yml</code>, looks like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>image: magnuslarsson/quotes:24-go
+manifests:
+  -
+    image: magnuslarsson/quotes:24-go-linux-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: magnuslarsson/quotes:24-go-windows-amd64
+    platform:
+      architecture: amd64
+      os: windows
+</code></pre></div></div>
+
+<p>The multi-platform Docker image is create with the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./manifest-tool-darwin-amd64 --username=magnuslarsson --password=xxx push from-spec manifest-quotes-multi-platform.yml &gt; **Note:** `./manifest-tool-darwin-amd64` requires macOS, you can however try out the Windows version (or a Linux version) on your own.
+</code></pre></div></div>
+
+<p>Verify that we now have a Docker image for our Go service that supports both Linux and Windows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --rm mplatform/mquery magnuslarsson/quotes:24-go
+</code></pre></div></div>
+
+<p>Expected response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Image: magnuslarsson/quotes:24-go
+ * Manifest List: Yes
+ * Supported platforms:
+   - linux/amd64
+   - windows/amd64:10.0.14393.1944
+</code></pre></div></div>
+
+<p>You can also take a look into DockerHub to see the resulting three Docker images, e.g. in my case: <a href="https://hub.docker.com/r/magnuslarsson/quotes/tags/">https://hub.docker.com/r/magnuslarsson/quotes/tags/</a></p>
+
+<p>Expected result:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/multi-arch-docker-images/dockerhub.png" alt="dockerhub" /></p>
+
+<h2 id="try-out-the-multi-platform-docker-image">Try out the multi-platform Docker image</h2>
+
+<p>Now we should be able to run our Go service in both Windows and Linux containers using one and the same Docker image: <code class="language-plaintext highlighter-rouge">magnuslarsson/quotes:24-go</code>!</p>
+
+<p>Since we currently have “Docker for Windows” configured to run Linux containers, let’s start with trying it out on Linux:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 8080:8080 --name quotes magnuslarsson/quotes:24-go
+</code></pre></div></div>
+
+<p>Test it using curl:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:8080/api/quote -UseBasicParsing
+</code></pre></div></div>
+
+<p>Verify that <code class="language-plaintext highlighter-rouge">operatingSystem</code> field in the response has the value <code class="language-plaintext highlighter-rouge">linux</code>!</p>
+
+<p>Kill the Linux container:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f quotes
+</code></pre></div></div>
+
+<p>Switch “Docker for Windows” to use Windows containers:</p>
+
+<p><img src="../../../../../../assets/blogg/docker/multi-arch-docker-images/switch-to-windows.png" alt="windows" /></p>
+
+<p>Start a Windows container:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 8080:8080 --name quotes magnuslarsson/quotes:24-go
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> We are using exaclty the same command as when starting a Linux container!</p>
+</blockquote>
+
+<p>Test it using curl:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://192.168.1.224:8080/api/quote -UseBasicParsing
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> Remember to replace my IP Address with yours!</p>
+</blockquote>
+
+<p>Verify that the <code class="language-plaintext highlighter-rouge">operatingSystem</code> field in the response now has the value <code class="language-plaintext highlighter-rouge">windows</code>!</p>
+
+<p>Wrap up with killing the Windows container:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rm -f quotes
+</code></pre></div></div>
+
+<h1 id="next-up">Next up…</h1>
+
+<p>For more blog posts on new features in Docker, see the blog series - <a href="../../17/blog-series-docker-news/index.html">Trying out new features in Docker</a>.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Multi Platform Docker Images&url=https://callistaenterprise.se/blogg/teknik/2017/12/28/multi-platform-docker-images/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Multi Platform Docker Images&u=https://callistaenterprise.se/blogg/teknik/2017/12/28/multi-platform-docker-images/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Multi Platform Docker Images&url=https://callistaenterprise.se/blogg/teknik/2017/12/28/multi-platform-docker-images/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

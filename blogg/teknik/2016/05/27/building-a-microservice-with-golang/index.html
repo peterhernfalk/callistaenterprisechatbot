@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Adding a Golang microservice to Spring Cloud | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Adding a Golang microservice to Spring Cloud</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-05-27T00:00:00+00:00">
+            27 May 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this blog post, we’ll build a simple microservice using <a href="https://golang.org/">Golang</a> and then add it to a <a href="http://projects.spring.io/spring-cloud/">Spring Cloud</a> microservice landscape.</p>
+
+<p></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Building microservices using Golang may not be the first choice when you are targeting a <a href="http://projects.spring.io/spring-cloud/">Spring Cloud</a> environment where most if not all participating applications are Java or JVM-based. However, Go have a number of things going for it - low memory footprint, fast startup/shutdown and being statically compiled for a specific OS / CPU architecture it puts very few requirements on the host OS - no Java Runtime Environment for example.</p>
+
+<p>In this blog post, we won’t use any existing Go microservice frameworks such as <a href="https://github.com/go-kit/kit">go-kit</a>. Instead we’ll just write a simple http server that will serve a list of “vendors” that neatly fits into the product/review/recommendation landscape environment established in the <a href="../../../../2015/05/20/blog-series-building-microservices.html">blog series</a> from my colleague <a href="../../../../../../om/medarbetare/magnuslarsson/index.html">Magnus</a>.</p>
+
+<p><img src="../../../../../../assets/blogg/go-microservice/demo-landscape.png" alt="overview" /></p>
+
+<p>We can see the new ‘Vendor’ service in the bottom left corner with its interactions with the Eureka discovery service added for clarity.</p>
+
+<p>The source code for the Go microservice can be found on <a href="https://github.com/eriklupander/go-microservice-eureka">github</a>.</p>
+
+<p>The updated final source code for the Spring Cloud landscape <a href="https://github.com/callistaenterprise/blog-microservices/tree/M6-GO">can be found here</a>.</p>
+
+<h2 id="steps">Steps</h2>
+
+<p>The creation of a Go-based microservice with Eureka registration and adding it to the Spring Cloud landscape can be divided into these five relatively distinct steps:</p>
+
+<ol>
+  <li>Implement a HTTP REST service for serving “vendors”, /health, /info etc. Uses <a href="http://www.gorillatoolkit.org/">gorilla</a> web toolkit.</li>
+  <li>Implement Eureka client functionality for registration, heartbeat and deregistration.</li>
+  <li>Make a Dockerfile and build the Go executable into amd64/linux.</li>
+  <li>Add the Go microservice to Magnus landscape, e.g. docker-compose.yml</li>
+  <li>Add usage of the new Vendor microservice to the CompositeServices, e.g. make sure Ribbon can discover and load-balance it.</li>
+</ol>
+
+<h2 id="1-the-golang-microservice">1. The golang microservice</h2>
+
+<p>As previously stated, we’ll build most things from scratch this time. The <a href="https://github.com/eriklupander/go-microservice-eureka/blob/master/src/github.com/eriklupander/goeureka/main.go">main()</a> method is of course a good starting point for looking at the Go code that starts our little service and registers with Eureka:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func main() {   
+    handleSigterm()                              // Handle graceful shutdown on Ctrl+C or kill
+    
+    go startWebServer()                          // Starts HTTP service  (async)
+    
+    eureka.Register()                            // Performs Eureka registration
+    
+    go eureka.StartHeartbeat()                   // Performs Eureka heartbeating (async)
+    
+    // Block...
+    wg := sync.WaitGroup{}                       // Use a WaitGroup to block main() exit
+    wg.Add(1)
+    wg.Wait()
+}
+</code></pre></div></div>
+
+<p>The “vendor” microservice written in Go will return a JSON array of vendors for a given productId, e.g:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /vendor/{productId}
+
+[{"id":0, "name":"Vendor no 1"},{"id":1,"name":"Some other vendor"}]
+</code></pre></div></div>
+
+<p>The HTTP server with routing is loosely based on <a href="http://thenewstack.io/make-a-restful-json-api-go/">this article</a> from thenewstack.io, using the <a href="https://github.com/gorilla/mux">gorilla/mux</a> library and the built-in <em>http.ListenAndServe()</em> function from the core http library.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func startWebServer(port string) {
+        router := service.NewRouter()
+        log.Println("Starting HTTP service at " + port)
+        err := http.ListenAndServe(":" + port, router)
+        if err != nil {
+                log.Println("An error occured starting HTTP listener at port " + port + ": " + err.Error())
+        }
+}
+</code></pre></div></div>
+
+<p>The NewRouter() function returns a pointer to a mux.Router where the routes are fed into the router:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Route struct {
+	Name        string
+	Method      string
+	Pattern     string
+	HandlerFunc http.HandlerFunc
+}
+
+type Routes []Route              // An array / slice of routes
+
+var routes = Routes{
+	// Other routes omitted for clarity
+	Route{
+		"VendorShow",
+		"GET",
+		"/vendors/{productId}",
+		VendorShow,               // Func reference.
+	},
+
+}
+</code></pre></div></div>
+
+<p>Finally, the <em>VendorShow</em> method builds and returns a hard-coded list of vendors:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func VendorShow(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	var productId int
+	var err error
+	if productId, err = strconv.Atoi(vars["productId"]); err != nil {
+		panic(err)
+	}
+	fmt.Println("Loading vendors for product " + strconv.Itoa(productId))
+	vendors := make([]model.Vendor, 0, 2)
+	v1 := model.Vendor{ Id: 1, Name : "Internetstore.biz",}
+	v2 := model.Vendor{ Id: 2, Name : "Junkyard.nu",}
+	vendors = append(vendors, v1, v2)
+	if len(vendors) &gt; 0 {
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(vendors); err != nil {
+			panic(err)
+		}
+		return
+	}
+
+	// If we didn't find it, 404
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusNotFound)
+	if err := json.NewEncoder(w).Encode(model.JsonErr{Code: http.StatusNotFound, Text: "Not Found"}); err != nil {
+		panic(err)
+	}
+}
+</code></pre></div></div>
+
+<h2 id="2-registering-with-eureka">2. Registering with Eureka</h2>
+
+<p>Eureka is the discovery server from Netflix used in Spring Cloud. Non-java services can register with Eureka using the <a href="https://github.com/Netflix/eureka/wiki/Eureka-REST-operations">REST API</a> of Eureka. Please note that Spring Cloud does <em>not</em> provide the /v2/ endpoints from the linked document. Registration, heartbeat and deregistration works fine as long as the /v2/ path segment is omitted.</p>
+
+<p>A Eureka client library for golang called <a href="https://github.com/hudl/fargo">hudl/fargo</a> actually exists. However, I’ve chosen to do some plain REST calls myself this time in order to understand the registration and heartbeat process better.</p>
+
+<h3 id="eureka-registration">Eureka registration</h3>
+
+<p>Given this code, a HTTP POST will be sent to the Eureka REST endpoint for registrations. Please note that the code above uses a hard-coded URI to Eureka. This should of course be externalized in some manner. For the registration POST body, one can choose between XML and JSON format, I’ve picked JSON:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var instanceId string
+
+func Register() {
+        instanceId = util.GetUUID();                                  // Create a unique ID for this instance
+
+        dir, _ := os.Getwd()
+        data, _ := ioutil.ReadFile(dir + "/templates/regtpl.json")    // Read registration JSON template file
+
+        tpl := string(data)
+        tpl = strings.Replace(tpl, "${ipAddress}", util.GetLocalIP(), -1)  // Replace some placeholders
+        tpl = strings.Replace(tpl, "${port}", "8080", -1)
+        tpl = strings.Replace(tpl, "${instanceId}", instanceId, -1)
+
+        // Register.
+        registerAction := HttpAction {                                     // Build a HttpAction struct
+                Url : "http://192.168.99.100:8761/eureka/apps/vendor",    // Note hard-coded path to Eureka...
+                Method: "POST",
+                ContentType: "application/json",
+                Body: tpl,
+        }
+        var result bool
+        for {
+                result = DoHttpRequest(registerAction)           // Execute the HTTP request. result == true if req went OK
+                if result {
+                        break                                    // Success, end registration loop
+                } else {
+                        time.Sleep(time.Second * 5)              // Registration failed (usually, Eureka isn't up yet), 
+                }                                                // retry in 5 seconds.                    
+        }
+}
+</code></pre></div></div>
+
+<p>For details about how we send the HTTP POST, see <a href="https://github.com/eriklupander/go-microservice-eureka/blob/master/src/github.com/eriklupander/goeureka/eureka/httpreq.go#L35">DoHttpRequest</a> source. I’ve reused that from <a href="https://github.com/eriklupander/gotling">another</a> of my little Golang projects.</p>
+
+<p>What’s more interesting is the JSON body we’ve posted:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "instance": {
+    "hostName":"${ipAddress}",                                   // We're dynamically setting non-loopback IP adress here
+    "app":"vendor",                                              // Name seen in Eureka
+    "ipAddr":"${ipAddress}",
+    "vipAddress":"vendor"                                        // Important, used by Ribbon to look up endpoint adress
+    "status":"UP",
+    "port":"${port}",
+    "securePort" : "8443",
+    "homePageUrl" : "http://${ipAddress}:${port}/",
+    "statusPageUrl": "http://${ipAddress}:${port}/info",
+    "healthCheckUrl": "http://${ipAddress}:${port}/health",
+    "dataCenterInfo" : {
+      "name": "MyOwn"
+    },
+    "metadata": {
+      "instanceId" : "vendor:${instanceId}"                      // Metadata entry to differentiate instances when scaling.
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>The corresponding XSD (for the XML variant) can be found about halfway down <a href="https://github.com/Netflix/eureka/wiki/Eureka-REST-operations">here</a>, it maps 1:1 to the JSON structure used above. The page urls are actually implemented by the routes.go and handlers.go files but are of course mainly placeholder implementations just there give some semi-proper response. For example, <em>dataCenterInfo</em> must have either ‘MyOwn’ or ‘Amazon’ as values. There is a complex ‘amazonMetadataType’ with many Amazon-specifics we ignore in this blog post since we’re gonna run this on-premise using docker-compose.</p>
+
+<h3 id="handling-container-shutdown">Handling container shutdown</h3>
+
+<p>In a microservice landscape, a container running a given service may be started or shut down at any time. We want our discovery service to be as up-to-date as possible with available service instances. What good is a large number of instances of a given microservice if the consumers cannot find them? The opposite is just as important - how do we make sure that our go microservice deregisters itself with Eureka when a supervising container framework decides to decrease the number of running instances? How a particular container handles shutdowns may vary. For this particular example with a Go-based microservice running in a docker container managed by docker-compose, it is sufficient to capture whenever the OS sends an interrupt signal or when a SIGTERM signal is received, e.g. Ctrl+C.</p>
+
+<p>This piece of code listens for such signals and passes them onto a channel supervised by an anonymous function running in a goroutine:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    func handleSigterm() {
+            c := make(chan os.Signal, 1)          // Create a channel accepting os.Signal
+                                                  // Bind a given os.Signal to the channel we just created
+            signal.Notify(c, os.Interrupt)        // Register os.Interrupt
+            signal.Notify(c, syscall.SIGTERM)     // Register syscall.SIGTERM
+            
+            go func() {                           // Start an anonymous func running in a goroutine 
+                    &lt;-c                           // that will block until a message is recieved on 
+                    eureka.Deregister()           // the channel. When that happens, perform Eureka
+                    os.Exit(1)                    // deregistration and exit program.
+            }()
+    }
+</code></pre></div></div>
+
+<p>The code above makes sure Eureka gets a deregistration HTTP DELETE before the container is shut down.</p>
+
+<h2 id="3-building-the-docker-container">3. Building the docker container</h2>
+
+<p>To speed things up, I created a little bash <a href="https://github.com/eriklupander/go-microservice-eureka/blob/master/buildall.sh">shell script</a> to help with the build process. It’s actually quite informative:</p>
+
+<p><em>buildall.sh</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env bash
+
+export GOARCH=amd64
+export GOOS=linux
+go build -o bin/goeureka src/github.com/eriklupander/goeureka/*.go
+docker build -t vendor .
+export GOARCH=amd64
+export GOOS=darwin
+</code></pre></div></div>
+
+<p>The GOARCH and GOOS environment variables tells go build what CPU architecture and OS to build the binary for. Since our docker base image is a linux/amd64 one, we start by setting this before running <em>go build</em>. Next, we build the docker container giving it the name ‘vendor’ with the current directory as base path. Finally, we change GOOS och GOARCH back to my developer laptop settings (OS X 10.11).</p>
+
+<p>Next stop is obviously the <a href="https://github.com/eriklupander/go-microservice-eureka/blob/master/Dockerfile">Dockerfile</a> that specifies what base image to use, which files to add and what to execute when the container starts:</p>
+
+<p><em>Dockerfile</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM ofayau/ejre:8-jre
+MAINTAINER Micro Service &lt;micro.service@gmail.com&gt;
+
+EXPOSE 8080
+
+ADD bin/goeureka goeureka
+ADD templates/*.json templates/
+
+ENTRYPOINT ["./goeureka"]
+</code></pre></div></div>
+
+<p><em>ofayau/ejre:8-jre</em> is a bit of an overkill since the image bundles a 32-bit JRE we have absolutely no use for when running a Golang microservice, but it keeps things consistent with the blog series. Next, we tell the container to expose port 8080 (which happens to be the port our little http listener binds to) and add the <em>goeureka</em> binary and any JSON files in the <em>templates/</em> directory to the image. Finally, we specify that the container shall execute ./goeureka on startup. Doesn’t get much simpler, right?</p>
+
+<h2 id="4-adding-the-go-service-to-the-microservice-landscape">4. Adding the Go service to the microservice landscape</h2>
+
+<p>As previously stated, we’ll integrate the Go microservice into a Spring Cloud landscape.</p>
+
+<h3 id="clone-the-microservice-landscape-source">Clone the microservice landscape source</h3>
+<p>Now, we’re done with the Go code and can move over to the Spring Cloud environment from the blog series. If coding along - check out, switch to the M6-GO branch and build everything:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:callistaenterprise/blog-microservices.git
+cd blog-microservices
+git checkout M6-GO
+./buildAll.sh
+</code></pre></div></div>
+
+<p><em>(This part requires you to have a working docker environment set up in accordance to <a href="../../../../2015/06/08/building-microservices-part-4-dockerize-your-microservices/index.html">blog series part 4</a>)</em></p>
+
+<h3 id="adding-the-vendor-service-to-docker-compose">Adding the vendor service to docker-compose</h3>
+
+<p>In the branch checked out above all the changes below have already been applied. However, let’s walk through a number of the changes performed beginning with the easiest part, adding the vendor service to the end of <em>docker-compose.yml</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vendor:
+  image: vendor
+  links:
+    - discovery
+</code></pre></div></div>
+
+<p>This little snippet tells docker-compose to use the <em>vendor</em> image for the same named logical name <em>vendor</em>. Finally, the <em>links</em> attribute tells docker-compose that this service is allowed to access the <em>discovery</em> service, e.g. Eureka.</p>
+
+<p>Try to start things up. The vendor microservice won’t be accessible from outside, but it might be a good idea to first make sure its registration with Eureka works properly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up -d
+</code></pre></div></div>
+
+<p>It will probably take a minute or two until everything has started. Since the discovery service is declared with “ports” in <em>docker-compose.yml</em>, it is accessible from outside of the internal docker landscape on port 8761. E.g:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> discovery:
+   image: callista/discovery-server
+   ports:
+     - "8761:8761"
+</code></pre></div></div>
+
+<p>Unless you’ve entered a hostname record in your /etc/hosts file (or eq.) for the ‘docker’ host, you may need to look up the IP address of the docker network. One way to do this is by using <em>docker-machine ls</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker-machine ls
+
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.11.0   
+</code></pre></div></div>
+
+<p>Open a web browser and enter your equivalent of http://192.168.99.100:8761 and you should end up at the Eureka start page.</p>
+
+<p><img src="../../../../../../assets/blogg/go-microservice/vendor-added.png" alt="eureka1" /></p>
+
+<p>It’s alive! Indeed, we see ‘VENDOR’ neatly in the list. Note that the 172.17.0.x links are unclickable - your browser has no access to the private network of the docker environment.</p>
+
+<p>Now, shut it down again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker-compose down
+</code></pre></div></div>
+
+<h2 id="5-add-the-vendor-service-to-the-compositeservice">5. Add the vendor service to the CompositeService</h2>
+
+<p>Time for some Java coding! Well - not much coding actually, mainly copy+paste and renaming stuff from blog series source. In <a href="https://raw.githubusercontent.com/callistaenterprise/blog-microservices/M6-GO/microservices/composite/product-composite-service/src/main/java/se/callista/microservices/composite/product/service/ProductCompositeService.java">ProductCompositeService.java</a>, we’ve added some code to the <em>getProduct</em> method that will fetch vendors for us:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 4. Get optional vendors
+ResponseEntity&lt;List&lt;Vendor&gt;&gt; vendorsResult = integration.getVendors(productId);
+List&lt;Vendor&gt; vendors = null;
+if (!vendorsResult.getStatusCode().is2xxSuccessful()) {
+    // Something went wrong with getVendors, simply skip the vendors-information in the response
+    LOG.debug("Call to getVendors failed: {}", vendorsResult.getStatusCode());
+} else {
+    vendors = vendorsResult.getBody();
+}
+
+return util.createOkResponse(new ProductAggregated(productResult.getBody(), recommendations, reviews, vendors));
+</code></pre></div></div>
+
+<p>Nothing fancy, the cool stuff happens inside <em>integration.getVendors(productId)</em>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@HystrixCommand(fallbackMethod = "defaultVendors")
+public ResponseEntity&lt;List&lt;Vendor&gt;&gt; getVendors(int productId) {
+    LOG.info("GetVendors...");
+
+    URI uri = util.getServiceUrl("vendor");         // This is the cool part!!
+
+    String url = uri.toString() + "/vendors/" + productId;
+    LOG.debug("GetVendors from URL: {}", url);
+
+    ResponseEntity&lt;String&gt; resultStr = restTemplate.getForEntity(url, String.class);
+    LOG.debug("GetVendors http-status: {}", resultStr.getStatusCode());
+    LOG.debug("GetVendors body: {}", resultStr.getBody());
+
+    List&lt;Vendor&gt; vendors = response2Vendors(resultStr);
+    LOG.debug("GetVendors.cnt {}", vendors.size());
+
+    return util.createOkResponse(vendors);
+}
+</code></pre></div></div>
+
+<p>Except some code that converts stuff etc. the nice thing here is that our new Vendor-fetching Java code works 100% the same way accessing our Golang-based service as fetching those Spring Boot-based review and recommendation services does. We look up the URL to the vendor service by asking <a href="https://github.com/Netflix/ribbon">Ribbon</a> (the load balancer) for the address for ‘vendor’. This ‘vendor’ is the same string we entered in the registration JSON for ‘vipAddress’, i.e. Virtual IP Address. After that it’s just a matter of asking the RestTemplate to call the service for us att the returned URL, process the response and pass it up the call stack.</p>
+
+<p>We also had to add a single line to ProductCompositeIntegration.java in order to enable load-balancing using Ribbon:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Autowired
+@Qualifier("loadBalancedRestTemplate")       // ADDED THIS LINE!
+private RestTemplate restTemplate;
+</code></pre></div></div>
+
+<p>Example console output after having fetched an <a href="https://en.wikipedia.org/wiki/OAuth">OAuth</a> token:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; export TOKEN=f7e6bec9-124d-4bf0-83d0-dfe27e5b3a20
+&gt; curl -H "Authorization: Bearer $TOKEN"   -k 'https://192.168.99.100/api/product/1046'
+
+{
+    "productId":1046,"name":"name","weight":123,
+    "recommendations":[{"recommendationId":1,"author":"Author 1","rate":1},{"recommendationId":2,"author":"Author 2","rate":2},{"recommendationId":3,"author":"Author 3","rate":3}],
+    "reviews":[{"reviewId":1,"author":"Author 1","subject":"Subject 1"},{"reviewId":2,"author":"Author 2","subject":"Subject 2"},{"reviewId":3,"author":"Author 3","subject":"Subject 3"}],
+    "vendors":[{"id":1,"name":"Internetstore.biz"},{"id":2,"name":"Junkyard.nu"}]
+}
+</code></pre></div></div>
+
+<p>Awesome - we have the Go-based ‘vendors’ microservice fully functional!</p>
+
+<h3 id="scaling">Scaling</h3>
+
+<p>Of course, we can scale our vendor service just like any other service. Let’s add second instance of the vendor service.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker-compose scale vendor=2
+Creating and starting blogmicroservices_vendor_3 ... done
+</code></pre></div></div>
+
+<p>Behind the scenes, docker-compose works its magic, spins up a new container with the ‘vendor’ image, launches the Go application which immediately registers itself with the Eureka server, making it visible to the Ribbon load-balancer.</p>
+
+<p><img src="../../../../../../assets/blogg/go-microservice/vendor-scaled.png" alt="eureka2" /></p>
+
+<p>Call the /api/product/{productApi} a few times, four in our case, and then check the log:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker-compose logs | grep vendors
+
+vendor_1     | Loading vendors for product 1044
+vendor_2     | Loading vendors for product 1042
+vendor_1     | Loading vendors for product 1041
+vendor_2     | Loading vendors for product 1046
+</code></pre></div></div>
+
+<p>Indeed, we see that the two ‘vendor’ instances are taking turns serving the product requests.</p>
+
+<h3 id="footprint--performance">Footprint &amp; Performance</h3>
+
+<p>Running standalone on my OS X laptop, the ‘vendor’ microservice uses about 2 mb of RAM after starting up and running a dozen requests or so.</p>
+
+<p>Moving on to docker, we can check memory use of our microservice landscape (edited for readability):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker stats
+CONTAINER           CPU %               MEM USAGE / LIMIT 
+31d0c6ab9012        0.06%               126.2 MB / 2.1 GB  &lt;-- Monitor dashboard
+e3c8c35def3b        0.27%               185 MB / 2.1 GB    &lt;-- Edge server  
+d5582272fe18        0.47%               220 MB / 2.1 GB    &lt;-- Product composite service  
+cb1d234fba5d        0.49%               218 MB / 2.1 GB    &lt;-- Product API service 
+9a9442abd475        0.33%               168.1 MB / 2.1 GB  &lt;-- Product service  
+21c0743bb845        0.27%               170.1 MB / 2.1 GB  &lt;-- Review service 
+6a300b04ce36        0.30%               163.1 MB / 2.1 GB  &lt;-- Recommendation service 
+6fd8d08cbf1c        0.00%               8.139 MB / 2.1 GB  &lt;-- Vendor service 
+602ff6640a7b        0.06%               146.5 MB / 2.1 GB  &lt;-- Auth server 
+3606d1ab8a55        0.72%               202.3 MB / 2.1 GB  &lt;-- Eureka 
+83e677dbc515        0.34%               97.89 MB / 2.1 GB  &lt;-- RabbbitMQ 
+</code></pre></div></div>
+
+<p>Indeed, our running ‘vendor’ container uses ~8 MB of RAM while the similar review and recommendation services uses 160-170 MB each. If RAM is a limiting factor when scaling up a microservice environment, using Go may definitely be an option. However, the figures above is after just a dozen requests or so - memory use under load may be very different and the Spring Boot-based microservices may very well scale better without increasing their memory footprint significantly.</p>
+
+<p>Both binaries I’ve built (darwin/amd64 and linux/amd64) produces an executable about 8 mb in size. Not very compact, but as previously stated these Go programs can be run on very “bare” containers.</p>
+
+<p>Execution speed for returning the ‘vendor’ list from localhost is in the &lt; 1ms range, though measuring latencies for a “dummy” service running on localhost is next to meaningless. I’ve done a bit of benchmarking of gorilla/mux in the past and it performs quite well, almost on par with Spring Boot. The case was a simple HTTP service fetching some data from a local MongoDB instance, both Spring Boot and Go could handle about 4K concurrent requests with 2-3 ms latency.</p>
+
+<h2 id="whats-missing">What’s missing?</h2>
+
+<p>First and foremost, the vendor microservice itself has no security whatsoever, it fully depends on Docker mechanics (e.g. port exposal) and the <a href="https://github.com/Netflix/zuul">Edge service</a> for protecting its data. This particular instance, where the Go microservice is strictly internal and utilized by another (publicly exposed) microservice may be fine, but if we would expose it directly we would need to consider security in more detail. The Edge server handles a lot of those issues for us, but I would strongly recommend performing a security audit of any Go (micro)service exposed directly on the internet as net/http with Gorilla should be viewed more as a HTTP framework than a full-fledged production-hardened web server.</p>
+
+<p>Furthermore, using a Go-based microservice as a replacement for the more complex “productcomposite service” would require implementing your own Discovery service lookups for other participating services, load-balancing those, circuit breakers and composing responses from aggregated data. Hopefully I can return to that topic later.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Building A Microservice With Golang&url=https://callistaenterprise.se/blogg/teknik/2016/05/27/building-a-microservice-with-golang/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Building A Microservice With Golang&u=https://callistaenterprise.se/blogg/teknik/2016/05/27/building-a-microservice-with-golang/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Building A Microservice With Golang&url=https://callistaenterprise.se/blogg/teknik/2016/05/27/building-a-microservice-with-golang/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

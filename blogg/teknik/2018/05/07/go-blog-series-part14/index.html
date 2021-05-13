@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices blog series, part 14 - GraphQL. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Go Microservices blog series, part 14 - GraphQL.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-05-07T00:00:00+00:00">
+            07 May 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part of the Go microservices <a href="../../../../2017/02/17/go-blog-series-part1.html">blog series</a>, we’ll take a look at using <a href="https://graphql.org/">GraphQL</a> for serving Account objects to our clients.</p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li>Overview</li>
+  <li>GraphQL</li>
+  <li>Schemas, Fields and Types with graphql-go</li>
+  <li>Resolver function</li>
+  <li>Queries</li>
+  <li>Unit tests</li>
+  <li>Serving over HTTP</li>
+  <li>Summary</li>
+</ol>
+
+<h3 id="source-code">Source code</h3>
+
+<p>The finished source can be cloned from github:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/callistaenterprise/goblog.git
+&gt; git checkout P14
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P14">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="1-overview">1. Overview</h1>
+
+<p>This part of the blog series won’t introduce any new services, it will only add a new /graphql POST endpoint to the “accountservice” which will be wired to serve requests as defined by the <a href="https://graphql.org/learn/schema/">graphql schema</a> we’ll define in Go code.</p>
+
+<h1 id="2-graphql">2. GraphQL</h1>
+
+<p>GraphQL was developed internally by Facebook and was publicly released in 2015. It provides an alternative query language to RESTful and other architectures for serving data from a server to a client. It’s perhaps most unique feature is that GraphQL allows clients to define how the data requested shall be structured, rather than letting the server decide. This means that clients can fetch exactly the data required, mitigating the classic problems of fetching either too much or too little data for the use case at hand.</p>
+
+<p>I recommend digging into the <a href="https://graphql.org/learn/">official documentation</a> for more detailed explanations.</p>
+
+<h1 id="3-schemas-with-graphql-go">3. Schemas with graphql-go</h1>
+
+<p>Let’s take a quick look at setting up a GraphQL schema using key concepts such as types, field, resolve functions, root queries and the resulting schema.</p>
+
+<h4 id="31-schemas-types-and-fields">3.1 Schemas, types and fields</h4>
+<p>The schema defines what types and fields that can be selected in a GraphQL query. GraphQL isn’t tied to any particular DSL or programming language. Since this is a Go blog, I’ll use Go GraphQL schemas according to the <a href="https://github.com/graphql-go/graphql">graphql-go/graphql</a> project on github.</p>
+
+<p>Here’s the GraphQL type definition of the “AccountEvent” we introduced in part 13 of the blog series:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var accountEventType = graphql.NewObject(   // Create new object
+    graphql.ObjectConfig{                   // Declare object config
+        Name: "AccountEvent",               // Name of the type
+        Fields: graphql.Fields{             // Map declaring the fields of this type
+            "id": &amp;graphql.Field{           // Field declaration, "id" is its name 
+                Type: graphql.String,       // of type string.
+            },
+            "eventName": &amp;graphql.Field{
+                Type: graphql.String,
+            },
+            "created": &amp;graphql.Field{
+                Type: graphql.String,
+            },
+        },
+    }
+)
+</code></pre></div></div>
+
+<p>The type declaration above is about as simple as it gets with GraphQL, not that unlike a Go struct declaration.</p>
+
+<p>However, it gets a bit more hairy when we introduce Resolver functions, arguments and link together several declared types into a composite object.</p>
+
+<p>Here’s a somewhat simplified type declaration for our “Account” type that pretty much mirrors the output struct we’re currently using:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// accountType, includes Resolver functions for inner quotes and events.
+var accountType = graphql.NewObject(graphql.ObjectConfig{
+    Name: "Account",
+    Fields: graphql.Fields{
+        "id": &amp;graphql.Field{                // The id, name and servedBy fields should be familiar
+            Type: graphql.String,
+        },
+        "name": &amp;graphql.Field{
+            Type: graphql.String,
+        },
+        "servedBy": &amp;graphql.Field{
+            Type: graphql.String,
+        },
+        
+        // continued...
+</code></pre></div></div>
+
+<p>This first part is very similar to the “accountEventType” we’ve already declared, just “primitive” fields on a type, no big deal.</p>
+
+<p>However, the next part of the “accountType” declaration becomes much more complex when we declare that the “accountType” contains a <em>list</em> of “accountEventType”s and a <em>Resolve</em> function.</p>
+
+<p>We’ll see the Resolve function for actual Account objects later when we look at a GraphQL queries. In that context, the Resolve function is the piece of code that actually fetches Account structs (or whatever) from some data source (BoltDB, Hard-coded, CockroachDB …) and stuffs that data into the GraphQL runtime that makes sure the outputted data conforms with the structure requested by the query.</p>
+
+<p>The Resolve function below operates on already-fetched data (accounts) and performs filtering of each item’s “events” using the “eventName” argument if the query has specified such:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        "events": &amp;graphql.Field{                      // Here's how we declare that our "account" type can contain  
+            Type: graphql.NewList(accountEventType),   // a list field. Declare "events" as type List of the accountEvent
+                                                       // type we declared in the last code sample.
+            Args: graphql.FieldConfigArgument{         // Args declare _what_ fields we allow queries to use when filtering
+                "eventName": &amp;graphql.ArgumentConfig{  // this sublist in the context of the parent account type.
+                    Type: graphql.String,
+                },
+            },
+                                                       // Resolve functions on types allows us to use declared (and possibly supplied) 
+                                                       // args in order to perform filtering of items from a sub-list.
+            Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+                account := p.Source.(internalmodel.Account)     // Get the struct we're performing filtering on.
+
+                events := make([]model.AccountEvent, 0)         // Create a new slice to return the wanted accountEvents in.
+                
+                for _, item := range account.AccountEvents {    // Iterate over all accountEvents on this account.
+                    
+                    if item.EventName == p.Args["eventName"] {  // Add to new list only if predicate is true
+                        events = append(events, item)
+                    }
+                }
+                return events, nil                             // Return the new list.
+            },    
+        },                                                   
+        // truncated for brevity...
+</code></pre></div></div>
+
+<p>Resolve functions was the hardest part for me to get a grasp on, we’ll see a bit more Resolve code in just a little bit when looking at the Resolve function for the actual account query.</p>
+
+<h3 id="32-putting-the-schema-together">3.2 Putting the schema together</h3>
+
+<p>In order for a client to be able to fetch account objects, we need to create a <em>schema</em> consisting of a <em>SchemaConfig</em> with a <em>RootQuery</em> specifying queryable <em>Fields</em>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Schema &lt;- SchemaConfig &lt;- RootQuery &lt;- Field(s)
+</code></pre></div></div>
+
+<p>In Go code this is declared like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
+schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
+var err error
+schema, err = graphql.NewSchema(schemaConfig)
+</code></pre></div></div>
+
+<p>Deceptively simple. The actual complexity is in the <em>fields</em> argument. We’ll declare a single Field called “Account”:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Schema
+fields := graphql.Fields{
+    "Account": &amp;graphql.Field{
+        Type: graphql.Type(accountType),               // See accountType above
+        Args: graphql.FieldConfigArgument{
+            "id": &amp;graphql.ArgumentConfig{
+                Type: graphql.String,
+            },
+            "name": &amp;graphql.ArgumentConfig{
+                Type: graphql.String,
+            },
+        },
+        Resolve: resolvers.AccountResolverFunc,
+    },
+}
+</code></pre></div></div>
+
+<p>This looks an awful lot like the stuff we’ve already declared, which is kind of the point.</p>
+
+<p>My interpretation of what we’re actually seeing is that the declared “Account” field is a query on the RootQuery.</p>
+
+<ul>
+  <li>This “Account” field consists of a single GraphQL type “accountType” - e.g. exactly the type we defined above.</li>
+  <li>The “Account” defines two arguments that can be used for querying an account - id and name.</li>
+  <li>The “Account” defines a <em>Resolve</em> func that is provided by a named function reference from another package.</li>
+</ul>
+
+<p>I’d say the final schema with fields and types could be represented like this:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part14-cd.png" alt="classdiagram" /></p>
+
+<p>If we wanted a GraphQL query that returns a list of Accounts, another field could be declared such as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"AllAccounts": &amp;graphql.Field{
+    Type: graphql.NewList(accountType),          // List of accountType objects
+    Args: graphql.FieldConfigArgument{
+        "name": &amp;graphql.ArgumentConfig{
+            Type: graphql.String,
+        },
+    },
+    Resolve: resolvers.AllAccountsResolverFunc,   // Some function that returns all accounts
+},
+</code></pre></div></div>
+
+<p>That Field on the RootQuery specifies a List of accountType as its type. The single “name” argument could perhaps be implemented as a “like” search or similar in the specified “AllAccountsResolverFunc” function.</p>
+
+<h1 id="4-resolver-implementation-and-testing">4. Resolver implementation and testing</h1>
+
+<p>So, now that we have put our schema together, how do we actually tie our underlying data model to the Resolver functions declared in that “resolvers” parameter? (It’s passed as argument to the function setting up all this stuff)</p>
+
+<p>One of the sweet things about being able to pass Resolve functions that duck-types to the</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>functionName(p graphql.ResolveParams) (interface{}, error)
+</code></pre></div></div>
+
+<p>signature is that we easily can provide different implementations for unit tests and real implementations. This is done using good ol’ go interfaces and implementations:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// GraphQLResolvers defines an interface with our Resolver function(s)
+type GraphQLResolvers interface {
+	AccountResolverFunc(p graphql.ResolveParams) (interface{}, error)
+}
+
+// LiveGraphQLResolvers - actual implementation used when running outside of unit tests.
+type LiveGraphQLResolvers struct {
+
+}
+
+func (gqlres *LiveGraphQLResolvers) AccountResolverFunc(p graphql.ResolveParams) (interface{}, error) {
+	account, err := fetchAccount(p.Context, p.Args["id"].(string))
+	if err != nil {
+		return nil, err
+	}
+	return account, nil
+}
+
+// TestGraphQLResolvers - implementation used in unit tests.
+type TestGraphQLResolvers struct {
+
+}
+
+func (gqlres *TestGraphQLResolvers) AccountResolverFunc(p graphql.ResolveParams) (interface{}, error) {
+	id, _ := p.Args["id"].(string)
+	name, _ := p.Args["name"].(string)
+	for _, account := range accounts {                     // The accounts slice is declared elsewhere in the same file as test data.
+		if account.ID == id || account.NAME == name {
+			return account, nil
+		}
+	}
+	return nil, fmt.Errorf("No account found matching ID %v or Name %v", id, name)
+}
+</code></pre></div></div>
+
+<ul>
+  <li>The “live” implementation uses a “fetchAccount” function that actually talks to the other microservices (dataservice, quotes-service, imageservice) to fetch the requested account object. Nothing new there except some refactoring that makes sure our old <em>/accounts/{accountId}</em> HTTP endpoint uses the same code to get account objects as the new “fetchAccount” function used by our GraphQL resolve function.</li>
+  <li>The “test” implementation uses a hard-coded slice of Account objects and returns if matching either argument.</li>
+</ul>
+
+<p>The resolver implementation used is simply whatever the calling code supplies. In unit tests:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func TestFetchAccount(t *testing.T) {
+    initQL(&amp;TestGraphQLResolvers{}) // Test implementation passed.
+    ....
+</code></pre></div></div>
+
+<p>When started from the main func - i.e. either running standalone or when started within a Docker container), this line is invoked instead:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>initQL(&amp;LiveGraphQLResolvers{})
+</code></pre></div></div>
+
+<h1 id="5-graphql-queries">5. GraphQL queries</h1>
+
+<p>So far, we’ve only laid the groundwork. The purpose of GraphQL is after all facilitating those dynamic queries mentioned back in section #2 of this blog post.</p>
+
+<p>GraphQL <a href="http://graphql.org/learn/queries/">queries</a> in their basic form simply asks for specific fields on objects declared in the schema. For example, if we want an Account object only containing the “name” and the events, the query would look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query FetchSingleAccount {         // Query and an arbitrary name for the query. This is optional!!                          
+	Account(id: "123") {           // We want to query the "Account" field on the RootQuery having id "123"
+    	name, events{              // Include the "name" and "events" fields in the response.
+        	eventName,created      // On the "events", include only eventName and created timestamp.
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>The response would look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "data":{
+        "Account":{
+            "name":"Firstname-2483 Lastname-2483",
+            "events":[{
+                "created":"2018-02-01T15:26:34.847","eventName":"CREATED"
+            }]
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>Note that we <strong>must</strong> specify what fields we want on the events, otherwise the following error would be returned:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"Field "events" of type "[AccountEvent]" must have a sub selection.",
+</code></pre></div></div>
+
+<p>We’ll see a  more complex example in the unit tests section below.</p>
+
+<p>There’s tons of stuff one can do using GraphQL queries, read up on fragments, parameters, variables etc. <a href="http://graphql.org/learn/queries/">here</a>.</p>
+
+<h1 id="6-unit-testing">6. Unit testing</h1>
+
+<p>How do we assert that our schema is actually set up in a valid way and that our queries will work? Unit-tests to the rescue!</p>
+
+<p>All the GraphQL code has gone into the file <a href="https://github.com/callistaenterprise/goblog/blob/P14/accountservice/service/accountql.go">/accountservice/service/accountql.go</a> and thus it’s corresponding unit tests lives in <a href="https://github.com/callistaenterprise/goblog/blob/P14/accountservice/service/accountql_test.go">/accountservice/service/accountql_test.go</a>.</p>
+
+<p>Let’s start by specifying a GraphQL query as a multi-line string. The query uses variables, field selection and argument passing to the quote and events sub-fields.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var fetchAccountQuery = `query fetchAccount($accid: String!) {
+    Account(id:$accid) {
+        id,name,events(eventName:"CREATED") {
+            eventName
+        },quote(language:"en") {
+            quote
+        },imageData{id,url}
+    }
+}`
+</code></pre></div></div>
+
+<p>Next, the test function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func TestFetchAccount(t *testing.T) {
+    initQL(&amp;TestGraphQLResolvers{})                                       // #1 Init GraphQL schema with test resolvers
+    Convey("Given a GraphQL request for account 123", t, func() {
+        vars := make(map[string]interface{})                              // #2 Variables
+        vars["accid"] = "123"
+        
+        // #3 Create parameters object with schema, variables and the query string
+        params := graphql.Params{Schema: schema, VariableValues: vars, RequestString: fetchAccountQuery}
+
+        Convey("When the query is executed", func() {
+            r := graphql.Do(params)                       // #4 Execute the query   
+            rJSON, _ := json.Marshal(r)                   // #5 Transform the response into JSON
+
+            Convey("Then the response should be as expected", func() {
+            
+                // #6 Assert stuff...
+                So(len(r.Errors), ShouldEqual, 0)         
+                So(string(rJSON), ShouldEqual, `{"data":{"Account":{"events":[{"eventName":"CREATED"}],"id":"123","imageData":{"id":"123","url":"http://fake.path/image.png"},"name":"Test Testsson 3","quote":{"quote":"HEJ"}}}}`)
+            })
+        })
+    })
+}    
+</code></pre></div></div>
+
+<ol>
+  <li>The very first thing we do is to call the <em>initQL</em> func, passning our <strong>test</strong> Resolver implementation. The <em>initQL</em> func is the one that we looked at in section #3, that sets up our schema, fields etc..</li>
+  <li>We declare a String =&gt; interface{} map used to pass <a href="http://graphql.org/learn/queries/#variables">variables</a> into the query execution.</li>
+  <li>The <em>graphql.Params</em> contains the schema, variables and the actual query we want to execute.</li>
+  <li>The query is executed by passing the param object into the <em>graphql.Do(…)</em> func.</li>
+  <li>Transform response into JSON</li>
+  <li>Assert no errors and expected output.</li>
+</ol>
+
+<p>The structure of the test above makes it quite simple to write queries and test them against your schema. The actual output will of course vary depending on what test data your TestResolvers are using and how they are treating arguments passed to them.</p>
+
+<h1 id="7-wiring-the-graphql-http-endpoint">7. Wiring the GraphQL HTTP endpoint</h1>
+
+<p>All this GraphQL stuff is rather useless unless we can provide the functionality to consumers of our service. It’s time to wire the GraphQL functionality into our HTTP router!</p>
+
+<h1 id="71-code-setup">7.1 Code setup</h1>
+<p>Let’s take a look at <a href="https://github.com/callistaenterprise/goblog/blob/P14/accountservice/service/routes.go">/accountservice/service/routes.go</a> where a new <em>/graphql</em> route has been declared:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Route{
+    "GraphQL",  // Name
+    "POST",     // HTTP method
+    "/graphql", // Route pattern
+    gqlhandler.New(&amp;gqlhandler.Config{
+        Schema: &amp;schema,
+        Pretty: false,
+    }).ServeHTTP,
+},
+</code></pre></div></div>
+
+<p>Quite simple actually - the endpoint takes the query as POST body and the handler function is provided by a <a href="https://github.com/graphql-go/handler">graphql-go/handler</a> that accepts <em>our</em> schema (declared in accountql.go within the same package) as argument.</p>
+
+<p>We just need to make sure <em>initQL(..)</em> is invoked someplace with our <em>live</em> resolver functions, for example in our <a href="https://github.com/callistaenterprise/goblog/blob/P14/accountservice/service/router.go">router.go</a> before initializing the routes:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func NewRouter() *mux.Router {
+
+	initQL(&amp;LiveGraphQLResolvers{})               // HERE!!
+
+	router := mux.NewRouter().StrictSlash(true)
+	for _, route := range routes {
+	    // rest omitted ...
+</code></pre></div></div>
+
+<h3 id="72-build-and-run">7.2 Build and run</h3>
+
+<p><em>(A note on <strong>copyall.sh</strong>: There’s just one change to our copyall.sh script this time around, which is that we’re back to using standard logging instead of our little “gelftail”. While using a Logging-as-a-Service is a must for production environment, it’s a bit inconvenient when developing. Since Docker added “docker service logs [servicename]” a while back, it’s now much easier seeing the logs without having to look up container id’s using <strong>docker ps</strong> . So, for now we’ll do our logging old-school.)</em></p>
+
+<p>To test our GraphQL stuff in a runtime environment, start your Docker Swarm mode server, make sure you have branch P14 checked out from git and run the <em>./copyall.sh</em> script to build and deploy.</p>
+
+<p>As always, deployment take a little while, but once everything is up and running, our brand new http://accountservice:6767/graphql endpoint should be ready for action.</p>
+
+<p>Let’s use curl to try it out! 
+<em>(Note that I’m using 192.168.99.100 since that’s the IP of my local Docker Swarm mode node)</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl -d '{Account(id: "ffd508b5-5f87-4246-9867-ead4ecb01357") {name, events{eventName, created}}}' -X POST -H "Content-Type: application/graphql" http://192.168.99.100:6767/graphql
+
+{"data":{"Account":{"events":[{"created":"2018-02-01T15:26:34.847","eventName":"CREATED"}],"name":"Firstname-2483 Lastname-2483"}}}
+</code></pre></div></div>
+
+<p>Note that we’re passing an appropriate Content-Type header.</p>
+
+<p>I’ve also exposed the <em>/graphql</em> endpoint in our Zuul EDGE server by adding an entry to the application.yaml. So we can call it through our reverse-proxy too including HTTPS termination:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl -k -d '{Account(id: "ffd508b5-5f87-4246-9867-ead4ecb01357") {name, events{eventName, created}}}' -X POST -H "Content-Type: application/graphql" https://192.168.99.100:8765/api/graphql
+</code></pre></div></div>
+
+<p>Note that the ID used in the queries above is for an Account already present in my CockroachDB Accounts database.</p>
+
+<p>To obtain an account id to query with, I’ve added a two helper GET endpoints to the “dataservice” exposed at port 7070. First, a little <em>/random</em> endpoint you can use to get hold of an Account instance, e.g:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://192.168.99.100:7070/random
+{"ID":"10000","name":"Person_0","events":[{"ID":"8f1d0b2f-aa78-4672-85e0-5018870de550","eventName":"CREATED","created":"2018-05-06T09:21:06.747"}
+</code></pre></div></div>
+
+<p>If your database is empty (e.g. the above returns a HTTP 500), it should be possible to seed 100 accounts using another little utility endpoint <em>/seed</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://192.168.99.100:7070/seed
+(wait a while)
+{'result':'OK'}
+</code></pre></div></div>
+
+<p><strong>Please note that running /seed removes all entries from your CockroachDB!!</strong></p>
+
+<h3 id="73-introspecting-the-schema">7.3 Introspecting the schema</h3>
+
+<p>A very useful trait of GraphQL is it’s capability to describe itself to clients using <a href="https://graphql.org/learn/introspection/">introspection</a>.</p>
+
+<p>By doing queries on __schema and __type, we can obtain info about the schema we declared. This query returns all types in the schema:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>Response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    data": {
+        "__schema": {
+            "types": [
+                {
+                "name": "Account"
+                },
+                  {
+                "name": "__Type"
+                },
+                  {
+                "name": "Boolean"
+                },
+                  {
+                "name": "__DirectiveLocation"
+                },
+                  {
+                "name": "AccountImage"
+                },
+                ... omitted for brevity ...
+            ],
+        }
+    }
+}    
+</code></pre></div></div>
+
+<p>We can also take a closer look at the “Account” type, which after all is what we’re usually dealing with in this API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  __type(name: "Account") {
+    name
+    fields {
+      name
+      type {
+        name
+        kind
+        ofType {
+          name
+          kind
+        }
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>Response:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+"data": {
+    "__type": {
+    "fields": [
+        {
+            "name": "events",
+            "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AccountEvent"
+                }
+            }
+        },
+        {
+            "name": "id",
+            "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+            }
+        },
+        ... Omitted for brevity ...
+},  
+</code></pre></div></div>
+
+<p>The query lists available fields and their type on the “Account” type, including the type of list LIST kind, e.g. AccountEvent.</p>
+
+<h3 id="73-graphiql">7.3 Graphiql</h3>
+
+<p>There’s 3rd party GUIs that uses the introspection functionality to provide a GUI to explore and prototype queries, most notably <a href="https://github.com/graphql/graphiql">graphiql</a>.</p>
+
+<p>One can install GraphiQL into the cluster or run a local client. I’m using <a href="https://github.com/skevy/graphiql-app">graphiql-app</a> that’s an Electron wrapper around Graphiql. To install on a Mac, use brew:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; brew cask install graphiql
+</code></pre></div></div>
+
+<p>Point the URL at our API running inside the local Docker Swarm mode cluster and enjoy full code-completion etc for writing queries or looking at the schema:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part14-graphiql.png" alt="graphiql" /></p>
+
+<h1 id="8-summary">8. Summary</h1>
+
+<p>That’s about it! In this part, we added support for querying our account objects using GraphQL. While our usage is pretty basic, it should get you started using GraphQL with Go. There’s a lot more to explore when it comes to GraphQL, for further studies I recommend the <a href="http://graphql.org/learn/">official introduction</a> as well as the <a href="https://wehavefaces.net/">wehavefaces.net</a>.</p>
+
+<p>In the <a href="../../../09/12/go-blog-series-part15/index.html">next part</a>, we’ll finally get to adding support for monitoring using Prometheus endpoints.</p>
+
+<p>Please help spread the word! Feel free to share this blog post using your favorite social media platform, there’s some icons below to get you started.</p>
+
+<p>Until next time,</p>
+
+<p>// Erik</p>
+
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part14&url=https://callistaenterprise.se/blogg/teknik/2018/05/07/go-blog-series-part14/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part14&u=https://callistaenterprise.se/blogg/teknik/2018/05/07/go-blog-series-part14/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part14&url=https://callistaenterprise.se/blogg/teknik/2018/05/07/go-blog-series-part14/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

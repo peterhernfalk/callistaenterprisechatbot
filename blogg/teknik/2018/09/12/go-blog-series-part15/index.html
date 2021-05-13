@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Go Microservices blog series, part 15 - Monitoring with Prometheus. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Go Microservices blog series, part 15 - Monitoring with Prometheus.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-09-12T00:00:00+00:00">
+            12 September 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>In this part of the Go microservices <a href="../../../../2017/02/17/go-blog-series-part1.html">blog series</a>, we’ll take on monitoring our microservices using <a href="https://prometheus.io">Prometheus</a> and graphing our data using <a href="https://grafana.com/">Grafana</a>.</p>
+
+<p><em>(Please note that this is <strong>not</strong> an in-depth blog post about all the capabilities and features of Prometheus or Grafana. There’s better resources for that.)</em></p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li>Overview</li>
+  <li>Prometheus</li>
+  <li>Service discovery</li>
+  <li>Exposing metrics in Go services</li>
+  <li>Querying in Prometheus</li>
+  <li>Grafana</li>
+  <li>Summary</li>
+</ol>
+
+<h3 id="source-code">Source code</h3>
+
+<p>The finished source can be cloned from github:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; git clone https://github.com/callistaenterprise/goblog.git
+&gt; git checkout P15
+</code></pre></div></div>
+
+<p><em>Note: Most of the Go source code for the blog series was rewritten in July 2019 to better reflect contemporary idiomatic Go coding guidelines and design patterns. However, the corresponding <a href="https://github.com/callistaenterprise/goblog/tree/P15">git branch</a> for each part of the series remains unchanged in order to stay aligned with the content of each installment. For the latest and greatest code, look at the <a href="https://github.com/callistaenterprise/goblog">master</a> branch in github.</em></p>
+
+<h1 id="1-overview">1. Overview</h1>
+<p>In recent years, <a href="https://prometheus.io">Prometheus</a> has emerged as one of the major players in the Open Source space regarding collection of metric and monitoring data from (micro)services. At its heart, Prometheus stores metric values at a given millisecond in time in a <a href="https://en.wikipedia.org/wiki/Time_series">time series</a> database, optionally with one or more labels.</p>
+
+<p>In this blog post we’ll deploy some new services and applications.</p>
+
+<p>The architectural overview of the monitoring solution:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-overview.png" alt="overview" /></p>
+
+<p>During the course of this blog post, we’ll accomplish the following:</p>
+
+<ul>
+  <li>Adding a <em>/metrics</em> endpoint to each microservice served by the prometheus <a href="https://godoc.org/github.com/prometheus/client_golang/prometheus/promhttp#Handler">HttpHandler</a>.</li>
+  <li>Instrumenting our Go-code so the latencies and response sizes of our RESTful endpoints are made available at <em>/metrics</em>.</li>
+  <li>Writing and deploying a <a href="https://docs.docker.com/engine/swarm/">Docker Swarm mode</a>-specific discovery microservice which lets Prometheus know where to find <em>/metrics</em> endpoints to scrape in an ever-changing microservice landscape.</li>
+  <li>Deploying the Prometheus server in our Docker Swarm mode cluster.</li>
+  <li>Deployment of Grafana in our Docker Swarm mode cluster.</li>
+  <li>Querying and Graphing in Grafana.</li>
+</ul>
+
+<h1 id="2-prometheus">2. Prometheus</h1>
+<p>Prometheus is an open-source toolkit for monitoring and alterting based on an embedded <a href="https://en.wikipedia.org/wiki/Time_series_database">times-series</a> database, a query DSL and various mechanics for scraping metrics data off endpoints.</p>
+
+<p>In practice, from our perspective that boils down to:</p>
+
+<ul>
+  <li>A standardized format that services use to expose metrics.</li>
+  <li>Client libraries for exposing the metrics over HTTP.</li>
+  <li>Server software for scraping metrics endpoints and storing the data in the time-series database.</li>
+  <li>A RESTful API for querying the time-series data that can be used by the built-in GUI as well as 3rd-party applications such as Grafana.</li>
+</ul>
+
+<p>The Prometheus server is written in Go.</p>
+
+<h3 id="21-metric-types">2.1 Metric types</h3>
+
+<p>Prometheus includes four different kinds of metrics:</p>
+
+<ul>
+  <li><strong>Counter</strong> - numeric values that only may increase such as number of requests served.</li>
+  <li><strong>Gauge</strong> - numerical values that can go both up or down. Temperatures, blood pressure, heap size, CPU utilization etc.</li>
+  <li><strong>Histogram</strong> - representation of the distribution of numerical data, usually placed into buckets. The most common use in monitoring is for measuring response times and placing each observation into a bucket.</li>
+  <li><strong>Summary</strong> - also samples observations like histograms, but uses quantiles instead of buckets.</li>
+</ul>
+
+<p>I strongly recommend this JWorks <a href="https://ordina-jworks.github.io/monitoring/2016/09/23/Monitoring-with-Prometheus.html">blog post</a> for in-depth information and explanations about Prometheus concepts.</p>
+
+<h3 id="22-the-exported-data-format">2.2 The exported data format</h3>
+<p>Prometheus client libraries expose data using a really simple format:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 1.259432e+06
+</code></pre></div></div>
+
+<p>Labels and metadata about a metric such as <em>go_memstats_heap_alloc_bytes</em> (as exposed by the <a href="https://godoc.org/github.com/prometheus/client_golang">Go client library</a>) comes with corresponding <em># HELP</em> and <em># TYPE</em> metadata.</p>
+
+<ul>
+  <li>HELP - Just a description of the metric. In the case above, specified by the Go client library. For user-defined metrics, you can of course write whatever you want.</li>
+  <li>TYPE - Prometheus defines a number of metric <a href="https://prometheus.io/docs/concepts/metric_types/">types</a>: See previous section.</li>
+</ul>
+
+<p>Here’s an example <em>summary</em> metric from our lovely <em>“accountservice”</em> exposing the <em>/accounts/{accountId}</em> endpoint:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP accountservice_GetAccount GET /accounts/{accountId}
+# TYPE accountservice_GetAccount summary
+accountservice_GetAccount{service="normal",quantile="0.5"} 0.02860325
+accountservice_GetAccount{service="normal",quantile="0.9"} 0.083001706
+accountservice_GetAccount{service="normal",quantile="0.99"} 0.424586416
+accountservice_GetAccount_sum{service="normal"} 6.542147227
+accountservice_GetAccount_count{service="normal"} 129
+</code></pre></div></div>
+
+<p>This <a href="https://prometheus.io/docs/concepts/metric_types/#summary">summary</a> metric captures the duration in seconds spent by each request, exposing this data as three quantiles (50th, 90th and 99th percentile) as well as total time spent and number of requests.</p>
+
+<h3 id="24-deploying-the-prometheus-server">2.4 Deploying the Prometheus server</h3>
+<p>We’ll use the standard <em>prom/prometheus</em> docker image from docker hub with a custom <a href="https://github.com/callistaenterprise/goblog/blob/P15/support/prometheus/prometheus.yml">configuration</a> file.</p>
+
+<p>If you’ve checked out P15 from git, enter the <em>/support/prometheus</em> directory where we have a sample Dockerfile as well as the <em>prometheus.yaml</em> linked above.</p>
+
+<p>Dockerfile:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM prom/prometheus
+ADD ./prometheus.yml /etc/prometheus/prometheus.yml
+</code></pre></div></div>
+
+<p>To build and deploy prometheus with our custom config from the <em>support/prometheus</em> folder:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker build -t someprefix/prometheus .
+&gt; docker service rm prometheus
+&gt; docker service create -p 9090:9090 --constraint node.role==manager --mount type=volume,source=swarm-endpoints,target=/etc/swarm-endpoints/,volume-driver=local --name=prometheus --replicas=1 --network=my_network someprefix/prometheus
+</code></pre></div></div>
+
+<p>Prometheus should now be up-and-running on port 9090 of your cluster.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-prom1.png" alt="promethus server 1" /></p>
+
+<p><em>Please note that this is a non-persistent setup. In a real scenario, you’d want to set it up with requisite persistent storage.</em></p>
+
+<h1 id="3-service-discovery">3. Service discovery</h1>
+<p>How does Prometheus know which endpoints to scrape for metric data?</p>
+
+<p>A vanilla install of Prometheus will just scrape itself which isn’t that useful. Luckily, scrape target discovery is highly <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/">configurable</a> with built-in support for various container orchestrators, cloud providers and configuration mechanisms.</p>
+
+<p>However, discovery of containers in Docker Swarm mode is not one of the officially supported mechanisms, so we’ll use the <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Cfile_sd_config%3E">file_sd_config</a> discovery configuration option instead. <em>file_sd_config</em> provides a generic way of letting Prometheus know which endpoints to scrape by reading a JSON file describing endpoints, ports and labels. The path is configured in Prometheus <em>prometheus.yml</em> config file, i.e:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scrape_configs:
+  - job_name: swarm-service-endpoints
+    file_sd_configs:
+      - files:
+        - /etc/swarm-endpoints/swarm-endpoints.json
+</code></pre></div></div>
+
+<p><em>/etc/swarm-endpoints</em> is a volume mount that Prometheus server will <strong>read</strong> from, while our discovery application described in section 3.2 will <strong>write</strong> the swarm-endpoints.json file to the very same volume mount.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-discovery.png" alt="discovery overview" /></p>
+
+<h3 id="31-the-json-file_sd_config-format">3.1 The JSON file_sd_config format</h3>
+<p>The JSON format is simple, consisting of a list of entries having one or more “targets” and a map of key-value “label” pairs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[
+  {
+    "targets": [
+      "10.0.0.116:6767",
+      "10.0.0.112:6767",
+    ],
+    "labels": {
+      "task": "accountservice"
+    }
+  },
+  ....... 
+]
+</code></pre></div></div>
+
+<p>This example shows our “accountservice” running two instances. Remember that we cannot address the accountservice as a Docker Swarm mode “service” in this use-case since we want to scrape each running instance for its <em>/metrics</em>. Aggregation can be handled using the Query DSL of Prometheus.</p>
+
+<h3 id="32-the-discovery-application">3.2 The discovery application</h3>
+<p>I decided to write a simple discovery application (in Go of course!) to accomplish the task described above. It’s rather simple and fits into a single source file.</p>
+
+<p>It does the following:</p>
+
+<ol>
+  <li>Queries the Docker API for running tasks every 15 seconds.</li>
+  <li>Builds a list of scrape targets, grouped buy their “task” label. (See 3.1)</li>
+  <li>Writes the result as swarm-endpoints.json to the mounted <em>/etc/swarm-endpoints/</em> volume.</li>
+  <li>Goto 1.</li>
+</ol>
+
+<p>Some key parts of the implementation:</p>
+
+<h5 id="main-func">Main func</h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func main() {
+	logrus.Println("Starting Swarm-scraper!")
+
+	// Connect to the Docker API
+	endpoint := "unix:///var/run/docker.sock"
+	dockerClient, err := docker.NewClient(endpoint)
+	if err != nil {
+		panic(err)
+	}
+
+	// Find the networkID we want to address tasks on.
+	findNetworkId(dockerClient, networkName)
+
+	// Start the task poller, inlined function.
+	go func(dockerClient *docker.Client) {
+		for {
+			time.Sleep(time.Second * 15)
+			pollTasks(dockerClient)
+		}
+	}(dockerClient)
+
+	// Block...
+	log.Println("Waiting at block...")
+    ... some code to stop the main method from exiting ...
+}
+</code></pre></div></div>
+
+<p>Quite straightforward - obtain a docker client, determine ID of Docker network we want to work on (more on that later) and start the goroutine that will re-write that JSON file every 15 seconds.</p>
+
+<h5 id="polltasks-func">pollTasks func</h5>
+<p>Next, the pollTasks function performs the actual work. It’s objective is to transform the response of the <em>ListTasks</em> call from the Docker API into JSON structured according to the <em>file_sd_config</em> format we saw earlier in section 3.1. We’re using a struct for this purpose:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type ScrapedTask struct {
+	Targets []string          `json:"targets"`
+	Labels  map[string]string `json:"labels"`
+}
+</code></pre></div></div>
+
+<p>The “Targets” and “Labels” are mapped into their expected lower-cased JSON names using json-tags.</p>
+
+<p>Next, the actual code that does most of the work. Follow the comments.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func pollTasks(client *docker.Client) {
+
+    // Get running tasks (e.g. containers) from the docker client.
+	tasks, _ := client.ListTasks(docker.ListTasksOptions{Filters: filters})
+	
+	// Initialize a map that holds one "ScrapedTask" for a given serviceID
+	tasksMap := make(map[string]*ScrapedTask)
+
+    // Iterate over the returned tasks.
+	for _, task := range tasks {
+		
+		// Lookup service
+		service, _ := client.InspectService(task.ServiceID)
+
+		// Skip if service is in ignoredList, e.g. don't scrape prometheus...
+		if isInIgnoredList(service.Spec.Name) {
+			continue
+		}
+		portNumber := "-1"
+
+		// Find HTTP port of service.
+		for _, port := range service.Endpoint.Ports {
+			if port.Protocol == "tcp" {
+				portNumber = fmt.Sprint(port.PublishedPort)
+			}
+		}
+
+		// Skip if no exposed tcp port
+		if portNumber == "-1" {
+			continue
+		}
+
+        // Iterate network attachments on task
+        for _, netw := range task.NetworksAttachments {
+            
+            // Only extract IP if on expected network.
+            if netw.Network.ID == networkID {
+                // The process functions extracts IP and stuffs IP+service name into the ScrapedTask instance for the
+                // serviceID. 
+                if taskEntry, ok := tasksMap[service.ID]; ok {
+                    processExistingTask(taskEntry, netw, portNumber, service)
+                } else {
+                    processNewTask(netw, portNumber, service, tasksMap)
+                }
+            }
+        }
+	}
+
+	// Transform values of map into slice.
+	taskList := make([]ScrapedTask, 0)
+	for _, value := range tasksMap {
+		taskList = append(taskList, *value)
+	}
+
+	// Get task list as JSON
+	bytes, err := json.Marshal(taskList)
+	if err != nil {
+		panic(err)
+	}
+
+    // Open and write file
+	file, err := os.Create("/etc/swarm-endpoints/swarm-endpoints.json")
+	defer file.Close()
+	if err != nil {
+		fmt.Errorf("Error writing file: %v\n", err.Error())
+		panic(err.Error())
+	}
+	file.Write(bytes)
+}
+</code></pre></div></div>
+
+<p>Yes, the function is a bit too long, but it should be relatively easy to make sense of it. A few notes:</p>
+
+<ul>
+  <li>Networks: We will only look up the IP address of a task if it is on the same network as we specified as a command-line argument. Otherwise, we’ll risk trying to scrape IP-adresses that doesn’t resolve properly.</li>
+  <li>Port exposed: The service must publish a port, otherwise the scraper can’t reach the <em>/metrics</em> endpoint of the service.</li>
+  <li>Targets: Services having more than one instance gets several entries in the Targets slice of their ScrapedTask.</li>
+</ul>
+
+<p>There’s not much more to it than this. Feel free to check out the complete <a href="https://github.com/callistaenterprise/goblog/blob/P15/swarm-prometheus-discovery/main.go">source</a>.</p>
+
+<p>Note that there <a href="https://github.com/ContainerSolutions/prometheus-swarm-discovery">already exists</a> a similar (more capable) project on github for this purpose one could try as well.</p>
+
+<h3 id="33-containerization">3.3 Containerization</h3>
+<p>When packaging our discovery microservice into a Docker image, we use a very simple Dockerfile:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM iron/base
+
+ADD swarm-prometheus-discovery-linux-amd64 /
+ENTRYPOINT ["./swarm-prometheus-discovery-linux-amd64","-network", "my_network", "-ignoredServices", "prometheus,grafana"]
+</code></pre></div></div>
+
+<p>Note that we aren’t exposing any ports for inbound traffic since no one needs to ask the service anything. Also note the <em>-network</em> and <em>-ignoredServices</em> arguments:</p>
+
+<ul>
+  <li>-network: Name of the docker network to query</li>
+  <li>-service: Service names of services we <em>don’t</em> want to scrape. The example above specifies <em>prometheus</em> and <em>grafana</em>, but could be expanded to more known supporting services that <strong>doesn’t</strong> expose Prometheus endpoints at <em>/metrics</em> such as Netflix Zuul, Hystrix, RabbitMQ etc.</li>
+</ul>
+
+<h3 id="34-deployment">3.4 Deployment</h3>
+<p>To easily build &amp; deploy the discovery service to Docker Swarm, there’s a simple <a href="https://github.com/callistaenterprise/goblog/blob/P15/disc.sh">shell script</a> whose content should be quite familiar by now:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service create  --constraint node.role==manager\
+--mount type=volume,source=swarm-endpoints,target=/etc/swarm-endpoints/\    &lt;-- HERE!
+--mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock\  &lt;-- HERE!
+--name=swarm-prometheus-discovery --replicas=1 --network=my_network \
+someprefix/swarm-prometheus-discovery
+</code></pre></div></div>
+
+<p>The two mounts may use a bit extra explanation:</p>
+
+<ul>
+  <li><em>–mount type=volume,source=swarm-endpoints,target=/etc/swarm-endpoints/</em> - This argument tells <em>docker service create</em> to mount the <em>volume</em> named “swarm-endpoints” at <em>/etc/swarm-endpoints/</em> in the file system of the running container. As described in the start of this section, we’ll configure the prometheus server to load its scrape targets from the same volume mount.</li>
+  <li><em>–mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock</em> - This argument creates a <em>bind mount</em> to the docker.sock, allowing the discovery service to directly talk to the Docker API.</li>
+</ul>
+
+<h1 id="4-exposing-metrics-in-go-services">4. Exposing metrics in Go services</h1>
+<p>Next, we’ll add the Go code necessary for making our microservices publish monitoring data in prometheus format on <em>/metrics</em> as well as making sure our RESTful endpoints (such as <em>/accounts/{accountId}</em>) produces prometheus monitoring data picked up and published on <em>/metrics</em>.</p>
+
+<p><em>(If you’ve been following this series for a long time, you may notice that some of the <a href="https://github.com/callistaenterprise/goblog/blob/P15/common/router/route.go">Route</a> stuff has been moved into common which facilitates some long-overdue code reuse.</em>)</p>
+
+<h3 id="41-adding-the-metrics-endpoint">4.1 Adding the /metrics endpoint</h3>
+<p>The <em>/metrics</em> endpoint Prometheus wants to scrape doesn’t appear by itself. We need to add a Route at <em>/metrics</em> that specifies a HTTP handler from the <a href="https://github.com/prometheus/client_golang">Prometheus Go client</a> library:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Route{
+    "Prometheus",
+    "GET",
+    "/metrics",
+    promhttp.Handler().ServeHTTP,  &lt;-- Handler from prometheus
+    false,                         &lt;-- Flag indicating whether to instrument this endpoint.
+},
+</code></pre></div></div>
+
+<p>Note the new “false” argument. I’ve added it so we can control which endpoints of the microservice to apply Prometheus middleware for (see next section).</p>
+
+<h3 id="42-declaring-our-middleware">4.2 Declaring our middleware</h3>
+<p>In our “accountservice” we have a number of RESTful HTTP endpoints such as:</p>
+
+<ul>
+  <li>/accounts/{accountId} GET - Gets a single account</li>
+  <li>/graphql POST - GraphQL queries</li>
+  <li>/accounts POST - Create new account</li>
+  <li>/health GET - Healthcheck</li>
+</ul>
+
+<p>We should definitely add prometheus monitoring for the first three endpoints, while monitoring the <em>/health</em> endpoint isn’t that interesting.</p>
+
+<p>For a typical RESTful endpoint, we probably want to monitor number of requests and latencies for each request. As each data point is placed in a time series that should suffice for producing good metrics for API usage and performance.</p>
+
+<p>To accomplish this, we want a <a href="https://github.com/prometheus/client_golang/blob/master/prometheus/summary.go#L404">SummaryVec</a> produced per endpoint. Picking between summaries and histograms isn’t exactly easy, check <a href="https://prometheus.io/docs/practices/histograms/">this article</a> for some more info.</p>
+
+<h3 id="43-adding-a-middleware-for-measuring-http-requests">4.3 Adding a middleware for measuring HTTP requests</h3>
+
+<p>Capturing metrics is performed by injecting a Go http.Handler using the middleware pattern (<a href="https://hackernoon.com/simple-http-middleware-with-go-79a4ad62889b">example</a>). We’re using the most simple option where we chain handlers together, i.e:</p>
+
+<p><strong><a href="https://github.com/callistaenterprise/goblog/blob/P15/accountservice/service/router.go">router.go</a></strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// NewRouter creates a mux.Router and returns a pointer to it.
+func NewRouter() *mux.Router {
+
+	initQL(&amp;LiveGraphQLResolvers{})
+
+	muxRouter := mux.NewRouter().StrictSlash(true)
+
+	for _, route := range routes {
+
+        // create summaryVec for endpoint
+		summaryVec := monitoring.BuildSummaryVec(route.Name, route.Method+" "+route.Pattern)
+
+		// Add route to muxRouter, including middleware chaining and passing the summaryVec to the WithMonitoring func.
+		muxRouter.Methods(route.Method).
+			Path(route.Pattern).
+			Name(route.Name).
+			Handler(monitoring.WithMonitoring(withTracing(route.HandlerFunc, route), route, summaryVec)) // &lt;-- CHAINING HERE!!!
+	}
+
+	logrus.Infoln("Successfully initialized routes including Prometheus.")
+	return muxRouter
+}
+</code></pre></div></div>
+
+<p><em>monitoring.BuildSummaryVec()</em> is a factory function in our <em>/goblog/common</em> library that creates an SummaryVec instance and registers it with Prometheus, see code <a href="https://github.com/callistaenterprise/goblog/blob/P15/common/monitoring/monitoring.go">here</a>. The Go Prometheus Client API can be a bit complex IMHO, though you should be fine if you follow their <a href="https://github.com/prometheus/client_golang/blob/master/examples/random/main.go">examples</a>.</p>
+
+<p>The <em>monitoring.WithMonitoring()</em> function is only invoked once, when setting up the middleware chain. It will either return the <em>next</em> handler if the route being processed declares that it doesn’t want monitoring, or the inlined http.Handler function declared after the if-statement:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func WithMonitoring(next http.Handler, route Route, summary *prometheus.SummaryVec) http.Handler {
+    
+    // Just return the next handler if route shouldn't be monitored
+    if !route.Monitor {
+        return next
+    }
+
+    return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+       // impl coming up ...
+    }
+}
+</code></pre></div></div>
+
+<p>The implementation of our Prometheus monitoring middleware that will be executed on each call:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+    start := time.Now()                    // Start time of the invocation
+    next.ServeHTTP(rw, req)                // Invoke the next handler
+    duration := time.Since(start)          // Record duration since start after the wrapped handler is done
+
+    summary.WithLabelValues("duration").Observe(duration.Seconds())  // Store duration of request under the "duration" label.
+
+    size, err := strconv.Atoi(rw.Header().Get("Content-Length"))     // Get size of response, if possible.
+    if err == nil {
+        summary.WithLabelValues("size").Observe(float64(size))       // If response contained Content-Length header, store under the "size" label.
+    }
+})
+</code></pre></div></div>
+
+<p>To sum things up, we’ve done the following with the codebase of our “accountservice”:</p>
+
+<ul>
+  <li>Added a boolean to our Route struct so we can enable/disable metrics for it.</li>
+  <li>Added code that creates a SummaryVec instance per endpoint.</li>
+  <li>Added a new middleware function that measures duration and response size for a HTTP request and stuffs the results into the supplied SummaryVec.</li>
+  <li>Chained the new middleware func into our existing chain of middlewares.</li>
+</ul>
+
+<h3 id="44-verify-metrics-are-available">4.4 Verify /metrics are available</h3>
+
+<p>To speed things up a bit, there’s a new shell script <a href="https://github.com/callistaenterprise/goblog/blob/P15/as.sh">as.sh</a> one can use to quickly rebuild and redeploy the “accountservice”.</p>
+
+<p>After build and redeploy, our “accountservice” should now have a <em>/metrics</em> endpoint. Try curl-ing http://192.168.99.100:6767/metrics</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://192.168.99.100:6767/metrics
+  
+  # HELP go_gc_duration_seconds A summary of the GC invocation durations.
+  # TYPE go_gc_duration_seconds summary
+  go_gc_duration_seconds{quantile="0"} 5.6714e-05
+  go_gc_duration_seconds{quantile="0.25"} 0.000197476
+  ....
+</code></pre></div></div>
+
+<p>Out of the box, the Go Prometheus HTTP handler provides us with a ton of Go runtime statistics - memory usage, GC stats and CPU utilization. Note that we need to call our <em>/accounts/{accountId}</em> endpoint at least one time to get data for that endpoint:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl http://192.168.99.100:6767/accounts/10000
+.... response from the endpoint ...
+
+&gt; curl http://192.168.99.100:6767/metrics
+# HELP accountservice_GetAccount GET /accounts/{accountId}
+# TYPE accountservice_GetAccount summary
+accountservice_GetAccount{service="duration",quantile="0.5"} 0.014619157
+accountservice_GetAccount{service="duration",quantile="0.9"} 0.018249754
+accountservice_GetAccount{service="duration",quantile="0.99"} 0.156361284
+accountservice_GetAccount_sum{service="duration"} 0.8361315079999999
+accountservice_GetAccount_count{service="duration"} 44
+accountservice_GetAccount{service="size",quantile="0.5"} 293
+...
+</code></pre></div></div>
+
+<p>There they are! One can note the naming convention used, e.g: [namespace]<em>[route name]</em>*{[label1]=[“labelvalue1”],..}, we’ll get back to how these names and labels are used in the Query DSL later in the Prometheus or Grafana GUI:s.</p>
+
+<h1 id="5-querying-in-prometheus">5 Querying in Prometheus</h1>
+
+<p>If everything works out, we should now have an “accountservice” producing metrics which the Prometheus Server knows where to scrape. Let’s open up the Prometheus GUI at http://192.168.99.100:9090 again and execute our first query. To get some data, I’ve run a simple script that calls the <em>/accounts/{accountId}</em> endpoint with 3 req/s.</p>
+
+<p>We’ll do two simple Prometheus queries and use the graphing functionality in Prometheus Server to display the result.</p>
+<h3 id="51-total-number-of-requests">5.1 Total number of requests</h3>
+
+<p>We’ll start with just counting the total number of requests. We’ll do this by the following query:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>accountservice_GetAccount_count{service="duration"}   
+</code></pre></div></div>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-graph1.png" alt="graph 1" /></p>
+
+<p>This just plots our linearly increasing (we’re running 3 req/s) count for the GetAccount route.</p>
+
+<h3 id="52-latency-percentiles-in-milliseconds">5.2 Latency percentiles in milliseconds</h3>
+<p>Let’s enter the following into the query field, where we select all quantiles for the “accountservice_GetAccount” having the “duration” label. We multiply the result by 1000 to convert from seconds into milliseconds.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>accountservice_GetAccount{service="duration"} * 1000
+</code></pre></div></div>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-graph2.png" alt="graph 2" /></p>
+
+<p>I’ve selected the “stacked” visualization option and it’s quite easy to see that our 50th percentile (e.g. avg) sits at about 16ms while the 99th percentile duration is approx 80 ms.</p>
+
+<p>The Prometheus GUI can do more, but for more eye-appealing visualizations we’ll continue by getting Grafana up and running and configured to use our Prometheus server as datasource.</p>
+
+<h1 id="6-grafana">6. Grafana</h1>
+<p><a href="https://grafana.com/">Grafana</a> is a platform for visualization and analytics of time series data. It’s used for many purposes, visualization of Prometheus metrics is just one of many and fully describing the capabilties of Grafana is definitely out of the scope of this blog post.</p>
+
+<p>We’ll do the following:</p>
+
+<ul>
+  <li>Getting Grafana up-and-running in our cluster</li>
+  <li>Configure it to use prometheus as data source</li>
+  <li>Create a dashboard plotting some data from our Accountservice</li>
+</ul>
+
+<h3 id="61-running-grafana-in-our-cluster">6.1 Running Grafana in our cluster</h3>
+<p>For the purpose of this blog post, we’ll run Grafana without persistence etc which makes it a breeze to set up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker service create -p 3000:3000 --constraint node.role==manager --name=grafana --replicas=1 --network=my_network grafana/grafana
+</code></pre></div></div>
+
+<p>Wait until it’s done and fire up your web browser at http://192.168.99.100:3000. Grafana will prompt you to change your password and then take you to its Dashboard:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana1.png" alt="grafana 1" /></p>
+
+<p><em>Note that we’re running Grafana without any persistent storage. In a real setup, you’d set it up properly so your user(s) and reports survives a cluster restart!</em></p>
+
+<h3 id="62-add-prometheus-as-data-source">6.2 Add Prometheus as Data Source</h3>
+<p>Click the “Add datasource” button and enter <em>http://192.168.99.100:9090</em> as server URL. Note that we’ll using “Browser” access which means that Grafana will communicate with the Prometheus server through your browser as proxy. It sort-of works using Server-mode with http://prometheus:9090 as URL (which is how it should be done), but I keep getting issues with queries just refusing to complete so I’d recommend using browser-mode when just trying things out.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana2.png" alt="grafana 2" /></p>
+
+<h3 id="63-create-a-dashboard-using-our-datasource">6.3 Create a dashboard using our datasource</h3>
+<p>Click the plus(+) button in the upper-left and then select “Graph” as panel type. Next, click the chevron on “Panel title” and select “Edit” in the drop-down menu. You should see something such as:</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana3.png" alt="grafana 3" /></p>
+
+<p>As you can see, you should select our “Prometheus Go” datasource from the Data Source drop-down. We should now be able to write our first query, using the same query language as we used in section 5.</p>
+
+<p>If you start typing in the Query field, you’ll get code-completion to help you get started. In the image below, I’ve typed “acc” which immediately results in a number of things we could add to our dashboard.</p>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana4.png" alt="grafana 4" /></p>
+
+<p>Grafana is very powerful, with an overwhelming amount of options and capabilties for creating graphs, dashboards and analytics. There are people and blogs better suited to digging into exquisite details and graph skills, so I’ll settle for describing the queries used for creating a dashboard with two panels. Both show the system running three instances of the “accountservice” under a light load.</p>
+
+<h4 id="accountservice-average-latency-over-a-1-minute-sliding-window">Accountservice average latency over a 1 minute sliding window.</h4>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana-graph1.png" alt="graph1" /></p>
+
+<p>For the average latencies we’ll use the following query:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>avg_over_time(accountservice_GetAccount_sum{service="duration"}[1m]) / 
+avg_over_time(accountservice_GetAccount_count{service="duration"}[1m]) 
+* 1000
+</code></pre></div></div>
+
+<p>The <a href="https://prometheus.io/docs/prometheus/latest/querying/functions/#aggregation-_over_time">avg_over_time()</a> function allows us to specify the time window during which we want to aggregate values in the time series, one minute in this case. To get the average, we’re dividing the sum of latencies by the count which gets us the average, finally multiplying by 1000 to get the result in milliseconds instead of fractions of a second.</p>
+
+<p>Due to the broken y-axis the results seem to fluctuate a lot, but is actually within approx 16-19 ms.</p>
+
+<h4 id="accountservice-memory-utilization-in-megabytes">Accountservice memory utilization in megabytes</h4>
+
+<p><img src="../../../../../../assets/blogg/goblog/part15-grafana-graph2.png" alt="graph2" /></p>
+
+<p>Memory utilization is a classic metric in the world of monitoring. The default http.Handler from Prometheus automatically exposes this as a <a href="https://prometheus.io/docs/concepts/metric_types/#gauge">Gauge</a> metric we can use in a Grafana dashboard. The query looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go_memstats_heap_inuse_bytes{task="accountservice"} / 1000000
+</code></pre></div></div>
+
+<p>We see our three instances of the “Accountservice” hovering around the 5 mb mark.</p>
+
+<p>As previously stated, Grafana offers great possibilities for visualizing and analyzing monitoring data exposed by the equally capable Prometheus ecosystem, whose finer details is out of scope for this (already too long…) blog post.</p>
+
+<h1 id="8-summary">8. Summary</h1>
+<p>In this part of the <a href="../../../../2017/02/17/go-blog-series-part1.html">blog series</a> we’ve finally added monitoring, where Prometheus (Go client lib + server) and Grafana was our stack of choice. We’ve accomplished the following:</p>
+
+<ul>
+  <li>Wrote a simple service discovery mechanism so the Prometheus server can find scrape targets on Docker Swarm.</li>
+  <li>Added Prometheus <em>/metrics</em> endpoint and added middleware for exposing metrics from our RESTful endpoints.</li>
+  <li>Deployed Prometheus server + Grafana</li>
+  <li>Showcased a few queries.</li>
+</ul>
+
+<p>In the <a href="../../../../2019/07/29/go-blog-series-part16/index.html">next part</a>, we’ll do a major refactoring of the codebase to better comply with contemporary and idiomatic Go coding guidelines and patterns.</p>
+
+<p>Please help spread the word! Feel free to share this blog post using your favorite social media platform, there’s some icons below to get you started.</p>
+
+<p>Until next time,</p>
+
+<p>// Erik</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Go Blog Series Part15&url=https://callistaenterprise.se/blogg/teknik/2018/09/12/go-blog-series-part15/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Go Blog Series Part15&u=https://callistaenterprise.se/blogg/teknik/2018/09/12/go-blog-series-part15/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Go Blog Series Part15&url=https://callistaenterprise.se/blogg/teknik/2018/09/12/go-blog-series-part15/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

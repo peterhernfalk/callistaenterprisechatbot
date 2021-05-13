@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>SoapUI, Gradle och mockade webtjänster | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Kindgren" src="../../../../../../assets/medarbetare/johankindgren_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">SoapUI, Gradle och mockade webtjänster</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2018-03-05T00:00:00+00:00">
+            05 March 2018
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Kindgren
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>SoapUI är ett verktyg som ofta används vid utveckling av system där man anropar webtjänster (både Soap och Rest). Dels så kan man skapa testsviter för att verifiera en befintlig tjänst, eller så kan man simulera/mocka tjänster som man ska anropa i sitt system.</p>
+
+<p>Det finns stora möjligheter att anpassa det data som den mockade tjänsten ska returnera och även lägga till kontroller på att de inkommande anropen ser rätt ut. Exakt hur man skapar sina mockade tjänster tas inte upp i denna blog-post, men finns beskrivet på <a href="https://www.soapui.org/soap-mocking/getting-started.html">Soap Mocking, getting started</a>.</p>
+
+<p>Vid utveckling kör man SoapUI lokalt i sin utvecklingsmiljlö och det innebär oftast att man startar SoapUI, högerklickar på sina mockade tjänster och väljer att starta dem. Om man nu istället tänker sig att man vill driftsätta sin applikation, så att t ex kravställare kan verifiera att vi har uppfattat kraven på rätt sätt, hur kör man då sina mockade tjänster?
+Som tur är har utvecklarna bakom SoapUI tänkt på detta och implementerat en möjlighet att exportera sina mockade tjänster som ett War-arkiv, vilket sedan enkelt kan driftsättas på valfri (java) webserver.
+Exempel på hur det ser ut när en mockad tjänst anropas:
+<img src="../../../../../../assets/blogg/soapui-mockservices/webgui.png" alt="Webgränssnitt" /></p>
+
+<p>För att exportera de mockade tjänsterna högerklickar man på sitt projekt och väljer sedan <em>Deploy as War</em>, vilket öppnar ett dialogfönster där man kan konfigurera vad som ska exporteras. 
+Det är en ganska enkel operation, men trots allt ett manuellt steg som ska göras. Med en manuell process finns alltid möjligheter till fel, som vi helst vill undvika! Vad gör vi då?</p>
+
+<p>Ett första steg till automatisering skulle kunna vara att köra det script <em>wargenerator.sh</em> som finns i SoapUI-installationen i samband med att man bygger sitt system. Detta kräver dock att SoapUI finns installerat hos samtliga utvecklare och även på byggservern. Kan vi åstadkomma något bättre/enklare?</p>
+
+<p>Visst kan man det! Smartbear har publicerat binärerna för SoapUI på ett maven-repository, vilket gör att man kan ange dessa som ett beroende för ett Gradle-bygge. Dock går det inte bara att ange ett beroende till SoapUI och starta, man måste placera jar-filerna i en struktur som ser likadan ut som en SoapUI-installation. När man väl har dessa på plats kan man köra ett JavaExec-task, och då få samma export-funktionalitet som scriptet.</p>
+
+<p>Därefter är det dags att sätta upp de parametrar som används för att skapa war-filen. Enklaste sättet att få fram alla parametrar är att köra scriptet utan argument:
+<img src="../../../../../../assets/blogg/soapui-mockservices/wargenerator-terminal.png" alt="wargenerator.sh" /></p>
+
+<p>Efter att ha studerat dokumentationen ingående (läs trial-n-error) så hittade jag en kombination som ger önskat resultat och producerar en war-fil. Med ytterligare lite mer konfiguration av Gradle-bygget så läggs denna war-fil till som en artefakt från modulen och kan då användas från andra delar i projektet. I exempel-koden har jag lagt till möjligheten att starta en webserver (Jetty), så att man på ett enkelt sätt kan titta på resultatet och provköra sina mockade tjänster.</p>
+
+<div class="language-gradle highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">configurations</span> <span class="o">{</span>
+    <span class="n">soapui</span> <span class="o">{</span>
+        <span class="n">resolutionStrategy</span> <span class="o">{</span>
+            <span class="n">dependencySubstitution</span> <span class="o">{</span>
+                <span class="n">substitute</span> <span class="nf">module</span><span class="o">(</span><span class="s1">'javax.jms:jms'</span><span class="o">)</span> <span class="n">with</span> <span class="n">module</span><span class="o">(</span><span class="s1">'javax.jms:jms-api:1.1-rev-1'</span><span class="o">)</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">war</span>
+<span class="o">}</span>
+
+<span class="k">dependencies</span> <span class="o">{</span>
+    <span class="n">soapui</span><span class="o">(</span><span class="nl">group:</span> <span class="s1">'com.smartbear.soapui'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'soapui'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'5.3.0'</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="n">task</span> <span class="nf">copyDependencies</span><span class="o">(</span><span class="nl">type:</span> <span class="n">Copy</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="kt">def</span> <span class="n">filesToCopy</span> <span class="o">=</span> <span class="n">copySpec</span> <span class="o">{</span>
+        <span class="n">from</span> <span class="n">configurations</span><span class="o">.</span><span class="na">soapui</span>
+    <span class="o">}</span>
+
+    <span class="n">into</span> <span class="n">buildDir</span>
+
+    <span class="nf">into</span><span class="o">(</span><span class="s2">"lib"</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">exclude</span> <span class="s2">"soapui-*.jar"</span>
+        <span class="n">with</span> <span class="n">filesToCopy</span>
+    <span class="o">}</span>
+    <span class="n">into</span><span class="o">(</span><span class="s2">"soapui"</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">include</span> <span class="s2">"soapui-*.jar"</span>
+        <span class="n">with</span> <span class="n">filesToCopy</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">task</span> <span class="nf">createWar</span><span class="o">(</span><span class="nl">type:</span> <span class="n">JavaExec</span><span class="o">,</span> <span class="nl">group:</span> <span class="s1">'build'</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">dependsOn</span> <span class="n">copyDependencies</span>
+
+    <span class="n">inputs</span><span class="o">.</span><span class="na">file</span> <span class="nf">file</span><span class="o">(</span><span class="s1">'SoapUI-War-soapui-project.xml'</span><span class="o">)</span>
+
+    <span class="n">systemProperties</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"soapui.home"</span><span class="o">:</span> <span class="s2">"$buildDir/soapui"</span><span class="o">,</span>
+                        <span class="s2">"user.home"</span><span class="o">:</span> <span class="n">projectDir</span><span class="o">]</span>
+
+    <span class="n">classpath</span> <span class="o">=</span> <span class="n">configurations</span><span class="o">.</span><span class="na">soapui</span>
+
+    <span class="n">main</span> <span class="o">=</span> <span class="s1">'com.eviware.soapui.tools.SoapUIMockAsWarGenerator'</span>
+
+    <span class="n">args</span> <span class="s2">"-d"</span><span class="o">,</span> <span class="s2">"$buildDir/war"</span><span class="o">,</span> <span class="s2">"-f"</span><span class="o">,</span> <span class="s2">"$buildDir/soapuimocks.war"</span><span class="o">,</span> <span class="s2">"-w"</span><span class="o">,</span> <span class="s2">"true"</span><span class="o">,</span> <span class="s2">"-s"</span><span class="o">,</span> <span class="s2">"none.xml"</span><span class="o">,</span> <span class="n">file</span><span class="o">(</span><span class="s1">'SoapUI-War-soapui-project.xml'</span><span class="o">)</span>
+
+    <span class="n">ext</span><span class="o">.</span><span class="na">destFile</span> <span class="o">=</span> <span class="n">file</span><span class="o">(</span><span class="s2">"$buildDir/soapuimocks.war"</span><span class="o">)</span>
+
+    <span class="n">outputs</span><span class="o">.</span><span class="na">file</span> <span class="n">destFile</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ett sista steg för att köra sina mockade tjänster skulle kunna vara att lägga till war-filen i en docker-container som sedan körs i lämplig testmiljö.</p>
+
+<h2 id="starta-soapui">Starta SoapUI</h2>
+<p>Förutom möjligheten att producera en war-fil med mockade tjänster ger en sådan här lösning även möjligheten att köra SoapUI direkt från gradle-scriptet och därmed garantera att hela teamet använder exakt samma version av SoapUI, utan att behöva installera det lokalt. För att få detta att fungera bra får man ändra variabeln <em>user.home</em> så att den pekar på aktuell projekt-katalog och på så sätt kunna lagra de filer som annars skulle lagras lokalt för varje användare.
+För att inte få absoluta sökvägar i sina projektfiler är det viktigt att man uppdaterar inställningar för både workspace och projekt, där man behöver sätta <em>Project root</em> till <em>${workspaceDir}</em> samt <em>Resource root</em> till <em>${projectDir}</em>. Har man gjort dessa ändringar så kan man lägga in både sin workspace- och projekt-fil i versionshantering.</p>
+
+<div class="language-gradle highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span> <span class="nf">runSoapUi</span><span class="o">(</span><span class="nl">type:</span> <span class="n">JavaExec</span><span class="o">,</span> <span class="nl">group:</span> <span class="s1">'run'</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">dependsOn</span> <span class="n">copyDependencies</span>
+
+    <span class="n">inputs</span><span class="o">.</span><span class="na">file</span> <span class="nf">file</span><span class="o">(</span><span class="s1">'SoapUI-War-soapui-project.xml'</span><span class="o">)</span>
+
+    <span class="n">systemProperties</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"soapui.home"</span><span class="o">:</span> <span class="s2">"$buildDir/soapui"</span><span class="o">,</span>
+                        <span class="s2">"user.home"</span>  <span class="o">:</span> <span class="n">projectDir</span><span class="o">]</span>
+
+    <span class="n">classpath</span> <span class="o">=</span> <span class="n">configurations</span><span class="o">.</span><span class="na">soapui</span>
+
+    <span class="n">main</span> <span class="o">=</span> <span class="s1">'com.eviware.soapui.SoapUI'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Koden för detta exempel finns publicerat på Github https://github.com/callistaenterprise/blog-soapui-war</p>
+
+<p>Det visade sig att man behöver ange <em>user.home</em> även när man startar Jetty-servern i exempel-projektet, annars kommer man att få en del felmeddelanden som beror på att SoapUI hittar ett antal plugins under användarens “riktiga” hem-katalog.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Soapui Mockservices&url=https://callistaenterprise.se/blogg/teknik/2018/03/05/SoapUI-mockservices/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Soapui Mockservices&u=https://callistaenterprise.se/blogg/teknik/2018/03/05/SoapUI-mockservices/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Soapui Mockservices&url=https://callistaenterprise.se/blogg/teknik/2018/03/05/SoapUI-mockservices/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

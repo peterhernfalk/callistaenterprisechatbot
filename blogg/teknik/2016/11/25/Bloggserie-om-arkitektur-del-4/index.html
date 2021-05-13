@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 4: Att arbeta med taktiker inom mjukvaruarkitektur | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Patrik Gustavsson" src="../../../../../../assets/medarbetare/patrikgustavsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 4: Att arbeta med taktiker inom mjukvaruarkitektur</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-11-25T00:00:00+00:00">
+            25 November 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Patrik Gustavsson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>I <a href="../../08/Bloggserie-om-arkitektur-del-3/index.html">föregående blogginlägg</a> såg vi att krav på <strong>kvalitetsegenskaper</strong> driver på arkitektens arbete och själva arkitekturen. Att förstå definitionen för vad en kvalitetsegenskap är för något, är därför viktigt både för dig som arkitekt och för dig som arbetar i andra roller relaterade till arkitektens arbete.</p>
+
+<p></p>
+
+<p><em>”A quality attribute (QA) is a measurable or testable property of a system that is used to indicate how well the system satisfies the needs of its stakeholders. You can think of a quality attribute as measuring the “goodness” of a product along some dimension of interest to a stakeholder.”</em> (Software Architecture In Practice, sid 63).</p>
+
+<h2 id="vikten-av-att-kunna-mäta-och-testa-ett-krav-measurable-or-testable">Vikten av att kunna mäta och testa ett krav (”measurable or testable”)</h2>
+<p>“Systemet ska vara säkert” eller ”Systemet ska vara användbart” är inga krav eftersom de inte går att mäta eller testa. ”Lösenord i databasen ska vara krypterade med en MD5 algoritm” och ”85% av användarna ska inom 2 minuter förstå bokningssidan så tydligt att de klarar av att boka en resa själv” är däremot krav på säkerhet och användbarhet.</p>
+
+<p>Kravet på att förstå bokningssidan (användbarhet) visar att en del kvalitetsegenskaper inte är så enkla att mäta.  Jämför med att ta tid med en klocka för att mäta prestanda, eller att kontrollera att systemet är igång för att mäta tillgänglighet. För att mäta användbarhet för bokningsfunktionen krävs det att användare som inte tidigare sett bokningssidan får sätta sig framför datorn och försöka boka en resa. Ett annat exempel där man behöver mäta på ett lite mer sofistikerat sätt är krav på modifierbarhet. Modifierbarhet mäts i hur lång tid det tar för ett utvecklingsteam att göra en förändring av en viss storlek i applikationen. Det är värt att reflektera över att modifierbarhet är en egenskap som du som arkitekt kan vara med och påverka och som har effekt långt efter det att projektet är färdigt.</p>
+
+<h2 id="vikten-av-att-kraven-verkligen-har-efterfrågats-interest-to-a-stakeholder">Vikten av att kraven verkligen har efterfrågats (”interest to a stakeholder”)</h2>
+<p>En arkitekt som kommer till ett projekt och tänker ”jag ska göra systemet så säkert och så användbart som det bara är möjligt”, utan att känna till kraven eller verksamheten, har inte förstått sin roll. Kraven på säkerhet eller användbarhet kanske inte är så höga för ett visst system. Arkitektens uppgift är att systemet ska leva upp till de ställda kraven, inte att maximera kvaliteten ur alla aspekter. Inte minst för att det lätt leder till att kostnaden och tiden för projektet då riskerar att överstiga det som det faktiskt finns behov av. Det finns nog ingen som skulle vilja betala materialkostnader för att en bro ska klara fordon på 100 ton när det bara finns behov av att klara fordon på 20 ton. Samma synsätt bör gälla inom mjukvaruarkitekturen.</p>
+
+<h2 id="noggrannhet-i-värden-för-krav-på-kvalitet">Noggrannhet i värden för krav på kvalitet</h2>
+<p>Hur noggrant ska man då mäta krav på kvalitet? Svaret på den frågan är inte helt enkel men det man bör ha i åtanke är att det inte bara är du som arkitekt som är mottagare av krav på kvalitet. Andra mottagare av kraven kan ha behov av högre grad av noggrannhet än vad du som arkitekt har.</p>
+
+<p>Som illustration kan vi titta på skillnaden mellan kraven på 99,2% tillgänglighet under kontorstid och 99,4% tillgänglighet under kontorstid. Vad innebär de kraven för dig som arkitekt? Siffran 99,2% har säkert redan fått dig att ha två servrar igång samtidigt så att om en av dem går ned så är ändå själva applikationen fortfarande igång. Skillnaden att gå till 99,4% har troligen ingen praktisk betydelse för dig som arkitekt. Men för den driftsorganisation som har skrivit på ett serviceavtal (SLA) innebär ändringen i kravet en direkt påverkan på inställelsetid vid problem.</p>
+
+<p>Mitt råd är att aldrig försöka få fram noggrannare värden från kravställaren än vad du behöver för att motivera ett beslut som du behöver göra. Annars slösar du både med kravställarens tid och din egen tid. Men det är som sagt viktigt att du faktiskt får värden och inte bara uttryck som ”säkert” och ”användbart”.</p>
+
+<h2 id="taktiker">Taktiker</h2>
+<p>Nu har vi kommit fram till ett läge där det är lämpligt att beskriva vad en taktik är och återigen tar vi en definition från Software Architecture In Practice.</p>
+
+<p><em>”The quality attribute requirements specify the responses of the system that, with a bit of luck and a dose of good planning, realize the goals of the business. We now turn to the techniques an architect can use to achieve the required quality attributes. We call these techniques architectural tactics. A tactic is a design decision that influences the achievement of a quality attribute response to some stimulus. Tactics impart portability to one design, high performance to another, and Integrability to a third”.</em> (Software Archiecture In Practice, sid 70).</p>
+
+<p>Varje kvalitetsegenskap har en uppsättning av taktiker som går att använda. Taktikerna är i sin tur grupperade beroende på angreppssätt för det som de vill åstadkomma. Det är ofta möjligt att använda mer än en taktik åt gången för att få arkitekturen att leva upp till de krav som finns på kvalitet. Nu ska vi titta närmare på ett par exempel på hur man använder taktiker för att uppnå hög grad av tillgänglighet.</p>
+
+<h3 id="exempel-på-taktiker-för-tillgänglighet">Exempel på taktiker för tillgänglighet</h3>
+<p>Det finns tre angreppssätt till att få hög tillgänglighet.</p>
+
+<ul>
+  <li>Upptäck fel (detect faults)</li>
+  <li>Återhämta efter fel (Recover from faults)</li>
+  <li>Förhindra fel (prevent faults)</li>
+</ul>
+
+<p><em>”Availability refers to a property of software that it is there and ready to carry out its task when you need it to be”.</em> (Software Architecture In Practice, sidan 79).</p>
+
+<h3 id="tillgänglighet---upptäck-fel">Tillgänglighet - upptäck fel</h3>
+<p>Ett exempel på taktik är ”heartbeat” vilket innebär servern kontinuerligt skickar ut meddelanden för att berätta att den är igång. Dessa meddelanden kan avlyssnas för att det ska gå att slå larm om meddelandena slutar komma. Taktiken ”heartbeat” leder inte till att servern är mer stabil och inte går ner lika ofta. Men tillgängligheten påverkas positivt eftersom servern kommer att startas upp snabbare efter en krasch.</p>
+
+<p>Här följer en lista på de taktiker som används inom den här kategorin.</p>
+
+<ul>
+  <li>Ping/echo</li>
+  <li>Monitor</li>
+  <li>Heartbeat</li>
+  <li>Timestamp</li>
+  <li>Sanity checking</li>
+  <li>Condition monitoring</li>
+  <li>Voting</li>
+  <li>Exception detection</li>
+  <li>Self-test</li>
+</ul>
+
+<h3 id="tillgänglighet--återhämta-efter-fel">Tillgänglighet – återhämta efter fel</h3>
+<p>Två vanliga taktiker är ”active redundancy” och ”passive redundancy” och de innebär att du har mer än en server så att tillgängligheten inte påverkas om en av dem går ned.</p>
+
+<p>Här följer en lista på de taktiker som används inom den här kategorin.</p>
+
+<ul>
+  <li>Active redundancy</li>
+  <li>Passive redundancy</li>
+  <li>Spare</li>
+  <li>Exception handling</li>
+  <li>Rollback</li>
+  <li>Software upgrade</li>
+  <li>Retry</li>
+  <li>Ignore faulty behavior</li>
+  <li>Degradation</li>
+  <li>Reconfiguration</li>
+  <li>Shadow</li>
+  <li>State resynchronization</li>
+  <li>Escalating restart</li>
+  <li>Non-stop forwarding</li>
+</ul>
+
+<h3 id="tillgänglighet--förhindra-fel">Tillgänglighet – förhindra fel</h3>
+<p>En taktik är ”removal from service” vilket innebär att du kan ta ned en komponent och starta upp den igen för att förhindra minnesläckage eller någon sorts fragmentering.</p>
+
+<p>Här följer en lista på de taktiker som används inom den här kategorin.</p>
+
+<ul>
+  <li>Removal from service</li>
+  <li>Transactions</li>
+  <li>Predictive model</li>
+  <li>Exception prevention</li>
+  <li>Increase competence set</li>
+</ul>
+
+<h3 id="stimulus-för-taktiker">Stimulus för taktiker</h3>
+<p>Går vi tillbaks till definitionen av taktik <em>(“A tactic is a design decision that influences the achievement of a quality attribute response to some stimulus”)</em> så ser vi att ordet ”stimulus” behöver vi också förstå för att veta vad en taktik är för något. Stimulus är input till taktiken och en taktik levererar ett resultat. Stimulus är det som egentligen motiverar till att en taktik behövs.</p>
+
+<p>För modifierbarhet är ”Change arrives” ett stimuli och för säkerhet är ”Attack” ett stimuli. Stimuli för tillgänglighet är helt enkelt ”Fault”. Resultatet av taktiker för tillgänglighet är ”Fault masked” eller ”Repair made”.</p>
+
+<h2 id="slutord">Slutord</h2>
+
+<p>De taktiker som vi tittat på ovan handlar enbart om tillgänglighet. Men det finns många taktiker för att uppnå andra önskvärda egenskaper som samarbetsförmåga, modifierbarhet, prestanda, säkerhet, testbarhet, användbarhet och mycket mer.</p>
+
+<p>Tänk vilka bra förutsättningar du får som mjukvaruarkitekt om du är bekant med de här taktikerna. Din möjlighet att utgöra en positiv inverkan på ett projekt och få fram en bra arkitektur ökar markant om du använder taktiker. Det är skillnaden mellan att behöva ha en del ”good luck” som det står i definitionen av taktiker mot att använda väl beprövade tekniker.</p>
+
+<p>Några saker som jag själv känner att kunskap om taktiker gett mig i olika sammanhang.</p>
+
+<ul>
+  <li>Förmåga att se luckor i kravställning, förstå vad man borde ha ställt krav om</li>
+  <li>Förstå sammanhanget i arbetsmetodiker lättare, relation mellan krav, arkitektur, design, test osv. Dvs varför man gör vissa saker och vad man missar om man inte utför dem</li>
+  <li>Leva på beprövade erfarenheter. Taktiker är samlade erfarenheter av vad som ”brukar fungera” i arkitektursammanhang</li>
+  <li>Bidra till ökad kvalitet i mjukvaran genom att förstå att min roll som arkitekt främst handlar om få arkitekturen att leva upp till krav på kvalitetsegenskaper</li>
+  <li>Ta fram lösningar enligt beprövade mönster</li>
+</ul>
+
+<p>Det finns mycket annat att nämna också men i princip tycker jag man kan säga att arbete med taktiker är skillnaden mellan att försöka ta fram en arkitektur enbart baserat på egna idéer och tankar och att ta fram en arkitektur på ett professionellt sätt baserad på yrkeskunskap.</p>
+
+<p><a href="../../../12/20/Bloggserie-om-arkitektur-del-5/index.html">Nästa blogginlägg</a> i <a href="../../19/Arkitekturblogg-en-överblick/index.html">serien</a> kommer att handla om arkitekturmönster. Efter att ha gått igenom arkitekturmönster, mekanismer och en del andra saker så kommer bloggserien att övergå till att fokusera mer på olika ämnesområden som arkitektur i molnet, arkitektur i agila projekt, validering av arkitektur, ramverk, Enterprise arkitektur och många andra spännande områden. Men ett tag till bör vi fokusera på de saker som utgör en mjukvaruarkitektur och hur man arbetar som arkitekt med dem.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 4&url=https://callistaenterprise.se/blogg/teknik/2016/11/25/Bloggserie-om-arkitektur-del-4/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 4&u=https://callistaenterprise.se/blogg/teknik/2016/11/25/Bloggserie-om-arkitektur-del-4/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 4&url=https://callistaenterprise.se/blogg/teknik/2016/11/25/Bloggserie-om-arkitektur-del-4/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

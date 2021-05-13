@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 5: Arkitekturmönster | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Patrik Gustavsson" src="../../../../../../assets/medarbetare/patrikgustavsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 5: Arkitekturmönster</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-12-20T00:00:00+00:00">
+            20 December 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Patrik Gustavsson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>För många år sedan ställde en amerikansk forskare vid namn Mary Shaw en intressant frågeställning. Hur kommer det sig att en del projekt lyckas och andra misslyckas trots att förutsättningarna egentligen är likadana? Hon kom fram till att det inte är så lätt att se en gemensam faktor för de projekt som misslyckas. Men hon kunde tydligt urskilja ett antal saker som genomgående framträdde i lyckade projekt.</p>
+
+<p></p>
+
+<p>Något som ofta återkom i lyckade projekt var en tydlig uppdelning i mjukvaran för olika ansvarsområden. Det kunde röra sig om klienter som använde en gemensam server där själva applikationen körde. Det handlade ofta om en tydlig uppdelning av det som visas på skärmen i förhållande till de delar av applikationen som koordinerar att saker händer och den underliggande datastrukturen. Andra saker hon såg var sekventiella skeden där en mängd information kommer in till en modul som hanterar den och sedan skickar den vidare till nästa modul. Allt med en tydlig och skarp gräns för ansvarsområde för varje modul.</p>
+
+<p>Det Mary Shaw upptäckte redan tidigt gav hon namnet arkitekturmönster. De saker som nämnts ovan som hon identifierade är exempel på sådana mönster och de har namnen <strong>Client-Server</strong>, <strong>Model-View-Controller (MVC)</strong> och <strong>Pipes and Filter</strong>. Det finns ganska många arkitekturmönster och dessa tre utgör bara några exempel.</p>
+
+<p>Nu vill jag inte leda någon till att tro att bara för att man använder arkitekturmönster så blir projektet lyckat. Snarare vill jag säga att om du inte använder dem är sannolikheten stor att projektet inte blir lyckat. Dessutom är många av de här mönstren så invanda i vårt sätt att tänka så många av dem har du troligen stött på tidigare utan att tänka på dem som mönster.</p>
+
+<p>Men vad menar vi då med ordet <strong>mönster</strong> i det här fallet? Om du tänker dig en tapet med olika mönster i så ser du att samma saker uppträder om och om igen längs väggarna i rummet. Det är precis just den upprepningen som det handlar om för arkitekturmönster också. Om och om igen så används Model-View-Controller, Client-Server, Pipes and Filter eller något annat arkitekturmönster i olika applikationer. Mönster är därför ett bra ord för att beskriva det hela på.</p>
+
+<p>Om vi backar tillbaks ett par steg till tidigare inlägg i <a href="../../../11/19/Arkitekturblogg-en-överblick/index.html">bloggserien</a> så har vi sett att utan krav på kvalitet så kan man i princip lägga all kod i en enda stor modul utan någon inre struktur. Här säger vi att mönster handlar om att ha flera olika moduler med tydliga ansvarsområden. Det är så långt bort som det går att komma från att lägga all kod i en enda stor modul.</p>
+
+<p>Men hur förhåller sig då mönster och taktiker i förhållande till varandra? Det som vi säger här om att inte lägga all kod i samma modul och om att uppnå kvalitetsegenskaper stod även i förra bloggen. Men den handlade om taktiker inte om mönster. För att få svar på den frågan går vi återigen till ”Software Architecture In Practice, 3rd ed”. På sidan 204 står följande;</p>
+
+<p><strong>“Tactics are the ”building blocks” of design, from which architectural patterns are created. Tactics are atoms and patterns are molecules. Most patterns consist of (are constructed from) several different tactics.”</strong></p>
+
+<h2 id="mer-om-taktiker">Mer om taktiker</h2>
+<p>För att det hela ska bli tydligt behöver vi först titta lite mer på taktiker för att sedan återgå till mönster igen. Den taktik vi tittade på i förra bloggen handlade om kvalitetsegenskapen tillgänglighet och vi kunde se hur taktiker som redundans och ping-echo ledde till införandet av nya mjukvaruelement i arkitekturen. Men de element som infördes (tex en till server, en monitor eller en larmfunktion) var typiska infrastrukturelement. Kvalitetsegenskapen säkerhet leder också ofta till uppdelning i olika typer av infrastrukturelement. En kvalitetsegenskap som däremot på ett mycket direkt sätt handlar om hur du delar upp din kod i olika moduler är modifierbarhet. Modifierbarhet har ”change arrives” som input och mäts i hur lång tid det tar för ett utvecklingsteam att göra en förändring av en viss storlek. Här följer en beskrivning på taktiker för att uppnå hög grad av modifierbarhet.</p>
+
+<h3 id="modiferbarhet---reduce-size-of-a-module">Modiferbarhet - Reduce size of a module</h3>
+<p>Den här kategorin handlar om att dela upp koden i ett antal mindre moduler. Om en modul kan göra väldigt många saker kommer den troligen också att vara dyr från ett modifierbarhetsperspektiv.</p>
+
+<ul>
+  <li>Split module</li>
+</ul>
+
+<h3 id="modifierbarhet---increase-cohesion">Modifierbarhet - Increase cohesion</h3>
+<p>Den här kategorin handlar om att få moduler att vara mer fokuserade inom ett specifikt ansvarsområde. Om en modul ansvarar för flera ansvarsområden kan det vara bättre att dela upp den i olika moduler som var och en ansvarar för olika ansvarsområden.</p>
+
+<ul>
+  <li>Increase semantic cohesion</li>
+</ul>
+
+<h3 id="reduce-coupling">Reduce coupling</h3>
+<p>Den här kategorin handlar om att minska behovet av direkta kopplingar mellan moduler. Om en modul anropar en annan så kan den heller inte fungera utan att den andra modulen finns och har därför ett beroende till den.</p>
+
+<ul>
+  <li>Encapsulate</li>
+  <li>Use an intermediary</li>
+  <li>Restrict dependencies</li>
+  <li>Refactor</li>
+  <li>Abstract common services</li>
+</ul>
+
+<h3 id="defer-binding">Defer binding</h3>
+<p>Den här kategorin handlar om att så sent som möjligt koppla ihop saker. Det kan exempelvis handla om att dynamiskt slå upp en tjänst så att den kan användas istället för att bygga in ett hårt beroende till den när man bygger ihop applikationen.
+ </p>
+
+<h2 id="mer-om-arkitekturmönster">Mer om arkitekturmönster</h2>
+<p>Nu när vi har lite historisk bakgrund till arkitekturmönster och lite mer förståelse för taktiker så befinner vi oss i ett utmärkt läge att titta närmare på några exempel på arkitekturmönster.</p>
+
+<p>Model-View-Controller (MVC)</p>
+
+<p><img src="../../../../../../assets/MVC.png" alt="MVC.png" /></p>
+
+<p>Mönstret MVC handlar om att skilja mellan användargränssnitt och funktionalitet. I en vy så gör en användare vissa val (exempelvis val för att flytta pengar mellan två bankkonton) och efter att användaren till exempel har tryckt på en OK knapp så går en begäran till en controller som är ansvarig för att hålla ihop att det som ska utföras blir korrekt utfört. Controllern utför inte arbetet själv. Den får arbetet utfört genom att arbeta med entitetsobjekt som finns i modellen (bankkonto, kund, belopp osv). När begreppen ”bankkonto”, ”kund” osv skapades kan man säga att man skapade en modell för dessa begrepp. När arbetet med att flytta pengarna har utförts så skapas en ny vy (exempelvis en webbsida) där det står hur det gick att flytta pengarna. Användaren har i den sidan möjlighet att gå vidare och senare utföra flera uppgifter, vilka i sin tur resulterar i att andra controllers blir involverade i att utföra nya saker. På så sätt går MVC flödet runt varv efter varv så länge som användaren (actor i bilden) använder webbsidan eller systemet.</p>
+
+<p>Det är inte nödvändigt att värden ändras för entiteterna i modellen när MVC används. När användaren till exempel gör en sökning så används MVC trots att inget data förändras. MVC har också en fördel att det går att ha olika vyer trots att den underliggande modellen är densamma. Om du använder en Internetbank eller en telefonbank för att flytta pengar mellan två konton så är det ett exempel på just det. Telefonbanken är lika mycket vy (användargränssnitt) som Internetsidorna i Internetbanken är. Men bakomliggande modell är densamma. Dvs samma kod som flyttar dina pengar i din Internetbank kan användas för att flytta dina pengar med en telefonbank.</p>
+
+<h3 id="pipes-and-filter">Pipes and filter</h3>
+
+<p><img src="../../../../../../assets/pipes&#32;and&#32;filter.png" alt="pipes and filter.png" /></p>
+
+<p>Pipes and filters handlar om att hantera en ström av information där varje filter kan arbeta med och transformera informationen innan det (via en pipe) skickas vidare till nästa filter. Ett scenario kan vara att ett filter krypterar information och ett annat dekrypterar information. Ett annat scenario är ett filter som extraherar betalningsinformation från en XML fil och hanterar betalningen och sedan skickar vidare informationen för nästa steg i en orderhanteringskedja. En ”pipe” kan implementeras på många sätt. Ordet ”pipe” ska här inte tolkas mer strikt än att det är ett sätt att föra vidare information från ett filter till nästa.</p>
+
+<h3 id="lagerindelning-layered-pattern">Lagerindelning (layered pattern)</h3>
+
+<p><img src="../../../../../../assets/Lagerindelning.png" alt="Lagerindelning.png" /></p>
+
+<p>Arkitekturmönstret lagerindelning handlar om att minimera beroenden genom att anrop enbart är tillåtna att utföras nedåt i en struktur av lager som innehåller kodmoduler. Om det fanns kod i alla tre lagren ovan som gör anrop till kod i de andra lagren utan någon restriktion så uppnås lätt det som kallas för ”spaghettikod”. Då är det svårt att ändra någonting eftersom det får påverkan överallt som måste hanteras. Därför är mönstret lagerindelning bra för att förhindra detta och för att få en bättre struktur på koden.</p>
+
+<p>I en lagerstruktur är det naturligt att mer generell kod hamnar längre ned i lagerindelningen och mer applikationsspecifik kod hamnar högre upp. Kodmoduler som implementerar början på användningsfall eller användargränssnitt har också en tendens att hamna högre upp.</p>
+
+<p>Syftet med varje lager är att bära upp lagret ovanför. Om du vill återanvända din kod till att bygga en till applikation går det alldeles utmärkt att ta lager C och börja bygga på det. Men du kan inte bara ta lager A eller lager B och börja bygga på dem utan att även ta med de lager som ligger under dem. Så lagerindelning och att hålla rätt på beroenden har även effekt på de möjligheter som finns till återanvändbarhet.</p>
+
+<h2 id="sambandet-mellan-taktiker-och-mönster">Sambandet mellan taktiker och mönster</h2>
+<p>Nu har vi kommit till ett läge där det tydligare går att förstå vad ”Software Architecture In Practice” menar med sitt uttalande om att de flesta mönster är uppbyggda av taktiker och förhåller sig till dem som molekyler förhåller sig till atomer. Du som har tillgång till boken kan gärna titta på sidan 240 där det även illustreras med en bild som visar vilka taktiker för modifierbarhet som är inbyggda i några av de vanligaste mönstren. Har du inte det så gör det inte så mycket för här följer en beskrivning av det hela.</p>
+
+<p>Alla mönster som vi tittat närmare på ovan har taktiken ”Increase semantic coherence” inbyggd. Hur kan vi inse att det är på det sättet? Det är för att uppdelningen i olika moduler i sig handlar om att få modulerna att fokusera mer på ett enskilt ansvarsområde. Separation av användargränssnitt från själva funktionaliteten och separation av ansvarsområden inom ett informationsflöde till olika filter leder båda till ökat fokus på ett ansvarsområde för varje enskild modul. På samma sätt leder uppdelningen i olika lager till ökat fokus på ansvarsområde.</p>
+
+<p>Mönstren Layered och Pipes and filter (men inte MVC) har taktiken ”restrict communication paths” inbyggda i sig. Lagerindelning har det eftersom anropen alltid går neråt och Pipes and filters har det för att man på förhand vet vilka filter som är efterkommande i kedjan.</p>
+
+<p><strong>Kanske är det viktigaste att ta till sig i den här frågan just det att taktiker och mönster inte är två olika konkurrerande sätt att se på hur man får bra kvalitetsegenskaperna på mjukvaran. Snarare är det så att om du använder arkitekturmönster så har du indirekt (utan att kanske ens veta om det) använt ett antal taktiker. Alla taktiker täcks inte in av mönster så du bör absolut inte lägga taktikerna åt sidan för att enbart arbeta med mönster.</strong></p>
+
+<p><strong>Taktiker är dessutom ofta på lägre nivå än mönster och det finns inget mönster som direkt får dig att inse att redundans eller ping-echo (bara för att ta ett par exempel) är bra taktiker för att uppnå tillgänglighet.</strong></p>
+
+<h2 id="nutid-och-arkitekturmönster">Nutid och arkitekturmönster</h2>
+<p>I början av den här bloggen nämnde jag att det var många år sedan som begreppet arkitekturmönster togs fram. Med tanke på den snabba utveckling som sker inom IT så är det naturligt att ställa frågan hur relevanta de här mönstren är idag. De är väldigt aktuella och det går att motivera enkelt på följande sätt.</p>
+
+<p><strong>För det första</strong> så beskrivs mönstren grundligt i moderna arkitekturböcker. Software Architecture In Practice 3rd,ed kom ut 2013 och den går grundligt igenom alla taktiker och mönster. Dessutom så är mönstren teknikoberoende så de behöver inte uppdateras bara för att nya programmeringsspråk och tekniker tas fram. En hel del nya mönster (och taktiker) kommer kontinuerligt och ofta handlar det om varianter av sedan gammalt identifierade mönster. Ett exempel på detta är mönstret som kallas för Model-View-ViewModel som är en variant av MVC mönstret.</p>
+
+<p><strong>För det andra</strong> så är de här mönstren så grundläggande i förhållande till modern teknik så man kan göra en jämförelse med en skottkärra och en dator. Den dator som jag har på mitt skrivbord hemma är många tusen gånger snabbare än den dator jag hade när jag var student vid Uppsala universitet. Men en skottkärra idag ser i princip ut som en skottkärra såg ut redan på 1800-talet. Skillnaden är att skottkärran är en enkel uppfinning som uppfyller sitt syfte så väl så att den inte har haft behov av att utvecklas vidare vilket datorn har behövt. Så jag ser mönstren på samma sätt som skottkärran. De är så fundamentala och grundläggande så de har inte samma behov av att utvecklas som mycket annat har inom IT.</p>
+
+<p><strong>För det tredje</strong> så ser man direkt på modern mjukvaruarkitektur hur de här mönstren och taktikerna används och kombineras för att få fram moderna sätt att bygga mjukvaruarkitekturer på. Det är till exempel enkelt att inse hur taktikerna för att uppnå modifierbarhet är relevanta för arkitekturstilen microservices.</p>
+
+<h2 id="nästkommande-blogginlägg">Nästkommande blogginlägg</h2>
+<p>I <a href="../../../../2017/02/10/Bloggserie-om-arkitektur-del-6/index.html">nästa blogg</a> kommer vi att titta närmare på två andra sorters mönster. Integrationsmönster och designmönster. I samband med det finns det även anledning att titta lite närmare på den roll som arkitekten har.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 5&url=https://callistaenterprise.se/blogg/teknik/2016/12/20/Bloggserie-om-arkitektur-del-5/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 5&u=https://callistaenterprise.se/blogg/teknik/2016/12/20/Bloggserie-om-arkitektur-del-5/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 5&url=https://callistaenterprise.se/blogg/teknik/2016/12/20/Bloggserie-om-arkitektur-del-5/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

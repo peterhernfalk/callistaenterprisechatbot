@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Arkitekturblogg del 3: Faktorer som avgör hur mjukvaruarkitekturen bör se ut | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Patrik Gustavsson" src="../../../../../../assets/medarbetare/patrikgustavsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Arkitekturblogg del 3: Faktorer som avgör hur mjukvaruarkitekturen bör se ut</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2016-11-08T00:00:00+00:00">
+            08 November 2016
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Patrik Gustavsson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Att ta fram en mjukvaruarkitektur handlar främst om att identifiera vilka mjukvaruelement som behövs i en lösning samt vilka relationer dessa element ska ha till varandra. Det påståendet följer helt logiskt från definitionen av mjukvaruarkitektur som gavs i <a href="../../../10/20/Bloggserie-om-arkitektur-del-2/index.html">föregående blogginlägg</a>.</p>
+
+<p></p>
+
+<p><img src="../../../../../../assets/definition.png" alt="definition.png" /></p>
+
+<p>Men vilka faktorer är det då som styr hur arkitekturen bör utformas?</p>
+
+<p>Boken ”Software Architecture In Practice” tar upp tre sorters krav på sidan 64.</p>
+
+<ul>
+  <li>Funktionella krav (Functional requirements)</li>
+  <li>Begränsningar (Constraints)</li>
+  <li>Krav på kvalitetsegenskaper (Quality attribute requirements)</li>
+</ul>
+
+<p>Det är främst kraven på kvalitetsegenskaper och på förhand givna förutsättningar (begränsningar) som driver mjukvaruarkitekturen, inte kraven på vad systemet faktiskt ska kunna utföra. Det uttrycks på ett ganska drastiskt sätt på sid 65 i samma bok.</p>
+
+<p><em><strong>”In fact, if functionality were the only thing that mattered, you wouldn’t have to divide the system into pieces at all; a single monolithic blob with no internal structure would do just fine”.</strong></em></p>
+
+<h2 id="begränsningar-constraints">Begränsningar (constraints)</h2>
+<p>Det skulle ganska snabbt bli kaotiskt om varje mjukvaruarkitekt införde tekniker, programmeringsspråk och plattformar som just den arkitekten är van att arbeta med och tycker är spännande. Därför bör det finnas en målarkitektur och olika referensarkitekturer som mjukvaruarkitekten behöver förhålla sig till. Dessa innehåller ofta begränsningar som vilka programmeringsspråk som får användas, vilka typer av databaser som får användas, om man ska prioritera OpenSource före kommersiella produkter, köpa i första hand och bygga i andra hand osv.</p>
+
+<p>Den här saken handlar mycket om att se helheten på hela företaget eller organisationen. För man in ny teknik så får det påverkan på fler ställen än vad många kanske tänker på. Men tänker man på driftsorganisation, behov av utbildning och kompetens, behov av licenser, behov av support, samarbetsförmåga med mjukvara som redan finns på företaget osv så inser man ganska snabbt att det är viktigt att sätta upp vissa ramar även för mjukvaruarkitekturen.</p>
+
+<p>Begränsningar (constraints) formar alltså mjukvaruarkitekturen på ett väldigt direkt sätt utan behov av att mjukvaruarkitekten i sitt specifika projekt väger för- och nack-delar, gör sunda avvägningar eller drar logiska slutsatser. Skulle det däremot vara så att en mjukvaruarkitekt i ett sammanhang ser en stor fördel med att använda en annan teknik så bör det stämmas av med arkitekturrådet eller motsvarande funktion på företaget eller organisationen. Men då handlar det om en sorts dispensansökan för att få göra ett undantag i ett enskilt projekt.</p>
+
+<h2 id="krav-på-kvalitetsegenskaper">Krav på kvalitetsegenskaper</h2>
+<p>Det är värt att notera att en av världens mest ansedda böcker om mjukvaruarkitektur (Software Architecure In Practice) använder sidan 61 – sidan 269 för att beskriva hur en mjukvaruarkitekt utgående från krav på kvalitet med hjälp av ”taktiker” och ”mönster” kan forma en mjukvaruarkitektur. I princip halva boken ägnas åt detta.</p>
+
+<p>Följande kvalitetsegenskaper belyses:</p>
+
+<ul>
+  <li>Tillgänglighet (availability)</li>
+  <li>Samarbetsförmåga (interoperability)</li>
+  <li>Modifierbarhet (modifiability)</li>
+  <li>Prestanda (performance)</li>
+  <li>Säkerhet (security)</li>
+  <li>Testbarhet (testability)</li>
+  <li>Användbarhet (usability)</li>
+</ul>
+
+<p>Väl värt att notera är att inte alla kvalitetsegenskaper handlar om hur mjukvaran beter sig under körning. Modifierbarhet till exempel handlar om hur lätt eller svårt det är att göra en förändring i mjukvaran. Kraven på kvalitetsegenskaper driver inte arkitekturen på samma enkla och direkta sätt som begränsningar gör. För att forma mjukvaruarkitekturen utgående från krav på kvalitetsegenskaper krävs det både sunda avvägningar, erfarenhet och logiska resonemang. Begränsningen ”JBoss ska användas som applikationsserver” lämnar inte mycket kvar för arkitekten att fundera över. Men krav på kvalitetsegenskaper som testbarhet, säkerhet eller modifierbarhet ger stort utrymme för arkitekten att ta fram olika lösningar. Det finns beprövade sätt att lösa kraven på kvalitetsegenskaper och de kallas för ”taktiker”. Dessa taktiker kommer att beskrivas i senare blogginlägg. Då blir det även tydligt hur krav på kvalitet som hanteras med en taktik påverkar vilka mjukvaruelement som behövs och relationer mellan dem, dvs hur de formar en mjukvaruarkitektur. Ännu längre fram i bloggserien ska vi se hur arkitekturmönster in sin tur är uppbyggda av taktiker.</p>
+
+<h2 id="andra-kvalitetsegenskaper">Andra kvalitetsegenskaper</h2>
+<p>Software Architecture In Practice har även ett kapitel som handlar om andra kvalitetsegenskaper som inte lika ofta används i projekt men som kan vara värda att känna till. Förutom de kvalitetsegenskaper jag nämnt från boken så finns det olika sammanställningar av kvalitetsegenskaper. FURPS (Functionality, Usability, Reliability, Performance och Supportability) är exempel på en sådan. Allt utom F i FURPS är kvalitetsegenskaper. Wikipedia har en lång lista på <a href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">kvalitetsegenskaper</a> och Software Architecture In Practice uppmanar till att man i olika projekt tänker efter själv vilka kvalitetsegenskaper man vill arbeta med och kallar det för ”X-ability”.</p>
+
+<h2 id="andra-faktorer-som-formar-en-mjukvaruarkitektur">Andra faktorer som formar en mjukvaruarkitektur</h2>
+<p>Allt kan inte fångas upp av teori och principer, ibland måste ren logik och sunt förnuft användas. Om du till exempel är i ett läge där du behöver information som finns hos en extern leverantör så påverkar det arkitekturen eftersom du då behöver en integration för att läsa data därifrån. Det har egentligen inget med krav på kvalitet eller begränsningar att göra. Det är bara ett faktum att informationen måste hämtas från den leverantören. Det kan vara en resebyrå som behöver tillgång till flygavgångar eller till information om hotell. Ett annat exempel är om du har ett funktionellt krav som innebär att du behöver skriva ut stora volymer. Då behöver du ha med skrivare i din arkitektur. Det är svårt att kategorisera in det som en begränsning eller som ett krav på en kvalitetsegenskap.</p>
+
+<p>Lagkrav som PUL påverkar också arkitekturen. Men de kraven går att se som krav på kvalitetsegenskapen säkerhet och det är egentligen bara det att kravställaren inte är den egna organisationen utan Regeringen.</p>
+
+<h2 id="förtydligande-av-relation-mellan-krav-och-arkitektur">Förtydligande av relation mellan krav och arkitektur</h2>
+<p>En del krav går att lösa utan att förändra mjukvaruarkitekturen genom att skriva mer kod i befintliga mjukvaruelement. Andra krav behöver man lösa genom att införa nya mjukvaruelement och därmed formas även mjukvaruarkitekturen.</p>
+
+<p>Om du tänker dig en enkel miniräknare som kan utföra addition, subtraktion, multiplikation och division. Om du får ett till krav på funktionalitet att miniräknaren även ska kunna ta kvadratroten eller räkna med exponenter så finns det ingen anledning att lägga in de funktionerna någon annanstans än där koden för de fyra räknesätten finns. Det är bara att fylla på med mer kod i befintliga mjukvaruelement.</p>
+
+<p>Men för krav på kvalitetsegenskaper är det sällan bara att fylla på någonstans med mer kod. Tänk dig att du vill ha hög grad av tillgänglighet. Du kan inte uppnå det genom att skriva kod för att uppnå hög tillgänglighet där den andra koden redan ligger för går den ned så går även din metod för tillgänglighet ner. Det är mer lämpligt att bygga ett annat mjukvaruelement som övervakar att applikationen är uppe och kör och som kan larma när den inte är igång.</p>
+
+<p>Ett annat exempel där det inte bara handlar om att fylla på med kod i befintliga mjukvaruelement är krav på säkerhet. Säg till exempel att applikationen ska skyddas av en brandvägg. Brandväggen är att betrakta som ett eget mjukvaruelement.</p>
+
+<p>Du kan heller inte skriva kod som gör att övrig redan skriven kod i din applikation blir modifierbar.</p>
+
+<p>Exempel som dessa kan göras hur många som helst och de visar på det faktum att det främst är kraven på kvalitet och på förhand givna begränsningar som formar mjukvaruarkitekturen.</p>
+
+<h2 id="om-funktionella-krav-och-utformandet-av-en-mjukvaruarkitektur">Om funktionella krav och utformandet av en mjukvaruarkitektur</h2>
+<p>Även om krav på funktionalitet inte driver på arkitekturens utformning på samma sätt som kraven på kvalitetsegenskaper eller uppsatta begränsningar, så behöver arkitekten naturligtvis ta hänsyn till dem i sitt arbete. Om det inte var på det sättet så hade det varit tillräckligt med att ange krav på kvalitetsegenskaper och begränsningar och sedan trycka på en knapp i ett program för att få ut en hel beskrivning av mjukvaruarkitekturen.</p>
+
+<p>Bästa sättet att uttrycka det på är att det är kraven på kvalitetsegenskaper och förutsatta begränsningar som driver arkitektens arbete, men under det arbetet ska även hänsyn tas till funktionella krav. Ett sätt att inse det är att om du i exemplet med en resebyrå har format arkitekturen på så sätt att du har en modul för bokningar, en annan för flygrutter, en tredje för kunder osv så har du gjort det för att öka modifieringsbarheten i resebyråapplikationen. Dvs målet för ditt arbete har varit att öka graden av kvalitetsegenskapen modifierbarhet. Men anledningen till att du kom fram till just de modulerna har att göra med vad applikationen faktiskt gör för något.</p>
+
+<p>Dessutom är det så att krav på kvalitetsegenskaper ofta är knutna till olika funktioner. En funktion kan till exempel vara tillgänglig även om inte hela systemet är tillgängligt. På samma sätt kan en specifik funktion ha krav på svarstider som skiljer sig från andra funktioner i systemet.</p>
+
+<p>Men det är viktigt också (för att hamna på rätt nivå i arkitekturen) att tänka på att definitionen av mjukvaruarkitektur talar om vilken nivå som behövs för att <strong>resonera</strong> om arkitekturen. Arkitekten för en resebyråapplikation behöver därför inte tänka på varje fält som matas in under till exempel en bokning av en resa. Att arkitekten har en allmän insikt i att det finns många krav kring bokningar (skapa bokning, sök bokning, ta bort bokning osv) är tillräckligt för att kunna inse att det är bra med en egen modul för bokningar. Mer detaljerad kunskap om funktionella kraven än så behöver inte arkitekten ha.</p>
+
+<p><a href="../../25/Bloggserie-om-arkitektur-del-4/index.html">Nästa inlägg</a> i <a href="../../19/Arkitekturblogg-en-överblick/index.html">bloggserien</a> kommer att visa några exempel på hur krav på kvalitetsegenskaper kan hanteras med hjälp av olika taktiker.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Bloggserie om arkitektur del 3&url=https://callistaenterprise.se/blogg/teknik/2016/11/08/Bloggserie-om-arkitektur-del-3/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Bloggserie om arkitektur del 3&u=https://callistaenterprise.se/blogg/teknik/2016/11/08/Bloggserie-om-arkitektur-del-3/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Bloggserie om arkitektur del 3&url=https://callistaenterprise.se/blogg/teknik/2016/11/08/Bloggserie-om-arkitektur-del-3/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
