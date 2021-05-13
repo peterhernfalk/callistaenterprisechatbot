@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Energy monitoring with AWS services and Go, part 2. | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Erik Lupander" src="../../../../../../assets/medarbetare/eriklupander_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Energy monitoring with AWS services and Go, part 2.</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2021-04-15T00:00:00+00:00">
+            15 April 2021
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        <a href="../../../../../../om/medarbetare/eriklupander/index.html">Erik Lupander</a>
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>This is the second part of a short <a href="../../13/energy-meter-with-aws/index.html">blog-series</a> about using CDK and AWS services to build and deploy a personal solution for monitoring electricity usage. In this part, we’ll look more closely at the Golang-based lambdas.</p>
+
+<p></p>
+
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="index.html#1-solution-overview" id="markdown-toc-1-solution-overview">1. Solution overview</a></li>
+  <li><a href="index.html#2-the-powerrecorder-lambda" id="markdown-toc-2-the-powerrecorder-lambda">2. The PowerRecorder lambda</a></li>
+  <li><a href="index.html#3-the-exporter-lambda" id="markdown-toc-3-the-exporter-lambda">3. The exporter lambda</a></li>
+  <li><a href="index.html#4-part-2-summary" id="markdown-toc-4-part-2-summary">4. Part 2 summary</a></li>
+</ul>
+
+<p>The full CDK and Go source code for this project can be found here: <a href="https://github.com/eriklupander/powertracker">https://github.com/eriklupander/powertracker</a></p>
+
+<p><em>Note: I am in no way affiliated with or working for Tibber, Easee, AWS or any other company or service provider mentioned in this blog post. I’m only doing this for educational purposes and personal enjoyment.</em></p>
+
+<h1 id="1-solution-overview">1. Solution overview</h1>
+<p>As a short recap from <a href="../../13/energy-meter-with-aws/index.html">part 1</a>, here’s the system overview:
+<img src="../../../../../../assets/blogg/powertracker/powertracker.png" alt="img alt" /></p>
+
+<h1 id="2-the-powerrecorder-lambda">2. The PowerRecorder lambda</h1>
+<p>Let’s take a look at the inner workings of the golang-based PowerRecorder lambda. Back in section 1.1 of the <a href="../../13/energy-meter-with-aws/index.html">first post</a>, the overall chain of events was defined - i.e. the <code class="language-plaintext highlighter-rouge">PowerRecorder</code> connects to the Tibber API, fetches a <code class="language-plaintext highlighter-rouge">liveMeasurement</code> and stores the retrieved value in AWS Timestream. So how did we actually go about implementing all that stuff in a Golang-based Lambda?</p>
+
+<p>First off - the boilerplate required for running a Golang lambda is very simple. In one’s <code class="language-plaintext highlighter-rouge">main.go</code>, the following is sufficient for a hello-world like lambda:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Is invoked on each invocation of the lambda</span>
+<span class="k">func</span> <span class="n">handler</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Hello World!"</span><span class="p">)</span>
+	<span class="k">return</span> <span class="no">nil</span>
+<span class="p">}</span>
+
+<span class="c">// main is called when a new lambda is bootstrapped, so don't</span>
+<span class="c">// expect to have something done for every query here. </span>
+<span class="c">// How and when AWS bootstraps/cleans up lambda functions is </span>
+<span class="c">// (from our point of view) undefined.</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">lambda</span><span class="o">.</span><span class="n">StartWithContext</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">Background</span><span class="p">(),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="21-fetching-the-secret">2.1 Fetching the secret</h3>
+<p>In order to access my house’s data on Tibber, I need an API key (details <a href="https://developer.tibber.com/docs/guides/calling-api">here</a>). I fired up <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> and created a single secret that consists of two KV-pairs:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"tibber_api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some-long-and-very-opaque-api-key"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tibber_home_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some-uuid-which-identifies-my-home"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>To access this from Go code, I need two things:</p>
+<ol>
+  <li>IAM permission to access resource <code class="language-plaintext highlighter-rouge">arn:aws:secretsmanager:*:secret:prod/tibber_config-*</code> with action <code class="language-plaintext highlighter-rouge">secretsmanager:GetSecretValue</code> which we set up in our CDK code.</li>
+  <li>The following piece of Go code that utilizes the AWS SDK for Go.</li>
+</ol>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">getSecret</span><span class="p">(</span><span class="n">secretName</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">s</span> <span class="o">:=</span> <span class="n">session</span><span class="o">.</span><span class="n">Must</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">NewSession</span><span class="p">())</span>
+	<span class="n">sm</span> <span class="o">:=</span> <span class="n">secretsmanager</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+	<span class="n">output</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">sm</span><span class="o">.</span><span class="n">GetSecretValue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">secretsmanager</span><span class="o">.</span><span class="n">GetSecretValueInput</span><span class="p">{</span><span class="n">SecretId</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">secretName</span><span class="p">})</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="o">*</span><span class="n">output</span><span class="o">.</span><span class="n">SecretString</span><span class="p">,</span> <span class="no">nil</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="22-graphql-subscription">2.2 GraphQL subscription</h3>
+<p>The <a href="https://developer.tibber.com/docs/overview">Tibber API</a> is based around <a href="https://graphql.org/">GraphQL</a>. Most data can be accessed using their “plain” query API, but in order to access data from your Watty box, a GraphQL <code class="language-plaintext highlighter-rouge">subscription</code> is needed. Tibber has a GraphiQL API explorer one can use to play around with both one’s real data or with a fake API key. You can find it <a href="https://developer.tibber.com/explorer">here</a></p>
+
+<p><img src="../../../../../../assets/blogg/powertracker/graphiql.png" alt="graphiql" /></p>
+
+<p>Many GraphQL solutions for Go are based around <a href="https://github.com/graphql-go/graphql">github.com/graphql-go/graphql</a>. However, I found a slight lack of documentation on GraphQL subscription clients, so some further searching turned up <a href="https://github.com/hasura/go-graphql-client">github.com/hasura/go-graphql-client</a> which in its turn is a fork of <a href="https://github.com/shurcooL/graphql">github.com/shurcooL/graphql</a> with well-documented support for GraphQL subscriptions. The <code class="language-plaintext highlighter-rouge">github.com/hasura/go-graphql-client</code> fork provides a really nice and Go-ish API in order to set up and consume subscription data.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">tibberGQLSubscriptionUrl</span> <span class="o">=</span> <span class="s">"wss://api.tibber.com/v1-beta/gql/subscriptions"</span>
+
+<span class="k">func</span> <span class="n">recordPowerUsageFromWatty</span><span class="p">(</span><span class="n">accessToken</span><span class="p">,</span> <span class="n">homeId</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+
+	<span class="c">// Set up the subscription client. </span>
+	<span class="n">subscriptionClient</span> <span class="o">:=</span> <span class="n">graphql</span><span class="o">.</span><span class="n">NewSubscriptionClient</span><span class="p">(</span><span class="n">tibberGQLSubscriptionUrl</span><span class="p">)</span><span class="o">.</span>
+		<span class="n">WithConnectionParams</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
+			<span class="s">"token"</span><span class="o">:</span> <span class="n">accessToken</span><span class="p">,</span>
+		<span class="p">})</span>
+	<span class="k">defer</span> <span class="n">subscriptionClient</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+	<span class="c">// GraphQL variable for "homeId"</span>
+	<span class="n">variables</span> <span class="o">:=</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
+		<span class="s">"homeId"</span><span class="o">:</span> <span class="n">graphql</span><span class="o">.</span><span class="n">ID</span><span class="p">(</span><span class="n">homeId</span><span class="p">),</span>
+	<span class="p">}</span>
+
+	<span class="c">// Channel to pass data from subscription callback to "main" goroutine</span>
+	<span class="n">dataChan</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">chan</span> <span class="o">*</span><span class="n">subscription</span><span class="p">)</span>
+
+	<span class="c">// Subscribe to real-time power usage</span>
+	<span class="n">id</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">subscriptionClient</span><span class="o">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="o">&amp;</span><span class="n">subscription</span><span class="p">{},</span> <span class="n">variables</span><span class="p">,</span> <span class="k">func</span><span class="p">(</span><span class="n">dataValue</span> <span class="o">*</span><span class="n">json</span><span class="o">.</span><span class="n">RawMessage</span><span class="p">,</span> <span class="n">errValue</span> <span class="kt">error</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+		<span class="n">m</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">subscription</span><span class="p">{}</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">(</span><span class="o">*</span><span class="n">dataValue</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="s">"unmarshalling measurement"</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="c">// pass data to channel</span>
+		<span class="n">dataChan</span> <span class="o">&lt;-</span> <span class="n">m</span>
+		<span class="k">return</span> <span class="no">nil</span>
+	<span class="p">})</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="s">"starting subscription"</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="c">// finally run the subscription in a goroutine. If start fails, we'll pass nil to the dataChan.</span>
+	<span class="k">go</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">subscriptionClient</span><span class="o">.</span><span class="n">Run</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">logrus</span><span class="o">.</span><span class="n">WithError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s">"error calling Run()"</span><span class="p">)</span>
+			<span class="n">dataChan</span> <span class="o">&lt;-</span> <span class="no">nil</span> <span class="c">// pass nil in order to cancel select below</span>
+		<span class="p">}</span>
+	<span class="p">}()</span>
+
+	<span class="c">// block here until we have data. Once we get data or time out, unsubscribe and exit.</span>
+	<span class="k">select</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="n">sub</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="n">dataChan</span><span class="o">:</span>
+		<span class="k">if</span> <span class="n">sub</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">ingest</span><span class="p">(</span><span class="n">record</span><span class="p">{</span><span class="n">HomeId</span><span class="o">:</span> <span class="n">homeId</span><span class="p">,</span> <span class="n">AccumulatedConsumption</span><span class="o">:</span> <span class="kt">float64</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">LiveMeasurement</span><span class="o">.</span><span class="n">AccumulatedConsumption</span><span class="p">)})</span>
+		<span class="p">}</span>
+	<span class="k">case</span> <span class="o">&lt;-</span><span class="n">time</span><span class="o">.</span><span class="n">NewTimer</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Second</span> <span class="o">*</span> <span class="m">10</span><span class="p">)</span><span class="o">.</span><span class="n">C</span><span class="o">:</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">subscriptionClient</span><span class="o">.</span><span class="n">Unsubscribe</span><span class="p">(</span><span class="n">id</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">logrus</span><span class="o">.</span><span class="n">WithError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s">"error occurred trying to unsubscribe from subscription"</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="no">nil</span>
+<span class="p">}</span>
+
+<span class="c">// subscription forms the root of our GraphQL query having a homeId parameter.</span>
+<span class="k">type</span> <span class="n">subscription</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">LiveMeasurement</span> <span class="n">liveMeasurement</span> <span class="s">`graphql:"liveMeasurement(homeId: $homeId)"`</span>
+<span class="p">}</span>
+<span class="c">// liveMeasurement forms the timestamp + accumulated usage part of the GraphQL query</span>
+<span class="k">type</span> <span class="n">liveMeasurement</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Timestamp</span>              <span class="n">graphql</span><span class="o">.</span><span class="n">String</span> <span class="s">`graphql:"timestamp"`</span>
+	<span class="n">AccumulatedConsumption</span> <span class="n">graphql</span><span class="o">.</span><span class="n">Float</span>  <span class="s">`graphql:"accumulatedConsumption"`</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Some notable details:</p>
+<ul>
+  <li>Note how we pass our API key as a “token” as a connection parameter. The exact method to use for passing auth credentials for GQL subscriptions doesn’t seem to 100% standardized as the sample code from the library used another way. I had to basically trial&amp;error my way and debug that Graphiql explorer in order find out how the API key was supposed to be passed.</li>
+  <li>The use case here is somewhat special as we’re basically doing a “connect -&gt; get value -&gt; disconnect”. Remember - AWS lambdas cost by millisecond consumed and have a max lifespan of a few minutes at the most so we cannot just open a subscription and then export a value every five minutes.</li>
+  <li>We’re using a bit of Go-style channels and goroutines so we can start the actual subscription in a separate goroutine and let the “main” goroutine wait for data or a timeout using a <code class="language-plaintext highlighter-rouge">select</code> block.</li>
+  <li>I’ve split the <code class="language-plaintext highlighter-rouge">subscription</code> struct used as GQL query into discrete structs. It seems to be quite common to use anonymous structs for GraphQL query objects.</li>
+  <li>Remember - the <code class="language-plaintext highlighter-rouge">accessToken</code> and <code class="language-plaintext highlighter-rouge">homeId</code> arguments comes from AWS Secrets Manager.</li>
+</ul>
+
+<h3 id="23-store-event-in-aws-timestream">2.3 Store event in AWS Timestream</h3>
+<p>As seen in the code above, we have a call to <code class="language-plaintext highlighter-rouge">ingest(record{HomeId: homeId, AccumulatedConsumption: float64(sub.LiveMeasurement.AccumulatedConsumption)})</code> where we pass our <em>accumulated consumption</em>. This is actually a per-day value that’s reset at 00:00 local time and we use it to measure the average power used over the last 5 minutes, more on that in the next section about the <code class="language-plaintext highlighter-rouge">exporter</code> lambda.</p>
+
+<p>Again, our lambda needs some IAM permissions: Action <code class="language-plaintext highlighter-rouge">timestream:*</code> and Resource <code class="language-plaintext highlighter-rouge">*</code>. In this case this IAM permission allows our <code class="language-plaintext highlighter-rouge">PowerRecorder</code> lambda to do any timestream action on any (timestream) resource.</p>
+
+<p>The code is slightly verbose so I’ll just show some of the most interesting parts. The full source is available <a href="https://github.com/eriklupander/powertracker/blob/main/functions/powerrecorder/ingest.go">here</a></p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// record represents a single measurement</span>
+<span class="k">type</span> <span class="n">record</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">HomeId</span>                 <span class="kt">string</span>
+    <span class="n">AccumulatedConsumption</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">ingest</span><span class="p">(</span><span class="n">rec</span> <span class="n">record</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c">// a lot of timeouts omitted </span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">http2</span><span class="o">.</span><span class="n">ConfigureTransport</span><span class="p">(</span><span class="o">&amp;</span><span class="n">http</span><span class="o">.</span><span class="n">Transport</span><span class="p">{});</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">logrus</span><span class="o">.</span><span class="n">WithError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s">"error configuring HTTP transport"</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="c">// set up an AWS session</span>
+	<span class="n">sess</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">session</span><span class="o">.</span><span class="n">NewSession</span><span class="p">(</span><span class="o">&amp;</span><span class="n">aws</span><span class="o">.</span><span class="n">Config</span><span class="p">{</span><span class="n">Region</span><span class="o">:</span> <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"eu-west-1"</span><span class="p">),</span> <span class="n">MaxRetries</span><span class="o">:</span> <span class="n">aws</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="m">3</span><span class="p">),</span> <span class="n">HTTPClient</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span><span class="n">Transport</span><span class="o">:</span> <span class="n">tr</span><span class="p">}})</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">logrus</span><span class="o">.</span><span class="n">WithError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s">"error creating AWS session"</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	
+	<span class="c">// Set up timestreamwrite writer</span>
+	<span class="n">writeSvc</span> <span class="o">:=</span> <span class="n">timestreamwrite</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
+
+	<span class="c">// Invoke the writeData func with the passed record and the write service</span>
+	<span class="n">databaseName</span> <span class="o">:=</span> <span class="s">"powertracker"</span>
+	<span class="n">tableName</span> <span class="o">:=</span> <span class="s">"power_record"</span>
+	<span class="n">writeData</span><span class="p">(</span><span class="n">writeSvc</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">rec</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>We do create a new HTTP transport and AWS session on each invocation, but that kind of makes sense here since we <em>never</em> expect to be called more often than once every 5 minutes.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">writeData</span><span class="p">(</span><span class="n">writeSvc</span> <span class="o">*</span><span class="n">timestreamwrite</span><span class="o">.</span><span class="n">TimestreamWrite</span><span class="p">,</span> <span class="n">databaseName</span> <span class="kt">string</span><span class="p">,</span> <span class="n">tableName</span> <span class="kt">string</span><span class="p">,</span> <span class="n">rec</span> <span class="n">record</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">writeRecordsInput</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">timestreamwrite</span><span class="o">.</span><span class="n">WriteRecordsInput</span><span class="p">{</span>
+		<span class="n">DatabaseName</span><span class="o">:</span> <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">databaseName</span><span class="p">),</span>
+		<span class="n">TableName</span><span class="o">:</span>    <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">tableName</span><span class="p">),</span>
+		<span class="n">Records</span><span class="o">:</span> <span class="p">[]</span><span class="o">*</span><span class="n">timestreamwrite</span><span class="o">.</span><span class="n">Record</span><span class="p">{</span>
+			<span class="p">{</span>
+				<span class="n">Dimensions</span><span class="o">:</span> <span class="p">[]</span><span class="o">*</span><span class="n">timestreamwrite</span><span class="o">.</span><span class="n">Dimension</span><span class="p">{</span>
+					<span class="p">{</span><span class="n">Name</span><span class="o">:</span>  <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"homeId"</span><span class="p">),</span> <span class="n">Value</span><span class="o">:</span> <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">HomeId</span><span class="p">)},</span>
+				<span class="p">},</span>
+				<span class="n">MeasureName</span><span class="o">:</span>      <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"energy_used"</span><span class="p">),</span>
+				<span class="n">MeasureValue</span><span class="o">:</span>     <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">FormatFloat</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">AccumulatedConsumption</span><span class="p">,</span> <span class="sc">'f'</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">64</span><span class="p">)),</span>
+				<span class="n">MeasureValueType</span><span class="o">:</span> <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"DOUBLE"</span><span class="p">),</span>
+				<span class="n">Time</span><span class="o">:</span>             <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">strconv</span><span class="o">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">Unix</span><span class="p">(),</span> <span class="m">10</span><span class="p">)),</span>
+				<span class="n">TimeUnit</span><span class="o">:</span>         <span class="n">aws</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"SECONDS"</span><span class="p">),</span>
+			<span class="p">},</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+    <span class="k">if</span> <span class="n">_</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">writeSvc</span><span class="o">.</span><span class="n">WriteRecords</span><span class="p">(</span><span class="n">writeRecordsInput</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="n">logrus</span><span class="o">.</span><span class="n">WithError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s">"error writing power usage records"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The AWS timestream writer API is as previously stated a bit verbose. We first prepare a <code class="language-plaintext highlighter-rouge">WriteRecordsInput</code> with a single <code class="language-plaintext highlighter-rouge">Record</code> that consists of a timestream <a href="https://docs.aws.amazon.com/timestream/latest/developerguide/API_Dimension.html">Dimension</a> which is a kind of metadata about records.</p>
+
+<p>Next we pass our actual measurement “energy_used” as a DOUBLE as well as the moment in time as <code class="language-plaintext highlighter-rouge">time.Now().Unix()</code> as SECONDS TimeUnit. See more on records <a href="https://docs.aws.amazon.com/timestream/latest/developerguide/API_Record.html">here</a>.</p>
+
+<p>Finally, we call <code class="language-plaintext highlighter-rouge">writeSvc.WriteRecords(writeRecordsInput)</code> which should make our measurement end up in our timestream database table:</p>
+
+<p>A quick query using the AWS Console for Timestream shows that this is indeed working:
+<img src="../../../../../../assets/blogg/powertracker/ts1.png" alt="ts 1" />
+<img src="../../../../../../assets/blogg/powertracker/ts2.png" alt="ts 2" /></p>
+
+<h1 id="3-the-exporter-lambda">3. The exporter lambda</h1>
+<p>Now we have a lot of measurements sitting in AWS Timestream waiting to be transformed into something useful for keeping track of my electricity usage.</p>
+
+<p>There’s certainly a ton of options one could explore. In my case, I chose to implement a simple “Exporter API” capable of either producing a CSV file one could import into Excel or similar, as well as some simple graphs as .PNG images.</p>
+
+<p><img src="../../../../../../assets/blogg/powertracker/power-5m-lineplot.png" alt="example graph" /></p>
+
+<p>I’ve named this lambda <code class="language-plaintext highlighter-rouge">exporter</code> and it’s declared together with an AWS API Gateway using CDK (see <a href="../../13/energy-meter-with-aws/index.html#5-exporter-api-with-api-gateway">part 1</a>), implemented in Go.</p>
+
+<h3 id="31-lambda-boilerplate-with-chi">3.1 Lambda boilerplate with Chi</h3>
+<p>Let’s start with the boilerplate, which in this case is slightly different from your average Go AWS Lambda since I utilize the <a href="https://callistaenterprise.se/blogg/teknik/2021/04/15/energy-meter-with-aws-part-2/github.com/awslabs/aws-lambda-go-api-proxy/chi">AWS Lambda Chi Adapter</a> so I can take advantage of <a href="https://github.com/go-chi/chi">chi’s</a> powerful router features and composable middlewares:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="n">chiLambda</span> <span class="o">*</span><span class="n">chiadapter</span><span class="o">.</span><span class="n">ChiLambda</span>
+
+<span class="c">// handler is invoked whenever this lambda executes.</span>
+<span class="k">func</span> <span class="n">handler</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">req</span> <span class="n">events</span><span class="o">.</span><span class="n">APIGatewayProxyRequest</span><span class="p">)</span> <span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">APIGatewayProxyResponse</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">chiLambda</span><span class="o">.</span><span class="n">ProxyWithContext</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// main is called when a new lambda is constructed, note how we set up the chi router and that we pass our timestream</span>
+<span class="c">// DataSource into it.</span>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">chiLambda</span> <span class="o">=</span> <span class="n">chiadapter</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="n">setupRouter</span><span class="p">(</span><span class="n">timestream</span><span class="o">.</span><span class="n">NewDataSource</span><span class="p">()))</span>
+	<span class="n">lambda</span><span class="o">.</span><span class="n">StartWithContext</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">Background</span><span class="p">(),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The neat thing here is how <code class="language-plaintext highlighter-rouge">chiLambda.ProxyWithContext(ctx, req)</code> proxies the AWS lambda <code class="language-plaintext highlighter-rouge">APIGatewayProxyRequest</code> into a plain HTTP request that Chi understands in my simple piece of <code class="language-plaintext highlighter-rouge">router</code> code:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">setupRouter</span><span class="p">(</span><span class="n">source</span> <span class="n">DataSource</span><span class="p">)</span> <span class="o">*</span><span class="n">chi</span><span class="o">.</span><span class="n">Mux</span> <span class="p">{</span>
+
+	<span class="n">r</span> <span class="o">:=</span> <span class="n">chi</span><span class="o">.</span><span class="n">NewRouter</span><span class="p">()</span>
+	<span class="n">r</span><span class="o">.</span><span class="n">Use</span><span class="p">(</span><span class="n">middleware</span><span class="o">.</span><span class="n">RequestLogger</span><span class="p">(</span><span class="o">&amp;</span><span class="n">middleware</span><span class="o">.</span><span class="n">DefaultLogFormatter</span><span class="p">{</span><span class="n">Logger</span><span class="o">:</span> <span class="n">logrus</span><span class="o">.</span><span class="n">New</span><span class="p">()}))</span>
+
+	<span class="n">r</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">handle</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+	<span class="n">r</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">w</span><span class="o">.</span><span class="n">WriteHeader</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">StatusNotFound</span><span class="p">)</span>
+		<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">Write</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"The requested path %s was not found"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">RequestURI</span><span class="p">)))</span>
+	<span class="p">})</span>
+	<span class="k">return</span> <span class="n">r</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Note how we’re adding a chi handler for <code class="language-plaintext highlighter-rouge">/</code> as that’s what will be forwarded to us from the HTTP API Gateway. I’ve also added a simple chi middleware which will log incoming requests using <a href="https://github.com/sirupsen/logrus">logrus</a>, which (truncated and formatted for brevity) gives us request log statements such as this one in <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html">AWS CloudWatch Logs</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msg="\"GET http://&lt;removed&gt;.execute-api.eu-west-1.amazonaws.com/?from=2021-03-26&amp;to=2021-04-02&amp;graph=hist&amp;output=pngaggregate=5m 
+HTTP/1.1\" from  - 200 59625B in 2.840281654s"
+</code></pre></div></div>
+<p>Next, here’s the business logic in that <code class="language-plaintext highlighter-rouge">handle(source)</code> func:</p>
+
+<ol>
+  <li>Parse input parameters (query params)</li>
+  <li>Connect to AWS Timestream and execute query given the params</li>
+  <li>Apply aggregation and calculate the stored kW differences into Wh</li>
+  <li>Output either as CSV (quite simple) or render a graph using <a href="https://github.com/gonum/plot">go-num/plot</a> (more complex)</li>
+</ol>
+
+<p>Let’s go through steps 2 and 4 in more detail.</p>
+
+<h3 id="31-querying-aws-timestream">3.1 Querying AWS Timestream</h3>
+<p>Remember that we record the day’s accumulated power use every five minutes, which we then calculate a diff from, to find out how many kWh that were used over the last 5 minutes.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11.961393	2021-04-04 09:50
+12.049608	2021-04-04 09:55
+12.156595	2021-04-04 10:00
+</code></pre></div></div>
+<p>While it would be possible to first look up the <em>last</em> record when writing data to our timestream table and directly store the “diff” when writing the new one, that would entail a potentially costly timestream query every five minutes. Instead, when the <code class="language-plaintext highlighter-rouge">exporter</code> Lambda is invoked, we read all data in the requested timeframe and calculate the <em>difference</em> between each measurement on the fly.</p>
+
+<p>The Go code for setting up a AWS Timestream connection and IAM permissions is identical to that which the <code class="language-plaintext highlighter-rouge">PowerRecorder</code> lambda used. However, querying is another matter so let’s take a look at how to create and execute a Timestream query, and then transform the query results into our own <code class="language-plaintext highlighter-rouge">model.Entry</code> struct used as internal data representation inside the <code class="language-plaintext highlighter-rouge">exporter</code> lambda:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">Source</span><span class="p">)</span> <span class="n">buildQuery</span><span class="p">(</span><span class="n">fromStr</span> <span class="kt">string</span><span class="p">,</span> <span class="n">toStr</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="n">query</span> <span class="o">:=</span> <span class="s">"SELECT pr.homeId, pr.measure_value::double, pr.time FROM powertracker.power_record pr"</span>
+
+	<span class="c">// apply some semi-ugly date predicates if applicable</span>
+	<span class="k">if</span> <span class="n">fromStr</span> <span class="o">!=</span> <span class="s">""</span> <span class="o">||</span> <span class="n">toStr</span> <span class="o">!=</span> <span class="s">""</span> <span class="p">{</span>
+		<span class="n">from</span><span class="p">,</span> <span class="n">fromErr</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">,</span> <span class="n">fromStr</span><span class="p">)</span>
+		<span class="n">to</span><span class="p">,</span> <span class="n">toErr</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">,</span> <span class="n">toStr</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">fromErr</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">toErr</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">query</span> <span class="o">+=</span> <span class="s">" WHERE pr.time &gt; '"</span> <span class="o">+</span> <span class="n">from</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">)</span> <span class="o">+</span> <span class="s">"' AND pr.time &lt; '"</span> <span class="o">+</span> <span class="n">to</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">)</span> <span class="o">+</span> <span class="s">"'"</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">toErr</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">query</span> <span class="o">+=</span> <span class="s">" WHERE pr.time &lt; '"</span> <span class="o">+</span> <span class="n">to</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">)</span> <span class="o">+</span> <span class="s">"'"</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">fromErr</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">query</span> <span class="o">+=</span> <span class="s">" WHERE pr.time &gt; '"</span> <span class="o">+</span> <span class="n">from</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006-01-02"</span><span class="p">)</span> <span class="o">+</span> <span class="s">"'"</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="n">query</span> <span class="o">+=</span> <span class="s">" ORDER BY pr.time"</span>
+	<span class="k">return</span> <span class="n">query</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">Source</span><span class="p">)</span> <span class="n">GetAll</span><span class="p">(</span><span class="n">fromStr</span><span class="p">,</span> <span class="n">toStr</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">idempotencyKey</span> <span class="o">:=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">New</span><span class="p">()</span><span class="o">.</span><span class="n">String</span><span class="p">()</span>
+    
+    <span class="n">query</span> <span class="o">:=</span> <span class="n">buildQuery</span><span class="p">(</span><span class="n">fromStr</span><span class="p">,</span> <span class="n">toStr</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">s</span><span class="o">.</span><span class="n">querySvc</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timestreamquery</span><span class="o">.</span><span class="n">QueryInput</span><span class="p">{</span><span class="n">ClientToken</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">idempotencyKey</span><span class="p">,</span> <span class="n">QueryString</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">query</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+    <span class="p">}</span>
+    <span class="c">// rest coming...</span>
+</code></pre></div></div>
+<p>Wow! That looks like plain SQL (except for that <code class="language-plaintext highlighter-rouge">pr.measure_value::double</code>) like we wrote it back in 2003! Yes, I kind of despise those if…else statements that applies the <code class="language-plaintext highlighter-rouge">to</code> and <code class="language-plaintext highlighter-rouge">from</code> query parameters only if they’re valid ISO-8601 dates - but it works OK for this purpose.</p>
+
+<p>The resulting <code class="language-plaintext highlighter-rouge">timestreamquery.QueryOutput</code> contains a slice of <code class="language-plaintext highlighter-rouge">timesstreamquery.Row</code> we can iterate over.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">entries</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>     <span class="c">// storage for the output</span>
+	<span class="n">lastAccumulativeValue</span> <span class="o">:=</span> <span class="o">-</span><span class="m">1.0</span>         <span class="c">// variable used to calculate the difference from the last record</span>
+	<span class="n">currentUsage</span> <span class="o">:=</span> <span class="m">0.0</span>                   <span class="c">// variable of storing the difference </span>
+
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">output</span><span class="o">.</span><span class="n">Rows</span> <span class="p">{</span>
+
+		<span class="c">// Extract values from the output rows.</span>
+		<span class="n">homeId</span> <span class="o">:=</span> <span class="o">*</span><span class="n">row</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">ScalarValue</span>
+		<span class="n">measure</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">ParseFloat</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">.</span><span class="n">ScalarValue</span><span class="p">,</span> <span class="m">64</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="n">created</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">"2006-01-02 15:04:05"</span><span class="p">,</span> <span class="o">*</span><span class="n">row</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="o">.</span><span class="n">ScalarValue</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+
+		<span class="c">// this kludge is to handle the first entry where there's no previous entry to calc diff against</span>
+        <span class="k">if</span> <span class="n">lastAccumulativeValue</span> <span class="o">==</span> <span class="o">-</span><span class="m">1.0</span> <span class="p">{</span>
+            <span class="n">currentUsage</span> <span class="o">=</span> <span class="m">0.0</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c">// day switch, then the measurement drops to 0 again.</span>
+            <span class="k">if</span> <span class="n">measure</span> <span class="o">&lt;</span> <span class="n">lastAccumulativeValue</span> <span class="p">{</span>
+                <span class="n">lastAccumulativeValue</span> <span class="o">=</span> <span class="m">0.0</span>
+                <span class="n">currentUsage</span> <span class="o">=</span> <span class="m">0.0</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">currentUsage</span> <span class="o">=</span> <span class="n">measure</span> <span class="o">-</span> <span class="n">lastAccumulativeValue</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+		<span class="n">entries</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">{</span>
+			<span class="n">HomeId</span><span class="o">:</span>           <span class="n">homeId</span><span class="p">,</span>
+			<span class="n">CurrentUsage</span><span class="o">:</span>     <span class="n">measure</span> <span class="o">-</span> <span class="n">lastAccumulativeValue</span><span class="p">,</span>
+			<span class="n">AccumulatedDaily</span><span class="o">:</span> <span class="n">measure</span><span class="p">,</span>
+			<span class="n">Created</span><span class="o">:</span>          <span class="n">created</span><span class="p">,</span>
+		<span class="p">})</span>
+		<span class="n">lastAccumulativeValue</span> <span class="o">=</span> <span class="n">measure</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="n">entries</span><span class="p">,</span> <span class="no">nil</span>
+</code></pre></div></div>
+<p>In all honesty I’m not particularly proud of the code above, and I’m quite sure there are better ways to handle both extracting data from the <code class="language-plaintext highlighter-rouge">Rows</code> and handling the diff calculation between entries. Nevertheless - it does work, so over to the aggregation phase.</p>
+
+<h3 id="32-graphing-with-gonumplot">3.2 Graphing with gonum/plot</h3>
+<p>I guess Go isn’t a programming language with an abundance of high-quality libraries for drawing different kinds of plots or graphs. A quick look at <a href="https://github.com/avelino/awesome-go#science-and-data-analysis">Awesome Go’s</a> list of libraries for data science shows that such a library is <a href="https://github.com/gonum/plot">gonum/plot</a> which is the stand-alone plotting/graphing library of the general-purpose computing library gonum.</p>
+
+<p>For the <code class="language-plaintext highlighter-rouge">exporter</code> lambda I chose to support two types of graphs: lineplots and histograms:</p>
+
+<p><strong>Lineplot:</strong>
+<img src="../../../../../../assets/blogg/powertracker/power-5m-lineplot.png" alt="lineplot" /></p>
+
+<p><strong>Histogram:</strong>
+<img src="../../../../../../assets/blogg/powertracker/histogram-1h-multiday-2.png" alt="histogram" /></p>
+
+<p>The programming model is quite similar, let’s focus on the histogram:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">ExportHist</span><span class="p">(</span><span class="n">entries</span> <span class="p">[]</span><span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c">// 1. Start by transforming to plotter.XYs format, passing timestamp as unix time.</span>
+	<span class="k">var</span> <span class="n">pts</span> <span class="n">plotter</span><span class="o">.</span><span class="n">XYs</span>
+	<span class="n">linq</span><span class="o">.</span><span class="n">From</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">i</span> <span class="k">interface</span><span class="p">{})</span> <span class="k">interface</span><span class="p">{}</span> <span class="p">{</span>
+		<span class="n">entry</span> <span class="o">:=</span> <span class="n">i</span><span class="o">.</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">plotter</span><span class="o">.</span><span class="n">XY</span><span class="p">{</span><span class="n">X</span><span class="o">:</span> <span class="kt">float64</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">Created</span><span class="o">.</span><span class="n">Unix</span><span class="p">()),</span> <span class="n">Y</span><span class="o">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">CurrentUsage</span><span class="p">}</span>
+	<span class="p">})</span><span class="o">.</span><span class="n">ToSlice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pts</span><span class="p">)</span>
+
+	<span class="c">// 2. Create a histogram plot, passing the data</span>
+	<span class="n">hist</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">NewHistogram</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">))</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	
+	<span class="c">// 3. Add labels and some min/max values for the X / Y axises.</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="n">plot</span><span class="o">.</span><span class="n">New</span><span class="p">()</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s">"Energy usage"</span>
+
+	<span class="n">p</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s">"Time (UTC)"</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">Min</span> <span class="o">=</span> <span class="kt">float64</span><span class="p">(</span><span class="n">entries</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">Created</span><span class="o">.</span><span class="n">Unix</span><span class="p">())</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">Tick</span><span class="o">.</span><span class="n">Marker</span> <span class="o">=</span> <span class="n">NewUTCDateTimeTicks</span><span class="p">(</span><span class="m">6.0</span><span class="p">)</span>
+
+	<span class="n">p</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s">"Energy (Watts)"</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Min</span> <span class="o">=</span> <span class="m">0.0</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Max</span> <span class="o">=</span> <span class="n">linq</span><span class="o">.</span><span class="n">From</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">i</span> <span class="k">interface</span><span class="p">{})</span> <span class="k">interface</span><span class="p">{}</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">i</span><span class="o">.</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Entry</span><span class="p">)</span><span class="o">.</span><span class="n">CurrentUsage</span>
+	<span class="p">})</span><span class="o">.</span><span class="n">Max</span><span class="p">()</span><span class="o">.</span><span class="p">(</span><span class="kt">float64</span><span class="p">)</span>
+
+	<span class="c">// 4. Add our histogram to the plot and generate a PNG image</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">toPNG</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This quite simplistic <code class="language-plaintext highlighter-rouge">func</code> takes a slice of <code class="language-plaintext highlighter-rouge">entries</code> where each entry represents (after aggregation) the average power in Watts used during the aggregated time period - typically 5 minute, 1 hour or 1 day.</p>
+
+<p>To spice things up a little while we wait for <a href="https://go.googlesource.com/proposal/+/refs/heads/master/design/43651-type-parameters.md">type parameters</a> to be implemented, I’m using a bit of <a href="https://github.com/ahmetb/go-linq">go-linq</a> to transform our <code class="language-plaintext highlighter-rouge">[]model.Entry</code> structs into the <em>gonum/plot</em> <code class="language-plaintext highlighter-rouge">plotter.XYs</code> using some functional-style code. <code class="language-plaintext highlighter-rouge">go-linq</code> is also used to conveniently find the <code class="language-plaintext highlighter-rouge">Max()</code> value for the Y-axis without manual iteration.</p>
+
+<p>The use of <code class="language-plaintext highlighter-rouge">gonum/plot</code> above is quite vanilla except that <code class="language-plaintext highlighter-rouge">p.X.Tick.Marker = NewUTCDateTimeTicks(6.0)</code>. That’s a customization I made in order to better control how the date/time’s are rendered on the X-axis:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">u</span> <span class="n">UTCDateTimeTicks</span><span class="p">)</span> <span class="n">Ticks</span><span class="p">(</span><span class="n">min</span><span class="p">,</span> <span class="n">max</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">[]</span><span class="n">plot</span><span class="o">.</span><span class="n">Tick</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">max</span> <span class="o">&lt;=</span> <span class="n">min</span> <span class="p">{</span>
+		<span class="n">logrus</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="s">"illegal range"</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">start</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Unix</span><span class="p">(</span><span class="kt">int64</span><span class="p">(</span><span class="n">min</span><span class="p">),</span> <span class="m">0</span><span class="p">)</span>
+	<span class="n">end</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Unix</span><span class="p">(</span><span class="kt">int64</span><span class="p">(</span><span class="n">max</span><span class="p">),</span> <span class="m">0</span><span class="p">)</span>
+	<span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Hour</span><span class="p">)</span>                       <span class="c">// add an extra hour so the max becomes "inclusive" when rendering a full day.</span>
+
+	<span class="n">stepHours</span> <span class="o">:=</span>  <span class="n">end</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">Hours</span><span class="p">()</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">Steps</span> <span class="c">// find out how may hours to increase for each tick / step</span>
+	<span class="k">var</span> <span class="n">ticks</span> <span class="p">[]</span><span class="n">plot</span><span class="o">.</span><span class="n">Tick</span>
+	<span class="n">d</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Unix</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">UTC</span><span class="p">()</span><span class="o">.</span><span class="n">Unix</span><span class="p">(),</span> <span class="m">0</span><span class="p">)</span><span class="o">.</span><span class="n">Truncate</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Minute</span><span class="p">)</span> <span class="c">// truncate to minute</span>
+	<span class="k">for</span> <span class="n">d</span><span class="o">.</span><span class="n">Before</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">ticks</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">ticks</span><span class="p">,</span> <span class="n">plot</span><span class="o">.</span><span class="n">Tick</span><span class="p">{</span><span class="n">Value</span><span class="o">:</span> <span class="kt">float64</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">UTC</span><span class="p">()</span><span class="o">.</span><span class="n">Unix</span><span class="p">()),</span> <span class="n">Label</span><span class="o">:</span> <span class="n">d</span><span class="o">.</span><span class="n">UTC</span><span class="p">()</span><span class="o">.</span><span class="n">Format</span><span class="p">(</span><span class="s">"2006-01-02 15:04"</span><span class="p">)})</span>
+		<span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">stepHours</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Hour</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ticks</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The <code class="language-plaintext highlighter-rouge">Ticks</code> method is invoked by <code class="language-plaintext highlighter-rouge">gonum/plot</code> where it will pass the first (min) unix timestamp and the last (max) unix timestamp.</p>
+
+<p>We then use a (perhaps oversimplistic) algorithm to figure out how many hours to put between each “tick” on the X-axis. The <code class="language-plaintext highlighter-rouge">u.Steps</code> can be set depending on how dense markers one wants as well as the anticipated width of the graph as well width of each tick “text” such as a full ISO8601 datetime. The downside of this simple approach is that timestamps for the ticks can end up being a quite “uneven” number of hours apart, e.g. <code class="language-plaintext highlighter-rouge">01:00</code>, <code class="language-plaintext highlighter-rouge">06:00</code> while it’s more aesthetically pleasing to have 6, 12 or perhaps 24 hours between each “tick” or perhaps every 7 days for a month-long plot. I better implementation should probably adjust the min/max values depending on number of “ticks” as well as total duration to get full hours, 12 hours, 24 hours etc per tick.</p>
+
+<p>The final snippet to turn our <code class="language-plaintext highlighter-rouge">plot</code> into a PNG image uses the lovely Go’ish pattern of creating a gonum/plot <code class="language-plaintext highlighter-rouge">writer</code> that lets us <code class="language-plaintext highlighter-rouge">WriteTo(..)</code> anything that implements <code class="language-plaintext highlighter-rouge">io.Writer</code>, in our case a <code class="language-plaintext highlighter-rouge">*bytes.Buffer</code>.</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">toPNG</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">plot</span><span class="o">.</span><span class="n">Plot</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">buf</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">bytes</span><span class="o">.</span><span class="n">Buffer</span><span class="p">)</span>
+	<span class="n">pngWriter</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">WriterTo</span><span class="p">(</span><span class="m">12</span><span class="o">*</span><span class="n">vg</span><span class="o">.</span><span class="n">Inch</span><span class="p">,</span> <span class="m">3</span><span class="o">*</span><span class="n">vg</span><span class="o">.</span><span class="n">Inch</span><span class="p">,</span> <span class="s">"png"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="n">_</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">pngWriter</span><span class="o">.</span><span class="n">WriteTo</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">Bytes</span><span class="p">(),</span> <span class="no">nil</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The resulting <code class="language-plaintext highlighter-rouge">[]byte</code> are written to the <code class="language-plaintext highlighter-rouge">http.ResponseWriter</code> with a sensible <code class="language-plaintext highlighter-rouge">Content-Type: image/png</code> header.</p>
+
+<p>With everything wired up, we can enter the address to our API Gateway and produce nice graphs directly in our browser:</p>
+
+<p>https://omitted.execute-api.eu-west-1.amazonaws.com/?output=png&amp;from=2021-04-04&amp;aggregate=1h&amp;graph=hist
+<img src="../../../../../../assets/blogg/powertracker/power-from-210404.png" alt="out" /></p>
+
+<h1 id="4-part-2-summary">4. Part 2 summary</h1>
+<p>This sums up part 2 of this blog series about using AWS services + CDK + Golang to monitor energy usage in my home.</p>
+
+<p>I’m planning on extending this solution with a home-brewed solution for automatic scheduling of electric vehicle charging given hourly electricity prices and hopefully some more interesting integrations with cloud APIs and AWS services.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Energy Meter With Aws Part 2&url=https://callistaenterprise.se/blogg/teknik/2021/04/15/energy-meter-with-aws-part-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Energy Meter With Aws Part 2&u=https://callistaenterprise.se/blogg/teknik/2021/04/15/energy-meter-with-aws-part-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Energy Meter With Aws Part 2&url=https://callistaenterprise.se/blogg/teknik/2021/04/15/energy-meter-with-aws-part-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
