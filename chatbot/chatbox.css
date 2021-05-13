@@ -1,0 +1,161 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@peterhernfalk 
+peterhernfalk
+/
+callistachatbot
+1
+0
+0
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+callistachatbot/css/chatbox.css
+
+Peter Hernfalk Preparations before use of localStorage
+Latest commit c142970 2 days ago
+ History
+ 1 contributor
+117 lines (106 sloc)  2.38 KB
+  
+body {
+        font-family: "Comic Sans MS", cursive;
+        font-size: 16px;
+        color: #036;
+        }
+        h1,h2,h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        }
+        html {
+        //background: url(../images/callista-home.jpg) no-repeat center center fixed;
+        //background: url(../images/callista-home-narrow.png) no-repeat center center fixed;
+        background: url(../images/callista-home-wide.png) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        }
+        #container { width: 600px; margin: 50px auto; padding: 20px; background: white;
+        -moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black; }
+
+
+#CallistaChat {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  border: none;
+}
+
+#bodybox {
+  width: 300px;
+  font: 15px arial, sans-serif;
+  background-color: white;
+  border-style: solid;
+  border-width: 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  box-shadow: 5px 5px 5px grey;
+  border-radius: 15px;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  bottom: 60px;
+  //resize: horizontal;  //both;
+  //direction: rtl;
+  //margin-top: 35px;
+  //margin-bottom: 100px;
+  //width: 400px;
+  //top: 100px;
+}
+
+#chatborder {
+  border-style: solid;
+  background-color: #f6f9f6;
+  border-width: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  padding-right: 20px;
+  padding-left: 15px;
+  border-radius: 15px;
+  //overflow: auto;
+  //resize: inherit;
+  overflow: hidden;
+  min-height:90%;
+  max-height:90%;
+  position: relative;
+}
+
+#input_and_teasers {
+    //margin-bottom: 10px;
+    ////padding-bottom: 15px;
+    //bottom: 20px;
+    //position: fixed;
+    //position: absolute;
+    position: relative;
+    bottom: 5px;
+}
+
+.chatlog {
+   font: 15px arial, sans-serif;
+   min-height: 12vh;
+   max-height: 32vh;
+   overflow:auto;
+}
+
+.textinput {
+   //margin-left: 5px;
+   //margin-right: 5px;
+  //text-align: left:
+}
+
+.helpImage {
+    position: relative;
+    bottom: -5px;
+}
+
+.clearTextImage {
+    position: absolute; //relative;
+    bottom: -5px;
+    right: 0;
+}
+
+.closeWindow {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+}
+
+#chatbox {
+  font: 17px arial, sans-serif;
+  height: 22px;
+  width: 100%;
+}
+
+h1 {
+  margin: auto;
+}
+
+pre {
+  background-color: #f0f0f0;
+  margin-left: 20px;
+}
