@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Callista</title>
+
+    <link rel="stylesheet" href="../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                        
+                            <li><a href="../../../index.html">Om oss</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../event.html">Event</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../blogg.html">Blogg</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../index.html">Jobba hos oss</a></li>
+                        
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-section">
+    <div class="ce-content">
+
+        <article class="ce-image-banner">
+            
+            <h2 class="ce-ingress">Vill du göra skillnad?
+</h2>
+            
+            <div class="ce-image-banner-logotype-large">
+                <img alt="Vill du göra skillnad?" src="../../../../assets/om/jobb/banners/skillnad.jpg">
+            </div>
+            <div class="ce-text">
+                <p>Vi vill göra skillnad för våra kunder. Vi söker därför uppdrag där vi kan tillföra och överföra kompetens, där vi ser att vårt bidrag ger kundnytta och att vi kan vara stolta över det vi gör. Nyfiken på våra <a href="../../../../erbjudanden.html">erbjudanden och uppdrag</a>?</p>
+
+<h3 id="intresserad">Intresserad?</h3>
+
+<p>Stockholm: Katarina Askdal, <a href="tel:+46704293712">+46 70 429 37 12</a><br />
+Göteborg: Anders Forssell, <a href="tel:+46733519171">+46 733 51 91 71</a></p>
+
+            </div>
+
+            <!-- Job interest application form START -->
+            <div style="margin-bottom: 0.5em;">
+                <p>Eller fyll i en eller några kontaktuppgifter nedan så hör vi av oss!</p>
+            </div>
+
+            <div class="ce-jobapplication-form">
+    <!--
+    Formspree, which is used to send the form data from our static page
+    do a redirect on common html form submit.
+    We want to stay on the same page and thus we need to
+    submit an Ajax call instead to Formspree that do not give a
+    crap about their redirect thank-you-page.
+
+    Check out the javascript file: /js/jobinterestsubmit.js
+    -->
+    <form id="jobinterestform" name="mc-embedded-subscribe-form" class="validate">
+        <!-- Field to avoid bot signups -->
+        <div style="position: absolute; left: -5000px;">
+            <input type="text" name="b_51fba111f275a6a984e600b9e_47acabf057" tabindex="-1" value="">
+        </div>
+        <!-- Field to avoid bot signups -->
+        <input type="text" name="_gotcha" style="display:none">
+
+        <input type="hidden" name="formulär" value="Jobbansökningsintresse på hemsidan">
+
+        <div class="form-group" style="margin-bottom: 4em;">
+            <input id="contact" name="kontakt" type="text" value="" placeholder="e-post / telefon / LinkedIn URL / &mldr;" class="required email" maxlength="50" style="border-top-left-radius: 10px;">
+            <!--
+            <input id="email" name="epost" type="email" value="" placeholder="E-POSTADRESS" class="required email" maxlength="50" style="border-top-left-radius: 10px;">
+            <input id="phone" name="telefon" type="tel" value="" placeholder="TELEFON" class="required email" maxlength="15">
+            <input id="linkedin-url" name="linkedin-url" type="url" value="" placeholder="LINKEDIN URL" class="required email" maxlength="250">
+            -->
+            <textarea id="extrainfo" name="meddelande" rows="2" cols="50" maxlength="1024" style="border-bottom-right-radius: 10px;" placeholder="Något du vill att vi ska veta" ></textarea>
+
+            <button id="sendButton" type="submit" class="ce-button disabled ce-background-secondary1">Kontakta mig!</button>
+        </div>
+
+        <div>
+            <a href="../../../gdpr/index.html">Så behandlar vi dina personuppgifter</a>
+        </div>
+
+        <div class="ce-signup-form-thank-you" style="margin-top: 2em; display: none;">
+            Tack! Vi hör av oss så snart vi kan.
+        </div>
+    </form>
+</div>
+
+
+            <!-- Job interest application form END -->
+        </article>
+
+    </div>
+</section>
+
+<section class="ce-section">
+    <heading>
+        <a name="jobbahososs"></a>
+        <h3 class="header">Bli en av oss</h3>
+    </heading>
+
+    <div class="ce-content ce-image-banner-list">
+        
+
+
+
+<div class="ce-icon-grid">
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../arkitektur/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Är du en framtida mjukvaruarkitekt?" data-image_banner-id="arkitektur_1" src="../../../../assets/om/jobb/banners/mjukvaruarkitekt_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Är du en framtida mjukvaruarkitekt?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../delagare/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Vill du också vara delägare?" data-image_banner-id="delagare_1" src="../../../../assets/om/jobb/banners/delagare_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Vill du också vara delägare?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../gokod/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Är programmering det roligaste du vet?" data-image_banner-id="gokod_1" src="../../../../assets/om/jobb/banners/gokod_small.png">
+        </div>
+        <div class="ca-icon-grid-heading">Är programmering det roligaste du vet?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../inkluderande/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Söker du ett inkluderande bolag?" data-image_banner-id="inkluderande_1" src="../../../../assets/om/jobb/banners/inkluderande_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Söker du ett inkluderande bolag?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../kompetens/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Brinner du för kompetensutveckling?" data-image_banner-id="kompetens_1" src="../../../../assets/om/jobb/banners/kompetens_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Brinner du för kompetensutveckling?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../livekoda/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Vill du livekoda inför 400 personer?" data-image_banner-id="livekoda_1" src="../../../../assets/om/jobb/banners/livekodning_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Vill du livekoda inför 400 personer?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../platt/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Längtar du till en platt organisation?" data-image_banner-id="platt_1" src="../../../../assets/om/jobb/banners/platt_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Längtar du till en platt organisation?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../ser_dig/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Vill du ha en arbetsgivare som ser dig?" data-image_banner-id="ser_dig_1" src="../../../../assets/om/jobb/banners/ser_dig_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Vill du ha en arbetsgivare som ser dig?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Vill du göra skillnad?" data-image_banner-id="skillnad_1" src="../../../../assets/om/jobb/banners/skillnad_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Vill du göra skillnad?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../sugen/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Börjar du bli sugen på något nytt?" data-image_banner-id="sugen_1" src="../../../../assets/om/jobb/banners/sugen_nytt_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Börjar du bli sugen på något nytt?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../trygg/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Skulle fast lön kännas tryggt?" data-image_banner-id="trygg_1" src="../../../../assets/om/jobb/banners/trygg_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Skulle fast lön kännas tryggt?</div>
+    </a>
+</article>
+
+<article class="ce-icon-grid-item">
+    <a class="ce-icon-grid-link" href="../vassa/index.html">
+        <div class="ce-icon-grid-image-container">
+            <img alt="Vill du ha vassa kollegor?" data-image_banner-id="vassa_1" src="../../../../assets/om/jobb/banners/vassa_small.jpg">
+        </div>
+        <div class="ca-icon-grid-heading">Vill du ha vassa kollegor?</div>
+    </a>
+</article>
+
+</div>
+
+
+
+    </div>
+</section>
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../index.html">Om oss</a></li>
+                
+                <li><a href="../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../js/app.js"></script>
+    <script src="../../../../js/analytics.js"></script>
+    <script src="../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
