@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Web-dialoger som komponenter | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Web-dialoger som komponenter</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2006-10-06T00:00:00+00:00">
+            06 October 2006
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>SOA i allmänhet och <a href="https://callistaenterprise.se/display/CallistaCom/Introduktion+till+SCA">SCA</a> i synnerhet ger oss en kraftfull modell för återanvändning av funktionalitet när vi skapar tjänstelagret i en ny applikation. Men många gånger sitter det ett ännu större värde i att kunna återanvända web-gränssnitt som är skapade mha existerande tjänster. Det verkar inte finnas någon tydlig best-practice för att att skapa återanvändbara web-dialoger inom ramen för Java EE.</p>
+
+<h2 id="det-var-ju-så-enkelt-förr">Det var ju så enkelt förr…</h2>
+<p>Sök-funktioner har ofta stort återanvändingsvärde. I operativa system spelar systematisk uppbyggnad av sökfunktioner för olika klasser av information ofta en central roll. I den “gamla” världen av klient/server och main-frame-dialoger, finns tydliga best-practice för hur en registreringsapplikation kan återanvända / integrera en existerande sökbild i registreringsfunktionen. Dialogerna anropas som under-dialoger (ofta modala) som låter användaren söka fram ett objekt som ska länkas till huvudbildens fokus-objekt. Det kan till exempel gälla att integrera en dialog för kundsökning i en orderhanteringsapplikation.</p>
+
+<h2 id="varför-blev-det-krångligt-i-web-åldern">Varför blev det krångligt i web-åldern?</h2>
+<p>Den klassiska ansatsen kan med möda reproduceras i rika klienter, t.ex. mha Java-script. Men vilka möjligheter står tillbuds inom ramen för html-baserade web-applikationer utan pop-up-fönster och annan klient-baserad integration?</p>
+
+<p>Några olika aspekter som behöver adresseras är..</p>
+
+<ol>
+  <li>Binda in ett existerande web-flöde som under-flöde i en ny web-applikation</li>
+  <li>Få underflödet att kunna “avsluta” genom att återkoppla till den nya applikationen, som ju inte fanns när underflödet utvecklades (dvs kund-sök-flödet).</li>
+  <li>Paketera allt som underflödet behöver på ett sätt att det kan integreras i “run-time”, som en komponent, men ändå kunna användas i den ursprungliga web-applikationen (t.ex. registervårdsapplikationen för kunder).</li>
+</ol>
+
+<h2 id="vad-kan-man-göra-med-existerande-ramverk">Vad kan man göra med existerande ramverk?</h2>
+<p><a href="http://www.callistaenterprise.se/downloads/presentations/Cadec2006/SpringWebFlow.pdf">Spring Webflow</a> löser på ett kraftfullt sätt upp frågeställningarna i punkt 1 + 2 ovan. Återanvändbara flöden kan paketeras i jar-filer för komponent-baserad återanvändning i olika web-appar. jar-filen innehåller flödesdefinitionen, ev. Strus-konfig-filer, action-klasser m.m. Utmärkt! Men tyvärr räcker inte detta, om vi använder Java EE-standarden för generering av html-koden. Java Server Pages (JSP) - inte ens om vi gör det via Java Server Faces (JSF). Java EE-standarden stödjer inte laddning av JSP-filer från jar filer (via klassladdaren). JSP-filerna för kund-sök-dialogen måste finnas i WEB-INF-katalogen i varje applikation som ska återanvända den.</p>
+
+<p>Portlets är en teknik som det är lätt att associera till i detta sammanhang. Portlets fyller dock ett annat syfte - att leva sida-vid-sida med andra funktioner inom ramen för en portal-sida. Det är en integration som tjänar andra syften än att återanvända dialoger som komponenter i andra dialoger.</p>
+
+<h2 id="jsp-passar-inte-för-komponent-baserad-utveckling">JSP passar inte för komponent-baserad utveckling</h2>
+<p>Så vad kan man göra åt JSP-filerna? Man kan förstås använda något annat än JSP. Om vi använder <a href="http://jakarta.apache.org/velocity/">Velocity</a> (t.ex. tillsammans med <a href="http://jakarta.apache.org/tapestry/">Tapestry</a>), XSLT eller annan teknik som inte är kopplad till WEB-INF-katalogen är vi hemma.</p>
+
+<p>Om företagets policy styr mot Java EE-standarden (dvs JSP), skulle man kunna tänka sig att ta hjälp av bygg-systemet. Man skulle då kunna automatisera “transplantationen” av JSP-filer från en återanvändbar Web-komponent (WAR) till WEB-INF-katalogen i “återanvändaren”, dvs order-registreringsappen. <a href="http://maven.apache.org">Maven</a> är ett byggsystem som stödjer komponent-baserad utveckling, genom dess koncept för beroende-hantering och integrerade enterprise-arkiv av versionerade komponenter.</p>
+
+<p>Genom att anpassa WAR-hanteringen i Maven, skulle man kunna lägga till stöd för att deklarera ett beroende som “reuse”. Maven skulle då kunna leta i den återanvända WAR-filens WEB-INF efter JSP-filer som kopieras in i återanvändarens WAR. För att undvika kaos, behöver man standardisera en katalogstruktur inom WAR-filerna - som en form av name-space för att undvika krock mellan namn på JSP-filer. Det är mao något som är svårt att inför i efterhand, men skulle förmodligen kunna vara en framkomlig väg om standarden etablerats inför t.ex. ett större projekt.</p>
+
+<p>Spring Webflow behövs förstås ändå! Kanske kan <a href="http://struts.apache.org/struts-shale/index.html">Struts Shale</a> vara ett alternativ, men Spring Webflow verkar vara som klippt och skuret för en ansats som denna.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Web Dialoger Som Komponenter&url=https://callistaenterprise.se/blogg/teknik/2006/10/06/web-dialoger-som-komponenter/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Web Dialoger Som Komponenter&u=https://callistaenterprise.se/blogg/teknik/2006/10/06/web-dialoger-som-komponenter/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Web Dialoger Som Komponenter&url=https://callistaenterprise.se/blogg/teknik/2006/10/06/web-dialoger-som-komponenter/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

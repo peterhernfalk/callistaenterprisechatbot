@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Intryck från TheServerSide Java Symposium - dag 2 | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Sofia Jonsson" src="../../../../../../assets/medarbetare/sofiajonsson_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Intryck från TheServerSide Java Symposium - dag 2</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2006-06-25T00:00:00+00:00">
+            25 June 2006
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Sofia Jonsson
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Dag två av TheServerSide Java Symposium inleddes med <em>The Zen of Free</em>, där Simon Phipps, ansvarig för Suns open source-strategier, pratade om hur de ser på open source. Väldigt intressant att som omväxling höra någon diskutera open source ur ett lite annat perspektiv än bara att “gratis är gott”.  Simon gick igenom modellen bakom open source-utveckling och pratade om hur open source-rörelsen påverkar enskilda utvecklare, företag och till och med hela samhället. Han kom även in på mjukvarupatent, som han, föga förvånande, är aktiv motståndare till:</p>
+
+<blockquote>
+  <p>Software patents is a great threat to our industry.</p>
+</blockquote>
+
+<h2 id="messaging">Messaging</h2>
+<p>Ted Newards föredrag om Messaging var en av dagens höjdpunkter. Även om föredraget, precis som Gregor Hohpes dragning igår, egentligen inte innehöll något nytt så var han en bra och medryckande talare. Hans huvudsakliga poäng gick ut på att messaging är fundamentalt annorlunda mot RPC och att det därmed kräver ett annorlunda tankesätt hos utvecklare.</p>
+
+<h2 id="ruby">Ruby</h2>
+<p>Bruce Tate höll ett föredrag på temat <em>10 Things Java Should Steal from Ruby</em>. Bland de saker Bruce (och flera andra med honom) tycker att Java skulle tjäna på att “stjäla” från språk som Ruby kan nämnas:</p>
+
+<ul>
+  <li>Closures</li>
+  <li>Continuations</li>
+</ul>
+
+<p>Resten av listan finns att läsa på: <a href="http://javasymposium-europe.techtarget.com/Downloadable_PPTS/BTateRuby.pdf">http://javasymposium-europe.techtarget.com/Downloadable_PPTS/BTateRuby.pdf</a></p>
+
+<h2 id="java-persistence-api---jpa">Java Persistence API - JPA</h2>
+<p>Konferansens andra dag bjöd på flera föredrag med JPA som tema och min förhoppning att de skulle gå lite mer på djupet inbefriades åtminstone till viss del.</p>
+
+<p>Patrick Linskey från BEA höll ett relativt intressant föredrag om “The good, the bad and the ugly” inom JPA, där han listade de features han tyckte var, bra, tveksamma och direkt dåliga i specen. En av de dåliga sakerna som det definitivt kan vara värt att vara på sin vakt mot är det faktum att för alla many-to-one och one-to-one relationer så är “eager fetch” default-beteende. Detta innebär att en vanlig uppläsning av en entitet kan komma att läsa in avsevärt mycket mer än vad man hade förväntat och tänkt sig. Har man t ex en <em>Employee</em> som är kopplad till en <em>Manager</em> som i sin tur är kopplad till en <em>Address</em> så kan alla fält från alla tre tabellerna komma att läsas in från databasen i samma stund som vi laddar vår <em>Employee</em>. Det är alltså viktigt att komma ihåg att speca Fetch:Lazy på (vissa) av many-to-one och one-to-one-relationerna för att undvika detta.</p>
+
+<h2 id="space-based-architecture">Space Based Architecture</h2>
+<p>Rod Johnson och Nati Shalom höll i slutet av dagen en BOF på temat “The end of Tier-Based Architecture” där de introducerade <em>Space Based Architecture</em> som en möjlig uppföljare till en traditionell lagerindelad arkitektur för system med stora prestanda- och skalbarhetskrav. Google, Amazon och företag inom den finansiella sektorn nämndes som exempel på företag som använder sig av den här tekniken för att klara av sina många samtidiga användare och stora skalbarhetskrav. Rod tryckte på att Spring är ett ramverk som fungerar bra även inom den här typen av arkitektur.</p>
+
+<h2 id="sammanfattning">Sammanfattning</h2>
+<p>Så här långt har konferensen varit väldigt intressant och givande. Även om den i jämförelse med t ex JavaPolis är relativt liten håller den en jämn, hög kvalitet på föredragshållare och föredrag.</p>
+
+<p>Några av de ämnen som har känts mest “heta” är:</p>
+
+<ul>
+  <li>Continuations - dyker upp i alla möjliga sammanhang, bland annat hos vissa webbramverk, t ex RIFE.</li>
+  <li>Dynamiska språk - starka influenser kommer från dynamiska programmeringsspråk, inte minst Ruby. Fler och fler pratar om vikten att öppna upp Java-plattformen för andra språk än just Java och om att utvecklare framöver inte bara bör behärska ett enda språk utan flera för att på så vis ha möjligheten att använda rätt språk för rätt tillfälle.</li>
+  <li>Webbramverk - med fokus på t ex continuations och page flow men också på komponentbaserad webbutveckling och på AJAX.</li>
+  <li>Messaging och SOA</li>
+  <li>Space Based Architecture - flera föreläsare har nämnt Java Spaces och Space Based Architecture som något att hålla ögonen på för system som har stora prestandakrav.</li>
+</ul>
+
+<p>De flesta presentationer finns att ladda hem på: <a href="http://javasymposium-europe.techtarget.com/html/det_techsessions.htm">http://javasymposium-europe.techtarget.com/html/det_techsessions.htm</a></p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Intryck Fran Theserverside Java Symposium Dag 2&url=https://callistaenterprise.se/blogg/teknik/2006/06/25/intryck-fran-theserverside-java-symposium-dag-2/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Intryck Fran Theserverside Java Symposium Dag 2&u=https://callistaenterprise.se/blogg/teknik/2006/06/25/intryck-fran-theserverside-java-symposium-dag-2/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Intryck Fran Theserverside Java Symposium Dag 2&url=https://callistaenterprise.se/blogg/teknik/2006/06/25/intryck-fran-theserverside-java-symposium-dag-2/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

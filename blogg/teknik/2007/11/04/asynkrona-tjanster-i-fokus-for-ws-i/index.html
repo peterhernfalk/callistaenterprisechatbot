@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Asynkrona tjänster i fokus för WS-I | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Asynkrona tjänster i fokus för WS-I</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2007-11-04T00:00:00+00:00">
+            04 November 2007
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p><a href="http://www.ws-i.org/">WS-I</a> är standardiseringsorganet för interoperabilitet inom Web Services. WS-I driver sitt arbete genom att skapa profiler för användandet av olika webbservice standarder. Det har visat sig att leverantörers implementation av enskilda Webbservice standards inte leder till friktionsfri interoperabilitet. Genom att definiera profiler, begränsar WS-I hur enskilda specifikationer ska tillämpas, för att säkra interoperabilitet. Hittills har WS-I framgångsrikt skapat profiler för att säkra säker interoperabilitet för synkrona webbservices. Nästa version siktar på att säkra förutsättningarna för interoperabilitet av asynkrona webbservices.</p>
+
+<h2 id="ws-i-och-enterprise-java">WS-I och Enterprise Java</h2>
+
+<p>Den första profilen - Basic Profile - var en stor framgång för operabilitet inom synkrona SOAP-baserade tjänster utan “attachments” (binära bilagor). J2EE 1.4 definierar sitt stöd för Web Services i termer av Basic Profile version 1.0. Sedan dess har Basic Profile 1.1 anlänt i sällskap med en Security Profile och en Attachment Profle. Stödet för Web Services i JavaEE 5 integrerar Basic profile 1.1. Callista rapporterade om Basic Profile och interoperabilitet mellan J2EE 1.4 och .Net på <a href="http://www.callistaenterprise.se/downloads/presentations/Cadec2005/WebServices.pdf">Cadec 2005</a>.</p>
+
+<h2 id="mot-asynkrona-web-services">Mot asynkrona Web Services</h2>
+
+<p>WS-I panerar att släppa nästa version (1.2) av “Basic Profile” före september månads utgång. Den nya profilen blir en påbyggnad av BP 1.1, i syfte att ge klara riktlinjer för användningen av WS-Addressing 1.0 och “attachments” (SOAP 1.1 Bindning for MTOM 1.0). WS-Addressing är viktig, eftersom den definierar förutsättningarna för orkestrering av asynkrona/händelsedrivna processer. En Enterprise Service Bus förknippas ofta just med möjligheten att kunna skapa nya webbservices som integrerar befintliga system som asynkrona händelsekedjor. WS-Addressing standardiserar SOAP-headers för hantering av adresserings- och korreleringsdata som behövs för att asynkrona svar ska kunna hitta tillbaka till den tjänst som ska ta emot svaret (svarsadress) och den processinstans som svaret avser (korrelering).</p>
+
+<h2 id="jms-blir-webbservices">JMS blir Webbservices?</h2>
+
+<p>JMS är en välkänd standard inom Enterprise Java, som låter Java-program hantera asynkron meddelandetrafik utan att programkod binds till specifika meddelandehanteringssystem. Motsvarande standard saknas för Microsoft .Net, som istället pekar ut produkten MSMQ. WS-ReliableMessaging syftar till att etablera en Web Servicebaserad branch-standard för köhanterare. Parallellt med Basic Profile 1.2, pågår arbete med WS-I Reliable Secure Profile i syfte att nå interoperabilitet för säker, asynkron meddelandehantering (baserat på kö-konceptet vi känner från ena halvan av JMS), vilket bl.a. täcker WS-ReliableMessaging. Publish/subscribe-delen av JMS adresseras av WS-Notification. WS-Reliable Messaging har den stora fördelen att det inte introducerar någon ny programmeringsmodell. Man deklarerar helt enkelt en WS-Policy Assertion specifik för WS-Reliable Messaging i WSDL-filen. För programmeraren uppstår ingen konceptuell skillnad - man anropar fortfarande en operation på en tjänst. Beroende på applikationens behov, kan anrop till att API för att markera slutet på en meddelandesekvens, vilket därmed blir undantaget som bekräftar regeln. Till skillnad mot JMS, blir transportformatet interoperabelt. Till skillnad från JMS standardiserar WS-RM enbart aktiviteter på protokoll-nivå - inte leverans till applikationslogik. En WS-RM-implementation behöver därmed utvärderas m.a.p. s.k. garanterad leverans (a’la JMS med persistenta köer och 2PhC). Om man jämför med produkten WebSphereMQ, kan man säga att WS-RM löser samma behov som en s.k. “Channel” som binder samman en remote-kö på sändarens server med en local-kö på mottagarens maskin. WS-ReliableMessaging typ-användningsfall är lättviktig B2B. 1.0 av specifkationen var ett samarbete mellan IBM, Microsoft, BEA och Tibco (2005-02). Det är den versionn som implementeras av dagens applikationsservar (t.ex. Microsoft WCF, IBm WebSphere 6.1 WebService Feature Pack, SAP Netweaver 7.0, Sun Project Glassfish med WSIT). 2007-10 färdigställde Oasis en formell standard med versionsnummer 1.1.</p>
+
+<h2 id="en-ws-baserad-enterprise-service-bus">En WS-baserad Enterprise Service Bus?</h2>
+
+<p>Det växande intresset för produkter inom området Enterprise Service Bus, kan ses som ett tecken på att organisationer ser minst lika stora värden i asynkrona/händelsedrivna tjänster som i synkrona webbservices. Det har hittills lett till behov av leverantörsspecifika lösningar för meddelandebaserad integration. Blir BP 1.2 lika framgångsrik som sina företrädare, kommer vi nog att få se en förändring i de hittills ganska traditionsbundna produkterna inom applikationsintegration.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Asynkrona Tjanster I Fokus For Ws I&url=https://callistaenterprise.se/blogg/teknik/2007/11/04/asynkrona-tjanster-i-fokus-for-ws-i/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Asynkrona Tjanster I Fokus For Ws I&u=https://callistaenterprise.se/blogg/teknik/2007/11/04/asynkrona-tjanster-i-fokus-for-ws-i/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Asynkrona Tjanster I Fokus For Ws I&url=https://callistaenterprise.se/blogg/teknik/2007/11/04/asynkrona-tjanster-i-fokus-for-ws-i/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Callista Enterprise - seniora IT-arkitekter och systemutvecklare inom Java, öppen källkod, agil utveckling och systemintegration">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+
+    <link rel="icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="../../../../../../images/icons/callista_favicon.svg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="../../../../../../images/icons/callista_favicon_160x160.png">
+
+    <title>Introduktion till SCA | Callista</title>
+
+    <link rel="stylesheet" href="../../../../../../css/style.css%3Fv=1.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for callistaenterprise.se" href="../../../../../../feed.xml" />
+
+    <!--[if lte IE 8]>
+    <style>* { display: none !important; }</style>
+    <meta http-equiv="refresh" content="0; url=/oldie/"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://use.typekit.net/kig5egm.js"></script>
+    <script type="text/javascript">
+        try {
+            Typekit.load({ async: true });
+        } catch (e) {
+        }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '804675599711872');
+     fbq('track', 'PageView');
+    </script>
+    <noscript>
+     <img height="1" width="1" src="https://www.facebook.com/tr?id=804675599711872&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+
+    <header class="ce-header" data-scroll="0">
+    <nav>
+        <img alt="menubg" class="ce-menu-icon" style="z-index:3; top: 0px; width: 50px; height: 100%;" src="../../../../../../images/icons/menu_background.png">
+        <a class="ce-logotype" href="../../../../../../index.html" style="z-index: 2;">
+            <img alt="Callista" style="max-width: 100%; height: auto;" src="../../../../../../images/logotype/callista_small2.svg">
+        </a>
+        <table>
+            <tr>
+                <td>
+            <ul id="menu-primary" class="ce-menu-primary">
+                
+                    
+                            <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                    
+                
+                    
+                            <li><a href="../../../../../../event.html">Event</a></li>
+                    
+                
+                    
+                        
+                            <li><a class="ce-active" href="../../../../../../blogg.html">Blogg</a></li>
+                        
+                    
+                
+                    
+                            <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                    
+                
+            </ul>
+                </td>
+
+                <td>
+            <ul class="ce-menu-secondary">
+                
+                <li><a href="../../../../../../english/index.html">English</a></li>
+                
+            </ul>
+                </td>
+            </tr>
+        </table>
+            <a id="menu" class="ce-menu-icon" href="index.html#" style="z-index: 4;">
+                <img alt="Visa meny" src="../../../../../../images/icons/menu.png">
+            </a>
+            <a class="ce-search-icon" href="index.html#">
+                <img alt="Sök" src="../../../../../../images/icons/search.png">
+            </a>
+
+        </table>
+    </nav>
+</header>
+
+
+    <div class="ce-main">
+        <section class="ce-start lazyImg">
+    <article>
+        <h1>Blogg</h1>
+        <p class="ce-ingress">
+            Här finns tekniska artiklar, presentationer och nyheter om arkitektur och systemutveckling. Håll dig uppdaterad, följ oss på <a class="ce-active" href="http://twitter.com/callistaent">Twitter</a>
+        </p>
+    </article>
+</section>
+
+<section class="ce-section">
+    <div class="ce-content">
+        
+        
+
+        
+        
+
+        <article class="ce-blog">
+            <header>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img alt="Callista medarbetare Johan Eltes" src="../../../../../../assets/medarbetare/johaneltes_mini.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2>
+        <a href="index.html">Introduktion till SCA</a>
+        
+        
+    </h2>
+    <h3>
+        <time datetime="2006-06-28T00:00:00+00:00">
+            28 June 2006
+        </time>
+        //
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        Johan Eltes
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </h3>
+    
+</header>
+
+
+
+
+<p>Ett antal leverantörer har gemensamt arbetat fram en specifikation inom SOA-området. Specifkationen kallas “Service Component Architecture” - eller kort - “SCA”. Specen syftar till att definiera en hög-nivå-modell för realiser tjänster i en SOA. Ansatsen sträcker sig från tillverkning av återanvändbara byggstenar till koncept för att definiera en SOA för en hel verksamhetsdomän. Det är den första specifikationen som lyfter SOA från infrastruktur till dess faktiska värden: en helhet skapad av återanvändbara byggstenar, fristående från beslut om infrastruktur.</p>
+
+<h2 id="från-infrastruktur-till-funktionell-arkitektur">Från infrastruktur till funktionell arkitektur</h2>
+<p>Med SCA flyttas fokus från infrastruktur till funktionell arkitektur. Specen standardiserar en modell för att å ena sidan definiera återanvändbara komponenter - legobitar och å andra sidan en modell för att logiskt binda samman legobitarna (“service components”) till nya legobitar (“composites”), frikopplat från beslut kring kommunikationsteknologier och annan infrastruktur.</p>
+
+<p>Plattformen definierar komponenter på olika nivåer - där en “Composite” kan utgöra en deploy-bar eller en endast internt återanvändbar modul, uppbyggd av andra “composites” och atomära “service components”. Components och Composites på alla nivåer binds samman av logiska länkar (wires). Beslutet om hur en “Wire” ska realiseras, kan fördröjas till slut-paketering i ett “deploy-arkiv”. Genom att varje “composite” inte gör några antaganden om hur eller till vem dess “wire” är bunden, kan en “composite” återanvändas i många “composites”.</p>
+
+<p><em>[Bild saknas]</em></p>
+
+<p>Comsposites kan vara realiserade i olika teknologier. Det finns en under-specifikation per realiseringsteknik - så som Java, BPEL, Spring, EJB och C++. I praktiken ska man nog initialt se specen i ljuset av Java-relaterade tekniker och olika XML-standards, även om den vore fullt tänkbar för .Net. Microsoft håller sig än så länge utanför samarbetet.</p>
+
+<p>SCA standardiserar också hur man definierar bindningar mellan “wires” och olika typer av infrastruktur, i form av binsningsspecifkationer. För närvarande finns fastlagda bindningar för WebServices, remote-EJB, JMS och JCA.</p>
+
+<h2 id="vem-står-bakom-sca">Vem står bakom SCA?</h2>
+<p>Branchens ledande aktörer inom SOA- ovh EAI-plattformar står bakom specifikationen: IBM, BEA, Sun, Iona, SAP, Oracle, Tibco m.fl.Ur leverantörernas perspektiv, ger SCA en möjlighet att integrera moduler skapade i olika leverantörers verktyg med infrastruktur från andra leverantörers infrastruktur (infrastruktur med stöd för att driftsätta SCA-paketerade lösningar).</p>
+
+<p>SCA-specen etablerades i November 2005, i.o.m. introduktionen av version 0.9. Den fanns då att ladda hem från respektive företags hemsida, t.ex. <a href="http://dev2dev.bea.com/pub/a/2005/11/sca.html">BEA</a>. Sun stod inledningsvis utanför. I Juli 2006 formaliserades arbetet ytterligare, i form av version 0.95. Sun gick med och Service Component Architecture fick ett självständigt liv i form av en <a href="http://OSOA.ORG/">Wiki</a> (liksom Callistas dito baserad på Confluence).</p>
+
+<h2 id="hur-arbetar-man-i-praktiken-med-sca">Hur arbetar man i praktiken med SCA?</h2>
+<p>Design mönstret Dependency Injection utgör grundbulten i SCA-specen. Man kan säga att SCA är <a href="http://www.springframework.org">Spring Dependency Injection</a>för SOA. I praktiken kan Spring + en J2EE-serveranvändas för att realisera och deploya en SOA som är logiskt definierad av tjänster publicerade av återanvändbara “composites”. Det används redan som en hörnsten för SOA-strategin för nästa generations system inom logistik och produktionssyrning hos ett globalt bilföretag.Se <a href="http://www.callistaenterprise.se/downloads/presentations/Cadec2006/sca.pdf">Cadec 2006 om SCA</a> samt <a href="http://www.callistaenterprise.se/downloads/presentations/ExpertZoneDeveloperSummit2006_SCA.pdf">ExpertZone 2006</a>. Det är troligt att framtida versioner av Spring kommer att ge fullt stöd för SCA. Interface21 - företaget som startats av personerna bakom Spring-ramverken - är ytterligare ett av företagen bakom SCA.</p>
+
+<h2 id="vilka-mervärden-ger-sca">Vilka mervärden ger SCA?</h2>
+<p>SCA syftar till att leverera ett antal värden:</p>
+
+<ul>
+  <li>Skilja på driftsatt tjänst (subsystem) och återanvändbara komponent-bibliotek (module component) för realisering av (många) tjänster.</li>
+  <li>Kunna utveckla en hel SOA-somän utan att binda sig till infrastruktur - inte ens till WebServices. Innan man driftsätter en tjänst måste förstås bindingarna till infrastrukturen definieras, men detta görs separat från den funktionella SOA man definierat med hjälp av SCA.</li>
+  <li>Skapa förutsättningar för robust testning och versionering av byggstenarna i en SOA.</li>
+</ul>
+
+<p>Dessa värden kan, vilket bevisats! - uppnås utan att binda sig till SCA-specifikationen. När verktyg kommer, som stödjer SCA-specen, ersätter man Spring-XML på modul- och subsystem-nivå med SCA-xml.Då uppnås ytterligare värden:</p>
+
+<ul>
+  <li>Vi kan utgå från en grafisk modell av en hel SOA-domän när vi utvecklar och förändrar tjänster utgående från katalogiserade komponenter (module components).</li>
+  <li>Vi får verktygsstöd för att binda en SOA-lösning till den infrastruktur vi valt för att deploya tjänster inom vår SOA-domänen.</li>
+  <li>Verktyget stödjer säkerligen fler språk än Java och BPEL, så som Workflow, regelmotorer, beslutstabeller m.m, där grafiska editorer har ett stort värde. Men oavsett verktyg och “språk”, blir resultatet “composites” som knytas samman logiskt till en funktionell arkitektur.</li>
+</ul>
+
+<p>Samma SOA-domän / system kan deployas i olika verksamheter på olika infrastrukturer. Exempel på infrastrukturer skulle kunna vara olika kombinationer JBI, EJB, WebService / http, ESB / JMS etc.</p>
+
+<h2 id="vill-du-veta-mera">Vill du veta mera?</h2>
+<p>Vill du höra mer om våra praktiska erfarenheter kring SCA? Vi kommer gärna och berättar i detalj om olika aspekter av SCA-baserad SOA: Att införa i en organisation, införandetid, Komponent/Service-modellering, Versionering, Infrastruktur-kopplingar (ESB, WebServices etc), Spring-baserad SCA, driftserfarenheter m.m. Det brukar fungera bäst om vi startar med ett möte för att lyssna av er situation och sedan anpassar presentationen / workshopen efter konkreta affärsmål som finns på din agenda.</p>
+
+
+
+
+
+
+
+
+
+            <div class="ce-blog-thanks">
+              Tack för att du läser Callistas blogg. <br>
+              Hjälp oss att nå ut med information genom att dela nyheter och artiklar i ditt nätverk.<br>
+            </div>
+
+            
+
+
+    
+<div class="ce-blog-share">
+    <a class="ce-blog-share-element social-twitter" href="https://twitter.com/intent/tweet?text=Introduktion Till Sca&url=https://callistaenterprise.se/blogg/teknik/2006/06/28/introduktion-till-sca/&via=callistaent&hashtags=" target="_blank" title="Share this post on Twitter"></a>
+    <a class="ce-blog-share-element social-facebook" href="https://www.facebook.com/sharer/sharer.php?t=Introduktion Till Sca&u=https://callistaenterprise.se/blogg/teknik/2006/06/28/introduktion-till-sca/" target="_blank" title="Share this post on Facebook"></a>
+    <a class="ce-blog-share-element social-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&title=Introduktion Till Sca&url=https://callistaenterprise.se/blogg/teknik/2006/06/28/introduktion-till-sca/&source=http%3a%2f%2fzhangwenli.com" target="_blank" title="Share this post on LinkedIn"></a>
+</div>
+    
+        </article>
+    </div>
+</section>
+
+
+<section class="ce-section">
+    <heading>
+        <h1>Kommentarer</h1>
+    </heading>
+    <div class="ce-content">
+        <div id="disqus_thread"></div>
+        <script src="../../../../../../js/disqus.js"></script>
+    </div>
+</section>
+
+
+    </div>
+
+    <footer class="ce-footer">
+    <div class="ce-wrapper">
+        <nav class="ce-menu-footer-primary">
+            <h2><a href="../../../../../../index.html">Callista</a></h2>
+            <ul>
+                
+                <li><a href="../../../../../../om/index.html">Om oss</a></li>
+                
+                <li><a href="../../../../../../erbjudanden.html">Erbjudanden</a></li>
+                
+                <li><a href="../../../../../../event.html">Event</a></li>
+                
+                <li><a href="../../../../../../blogg.html">Blogg</a></li>
+                
+                <li><a href="../../../../../../om/jobb/index.html">Jobba hos oss</a></li>
+                
+
+                
+                    
+                        <li><a href="../../../../../../english/index.html">English</a></li>
+                    
+                
+            </ul>
+        </nav>
+        <div class="ce-addresses">
+            <div class="ce-address">
+                <h2>Stockholm</h2>
+                <address>
+                    Drottninggatan 55<br>
+                    111 21 Stockholm<br>
+                    Tel:
+                    <a href="tel:+468212142">
+                        +46 8 21 21 42
+                    </a>
+                </address>
+            </div>
+            <div class="ce-address">
+                <h2>Göteborg</h2>
+                <address>
+                    Fabriksgatan 13<br>
+                    412 50 Göteborg<br>
+                    Tel:
+                    <a href="tel:+4631201918">
+                        +46 31 20 19 18
+                    </a>
+                </address>
+            </div>
+        </div>
+        <div class="ce-social">
+            <h2>Följ oss</h2>
+            <ul>
+                <li>
+                    <a href="http://twitter.com/callistaent">
+                        <img alt="Twitters logotype" src="../../../../../../images/icons/twitter.png">
+                        <span>@callistaent</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <small>&copy; 2021 Callista Enterprise AB</small>
+        <hr style="margin: 1em 0 2em 0">
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-raddabarnen" href="http://www.raddabarnen.se/foretag">
+                <img alt="Callista är Rädda Barnens företagsvän 2021" src="../../../../../../images/logotype/rb_vanforetag_2021_large-sv.png">
+            </a>
+          </div>
+        </div>
+        <br>
+        <div class="ce-footer-images">
+          <div class="ce-footer-image">
+            <a class="ce-di-gasell" href="http://www.di.se/gasell/">
+              <img alt="Callista utsett till DI Gasell tre år i rad" src="../../../../../../images/logotype/di_gasell_180x194.png">
+            </a>
+          </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="../../../../../../js/lib/jquery.min.js"></script>
+    <script src="../../../../../../js/lib/owl.carousel.min.js"></script>
+    <script src="../../../../../../js/lib/prismjs.min.js"></script>
+    <script src="../../../../../../js/app.js"></script>
+    <script src="../../../../../../js/analytics.js"></script>
+    <script src="../../../../../../js/jobinterestsubmit.js"></script>
+
+</body>
+</html>
